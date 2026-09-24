@@ -154,19 +154,20 @@
       ])
     ]);
 
-    var left = el('div', { 'class': 'home-left' }, [dial]);
+    var left = el('div', { 'class': 'home-dial' }, [dial]);
+    var houRow = null;
     if (entry) {
-      left.appendChild(el('div', { 'class': 'hou-row' }, entry.hou.map(function (h, i) {
+      houRow = el('div', { 'class': 'hou-row' }, entry.hou.map(function (h, i) {
         var isNow = i === loc.hou;
         return el('div', { 'class': 'hou-card' + (isNow ? ' is-now' : '') }, [
           el('div', { 'class': 'hou-label' }, [
             el('span', { 'class': 'l1', text: HOU_LABEL[i] + (isNow ? ' · 今候' : '') }),
-            el('span', { 'class': 'l2', text: ' · 约' + fmtRange(loc.ranges[i][0], loc.ranges[i][1]) })
+            el('span', { 'class': 'l2', text: '约' + fmtRange(loc.ranges[i][0], loc.ranges[i][1]) })
           ]),
           el('div', { 'class': 'hou-name', text: h.name }),
           el('div', { 'class': 'hou-plain', text: h.plain })
         ]);
-      })));
+      }));
     }
 
     var right = el('div', { 'class': 'home-right' });
@@ -190,7 +191,7 @@
       ]));
     }
 
-    root.appendChild(el('div', { 'class': 'home' }, [left, right]));
+    root.appendChild(el('div', { 'class': 'home' }, [left, right, houRow]));
     document.title = (name ? name + ' · ' : '') + '知否知否 · 每天读一页中国传统文化';
   }
 
