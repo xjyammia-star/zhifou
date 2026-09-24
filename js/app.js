@@ -10,6 +10,7 @@
   var HOU_LABEL = ['初候', '二候', '三候'];
   var SEASON_NAME = { '春': '春季', '夏': '夏季', '秋': '秋季', '冬': '冬季' };
   var BIG_TERMS = ['春分', '夏至', '秋分', '冬至'];
+  var JR = window.ZHIFOU_JIERI || null;
 
   /* ---------- 小工具 ---------- */
   function el(tag, attrs, kids) {
@@ -91,6 +92,38 @@
         [cur.start + 10 * DAY, endExcl - DAY]
       ]
     };
+  }
+
+  /* ---------- 传统节日：日期与临近的节日 ---------- */
+  var WEEK = ['日', '一', '二', '三', '四', '五', '六'];
+  function fmtMDW(ms) { return fmtMD(ms) + ' 星期' + WEEK[new Date(ms).getUTCDay()]; }
+  function fmtYMDW(ms) { return fmtYMD(ms) + ' 星期' + WEEK[new Date(ms).getUTCDay()]; }
+  function festUrl(name) { return 'jieri.html?id=' + encodeURIComponent(name); }
+  function festDates(name) {
+    return ((JR && JR.dates[name]) || []).map(function (s) {
+      var p = s.split('-');
+      return Date.UTC(+p[0], +p[1] - 1, +p[2]);
+    });
+  }
+  function nextFestDate(name, today) {
+    var ds = festDates(name);
+    for (var i = 0; i < ds.length; i++) if (ds[i] >= today) return ds[i];
+    return null;
+  }
+  function upcomingFests(today) {
+    var list = [];
+    if (JR) {
+      JR.order.forEach(function (n) {
+        var d = nextFestDate(n, today);
+        if (d !== null) list.push({ name: n, ms: d });
+      });
+    }
+    list.sort(function (a, b) { return a.ms - b.ms; });
+    return list;
+  }
+  function countText(ms, today) {
+    var n = Math.round((ms - today) / DAY);
+    return n === 0 ? '今天' : n === 1 ? '明天' : n === 2 ? '后天' : '还有 ' + n + ' 天';
   }
 
   /* ---------- 日晷环（二十四节气一圈，今天的节气转到右侧） ---------- */
@@ -191,7 +224,18 @@
       ]));
     }
 
-    root.appendChild(el('div', { 'class': 'home' }, [left, right, houRow]));
+    var ups = upcomingFests(today);
+    var upcoming = null;
+    if (ups.length) {
+      var u = ups[0];
+      upcoming = el('a', { 'class': 'upcoming', href: festUrl(u.name), 'aria-label': '临近的节日：' + u.name }, [
+        el('span', { 'class': 'eyebrow', text: '临近的节日' }),
+        el('span', { 'class': 'upcoming-name', text: u.name }),
+        el('span', { 'class': 'upcoming-when', text: fmtMDW(u.ms) }),
+        el('span', { 'class': 'tag', text: countText(u.ms, today) })
+      ]);
+    }
+    root.appendChild(el('div', { 'class': 'home' }, [left, right, houRow, upcoming]));
     document.title = (name ? name + ' · ' : '') + '知否知否 · 每天读一页中国传统文化';
   }
 
@@ -299,6 +343,108 @@
     document.title = '节气目录 · 知否知否';
   }
 
+  /* ---------- 节日页（模板） ---------- */
+  function renderFestival(root, name) {
+    var entry = JR && JR.entries[name];
+    if (!entry) {
+      root.appendChild(el('div', { 'class': 'list-page' }, [
+        el('h1', { 'class': 'page-title', text: '没有找到这一页' }),
+        el('a', { 'class': 'btn', href: 'jieri.html', text: '← 回到节日目录' })
+      ]));
+      document.title = '节日 · 知否知否';
+      return;
+    }
+    var today = beijingToday();
+    var order = JR.order, idx = order.indexOf(name);
+    var prevName = order[(idx + order.length - 1) % order.length];
+    var nextName = order[(idx + 1) % order.length];
+    var later = festDates(name).filter(function (d) { return d >= today; });
+
+    var main = el('div', { 'class': 'term-main' });
+    main.appendChild(el('div', { 'class': 'crumb' }, [
+      el('span', { 'class': 'crumb-text' }, [
+        el('a', { href: 'jieri.html', text: '节日' }),
+        ' · 第' + entry.no + '个 · 共' + order.length + '个'
+      ]),
+      el('div', { 'class': 'seal', 'aria-hidden': 'true', text: '节' })
+    ]));
+    var whenKids = [];
+    if (later.length) {
+      whenKids.push(el('div', { 'class': 'fest-when-main' }, [
+        el('span', { 'class': 'eyebrow', text: '下一次' }),
+        el('span', { 'class': 'fest-date', text: fmtYMDW(later[0]) }),
+        el('span', { 'class': 'tag', text: countText(later[0], today) })
+      ]));
+    }
+    whenKids.push(el('div', { 'class': 'fest-when-sub', text: entry.lunar + ' · ' + entry.theme }));
+    if (later.length > 1) {
+      whenKids.push(el('div', { 'class': 'fest-when-sub', text: '再往后：' + later.slice(1, 4).map(fmtYMD).join('、') }));
+    }
+    main.appendChild(el('div', { 'class': 'fest-when' }, whenKids));
+
+    main.appendChild(el('h1', { 'class': 'hook', text: entry.hook }));
+    main.appendChild(el('p', { 'class': 'answer', text: entry.answer }));
+    main.appendChild(el('div', { 'class': 'ornament', 'aria-hidden': 'true' }));
+    entry.body.forEach(function (p) { main.appendChild(el('p', { 'class': 'block-text', text: p })); });
+    if (entry.story && entry.story.length) {
+      main.appendChild(el('div', { 'class': 'section-title', text: '典故' }));
+      entry.story.forEach(function (p) { main.appendChild(el('p', { 'class': 'block-text', text: p })); });
+    }
+    if (entry.customs) {
+      main.appendChild(el('div', { 'class': 'section-title', text: '习俗' }));
+      main.appendChild(el('p', { 'class': 'block-text', text: entry.customs }));
+    }
+    if (entry.tip) {
+      main.appendChild(el('div', { 'class': 'tip-box' }, [
+        el('div', { 'class': 'tip-label', text: '小提示' }),
+        el('p', { text: entry.tip })
+      ]));
+    }
+    if (entry.relatedTerm && entryOf(entry.relatedTerm)) {
+      main.appendChild(el('p', { 'class': 'block-text' }, [
+        '相关节气：',
+        el('a', { href: termPageUrl(entry.relatedTerm), text: entry.relatedTerm + ' →' })
+      ]));
+    }
+    main.appendChild(el('div', { 'class': 'term-nav' }, [
+      el('a', { href: festUrl(prevName), text: '← ' + prevName }),
+      el('a', { href: festUrl(nextName), text: nextName + ' →' })
+    ]));
+
+    var side = el('aside', { 'class': 'term-side' });
+    var notes = el('details', { 'class': 'notes' }, [
+      el('summary', { text: '批注' }),
+      el('div', { 'class': 'notes-body' }, entry.notes.map(function (n) {
+        return el('p', {}, [el('span', { 'class': 'note-label', text: n.label }), n.text]);
+      }))
+    ]);
+    if (window.matchMedia && window.matchMedia('(min-width: 1100px)').matches) notes.setAttribute('open', '');
+    side.appendChild(notes);
+
+    root.appendChild(el('div', { 'class': 'term-page' }, [main, side]));
+    document.title = name + ' · 知否知否';
+  }
+
+  /* ---------- 节日目录（按下一次到来的先后排列） ---------- */
+  function renderFestivalList(root) {
+    var today = beijingToday();
+    var ups = upcomingFests(today);
+    var page = el('div', { 'class': 'list-page' }, [
+      el('h1', { 'class': 'page-title', text: '传统节日' }),
+      el('p', { 'class': 'page-intro', text: '按下一次到来的先后排列，红点是最近的一个。' })
+    ]);
+    var grid = el('div', { 'class': 'term-grid fest-grid' });
+    ups.forEach(function (u, i) {
+      grid.appendChild(el('a', { 'class': 'term-tile is-open' + (i === 0 ? ' is-now' : ''), href: festUrl(u.name) }, [
+        el('span', { 'class': 'tile-name', text: u.name }),
+        el('span', { 'class': 'tile-meta', text: fmtMD(u.ms) + ' · ' + countText(u.ms, today) })
+      ]));
+    });
+    page.appendChild(grid);
+    root.appendChild(page);
+    document.title = '节日目录 · 知否知否';
+  }
+
   /* ---------- 入口 ---------- */
   function start() {
     var root = document.getElementById('app');
@@ -310,6 +456,9 @@
     } else if (page === 'jieqi') {
       var m = /[?&]id=([^&]+)/.exec(location.search);
       if (m) renderTerm(root, decodeURIComponent(m[1])); else renderList(root);
+    } else if (page === 'jieri') {
+      var m2 = /[?&]id=([^&]+)/.exec(location.search);
+      if (m2) renderFestival(root, decodeURIComponent(m2[1])); else renderFestivalList(root);
     }
   }
   start();
