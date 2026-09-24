@@ -273,7 +273,9 @@
     var loc = locate(today);
     var page = el('div', { 'class': 'list-page' }, [
       el('h1', { 'class': 'page-title', text: '二十四节气' }),
-      el('p', { 'class': 'page-intro', text: '亮着的已经做好，灰色的还在筹备中。' })
+      el('p', { 'class': 'page-intro', text: Object.keys(JQ.entries).length >= JQ.order.length
+        ? '点开任意一个节气，读它的一页。今天所在的节气有红点标记。'
+        : '亮着的已经做好，灰色的还在筹备中。' })
     ]);
     ['春', '夏', '秋', '冬'].forEach(function (s) {
       var grid = el('div', { 'class': 'term-grid' });
