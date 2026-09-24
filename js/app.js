@@ -180,8 +180,7 @@
       right.appendChild(el('div', { 'class': 'ornament', 'aria-hidden': 'true' }));
       if (entry.body[0]) right.appendChild(el('p', { 'class': 'lede', text: entry.body[0] }));
       right.appendChild(el('div', { 'class': 'today-actions' }, [
-        el('a', { 'class': 'btn', href: termPageUrl(name), text: '读完整这一页 →' }),
-        entry.status === '待审' ? el('span', { 'class': 'tag', text: '文案待审' }) : null
+        el('a', { 'class': 'btn', href: termPageUrl(name), text: '读完整这一页 →' })
       ]));
     } else {
       right.appendChild(el('h1', { 'class': 'hook', text: loc ? name + '：这一页还在筹备中' : '今天的页面还没有准备好' }));
@@ -226,7 +225,6 @@
       ]),
       el('div', { 'class': 'seal', 'aria-hidden': 'true', text: entry.season })
     ]));
-    main.appendChild(el('div', {}, [entry.status === '待审' ? el('span', { 'class': 'tag', text: '文案待审' }) : null]));
     main.appendChild(el('h1', { 'class': 'hook', text: entry.hook }));
     main.appendChild(el('p', { 'class': 'answer', text: entry.answer }));
     main.appendChild(el('div', { 'class': 'ornament', 'aria-hidden': 'true' }));

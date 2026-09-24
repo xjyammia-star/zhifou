@@ -35,7 +35,7 @@ window.ZHIFOU_JIEQI = {
   entries: {
     '秋分': {
       id: '节气-秋分',
-      status: '待审',
+      status: '已审',
       season: '秋',
       seasonNo: 4,
       yearNo: 16,
