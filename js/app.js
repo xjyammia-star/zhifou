@@ -13,6 +13,8 @@
   var JR = window.ZHIFOU_JIERI || null;
   var SC = window.ZHIFOU_SHICHEN || null;
   var GZ = window.ZHIFOU_GANZHI || null;
+  var SX = window.ZHIFOU_SHENGXIAO || null;
+  var SXK = window.ZHIFOU_SHENGXIAO_KEPU || null;
   var homeTimerSet = false;
 
   /* 配图：目前只有“秋分”“中秋节”两张水墨意境插画样稿，其余词条（含全部十二时辰）
@@ -20,7 +22,8 @@
   var IMAGE_MAP = {
     term: { folder: '节气', items: { '秋分': { file: '秋分.jpg', caption: '雷始收声，蛰虫坯户', source: '《月令七十二候集解》' } } },
     festival: { folder: '节日', items: { '中秋节': { file: '中秋节.jpg', caption: '但愿人长久，千里共婵娟', source: '苏轼《水调歌头》' } } },
-    shichen: { folder: '时辰', items: {} }
+    shichen: { folder: '时辰', items: {} },
+    shengxiao: { folder: '生肖', items: {} }
   };
   function imageBlock(kind, name) {
     var group = IMAGE_MAP[kind];
@@ -69,6 +72,9 @@
   function shichenPageUrl(name) { return 'shichen.html?id=' + encodeURIComponent(name); }
   function shichenIndex(name) { return SC ? SC.order.indexOf(name) : -1; }
   function shichenEntryOf(name) { return (SC && SC.entries[name]) || null; }
+  function shengxiaoPageUrl(name) { return 'shengxiao.html?id=' + encodeURIComponent(name); }
+  function shengxiaoIndex(name) { return SX ? SX.order.indexOf(name) : -1; }
+  function shengxiaoEntryOf(name) { return (SX && SX.entries[name]) || null; }
 
   /* ---------- 十二时辰、干支：跟“此刻”的钟点、日期直接相关，不走 ?date= 模拟 ---------- */
   function realBeijingNow() {
@@ -93,6 +99,23 @@
        避免过了晚上11点“今日干支”突然跳到明天，反而让人看不懂。 */
     var idx = ((toJDN(y, m, d) + 49) % 60 + 60) % 60;
     return { stem: GZ_STEMS[idx % 10], branch: GZ_BRANCHES[idx % 12], name: GZ_STEMS[idx % 10] + GZ_BRANCHES[idx % 12] };
+  }
+  function currentShengxiaoName(today) {
+    /* 生肖年按民俗口径（农历正月初一/春节）换算，笔记里也提到部分命理排盘按立春换算，
+       这里选民俗口径，日常“今年属什么”最容易对上。
+       做法：找到不晚于 today 的最近一个春节，那年的公历年份决定生肖——
+       公式 (年份-4) mod 12 得到地支序号，正好和 SX.order 的排列顺序（子鼠…亥猪）一致，
+       已用 2026=午马、2020=子鼠 两个已知年份核对过。 */
+    if (!SX || !JR) return null;
+    var ds = festDates('春节');
+    var chosen = null;
+    for (var i = 0; i < ds.length; i++) {
+      if (ds[i] <= today) chosen = ds[i]; else break;
+    }
+    if (chosen === null) return null;
+    var Y = new Date(chosen).getUTCFullYear();
+    var branchIdx = ((Y - 4) % 12 + 12) % 12;
+    return SX.order[branchIdx] || null;
   }
 
   /* ---------- 日期：今天是哪个节气、哪一候 ---------- */
@@ -680,6 +703,155 @@
     document.title = '干支与六十甲子 · 知否知否';
   }
 
+  /* ---------- 十二生肖目录 ---------- */
+  function renderShengxiaoList(root) {
+    var today = beijingToday();
+    var curName = currentShengxiaoName(today);
+    var page = el('div', { 'class': 'list-page' }, [
+      el('h1', { 'class': 'page-title', text: '十二生肖' }),
+      el('p', { 'class': 'page-intro' }, [
+        '生肖和十二时辰共用一套地支，只是不按钟点轮换，而是按出生年份对应；红点是今年（按农历春节换算）的生肖。想看赛跑传说、生肖年怎么算这些完整的科普内容，',
+        el('a', { href: 'shengxiao-kepu.html', text: '读这一篇 →' })
+      ])
+    ]);
+    var grid = el('div', { 'class': 'term-grid' });
+    if (SX) {
+      SX.order.forEach(function (name) {
+        var entry = SX.entries[name];
+        var isNow = name === curName;
+        var cls = 'term-tile is-open' + (isNow ? ' is-now' : '');
+        grid.appendChild(el('a', { 'class': cls, href: shengxiaoPageUrl(name) }, [
+          el('span', { 'class': 'tile-name', text: name }),
+          el('span', { 'class': 'tile-meta', text: entry.time + (isNow ? ' · 今年' : '') })
+        ]));
+      });
+    }
+    page.appendChild(grid);
+    root.appendChild(page);
+    document.title = '十二生肖 · 知否知否';
+  }
+
+  /* ---------- 生肖页（模板） ---------- */
+  function renderShengxiao(root, name) {
+    var entry = shengxiaoEntryOf(name);
+    if (!SX || !entry) {
+      root.appendChild(el('div', { 'class': 'list-page' }, [
+        el('h1', { 'class': 'page-title', text: '没有找到这一页' }),
+        el('a', { 'class': 'btn', href: 'shengxiao.html', text: '← 回到十二生肖' })
+      ]));
+      document.title = '十二生肖 · 知否知否';
+      return;
+    }
+    var idx = shengxiaoIndex(name);
+    var n = SX.order.length;
+    var prevName = SX.order[(idx + n - 1) % n];
+    var nextName = SX.order[(idx + 1) % n];
+    var today = beijingToday();
+    var isNow = currentShengxiaoName(today) === name;
+
+    var main = el('div', { 'class': 'term-main' });
+    main.appendChild(el('div', { 'class': 'crumb' }, [
+      el('span', { 'class': 'crumb-text' }, [
+        el('a', { href: 'shengxiao.html', text: '十二生肖' }),
+        ' · 第' + entry.no + '个（共' + n + '个） · ' + entry.time + (isNow ? ' · 今年生肖' : '')
+      ]),
+      el('div', { 'class': 'seal', 'aria-hidden': 'true', text: '肖' })
+    ]));
+    main.appendChild(el('h1', { 'class': 'hook', text: entry.hook }));
+    main.appendChild(el('p', { 'class': 'answer', text: entry.answer }));
+    main.appendChild(el('div', { 'class': 'ornament', 'aria-hidden': 'true' }));
+    entry.body.forEach(function (p) { main.appendChild(el('p', { 'class': 'block-text', text: p })); });
+    if (entry.story && entry.story.length) {
+      main.appendChild(el('div', { 'class': 'section-title', text: '典故' }));
+      entry.story.forEach(function (p) { main.appendChild(el('p', { 'class': 'block-text', text: p })); });
+    }
+    if (entry.customs) {
+      main.appendChild(el('div', { 'class': 'section-title', text: '习俗' }));
+      main.appendChild(el('p', { 'class': 'block-text', text: entry.customs }));
+    }
+    if (entry.tip) {
+      main.appendChild(el('div', { 'class': 'tip-box' }, [
+        el('div', { 'class': 'tip-label', text: '小提示' }),
+        el('p', { text: entry.tip })
+      ]));
+    }
+    if (SXK) {
+      main.appendChild(el('p', { 'class': 'block-text' }, [
+        '延伸阅读：',
+        el('a', { href: 'shengxiao-kepu.html', text: '生肖科普 →' })
+      ]));
+    }
+    main.appendChild(el('div', { 'class': 'term-nav' }, [
+      el('a', { href: shengxiaoPageUrl(prevName), text: '← ' + prevName }),
+      el('a', { href: shengxiaoPageUrl(nextName), text: nextName + ' →' })
+    ]));
+
+    var side = el('aside', { 'class': 'term-side' });
+    var img = imageBlock('shengxiao', name);
+    if (img) side.appendChild(img);
+    var notes = el('details', { 'class': 'notes' }, [
+      el('summary', { text: '批注' }),
+      el('div', { 'class': 'notes-body' }, entry.notes.map(function (n) {
+        return el('p', {}, [el('span', { 'class': 'note-label', text: n.label }), n.text]);
+      }))
+    ]);
+    if (window.matchMedia && window.matchMedia('(min-width: 1100px)').matches) notes.setAttribute('open', '');
+    side.appendChild(notes);
+
+    root.appendChild(el('div', { 'class': 'term-page' }, [main, side]));
+    document.title = name + ' · 知否知否';
+  }
+
+  /* ---------- 生肖科普页（单篇长文，不是按时间轮换的词条） ---------- */
+  function renderShengxiaoKepu(root) {
+    if (!SXK) {
+      root.appendChild(el('div', { 'class': 'list-page' }, [
+        el('h1', { 'class': 'page-title', text: '这一页还在筹备中' }),
+        el('a', { 'class': 'btn', href: 'shengxiao.html', text: '← 回到十二生肖' })
+      ]));
+      document.title = '生肖科普 · 知否知否';
+      return;
+    }
+    var today = beijingToday();
+    var curName = currentShengxiaoName(today);
+
+    var main = el('div', { 'class': 'term-main' });
+    main.appendChild(el('div', { 'class': 'crumb' }, [
+      el('span', { 'class': 'crumb-text' }, [
+        el('a', { href: 'shengxiao.html', text: '十二生肖' }),
+        ' · 生肖科普' + (curName ? ' · 今年生肖 ' + curName : '')
+      ]),
+      el('div', { 'class': 'seal', 'aria-hidden': 'true', text: '肖' })
+    ]));
+    main.appendChild(el('h1', { 'class': 'hook', text: SXK.hook }));
+    main.appendChild(el('p', { 'class': 'answer', text: SXK.answer }));
+    main.appendChild(el('div', { 'class': 'ornament', 'aria-hidden': 'true' }));
+    SXK.sections.forEach(function (sec) {
+      main.appendChild(el('div', { 'class': 'section-title', text: sec.title }));
+      sec.body.forEach(function (p) { main.appendChild(el('p', { 'class': 'block-text', text: p })); });
+    });
+    if (SXK.tip) {
+      main.appendChild(el('div', { 'class': 'tip-box' }, [
+        el('div', { 'class': 'tip-label', text: '小提示' }),
+        el('p', { text: SXK.tip })
+      ]));
+    }
+    main.appendChild(el('a', { 'class': 'btn', href: 'shengxiao.html', text: '← 回到十二生肖' }));
+
+    var side = el('aside', { 'class': 'term-side' });
+    var notes = el('details', { 'class': 'notes' }, [
+      el('summary', { text: '批注' }),
+      el('div', { 'class': 'notes-body' }, SXK.notes.map(function (n) {
+        return el('p', {}, [el('span', { 'class': 'note-label', text: n.label }), n.text]);
+      }))
+    ]);
+    if (window.matchMedia && window.matchMedia('(min-width: 1100px)').matches) notes.setAttribute('open', '');
+    side.appendChild(notes);
+
+    root.appendChild(el('div', { 'class': 'term-page' }, [main, side]));
+    document.title = '生肖科普 · 知否知否';
+  }
+
   /* ---------- 入口 ---------- */
   function start() {
     var root = document.getElementById('app');
@@ -699,6 +871,11 @@
       if (m3) renderShichen(root, decodeURIComponent(m3[1])); else renderShichenList(root);
     } else if (page === 'ganzhi') {
       renderGanzhi(root);
+    } else if (page === 'shengxiao') {
+      var m4 = /[?&]id=([^&]+)/.exec(location.search);
+      if (m4) renderShengxiao(root, decodeURIComponent(m4[1])); else renderShengxiaoList(root);
+    } else if (page === 'shengxiao-kepu') {
+      renderShengxiaoKepu(root);
     }
   }
   start();
