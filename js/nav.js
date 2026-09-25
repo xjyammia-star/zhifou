@@ -1,6 +1,6 @@
 /* 知否知否 · 统一导航
    ----------------------------------------------------------
-   页头右侧的一级导航（今日一页 / 时 / 神），
+   页头右侧的一级导航（今日一页 / 时 / 神 / 物），
    以及页头下面的二级导航（当前板块里的全部内容）都由这个文件生成。
    以后新增板块或新增页面，只需要改下面的 SECTIONS 和 PAGE_MAP。
    页面靠 <body data-page="…"> 告诉本文件"我是哪一页"。 */
@@ -32,6 +32,13 @@
         { page: 'daojiao', label: '道教神谱', href: 'daojiao.html' },
         { page: 'fojiao', label: '佛教体系', href: 'fojiao.html' },
         { page: 'shanhai', label: '山海经异兽', href: 'shanhai.html' }
+      ]
+    },
+    {
+      key: 'wu', label: '物', home: 'wu.html',
+      items: [
+        { page: 'wu', label: '书斋入口', href: 'wu.html' },
+        { page: 'wenfang', label: '文房四宝', href: 'wenfang.html' }
       ]
     }
   ];

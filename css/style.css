@@ -269,8 +269,11 @@ h1, h2, h3 { margin: 0; font-weight: 400; }
   .term-grid.fest-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
 }
 @media (max-width: 639px) {
-  .site-nav { gap: 16px; }
-  .site-nav a { letter-spacing: 0.1em; }
+  .site-nav { gap: 12px; }
+  .site-nav a { letter-spacing: 0.06em; white-space: nowrap; }
+  .site-nav a.is-section { letter-spacing: 0.1em; }
+  .brand { gap: 8px; }
+  .brand-name { font-size: 24px; white-space: nowrap; }
   .home { padding-top: 16px; gap: 20px; }
   .home-right { gap: 18px; }
   .dial { aspect-ratio: auto; max-width: none; container-type: normal; }
