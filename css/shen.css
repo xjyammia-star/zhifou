@@ -386,38 +386,49 @@ a.sl-syslink:hover { background: rgba(201, 169, 97, 0.16); color: var(--gold-sof
 }
 
 /* ==========================================================
-   道教神谱（层级金字塔）：.dj-*
+   道教神谱（三角形塔 + 右侧面板）：.dj-*
    详情弹窗沿用 .sl-* 的样式
    ========================================================== */
-.dj-pyramid { display: flex; flex-direction: column; gap: 22px; }
-.dj-stack { display: flex; flex-direction: column; align-items: center; gap: 10px; }
-.dj-tier {
-  --w: 100%;
-  width: var(--w); min-width: min(100%, 720px); display: flex; flex-direction: column; gap: 12px; padding: 16px 20px 14px;
-  background: var(--night-2); border: 1px solid var(--gold-dim); border-top: 2px solid var(--gold);
-  border-radius: 2px;
+.dj-explore { display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 6fr); gap: 32px; align-items: start; }
+.dj-tower-wrap { display: flex; flex-direction: column; align-items: center; gap: 8px; }
+.dj-tower { width: 100%; max-width: 520px; height: auto; display: block; }
+.dj-tower-hint { font-size: 13px; letter-spacing: 0.15em; color: var(--star-muted); }
+.dj-layer { cursor: pointer; outline: none; }
+.dj-layer-bg { fill: rgba(201, 169, 97, 0.10); stroke: var(--gold-dim); stroke-width: 1.2; transition: fill 0.2s, stroke 0.2s; }
+.dj-layer:hover .dj-layer-bg { fill: rgba(201, 169, 97, 0.22); stroke: var(--gold); }
+.dj-layer:focus-visible .dj-layer-bg { stroke: var(--gold-soft); stroke-width: 2.4; }
+.dj-layer.is-on .dj-layer-bg { fill: var(--gold); stroke: var(--gold-soft); }
+.dj-layer.is-side .dj-layer-bg { stroke-dasharray: 5 4; fill: transparent; }
+.dj-layer.is-side.is-on .dj-layer-bg { fill: var(--gold); }
+.dj-layer-name { font-family: var(--display); font-size: 25px; text-anchor: middle; fill: var(--gold-soft); pointer-events: none; }
+.dj-layer-count { font-size: 13px; letter-spacing: 0.1em; text-anchor: middle; fill: var(--star-muted); pointer-events: none; }
+.dj-layer.is-on .dj-layer-name, .dj-layer.is-on .dj-layer-count { fill: var(--night); }
+.dj-layer.is-side .dj-layer-name { font-size: 19px; }
+
+.dj-panel {
+  display: flex; flex-direction: column; gap: 14px; padding: 22px 24px;
+  background: var(--night-2); border: 1px solid var(--gold-dim); border-top: 2px solid var(--gold); border-radius: 2px;
 }
-.dj-tier-head { display: flex; align-items: baseline; flex-wrap: wrap; gap: 4px 12px; }
+.dj-panel-head { display: flex; align-items: center; gap: 12px; }
 .dj-tier-no {
-  flex: none; display: inline-flex; align-items: center; justify-content: center; width: 24px; height: 24px;
-  font-size: 13px; color: var(--night); background: var(--gold); border-radius: 50%; align-self: center;
+  flex: none; display: inline-flex; align-items: center; justify-content: center; width: 26px; height: 26px;
+  font-size: 14px; color: var(--night); background: var(--gold); border-radius: 50%;
 }
-.dj-tier-name { font-family: var(--display); font-size: 26px; line-height: 1.2; color: var(--gold-soft); }
-.dj-tier-line { flex: 1 1 220px; font-size: 14px; line-height: 1.7; color: var(--star-text); }
-.dj-gods { display: flex; flex-wrap: wrap; gap: 10px; }
+.dj-tier-name { font-family: var(--display); font-size: 32px; line-height: 1.2; color: var(--gold-soft); }
+.dj-tier-line { font-size: 15px; line-height: 1.8; color: var(--star-text); }
+.dj-gods { display: grid; grid-template-columns: repeat(auto-fill, minmax(190px, 1fr)); gap: 10px; }
 .dj-god {
-  display: flex; flex-direction: column; align-items: flex-start; gap: 3px; min-width: 132px; max-width: min(100%, 210px);
-  padding: 8px 12px; text-align: left; cursor: pointer; font: inherit; color: var(--star-text);
+  display: flex; flex-direction: column; align-items: flex-start; gap: 3px; min-width: 0;
+  padding: 10px 12px; text-align: left; cursor: pointer; font: inherit; color: var(--star-text);
   background: var(--night); border: 1px solid var(--gold-dim); border-radius: 2px;
   transition: border-color 0.2s, background 0.2s, transform 0.2s;
 }
 .dj-god:hover { border-color: var(--gold); background: var(--night-3); transform: translateY(-2px); }
-.dj-god-name { font-family: var(--display); font-size: 21px; line-height: 1.25; color: var(--gold-soft); }
-.dj-god-id { font-size: 12px; line-height: 1.5; color: var(--star-muted); }
-.dj-tier-note { font-size: 13px; line-height: 1.75; color: var(--star-muted); padding-top: 8px; border-top: 1px dashed rgba(122, 106, 63, 0.6); }
-.dj-tier.is-side { width: 100%; border-style: dashed; border-top-style: dashed; border-top-color: var(--gold-dim); background: transparent; }
-.dj-tier.is-side .dj-tier-no { background: transparent; color: var(--gold); border: 1px solid var(--gold-dim); }
-@media (max-width: 720px) {
-  .dj-tier { width: 100%; padding: 14px 14px 12px; }
-  .dj-god { min-width: calc(50% - 5px); flex: 1 1 calc(50% - 5px); }
+.dj-god-name { font-family: var(--display); font-size: 22px; line-height: 1.25; color: var(--gold-soft); }
+.dj-god-id { font-size: 12px; line-height: 1.55; color: var(--star-muted); }
+.dj-tier-note { font-size: 13px; line-height: 1.8; color: var(--star-muted); padding-top: 10px; border-top: 1px dashed rgba(122, 106, 63, 0.6); }
+@media (max-width: 860px) {
+  .dj-explore { grid-template-columns: minmax(0, 1fr); gap: 20px; }
+  .dj-tower { max-width: 420px; }
+  .dj-panel { padding: 18px 16px; }
 }

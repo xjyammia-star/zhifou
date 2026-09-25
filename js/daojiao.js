@@ -34,7 +34,18 @@
 
   var dialog, dialogBody, lastFocus = null;
 
-  /* ---------- 金字塔 ---------- */
+  /* ---------- 金字塔（左）+ 神灵面板（右） ---------- */
+  var NS = 'http://www.w3.org/2000/svg';
+  function svg(tag, attrs, text) {
+    var n = document.createElementNS(NS, tag);
+    Object.keys(attrs || {}).forEach(function (k) { n.setAttribute(k, attrs[k]); });
+    if (text != null) n.textContent = text;
+    return n;
+  }
+
+  var tierByName = {}, tierEls = {}, panel, current = null;
+  D.tiers.forEach(function (t) { tierByName[t.name] = t; });
+
   function buildGod(c) {
     var btn = el('button', { type: 'button', 'class': 'dj-god', 'data-name': c.name, 'aria-haspopup': 'dialog', title: c.line });
     btn.appendChild(el('span', { 'class': 'dj-god-name', text: c.name }));
@@ -43,29 +54,79 @@
     return btn;
   }
 
-  function buildTier(t, i, total) {
-    var list = D.cards.filter(function (c) { return c.tier === t.name; });
-    var sec = el('section', { 'class': 'dj-tier' + (t.side ? ' is-side' : ''), 'aria-label': t.name });
-    if (!t.side) sec.style.setProperty('--w', String(72 + Math.round(i * 28 / Math.max(total - 1, 1))) + '%');
-    sec.appendChild(el('div', { 'class': 'dj-tier-head' }, [
-      el('span', { 'class': 'dj-tier-no', 'aria-hidden': 'true', text: t.side ? '另' : String(i + 1) }),
-      el('h2', { 'class': 'dj-tier-name', text: t.name }),
-      el('p', { 'class': 'dj-tier-line', text: t.line })
-    ]));
-    sec.appendChild(el('div', { 'class': 'dj-gods' }, list.map(buildGod)));
-    sec.appendChild(el('p', { 'class': 'dj-tier-note', text: t.note }));
-    return sec;
-  }
-
-  function buildPyramid() {
-    var wrap = el('div', { 'class': 'dj-pyramid' });
+  /* 三角形塔：顶点在上，按高度切成几层，每层是一个梯形，正好拼成完整的三角形 */
+  function buildTower() {
     var main = D.tiers.filter(function (t) { return !t.side; });
     var side = D.tiers.filter(function (t) { return t.side; });
-    var stack = el('div', { 'class': 'dj-stack' });
-    main.forEach(function (t, i) { stack.appendChild(buildTier(t, i, main.length)); });
-    wrap.appendChild(stack);
-    side.forEach(function (t) { wrap.appendChild(buildTier(t, 0, 1)); });
-    return wrap;
+    var VW = 520, apexY = 14, baseY = 470, cx = VW / 2, halfBase = 250, gap = 5;
+    var n = main.length, h = (baseY - apexY) / n;
+    var s = svg('svg', { 'class': 'dj-tower', viewBox: '0 0 ' + VW + ' ' + (side.length ? 540 : 490), role: 'group', 'aria-label': '道教神谱金字塔，点击某一层查看这一层的神灵' });
+
+    /* 塔尖是完整的尖角（top0 = 0）；最上面一层做高一些，"三清"两个字放在它靠下的位置才装得下；
+       各层高度按权重分配 */
+    var top0 = 0, weights = main.map(function (t, i) { return i === 0 ? 1.9 : 1; });
+    var wsum = weights.reduce(function (p, q) { return p + q; }, 0), edges = [apexY];
+    weights.forEach(function (w) { edges.push(edges[edges.length - 1] + w / wsum * (baseY - apexY)); });
+    function halfAt(y) { return top0 + (y - apexY) / (baseY - apexY) * (halfBase - top0); }
+
+    main.forEach(function (t, i) {
+      var y0 = edges[i] + (i ? gap / 2 : 0), y1 = edges[i + 1] - (i < n - 1 ? gap / 2 : 0);
+      var a = halfAt(y0), b = halfAt(y1);
+      var pts = [cx - a, y0, cx + a, y0, cx + b, y1, cx - b, y1].join(' ');
+      var count = D.cards.filter(function (c) { return c.tier === t.name; }).length;
+      var g = svg('g', { 'class': 'dj-layer', role: 'button', tabindex: '0', 'data-tier': t.name, 'aria-label': t.name + '，共 ' + count + ' 位，点击查看' });
+      g.appendChild(svg('polygon', { points: pts, 'class': 'dj-layer-bg' }));
+      var ty = i === 0 ? y1 - 34 : (y0 + y1) / 2;
+      g.appendChild(svg('text', { x: cx, y: ty - 2, 'class': 'dj-layer-name' }, t.name));
+      g.appendChild(svg('text', { x: cx, y: ty + 20, 'class': 'dj-layer-count' }, count + ' 位'));
+      g.addEventListener('click', function () { selectTier(t.name); });
+      g.addEventListener('keydown', function (e) { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); selectTier(t.name); } });
+      s.appendChild(g);
+      tierEls[t.name] = g;
+    });
+
+    side.forEach(function (t) {
+      var count = D.cards.filter(function (c) { return c.tier === t.name; }).length;
+      var y = baseY + 16;
+      var g = svg('g', { 'class': 'dj-layer is-side', role: 'button', tabindex: '0', 'data-tier': t.name, 'aria-label': t.name + '，共 ' + count + ' 位，点击查看' });
+      g.appendChild(svg('rect', { x: cx - halfBase, y: y, width: halfBase * 2, height: 52, rx: 3, 'class': 'dj-layer-bg' }));
+      g.appendChild(svg('text', { x: cx, y: y + 22, 'class': 'dj-layer-name' }, t.name + '（金字塔之外）'));
+      g.appendChild(svg('text', { x: cx, y: y + 41, 'class': 'dj-layer-count' }, count + ' 位'));
+      g.addEventListener('click', function () { selectTier(t.name); });
+      g.addEventListener('keydown', function (e) { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); selectTier(t.name); } });
+      s.appendChild(g);
+      tierEls[t.name] = g;
+    });
+    return s;
+  }
+
+  function selectTier(name) {
+    var t = tierByName[name];
+    if (!t) return;
+    current = name;
+    Object.keys(tierEls).forEach(function (k) {
+      var on = k === name;
+      tierEls[k].classList.toggle('is-on', on);
+      tierEls[k].setAttribute('aria-pressed', on ? 'true' : 'false');
+    });
+    var idx = D.tiers.filter(function (x) { return !x.side; }).indexOf(t);
+    var list = D.cards.filter(function (c) { return c.tier === name; });
+    panel.textContent = '';
+    panel.appendChild(el('div', { 'class': 'dj-panel-head' }, [
+      el('span', { 'class': 'dj-tier-no', 'aria-hidden': 'true', text: t.side ? '另' : String(idx + 1) }),
+      el('h2', { 'class': 'dj-tier-name', text: t.name })
+    ]));
+    panel.appendChild(el('p', { 'class': 'dj-tier-line', text: t.line }));
+    panel.appendChild(el('div', { 'class': 'dj-gods' }, list.map(buildGod)));
+    panel.appendChild(el('p', { 'class': 'dj-tier-note', text: t.note }));
+  }
+
+  function buildExplorer() {
+    panel = el('div', { 'class': 'dj-panel', 'aria-live': 'polite' });
+    return el('div', { 'class': 'dj-explore' }, [
+      el('div', { 'class': 'dj-tower-wrap' }, [buildTower(), el('p', { 'class': 'dj-tower-hint', text: '点一层，看这一层的神灵' })]),
+      panel
+    ]);
   }
 
   /* ---------- 详情弹窗 ---------- */
@@ -170,7 +231,7 @@
       el('p', { 'class': 'sl-origin-note', text: D.tierNote })
     ]));
 
-    page.appendChild(el('section', { 'class': 'xx-section', 'aria-label': '道教神谱金字塔' }, [buildPyramid()]));
+    page.appendChild(el('section', { 'class': 'xx-section', 'aria-label': '道教神谱金字塔' }, [buildExplorer()]));
 
     page.appendChild(el('div', { 'class': 'tip-box' }, [el('div', { 'class': 'tip-label', text: '小提示' }), el('p', { text: D.tip })]));
 
@@ -197,11 +258,12 @@
 
     root.textContent = '';
     root.appendChild(page);
+    selectTier(D.tiers[0].name);
 
     /* 网址里带 ?id=玉皇大帝 时，直接打开这位神灵（其他页面的链接可以直接指过来） */
     try {
       var id = new URL(window.location.href).searchParams.get('id');
-      if (id && cardByName[id]) openDetail(id, false);
+      if (id && cardByName[id]) { selectTier(cardByName[id].tier); openDetail(id, false); }
     } catch (e) { /* 忽略 */ }
   }
 
