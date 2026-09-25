@@ -463,3 +463,18 @@ body.theme-wu {
   .mj-closing { padding: 18px 18px; font-size: 21px; }
   .mj-small, .gd-node.mj-small { font-size: 18px; }
 }
+
+/* ---------- 园林页 ---------- */
+.gd-cards-4 { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+.yl-pills { margin: 6px 0 8px; }
+.mj-home-art.yl-art svg { max-height: 150px; }
+.yl-eg { margin-top: auto; display: flex; flex-wrap: wrap; align-items: center; gap: 8px; }
+.yl-garden[hidden] { display: none; }
+.yl-islands { max-width: 620px; }
+
+@media (max-width: 999px) {
+  .gd-cards-4 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+@media (max-width: 639px) {
+  .gd-cards-4 { grid-template-columns: minmax(0, 1fr); }
+}

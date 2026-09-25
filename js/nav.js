@@ -43,7 +43,8 @@
         { page: 'mugoujia', label: '木构架与榫卯', href: 'mugoujia.html' },
         { page: 'wuding', label: '屋顶与脊兽', href: 'wuding.html' },
         { page: 'minju', label: '院落与民居', href: 'minju.html' },
-        { page: 'gongdian', label: '宫殿坛庙与城市', href: 'gongdian.html' }
+        { page: 'gongdian', label: '宫殿坛庙与城市', href: 'gongdian.html' },
+        { page: 'yuanlin', label: '园林', href: 'yuanlin.html' }
       ]
     }
   ];
