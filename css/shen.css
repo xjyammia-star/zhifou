@@ -81,16 +81,16 @@ body.theme-shen {
 
 .xx-panel-slot { min-width: 0; }
 .xx-panel { display: flex; flex-direction: column; border: 1px solid var(--gold-dim); background: var(--night-2); min-width: 0; overflow: hidden; container-type: inline-size; }
-/* 图片位在文字下面，占用剩下的所有空间；文字很多时最矮也保持 2:1 */
-.xx-image { flex: 1 1 0; min-height: 160px; min-height: 50cqw; position: relative; overflow: hidden; background: var(--night-3); border-top: 1px solid var(--gold-dim); }
+/* 图片位在文字下面，占用剩下的所有空间；文字很多时最矮也保持 5:2 */
+.xx-image { flex: 1 1 0; min-height: 130px; min-height: 40cqw; position: relative; overflow: hidden; background: var(--night-3); border-top: 1px solid var(--gold-dim); }
 .xx-image img { position: absolute; inset: 0; display: block; width: 100%; height: 100%; object-fit: cover; }
 .xx-image.is-empty { display: flex; align-items: center; justify-content: center; background: rgba(201, 169, 97, 0.05); border-top-style: dashed; }
 .xx-image-note { font-size: 13px; letter-spacing: 0.25em; color: var(--gold-dim); }
-.xx-panel-body { flex: 0 1 auto; min-height: 0; display: flex; flex-direction: column; gap: 12px; padding: 18px 22px 16px; overflow-y: auto; scrollbar-width: thin; scrollbar-color: var(--gold-dim) transparent; }
+.xx-panel-body { flex: 0 1 auto; min-height: 0; display: flex; flex-direction: column; gap: 10px; padding: 16px 22px 14px; overflow-y: auto; scrollbar-width: thin; scrollbar-color: var(--gold-dim) transparent; }
 .xx-panel-body.has-more { -webkit-mask-image: linear-gradient(to bottom, #000 calc(100% - 32px), transparent); mask-image: linear-gradient(to bottom, #000 calc(100% - 32px), transparent); }
 .xx-panel-kicker { font-size: 13px; letter-spacing: 0.25em; color: var(--star-muted); }
-.xx-panel-title { font-family: var(--display); font-size: 40px; line-height: 1.2; color: var(--gold-soft); }
-.xx-fields { display: flex; flex-direction: column; gap: 12px; margin: 0; }
+.xx-panel-title { font-family: var(--display); font-size: 36px; line-height: 1.2; color: var(--gold-soft); }
+.xx-fields { display: flex; flex-direction: column; gap: 10px; margin: 0; }
 .xx-field dt { font-size: 12px; letter-spacing: 0.3em; color: var(--gold-dim); }
 .xx-field dd { margin: 2px 0 0; font-size: 15px; line-height: 1.85; color: var(--star-text); }
 .xx-field.is-ext dd { padding: 10px 14px; border-left: 2px solid var(--gold); background: rgba(201, 169, 97, 0.07); }
@@ -149,6 +149,17 @@ body.theme-shen {
   /* 详情框：高度由左边圆图决定（自身内容不撑高），内容多时文字区内部滚动 */
   .xx-panel-slot { grid-column: 2; grid-row: 1; position: relative; align-self: stretch; }
   .xx-panel { position: absolute; inset: 0; }
+}
+/* 笔记本等较窄的宽屏：星图变小，详情框也变矮，文字和图片位收紧一点，保证文字不用滚动 */
+@media (min-width: 960px) and (max-width: 1399px) {
+  .xx-image { min-height: 110px; min-height: 32cqw; }
+  .xx-panel-body { padding: 14px 18px 12px; gap: 8px; }
+  .xx-panel-title { font-size: 32px; }
+  .xx-fields { gap: 8px; }
+  .xx-field dd { font-size: 14px; line-height: 1.75; }
+  .xx-field.is-ext dd { padding: 8px 12px; }
+  .xx-panel-text { font-size: 14px; line-height: 1.8; }
+  .xx-stepper { padding: 8px 18px 10px; }
 }
 @media (max-width: 899px) {
   .theme-shen .brand-tagline { display: none; }
