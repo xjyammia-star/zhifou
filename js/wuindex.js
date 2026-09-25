@@ -55,23 +55,38 @@
     var art = el('div', { 'class': 'wx-door-art', 'aria-hidden': 'true' });
     art.innerHTML = c.name === '文房四宝' ? artStudy() : artHouse();
 
-    var top = el('div', { 'class': 'wx-door-top' }, [
-      el('span', { 'class': 'wx-door-name', text: c.name }),
-      c.open
-        ? (c.size ? el('span', { 'class': 'wx-door-size', text: c.size }) : null)
-        : el('span', { 'class': 'wx-soon', text: '制作中' })
-    ]);
-    var pills = el('div', { 'class': 'wx-pills' }, c.tags.map(function (t) { return el('span', { 'class': 'wx-pill', text: t }); }));
-    var body = el('div', { 'class': 'wx-door-body' }, [
-      top,
-      el('p', { 'class': 'wx-door-line', text: c.line }),
-      pills,
-      c.open ? el('span', { 'class': 'wx-door-go', 'aria-hidden': 'true', text: '进入 →' }) : null
-    ]);
+    var hasPages = c.pages && c.pages.length;
+    var badge = null;
+    if (!c.open) badge = el('span', { 'class': 'wx-soon', text: '制作中' });
+    else if (c.partial) badge = el('span', { 'class': 'wx-soon', text: '陆续开放' });
+    else if (c.size) badge = el('span', { 'class': 'wx-door-size', text: c.size });
 
+    var pills;
+    if (hasPages) {
+      pills = el('div', { 'class': 'wx-pills' }, c.pages.map(function (p) {
+        return p.href
+          ? el('a', { 'class': 'wx-pill is-link', href: p.href, text: p.name })
+          : el('span', { 'class': 'wx-pill is-closed', text: p.name });
+      }));
+    } else {
+      pills = el('div', { 'class': 'wx-pills' }, c.tags.map(function (t) { return el('span', { 'class': 'wx-pill', text: t }); }));
+    }
+
+    var bodyKids = [
+      el('div', { 'class': 'wx-door-top' }, [el('span', { 'class': 'wx-door-name', text: c.name }), badge]),
+      el('p', { 'class': 'wx-door-line', text: c.line })
+    ];
+    if (hasPages && c.size) bodyKids.push(el('span', { 'class': 'wx-door-size', text: c.size }));
+    bodyKids.push(pills);
+
+    if (hasPages) {
+      if (c.open && c.href) bodyKids.push(el('a', { 'class': 'wx-door-go', href: c.href, text: '进入 →' }));
+      return el('div', { 'class': 'wx-door wx-paper has-pages' }, [art, el('div', { 'class': 'wx-door-body' }, bodyKids)]);
+    }
+    var body = el('div', { 'class': 'wx-door-body' }, bodyKids);
     if (c.open) {
-      var a = el('a', { 'class': 'wx-door wx-paper is-open', href: c.href, 'aria-label': c.name + '：' + c.line }, [art, body]);
-      return a;
+      body.appendChild(el('span', { 'class': 'wx-door-go', 'aria-hidden': 'true', text: '进入 →' }));
+      return el('a', { 'class': 'wx-door wx-paper is-open', href: c.href, 'aria-label': c.name + '：' + c.line }, [art, body]);
     }
     return el('div', { 'class': 'wx-door wx-paper is-closed', 'aria-disabled': 'true' }, [art, body]);
   }
