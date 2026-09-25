@@ -214,7 +214,7 @@
       right.appendChild(el('div', { 'class': 'ornament', 'aria-hidden': 'true' }));
       if (entry.body[0]) right.appendChild(el('p', { 'class': 'lede', text: entry.body[0] }));
       right.appendChild(el('div', { 'class': 'today-actions' }, [
-        el('a', { 'class': 'btn', href: termPageUrl(name), text: '读完整这一页 →' })
+        el('a', { 'class': 'btn', href: termPageUrl(name), text: '展卷细读 →' })
       ]));
     } else {
       right.appendChild(el('h1', { 'class': 'hook', text: loc ? name + '：这一页还在筹备中' : '今天的页面还没有准备好' }));
@@ -247,7 +247,7 @@
       root.appendChild(el('div', { 'class': 'list-page' }, [
         el('h1', { 'class': 'page-title', text: name && idx >= 0 ? name + '：这一页还在筹备中' : '没有找到这一页' }),
         el('p', { 'class': 'page-intro', text: '网站按资料逐份制作，做好一份，才会出现一份。' }),
-        el('a', { 'class': 'btn', href: 'jieqi.html', text: '← 回到节气目录' })
+        el('a', { 'class': 'btn', href: 'jieqi.html', text: '← 回到廿四节气' })
       ]));
       document.title = '节气 · 知否知否';
       return;
@@ -340,7 +340,7 @@
       ]));
     });
     root.appendChild(page);
-    document.title = '节气目录 · 知否知否';
+    document.title = '廿四节气 · 知否知否';
   }
 
   /* ---------- 节日页（模板） ---------- */
@@ -349,7 +349,7 @@
     if (!entry) {
       root.appendChild(el('div', { 'class': 'list-page' }, [
         el('h1', { 'class': 'page-title', text: '没有找到这一页' }),
-        el('a', { 'class': 'btn', href: 'jieri.html', text: '← 回到节日目录' })
+        el('a', { 'class': 'btn', href: 'jieri.html', text: '← 回到传统节日' })
       ]));
       document.title = '节日 · 知否知否';
       return;
@@ -442,7 +442,7 @@
     });
     page.appendChild(grid);
     root.appendChild(page);
-    document.title = '节日目录 · 知否知否';
+    document.title = '传统节日 · 知否知否';
   }
 
   /* ---------- 入口 ---------- */
