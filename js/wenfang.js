@@ -37,7 +37,7 @@
      label 是名字的位置；bao 表示四宝，会多一个朱红小点（seal 是它的位置）。 */
   var SCENE = [
     { name: '纸', hit: [372, 68, 346, 486], label: [545, 524], bao: true, seal: [571, 524],
-      svg: '<g transform="translate(545 285) rotate(-1.5)">' +
+      svg: '<g transform="translate(545 285)">' +
         '<rect x="-165" y="-210" width="330" height="420" fill="#f4ebd6" stroke="#d3c3a0" stroke-width="2"/>' +
         '<path d="M-70 -150 v34 M-70 -100 v22 M-70 -64 v40 M-70 -8 v28 M0 -160 v26 M0 -118 v40 M0 -62 v18 M0 -28 v36 M70 -150 v40 M70 -96 v20 M70 -60 v34" stroke="rgba(43,33,24,0.68)" stroke-width="7" stroke-linecap="round" fill="none"/>' +
         '<rect x="78" y="120" width="26" height="26" fill="#b23a2e" opacity="0.85"/></g>' },
