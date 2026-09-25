@@ -16,6 +16,9 @@
   /* 其他页面的地址（"另见"链接用） */
   var PAGE_LINKS = { '山海经': 'shanhai.html', '民间神灵': 'shenling.html' };
 
+  /* 古籍书架里有的书。人物的"主要出处"里提到这些书，详情里就给一个跳到书架的小链接 */
+  var GUJI_BOOKS = ['山海经', '楚辞', '淮南子', '列子', '诗经', '尚书', '左传', '国语', '逸周书', '史记', '论衡', '博物志', '搜神记', '神异经', '穆天子传', '列仙传'];
+
   var GROUP_COLOR = {
     '创世与文明': '#c9a961', '部族与战争': '#d9826b', '帝王谱系': '#7fb8a4',
     '治水与夏': '#7f92b8', '周商祖先': '#d8d4c8', '天象与英雄': '#b79ad8'
@@ -290,6 +293,13 @@
     dl2.appendChild(field('主要出处', p.source));
     if (p.allusion) dl2.appendChild(field('典故', p.allusion, 'is-custom'));
     inner.appendChild(dl2);
+
+    var books = GUJI_BOOKS.filter(function (b) { return (p.source || '').indexOf('《' + b) >= 0; });
+    if (books.length) {
+      var brow = el('div', { 'class': 'sl-origin' }, [el('span', { 'class': 'sl-origin-label', text: '翻到书架' })]);
+      books.forEach(function (b) { brow.appendChild(el('a', { 'class': 'sl-syslink', href: 'guji.html?id=' + encodeURIComponent(b), text: '《' + b + '》 →' })); });
+      inner.appendChild(brow);
+    }
 
     if (p.note) {
       inner.appendChild(el('div', { 'class': 'tip-box sl-note' }, [el('div', { 'class': 'tip-label', text: '辨析' }), el('p', { text: p.note })]));

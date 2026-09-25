@@ -342,3 +342,45 @@ a.sl-syslink:hover { background: rgba(201, 169, 97, 0.16); color: var(--gold-sof
 @media (prefers-reduced-motion: reduce) {
   .sh-edge, .sh-node { transition: none; }
 }
+
+/* ---------- 古籍书架 ---------- */
+.gj-shelves { display: flex; flex-direction: column; gap: 34px; }
+.gj-shelf { display: flex; flex-direction: column; gap: 14px; }
+.gj-row { display: flex; align-items: flex-end; flex-wrap: wrap; gap: 10px; padding: 18px 18px 0; min-height: 210px; }
+.gj-plank { height: 14px; margin: 0 -6px; background: #2a2416; border-top: 1px solid var(--gold-dim); border-bottom: 1px solid rgba(201, 169, 97, 0.2); box-shadow: 0 6px 0 rgba(0, 0, 0, 0.25); }
+.gj-book {
+  position: relative; display: flex; align-items: center; justify-content: center; flex: none; width: 58px; padding: 26px 0;
+  background: #1f3b38; border: 1px solid var(--gold-dim); border-bottom: 0; border-radius: 3px 3px 0 0; cursor: pointer;
+  transition: transform 0.2s ease, border-color 0.2s ease;
+}
+.gj-book[data-cat="1"] { background: #232c4a; }
+.gj-book[data-cat="2"] { background: #472a2a; }
+.gj-book[data-cat="3"] { background: #37294a; }
+.gj-book::before, .gj-book::after { content: ''; position: absolute; left: 0; right: 0; height: 1px; background: rgba(201, 169, 97, 0.55); }
+.gj-book::before { top: 12px; }
+.gj-book::after { bottom: 12px; }
+.gj-book:hover, .gj-book:focus-visible { transform: translateY(-16px); border-color: var(--gold); }
+.gj-book-title { writing-mode: vertical-rl; text-orientation: upright; font-family: var(--display); font-size: 25px; line-height: 1.1; letter-spacing: 0.15em; color: var(--gold-soft); }
+.gj-book-core {
+  position: absolute; top: 20px; left: 50%; transform: translateX(-50%); width: 20px; height: 20px; display: flex; align-items: center; justify-content: center;
+  font-family: var(--display); font-size: 13px; line-height: 1; color: var(--night); background: var(--gold); border-radius: 2px;
+}
+.gj-book:has(.gj-book-core) .gj-book-title { margin-top: 26px; }
+.gj-purposes { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; max-width: 860px; }
+.gj-purpose { display: flex; align-items: center; flex-wrap: wrap; gap: 8px 18px; padding: 12px 0; border-bottom: 1px dashed rgba(201, 169, 97, 0.28); }
+.gj-purpose-want { flex: 1 1 260px; font-size: 15.5px; color: var(--star-text); }
+.gj-purpose-books { display: flex; flex-wrap: wrap; gap: 8px; }
+.gj-cores { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 14px; }
+.gj-core-card { text-align: left; font-family: var(--body); color: var(--star-text); cursor: pointer; }
+.gj-core-card:hover { border-color: var(--gold); background: var(--night-3); }
+.gj-chip { display: inline-flex; align-items: center; text-decoration: none; }
+
+@media (max-width: 639px) {
+  .gj-row { padding: 14px 8px 0; gap: 8px; }
+  .gj-book { width: 50px; }
+  .gj-book-title { font-size: 22px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .gj-book { transition: none; }
+  .gj-book:hover, .gj-book:focus-visible { transform: none; }
+}
