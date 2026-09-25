@@ -439,3 +439,27 @@ body.theme-wu {
   .gd-node { font-size: 20px; }
   .gd-badge { font-size: 14px; }
 }
+
+/* ---------- 院落与民居页 ---------- */
+.mj-small { font-family: var(--body); font-size: 14px; fill: #2b2118; pointer-events: none; }
+.gd-node.mj-small { font-size: 14px; }
+.gd-node.is-light { fill: #f6ecd5; }
+.mj-homes { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; align-items: stretch; }
+.mj-home { display: flex; flex-direction: column; }
+.mj-home-art { padding: 8px 12px; background: var(--ivory-2); border-bottom: 1px solid var(--ivory-line); }
+.mj-home-art svg { display: block; width: 100%; height: auto; max-height: 96px; }
+.mj-home-body { flex: 1; padding: 14px 18px 16px; display: flex; flex-direction: column; gap: 8px; }
+.mj-home-body .wx-fields { margin-top: auto; }
+.mj-home-text { font-size: 14.5px; line-height: 1.85; color: var(--ink-muted); }
+.mj-see { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; }
+.mj-closing { margin: 0; padding: 22px 26px; border-left: 6px solid var(--lac); font-family: var(--display); font-size: 24px; line-height: 1.8; color: var(--ink-w); }
+
+@media (max-width: 999px) {
+  .mj-homes { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+@media (max-width: 639px) {
+  .mj-homes { grid-template-columns: minmax(0, 1fr); }
+  .mj-see { grid-template-columns: minmax(0, 1fr); }
+  .mj-closing { padding: 18px 18px; font-size: 21px; }
+  .mj-small, .gd-node.mj-small { font-size: 18px; }
+}
