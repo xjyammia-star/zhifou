@@ -41,7 +41,8 @@
         { page: 'wenfang', label: '文房四宝', href: 'wenfang.html' },
         { page: 'wenfang-diangu', label: '典故与演变', href: 'wenfang-diangu.html' },
         { page: 'mugoujia', label: '木构架与榫卯', href: 'mugoujia.html' },
-        { page: 'wuding', label: '屋顶与脊兽', href: 'wuding.html' }
+        { page: 'wuding', label: '屋顶与脊兽', href: 'wuding.html' },
+        { page: 'gongdian', label: '宫殿坛庙与城市', href: 'gongdian.html' }
       ]
     }
   ];
