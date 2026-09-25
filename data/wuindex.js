@@ -33,13 +33,13 @@ window.ZHIFOU_WUINDEX = {
       "name": "中国古代建筑",
       "open": true,
       "partial": true,
-      "href": "wuding.html",
+      "href": "mugoujia.html",
       "line": "木头怎么搭成房子：斗拱、屋顶、四合院、园林，和一座座有名的建筑。",
       "tags": [],
       "pages": [
         {
           "name": "木构架与榫卯",
-          "href": ""
+          "href": "mugoujia.html"
         },
         {
           "name": "屋顶与脊兽",
@@ -70,7 +70,7 @@ window.ZHIFOU_WUINDEX = {
           "href": ""
         }
       ],
-      "size": "已开放 1 页，共 8 页"
+      "size": "已开放 2 页，共 8 页"
     }
   ],
   "tip": "两块虽然一个在案头、一个在头顶，但常常互相出现：米芾拜石既是砚台的故事，也是园林里的故事；洛阳纸贵既讲纸，也讲书怎么传出去。之后每一页的“另见”会把它们连起来。",
