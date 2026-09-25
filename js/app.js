@@ -15,6 +15,8 @@
   var GZ = window.ZHIFOU_GANZHI || null;
   var SX = window.ZHIFOU_SHENGXIAO || null;
   var SXK = window.ZHIFOU_SHENGXIAO_KEPU || null;
+  var YF = window.ZHIFOU_YUEFEN || null;
+  var SF = window.ZHIFOU_SHUJIUSANFU || null;
   var homeTimerSet = false;
 
   /* 配图：目前只有“秋分”“中秋节”两张水墨意境插画样稿，其余词条（含全部十二时辰）
@@ -852,6 +854,92 @@
     document.title = '生肖科普 · 知否知否';
   }
 
+  /* ---------- 月份与农历科普页（单篇长文，不是按时间轮换的词条） ---------- */
+  function renderYuefen(root) {
+    if (!YF) {
+      root.appendChild(el('div', { 'class': 'list-page' }, [
+        el('h1', { 'class': 'page-title', text: '这一页还在筹备中' }),
+        el('a', { 'class': 'btn', href: 'index.html', text: '← 回到首页' })
+      ]));
+      document.title = '月份与农历 · 知否知否';
+      return;
+    }
+    var main = el('div', { 'class': 'term-main' });
+    main.appendChild(el('div', { 'class': 'crumb' }, [
+      el('span', { 'class': 'crumb-text', text: '月份与农历' }),
+      el('div', { 'class': 'seal', 'aria-hidden': 'true', text: '月' })
+    ]));
+    main.appendChild(el('h1', { 'class': 'hook', text: YF.hook }));
+    main.appendChild(el('p', { 'class': 'answer', text: YF.answer }));
+    main.appendChild(el('div', { 'class': 'ornament', 'aria-hidden': 'true' }));
+    YF.sections.forEach(function (sec) {
+      main.appendChild(el('div', { 'class': 'section-title', text: sec.title }));
+      sec.body.forEach(function (p) { main.appendChild(el('p', { 'class': 'block-text', text: p })); });
+    });
+    if (YF.tip) {
+      main.appendChild(el('div', { 'class': 'tip-box' }, [
+        el('div', { 'class': 'tip-label', text: '小提示' }),
+        el('p', { text: YF.tip })
+      ]));
+    }
+
+    var side = el('aside', { 'class': 'term-side' });
+    var notes = el('details', { 'class': 'notes' }, [
+      el('summary', { text: '批注' }),
+      el('div', { 'class': 'notes-body' }, YF.notes.map(function (n) {
+        return el('p', {}, [el('span', { 'class': 'note-label', text: n.label }), n.text]);
+      }))
+    ]);
+    if (window.matchMedia && window.matchMedia('(min-width: 1100px)').matches) notes.setAttribute('open', '');
+    side.appendChild(notes);
+
+    root.appendChild(el('div', { 'class': 'term-page' }, [main, side]));
+    document.title = '月份与农历 · 知否知否';
+  }
+
+  /* ---------- 数九三伏科普页（单篇长文，不是按时间轮换的词条） ---------- */
+  function renderShujiusanfu(root) {
+    if (!SF) {
+      root.appendChild(el('div', { 'class': 'list-page' }, [
+        el('h1', { 'class': 'page-title', text: '这一页还在筹备中' }),
+        el('a', { 'class': 'btn', href: 'index.html', text: '← 回到首页' })
+      ]));
+      document.title = '数九三伏 · 知否知否';
+      return;
+    }
+    var main = el('div', { 'class': 'term-main' });
+    main.appendChild(el('div', { 'class': 'crumb' }, [
+      el('span', { 'class': 'crumb-text', text: '数九三伏' }),
+      el('div', { 'class': 'seal', 'aria-hidden': 'true', text: '寒' })
+    ]));
+    main.appendChild(el('h1', { 'class': 'hook', text: SF.hook }));
+    main.appendChild(el('p', { 'class': 'answer', text: SF.answer }));
+    main.appendChild(el('div', { 'class': 'ornament', 'aria-hidden': 'true' }));
+    SF.sections.forEach(function (sec) {
+      main.appendChild(el('div', { 'class': 'section-title', text: sec.title }));
+      sec.body.forEach(function (p) { main.appendChild(el('p', { 'class': 'block-text', text: p })); });
+    });
+    if (SF.tip) {
+      main.appendChild(el('div', { 'class': 'tip-box' }, [
+        el('div', { 'class': 'tip-label', text: '小提示' }),
+        el('p', { text: SF.tip })
+      ]));
+    }
+
+    var side = el('aside', { 'class': 'term-side' });
+    var notes = el('details', { 'class': 'notes' }, [
+      el('summary', { text: '批注' }),
+      el('div', { 'class': 'notes-body' }, SF.notes.map(function (n) {
+        return el('p', {}, [el('span', { 'class': 'note-label', text: n.label }), n.text]);
+      }))
+    ]);
+    if (window.matchMedia && window.matchMedia('(min-width: 1100px)').matches) notes.setAttribute('open', '');
+    side.appendChild(notes);
+
+    root.appendChild(el('div', { 'class': 'term-page' }, [main, side]));
+    document.title = '数九三伏 · 知否知否';
+  }
+
   /* ---------- 入口 ---------- */
   function start() {
     var root = document.getElementById('app');
@@ -876,6 +964,10 @@
       if (m4) renderShengxiao(root, decodeURIComponent(m4[1])); else renderShengxiaoList(root);
     } else if (page === 'shengxiao-kepu') {
       renderShengxiaoKepu(root);
+    } else if (page === 'yuefen') {
+      renderYuefen(root);
+    } else if (page === 'shujiusanfu') {
+      renderShujiusanfu(root);
     }
   }
   start();
