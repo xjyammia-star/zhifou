@@ -133,10 +133,10 @@
   function renderPanel() {
     panel.textContent = '';
     var imgKey = state.kind === 'xiu' ? xiuByName[state.name].beast : (state.kind === 'beast' ? state.name : '中宫');
-    panel.appendChild(imageSlot(imgKey));
     var body = el('div', { 'class': 'xx-panel-body' });
     var foot = null;
     panel.appendChild(body);
+    panel.appendChild(imageSlot(imgKey));
     if (state.kind === 'xiu') {
       var x = xiuByName[state.name], b = beastByName[x.beast];
       var i = xiuIndex[x.name], n = D.xiu.length;
