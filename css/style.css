@@ -59,6 +59,17 @@ h1, h2, h3 { margin: 0; font-weight: 400; }
 .site-nav a { display: inline-flex; align-items: center; min-height: 44px; font-size: 14px; letter-spacing: 0.2em; text-decoration: none; color: var(--grey-1); }
 .site-nav a:hover, .site-nav a[aria-current="page"] { color: var(--ink-deep); }
 .site-nav a[aria-current="page"] { box-shadow: inset 0 -1px 0 var(--seal); }
+.site-nav a.is-section { font-size: 17px; letter-spacing: 0.3em; }
+
+/* 二级导航：进入某个板块后，页头下面显示这个板块的全部内容 */
+.sub-nav { border-bottom: 1px solid rgba(43, 43, 43, 0.12); background: rgba(255, 255, 255, 0.25); }
+.sub-nav-inner { display: flex; align-items: center; }
+.sub-nav nav { flex: 1 1 auto; min-width: 0; display: flex; align-items: center; gap: 24px; min-height: 48px; overflow-x: auto; white-space: nowrap; scrollbar-width: none; -webkit-overflow-scrolling: touch; }
+.sub-nav nav::-webkit-scrollbar { display: none; }
+.sub-nav-mark { flex: none; font-family: var(--display); font-size: 20px; line-height: 1; color: var(--seal); padding-right: 14px; border-right: 1px solid var(--line-strong); }
+.sub-nav a { flex: none; display: inline-flex; align-items: center; min-height: 44px; font-size: 14px; letter-spacing: 0.15em; text-decoration: none; color: var(--grey-1); }
+.sub-nav a:hover, .sub-nav a[aria-current="page"] { color: var(--ink-deep); }
+.sub-nav a[aria-current="page"] { box-shadow: inset 0 -1px 0 var(--seal); }
 
 .site-footer { flex: none; margin-top: 48px; padding-bottom: 32px; }
 .footer-inner { display: flex; justify-content: space-between; gap: 16px; flex-wrap: wrap; padding-top: 22px; border-top: 1px solid var(--line); font-size: 13px; color: var(--grey-2); }
