@@ -59,7 +59,7 @@
     var badge = null;
     if (!c.open) badge = el('span', { 'class': 'wx-soon', text: '制作中' });
     else if (c.partial) badge = el('span', { 'class': 'wx-soon', text: '陆续开放' });
-    else if (c.size) badge = el('span', { 'class': 'wx-door-size', text: c.size });
+    else if (c.size && !hasPages) badge = el('span', { 'class': 'wx-door-size', text: c.size });
 
     var pills;
     if (hasPages) {

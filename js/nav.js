@@ -46,7 +46,8 @@
         { page: 'gongdian', label: '宫殿坛庙与城市', href: 'gongdian.html' },
         { page: 'yuanlin', label: '园林', href: 'yuanlin.html' },
         { page: 'louge', label: '楼阁与匾额对联', href: 'louge.html' },
-        { page: 'siguan', label: '寺观塔与桥', href: 'siguan.html' }
+        { page: 'siguan', label: '寺观塔与桥', href: 'siguan.html' },
+        { page: 'shijian', label: '代表建筑时间线', href: 'shijian.html' }
       ]
     }
   ];
