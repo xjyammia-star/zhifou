@@ -268,3 +268,77 @@ a.sl-syslink:hover { background: rgba(201, 169, 97, 0.16); color: var(--gold-sof
   .sl-card { transition: none; }
   .sl-card:hover { transform: none; }
 }
+
+/* ---------- 上古神话：关系图谱与故事长卷 ---------- */
+.sh-view[hidden] { display: none; }
+.sh-tabs { display: flex; gap: 8px; margin-bottom: 8px; }
+.sh-tab {
+  min-height: 44px; padding: 6px 22px; font-family: var(--body); font-size: 15px; letter-spacing: 0.15em;
+  color: var(--star-text); background: transparent; border: 1px solid var(--gold-dim); cursor: pointer;
+}
+.sh-tab:hover { border-color: var(--gold); background: var(--night-3); }
+.sh-tab.is-on { color: var(--gold-soft); border-color: var(--gold); background: rgba(201, 169, 97, 0.16); }
+
+.sh-legend { display: flex; flex-wrap: wrap; gap: 8px 22px; margin-bottom: 8px; }
+.sh-legend-item { display: flex; align-items: center; gap: 8px; font-size: 13px; color: var(--star-muted); }
+.sh-legend-name { color: var(--gold-soft); letter-spacing: 0.1em; }
+.sh-hint { margin-bottom: 8px; font-size: 13px; color: var(--star-muted); }
+.sh-graph-wrap { overflow-x: auto; border: 1px solid rgba(201, 169, 97, 0.28); background: var(--night-2); scrollbar-width: thin; scrollbar-color: var(--gold-dim) transparent; }
+.sh-svg { display: block; width: 100%; min-width: 900px; height: auto; }
+.sh-rowline { stroke: rgba(201, 169, 97, 0.16); stroke-width: 1; stroke-dasharray: 3 6; }
+.sh-rowlabel { font-family: var(--display); font-size: 20px; opacity: 0.85; }
+.sh-edge { transition: opacity 0.2s ease; }
+.sh-edge-label { font-family: var(--body); font-size: 14px; fill: var(--star-muted); paint-order: stroke; stroke: var(--night-2); stroke-width: 5px; stroke-linejoin: round; pointer-events: none; }
+.sh-node { cursor: pointer; transition: opacity 0.2s ease; }
+.sh-node-bg { fill: var(--night); stroke-width: 1.4; transition: fill 0.2s ease; }
+.sh-node:hover .sh-node-bg, .sh-node:focus .sh-node-bg { fill: var(--night-3); }
+.sh-node:focus { outline: none; }
+.sh-node:focus-visible .sh-node-bg { stroke-width: 2.6; }
+.sh-node-text { font-family: var(--display); font-size: 24px; text-anchor: middle; dominant-baseline: central; pointer-events: none; }
+.sh-svg.is-focus .sh-node:not(.is-on) { opacity: 0.25; }
+.sh-svg.is-focus .sh-edge:not(.is-on) { opacity: 0.1; }
+.sh-svg.is-focus .sh-edge.is-on .sh-edge-label { fill: var(--gold-soft); }
+
+.sh-stories { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; max-width: 860px; }
+.sh-story { display: flex; gap: 18px; padding: 22px 0; border-bottom: 1px dashed rgba(201, 169, 97, 0.28); }
+.sh-story-no {
+  flex: none; width: 34px; height: 34px; display: flex; align-items: center; justify-content: center;
+  font-family: var(--display); font-size: 19px; color: var(--night); background: var(--gold); border-radius: 50%;
+}
+.sh-story-body { display: flex; flex-direction: column; gap: 8px; min-width: 0; }
+.sh-story-title { font-family: var(--display); font-size: 30px; line-height: 1.3; color: var(--gold-soft); }
+.sh-story-meaning { font-size: 14px; letter-spacing: 0.05em; color: var(--gold); }
+.sh-story-text { font-size: 16px; line-height: 2; color: var(--star-text); }
+.sh-story-source { font-size: 13.5px; line-height: 1.85; color: var(--star-muted); }
+.sh-story-tip { padding: 8px 14px; font-size: 14px; line-height: 1.85; color: var(--star-text); border-left: 2px solid var(--gold-dim); background: rgba(201, 169, 97, 0.06); }
+.sh-story-people { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; }
+.sh-chip {
+  min-height: 36px; padding: 2px 14px; font-family: var(--display); font-size: 18px; color: var(--gold-soft);
+  background: transparent; border: 1px solid var(--gold-dim); cursor: pointer;
+}
+.sh-chip:hover { background: var(--night-3); }
+
+.sh-rel-list { list-style: none; margin: 4px 0 0; padding: 0; display: flex; flex-direction: column; gap: 6px; }
+.sh-rel-btn {
+  width: 100%; display: flex; align-items: baseline; flex-wrap: wrap; gap: 4px 10px; padding: 8px 12px; text-align: left;
+  font-family: var(--body); font-size: 14px; color: var(--star-text); background: transparent; border: 1px solid rgba(201, 169, 97, 0.28); cursor: pointer;
+}
+.sh-rel-btn:hover { border-color: var(--gold); background: var(--night-3); }
+.sh-rel-type { font-size: 12px; letter-spacing: 0.1em; }
+.sh-rel-arrow { color: var(--gold-dim); }
+.sh-rel-name { font-family: var(--display); font-size: 18px; color: var(--gold-soft); }
+.sh-rel-label { font-size: 13px; color: var(--star-muted); }
+
+.sh-huang { display: flex; flex-direction: column; gap: 16px; }
+.sh-huang-head { font-size: 13px; letter-spacing: 0.3em; color: var(--gold-dim); }
+.sh-huang-names { font-family: var(--display); font-size: 20px; color: var(--gold-soft); }
+
+@media (max-width: 639px) {
+  .sh-story { gap: 12px; }
+  .sh-story-title { font-size: 26px; }
+  .sh-story-text { font-size: 15px; }
+  .sh-tab { flex: 1 1 0; padding: 6px 8px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .sh-edge, .sh-node { transition: none; }
+}

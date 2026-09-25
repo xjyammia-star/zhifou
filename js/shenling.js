@@ -8,7 +8,7 @@
 
   /* 出处体系的页面链接。对应体系的页面做好后，把空引号改成页面地址即可，
      例如：'佛教': 'fojiao.html'。空着的，卡片上会显示"对应页面制作中"。 */
-  var SYSTEM_LINKS = { '佛教': '', '道教': '', '上古神话': '' };
+  var SYSTEM_LINKS = { '佛教': '', '道教': '', '上古神话': 'shenhua.html' };
 
   /* 每位神灵的配图。有了图，把图片放进 img/shen/ 文件夹，再把对应的空引号改成图片路径，
      例如：'关公': 'img/shen/guangong.jpg'。空着的，详情里显示"配图待补"占位。 */
@@ -124,6 +124,9 @@
   function systemLink(name, label) {
     var key = baseName(name);
     var href = SYSTEM_LINKS[key];
+    /* 写成"上古神话（神农）"的，括号里的名字会作为详情页里的人物名，直接打开他 */
+    var target = (name.match(/（(.*?)）/) || [])[1];
+    if (href && target) href += '?id=' + encodeURIComponent(target);
     if (href) {
       return el('a', { 'class': 'sl-syslink', href: href, text: label + ' →' });
     }

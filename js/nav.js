@@ -22,8 +22,9 @@
       ]
     },
     {
-      key: 'shen', label: '神', home: 'xingxiu.html',
+      key: 'shen', label: '神', home: 'shenhua.html',
       items: [
+        { page: 'shenhua', label: '上古神话', href: 'shenhua.html' },
         { page: 'xingxiu', label: '二十八宿', href: 'xingxiu.html' },
         { page: 'shenling', label: '民间神灵', href: 'shenling.html' },
         { page: 'shanhai', label: '山海经异兽', href: 'shanhai.html' }
