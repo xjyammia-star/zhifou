@@ -478,3 +478,39 @@ body.theme-wu {
 @media (max-width: 639px) {
   .gd-cards-4 { grid-template-columns: minmax(0, 1fr); }
 }
+
+/* ---------- 楼阁与匾额对联页 ---------- */
+.lg-names { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 16px; align-items: stretch; }
+.lg-plaque svg { max-width: 520px; margin: 0 auto; }
+.lg-plaque-text { font-family: var(--display); font-size: 52px; fill: #e8c46a; }
+.lg-label { margin: 10px 0 6px; }
+.lg-rules { list-style: none; margin: 0 0 6px; padding: 0; display: flex; flex-direction: column; gap: 6px; counter-reset: lg; }
+.lg-rules li { counter-increment: lg; display: flex; align-items: baseline; flex-wrap: wrap; gap: 4px 10px; font-size: 15px; line-height: 1.8; color: var(--ink-w); }
+.lg-rules li::before { content: counter(lg); flex: none; width: 22px; height: 22px; display: inline-flex; align-items: center; justify-content: center; border-radius: 50%; background: var(--ivory-line); color: var(--ink-w); font-size: 12px; }
+.lg-rules li.is-done::before { background: var(--lac); color: var(--ivory); }
+.lg-rule-tag { font-size: 12px; line-height: 22px; padding: 0 8px; color: var(--lac-deep); border: 1px solid var(--lac); }
+.lg-couplet { margin-top: 14px; padding: 18px 22px; display: flex; flex-direction: column; gap: 10px; }
+.lg-author { font-size: 13px; letter-spacing: 0.15em; color: var(--ink-muted); }
+.lg-row { display: flex; align-items: center; gap: 12px; }
+.lg-side { flex: none; width: 2.6em; font-family: var(--display); font-size: 18px; color: var(--lac); }
+.lg-cells { flex: 1; display: flex; gap: 10px; min-width: 0; }
+.lg-seg { display: flex; min-width: 0; padding: 4px 2px; border: 1px solid transparent; cursor: pointer; transition: background 0.2s ease; }
+.lg-seg:hover { background: rgba(178, 58, 46, 0.06); }
+.lg-seg.is-on { background: rgba(178, 58, 46, 0.12); border-color: var(--lac); }
+.lg-cell { flex: 1 1 0; text-align: center; font-family: var(--display); font-size: clamp(16px, 2.4vw, 28px); line-height: 1.5; color: var(--ink-w); border-bottom: 1px dashed var(--ivory-line); }
+.lg-cells.is-wrap { flex-wrap: wrap; row-gap: 6px; }
+.lg-cells.is-wrap .lg-cell { flex: 0 0 auto; width: 1.7em; }
+.lg-info { min-height: 3.6em; font-size: 14.5px; line-height: 1.8; color: var(--ink-muted); }
+.wx-chip[aria-pressed="true"] { color: var(--ivory); background: var(--ink-w); border-color: var(--ink-w); }
+
+@media (max-width: 999px) {
+  .lg-names { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+@media (max-width: 639px) {
+  .lg-couplet { padding: 16px 14px; }
+  .lg-row { gap: 8px; }
+  .lg-side { width: 2.2em; font-size: 15px; }
+  .lg-cells { gap: 6px; }
+  .lg-cell { font-size: 14px; }
+  .lg-plaque-text { font-size: 56px; }
+}
