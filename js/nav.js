@@ -22,8 +22,9 @@
       ]
     },
     {
-      key: 'shen', label: '神', home: 'shenhua.html',
+      key: 'shen', label: '神', home: 'shen.html',
       items: [
+        { page: 'shen', label: '三界地图', href: 'shen.html' },
         { page: 'shenhua', label: '上古神话', href: 'shenhua.html' },
         { page: 'guji', label: '古籍书架', href: 'guji.html' },
         { page: 'xingxiu', label: '二十八宿', href: 'xingxiu.html' },
