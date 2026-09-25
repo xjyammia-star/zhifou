@@ -38,7 +38,8 @@
       key: 'wu', label: '物', home: 'wu.html',
       items: [
         { page: 'wu', label: '书斋入口', href: 'wu.html' },
-        { page: 'wenfang', label: '文房四宝', href: 'wenfang.html' }
+        { page: 'wenfang', label: '文房四宝', href: 'wenfang.html' },
+        { page: 'wenfang-diangu', label: '典故与演变', href: 'wenfang-diangu.html' }
       ]
     }
   ];

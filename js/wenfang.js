@@ -267,6 +267,10 @@
     page.appendChild(buildExplore());
     page.appendChild(buildFlow());
     page.appendChild(buildInk());
+    page.appendChild(el('a', { 'class': 'wx-next', href: 'wenfang-diangu.html' }, [
+      el('span', { 'class': 'wx-next-label', text: '接着看：典故与演变' }),
+      el('span', { text: '入木三分、洛阳纸贵，哪些是史载，哪些是传说？还有竹简、帛到纸的变化 →' })
+    ]));
     page.appendChild(el('div', { 'class': 'wx-tip' }, [el('div', { 'class': 'wx-tip-label', text: '小提示' }), el('p', { text: D.tip })]));
     page.appendChild(el('details', { 'class': 'wx-notes' }, [
       el('summary', { text: '批注' }),

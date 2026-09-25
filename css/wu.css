@@ -197,3 +197,64 @@ body.theme-wu {
   .wx-door, .wf-hit { transition: none; }
   .wx-door.is-open:hover { transform: none; }
 }
+
+/* ---------- 典故与演变页 ---------- */
+/* 书写材料的演变：三张卡片 */
+.wx-stages { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 24px; align-items: stretch; }
+.wx-stage { position: relative; display: flex; flex-direction: column; }
+.wx-stage:not(:last-child)::after { content: '→'; position: absolute; right: -19px; top: 44px; color: var(--cream-muted); font-size: 18px; }
+.wx-stage-art { display: flex; justify-content: center; padding: 12px 20px 8px; background: var(--ivory-2); border-bottom: 1px solid var(--ivory-line); }
+.wx-stage-art svg { display: block; height: 64px; width: auto; }
+.wx-stage-body { padding: 16px 20px 18px; }
+.wx-stage-name { font-family: var(--display); font-size: 32px; line-height: 1.2; color: var(--ink-w); }
+.wx-stage .wx-fields { margin-top: 10px; }
+
+/* 十二个典故：筛选 + 可展开的卡片 */
+.wx-filter-row { display: flex; flex-wrap: wrap; align-items: center; gap: 12px 18px; }
+.wx-count { font-size: 13px; letter-spacing: 0.15em; color: var(--cream-muted); }
+.wx-stories { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; align-items: start; }
+.wx-story[hidden] { display: none; }
+.wx-story summary { position: relative; display: flex; flex-direction: column; gap: 6px; padding: 16px 18px 18px; cursor: pointer; list-style: none; }
+.wx-story summary::-webkit-details-marker { display: none; }
+.wx-story summary::after { content: '＋'; position: absolute; right: 16px; bottom: 12px; font-size: 18px; color: var(--lac); }
+.wx-story[open] summary::after { content: '－'; }
+.wx-story-top { display: flex; align-items: center; justify-content: space-between; gap: 8px; }
+.wx-story-name { font-family: var(--display); font-size: 30px; line-height: 1.2; color: var(--ink-w); }
+.wx-kind { flex: none; padding: 0 8px; font-size: 12px; letter-spacing: 0.12em; line-height: 22px; color: var(--ink-muted); border: 1px solid var(--ink-muted); }
+.wx-kind.is-fact { color: var(--ivory); background: var(--ink-w); border-color: var(--ink-w); }
+.wx-kind.is-legend { color: var(--ivory); background: var(--lac); border-color: var(--lac); }
+.wx-story-meaning { padding-right: 26px; font-size: 14.5px; line-height: 1.8; color: var(--ink-muted); }
+.wx-story-body { margin: 0 18px; padding: 14px 0 16px; border-top: 1px dashed var(--ivory-line); }
+.wx-story-body .wx-fields { margin-top: 0; }
+.wx-rel { margin-top: 12px; font-size: 13px; letter-spacing: 0.08em; color: var(--ink-muted); }
+.wx-story .wx-see { margin-top: 12px; }
+.wx-story a.wx-chip { display: inline-flex; align-items: center; text-decoration: none; color: var(--ink-w); }
+.wx-story a.wx-chip:hover { color: var(--lac-deep); }
+
+/* 名品：四栏 */
+.wx-fame { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 16px; align-items: start; }
+.wx-fame-col { padding: 18px 18px 8px; }
+.wx-fame-head { margin-bottom: 4px; padding-bottom: 8px; font-family: var(--display); font-size: 44px; line-height: 1; color: var(--lac); border-bottom: 1px solid var(--ivory-line); }
+.wx-fame-entry { padding: 12px 0; border-bottom: 1px dashed var(--ivory-line); }
+.wx-fame-entry:last-child { border-bottom: 0; }
+.wx-fame-name { font-family: var(--display); font-size: 24px; line-height: 1.3; color: var(--ink-w); }
+.wx-fame-place { font-size: 12.5px; letter-spacing: 0.1em; color: var(--lac-deep); }
+.wx-fame-text { margin-top: 2px; font-size: 14px; line-height: 1.85; color: var(--ink-muted); }
+
+/* 页面底部的"接着看"链接 */
+.theme-wu a.wx-next { display: flex; flex-wrap: wrap; align-items: baseline; gap: 6px 16px; padding: 14px 18px; text-decoration: none; color: var(--cream); border: 1px solid rgba(234, 223, 198, 0.4); }
+.theme-wu a.wx-next:hover { border-color: var(--cream); color: #ffffff; }
+.wx-next-label { font-family: var(--display); font-size: 24px; line-height: 1.3; color: #f6ecd5; }
+
+@media (max-width: 999px) {
+  .wx-stories { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .wx-fame { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+@media (max-width: 899px) {
+  .wx-stages { grid-template-columns: minmax(0, 1fr); gap: 28px; }
+  .wx-stage:not(:last-child)::after { content: '↓'; right: auto; left: 50%; top: auto; bottom: -26px; transform: translateX(-50%); }
+}
+@media (max-width: 639px) {
+  .wx-stories { grid-template-columns: minmax(0, 1fr); }
+  .wx-fame { grid-template-columns: minmax(0, 1fr); }
+}
