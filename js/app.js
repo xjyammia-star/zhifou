@@ -11,21 +11,23 @@
   var SEASON_NAME = { '春': '春季', '夏': '夏季', '秋': '秋季', '冬': '冬季' };
   var BIG_TERMS = ['春分', '夏至', '秋分', '冬至'];
   var JR = window.ZHIFOU_JIERI || null;
+  var SC = window.ZHIFOU_SHICHEN || null;
+  var GZ = window.ZHIFOU_GANZHI || null;
+  var homeTimerSet = false;
 
-  /* 配图：目前只有“秋分”“中秋节”两张水墨意境插画样稿，其余词条会陆续补上。
-     没有配图的词条不受影响，页面照常显示，只是没有图片区块。 */
-  var TERM_IMAGES = {
-    '秋分': { file: '秋分.jpg', caption: '雷始收声，蛰虫坯户', source: '《月令七十二候集解》' }
-  };
-  var FEST_IMAGES = {
-    '中秋节': { file: '中秋节.jpg', caption: '但愿人长久，千里共婵娟', source: '苏轼《水调歌头》' }
+  /* 配图：目前只有“秋分”“中秋节”两张水墨意境插画样稿，其余词条（含全部十二时辰）
+     会陆续补上。没有配图的词条不受影响，页面照常显示，只是没有图片区块。 */
+  var IMAGE_MAP = {
+    term: { folder: '节气', items: { '秋分': { file: '秋分.jpg', caption: '雷始收声，蛰虫坯户', source: '《月令七十二候集解》' } } },
+    festival: { folder: '节日', items: { '中秋节': { file: '中秋节.jpg', caption: '但愿人长久，千里共婵娟', source: '苏轼《水调歌头》' } } },
+    shichen: { folder: '时辰', items: {} }
   };
   function imageBlock(kind, name) {
-    var info = (kind === 'term' ? TERM_IMAGES : FEST_IMAGES)[name];
+    var group = IMAGE_MAP[kind];
+    var info = group && group.items[name];
     if (!info) return null;
-    var folder = kind === 'term' ? '节气' : '节日';
     return el('div', { 'class': 'term-image' }, [
-      el('img', { src: 'img/' + folder + '/' + encodeURIComponent(info.file), alt: name + ' · 水墨意境插画', loading: 'lazy' }),
+      el('img', { src: 'img/' + group.folder + '/' + encodeURIComponent(info.file), alt: name + ' · 水墨意境插画', loading: 'lazy' }),
       el('p', { 'class': 'term-image-caption' }, [
         info.caption,
         info.source ? el('span', { 'class': 'term-image-source', text: info.source }) : null
@@ -64,6 +66,34 @@
     return -1;
   }
   function entryOf(name) { return JQ.entries[name] || null; }
+  function shichenPageUrl(name) { return 'shichen.html?id=' + encodeURIComponent(name); }
+  function shichenIndex(name) { return SC ? SC.order.indexOf(name) : -1; }
+  function shichenEntryOf(name) { return (SC && SC.entries[name]) || null; }
+
+  /* ---------- 十二时辰、干支：跟“此刻”的钟点、日期直接相关，不走 ?date= 模拟 ---------- */
+  function realBeijingNow() {
+    var t = new Date(Date.now() + 8 * 3600 * 1000);
+    return { y: t.getUTCFullYear(), m: t.getUTCMonth() + 1, d: t.getUTCDate(), h: t.getUTCHours(), min: t.getUTCMinutes() };
+  }
+  function currentShichenIndex(now) {
+    /* 23:00—01:00 是子时（第0个），此后每两小时一个时辰，循环一圈 */
+    return Math.floor(((now.h + 1) % 24) / 2);
+  }
+  var GZ_STEMS = '甲乙丙丁戊己庚辛壬癸';
+  var GZ_BRANCHES = '子丑寅卯辰巳午未申酉戌亥';
+  function toJDN(y, m, d) {
+    var a = Math.floor((14 - m) / 12);
+    var y2 = y + 4800 - a;
+    var m2 = m + 12 * a - 3;
+    return d + Math.floor((153 * m2 + 2) / 5) + 365 * y2 + Math.floor(y2 / 4) - Math.floor(y2 / 100) + Math.floor(y2 / 400) - 32045;
+  }
+  function ganzhiOfDate(y, m, d) {
+    /* 算法见《干支文案》批注：干支序数 = 儒略日数加49，除以60取余；已用两个公开可查的历史日期核对过。
+       这里按“今天的公历日期”算，没有套用“一天的干支从子时开始换算”那种更严格的老算法，
+       避免过了晚上11点“今日干支”突然跳到明天，反而让人看不懂。 */
+    var idx = ((toJDN(y, m, d) + 49) % 60 + 60) % 60;
+    return { stem: GZ_STEMS[idx % 10], branch: GZ_BRANCHES[idx % 12], name: GZ_STEMS[idx % 10] + GZ_BRANCHES[idx % 12] };
+  }
 
   /* ---------- 日期：今天是哪个节气、哪一候 ---------- */
   function beijingToday() {
@@ -256,8 +286,39 @@
         el('span', { 'class': 'tag', text: countText(u.ms, today) })
       ]);
     }
-    root.appendChild(el('div', { 'class': 'home' }, [left, right, houRow, upcoming]));
+    var nowStrip = null;
+    if (SC) {
+      var now = realBeijingNow();
+      var sIdx = currentShichenIndex(now);
+      var sName = SC.order[sIdx];
+      var sEntry = shichenEntryOf(sName);
+      var stripKids = [
+        el('a', { 'class': 'now-card', href: shichenPageUrl(sName), 'aria-label': '现在时辰：' + sName }, [
+          el('span', { 'class': 'eyebrow', text: '此刻' }),
+          el('span', { 'class': 'now-name', text: sName }),
+          el('span', { 'class': 'now-when', text: sEntry ? sEntry.time : '' })
+        ])
+      ];
+      if (GZ) {
+        var gz = ganzhiOfDate(now.y, now.m, now.d);
+        stripKids.push(el('a', { 'class': 'now-card', href: 'ganzhi.html', 'aria-label': '今日干支：' + gz.name + '日' }, [
+          el('span', { 'class': 'eyebrow', text: '今日干支' }),
+          el('span', { 'class': 'now-name', text: gz.name + '日' })
+        ]));
+      }
+      nowStrip = el('div', { 'class': 'now-strip' }, stripKids);
+    }
+
+    root.appendChild(el('div', { 'class': 'home' }, [left, right, houRow, upcoming, nowStrip]));
     document.title = (name ? name + ' · ' : '') + '知否知否 · 每天读一页中国传统文化';
+
+    /* 时辰每两小时才会变，但为了让“此刻”看起来是活的，每分钟悄悄重新画一次首页 */
+    if (SC && !homeTimerSet && typeof setInterval === 'function') {
+      homeTimerSet = true;
+      setInterval(function () {
+        if (document.body.getAttribute('data-page') === 'home') start();
+      }, 60000);
+    }
   }
 
   /* ---------- 节气页（模板） ---------- */
@@ -470,6 +531,155 @@
     document.title = '传统节日 · 知否知否';
   }
 
+  /* ---------- 十二时辰目录 ---------- */
+  function renderShichenList(root) {
+    var now = realBeijingNow();
+    var curIdx = SC ? currentShichenIndex(now) : -1;
+    var page = el('div', { 'class': 'list-page' }, [
+      el('h1', { 'class': 'page-title', text: '十二时辰' }),
+      el('p', { 'class': 'page-intro' }, [
+        '时辰不按日期轮换，每天都按现代时钟循环一遍；红点是此刻所在的时辰。想先看看天干地支是怎么回事，',
+        el('a', { href: 'ganzhi.html', text: '读这一篇 →' })
+      ])
+    ]);
+    var grid = el('div', { 'class': 'term-grid' });
+    if (SC) {
+      SC.order.forEach(function (name, i) {
+        var entry = SC.entries[name];
+        var isNow = i === curIdx;
+        var cls = 'term-tile is-open' + (isNow ? ' is-now' : '');
+        grid.appendChild(el('a', { 'class': cls, href: shichenPageUrl(name) }, [
+          el('span', { 'class': 'tile-name', text: name }),
+          el('span', { 'class': 'tile-meta', text: entry.time + (isNow ? ' · 此刻' : '') })
+        ]));
+      });
+    }
+    page.appendChild(grid);
+    root.appendChild(page);
+    document.title = '十二时辰 · 知否知否';
+  }
+
+  /* ---------- 时辰页（模板） ---------- */
+  function renderShichen(root, name) {
+    var entry = shichenEntryOf(name);
+    if (!SC || !entry) {
+      root.appendChild(el('div', { 'class': 'list-page' }, [
+        el('h1', { 'class': 'page-title', text: '没有找到这一页' }),
+        el('a', { 'class': 'btn', href: 'shichen.html', text: '← 回到十二时辰' })
+      ]));
+      document.title = '十二时辰 · 知否知否';
+      return;
+    }
+    var idx = shichenIndex(name);
+    var n = SC.order.length;
+    var prevName = SC.order[(idx + n - 1) % n];
+    var nextName = SC.order[(idx + 1) % n];
+    var now = realBeijingNow();
+    var isNow = currentShichenIndex(now) === idx;
+
+    var main = el('div', { 'class': 'term-main' });
+    main.appendChild(el('div', { 'class': 'crumb' }, [
+      el('span', { 'class': 'crumb-text' }, [
+        el('a', { href: 'shichen.html', text: '十二时辰' }),
+        ' · 第' + entry.no + '个（共' + n + '个） · ' + entry.time + (isNow ? ' · 正是此刻' : '')
+      ]),
+      el('div', { 'class': 'seal', 'aria-hidden': 'true', text: '时' })
+    ]));
+    main.appendChild(el('h1', { 'class': 'hook', text: entry.hook }));
+    main.appendChild(el('p', { 'class': 'answer', text: entry.answer }));
+    main.appendChild(el('div', { 'class': 'ornament', 'aria-hidden': 'true' }));
+    entry.body.forEach(function (p) { main.appendChild(el('p', { 'class': 'block-text', text: p })); });
+    if (entry.story && entry.story.length) {
+      main.appendChild(el('div', { 'class': 'section-title', text: '典故' }));
+      entry.story.forEach(function (p) { main.appendChild(el('p', { 'class': 'block-text', text: p })); });
+    }
+    if (entry.customs) {
+      main.appendChild(el('div', { 'class': 'section-title', text: '习俗' }));
+      main.appendChild(el('p', { 'class': 'block-text', text: entry.customs }));
+    }
+    if (entry.tip) {
+      main.appendChild(el('div', { 'class': 'tip-box' }, [
+        el('div', { 'class': 'tip-label', text: '小提示' }),
+        el('p', { text: entry.tip })
+      ]));
+    }
+    if (GZ) {
+      main.appendChild(el('p', { 'class': 'block-text' }, [
+        '延伸阅读：',
+        el('a', { href: 'ganzhi.html', text: '干支与六十甲子 →' })
+      ]));
+    }
+    main.appendChild(el('div', { 'class': 'term-nav' }, [
+      el('a', { href: shichenPageUrl(prevName), text: '← ' + prevName }),
+      el('a', { href: shichenPageUrl(nextName), text: nextName + ' →' })
+    ]));
+
+    var side = el('aside', { 'class': 'term-side' });
+    var img = imageBlock('shichen', name);
+    if (img) side.appendChild(img);
+    var notes = el('details', { 'class': 'notes' }, [
+      el('summary', { text: '批注' }),
+      el('div', { 'class': 'notes-body' }, entry.notes.map(function (n) {
+        return el('p', {}, [el('span', { 'class': 'note-label', text: n.label }), n.text]);
+      }))
+    ]);
+    if (window.matchMedia && window.matchMedia('(min-width: 1100px)').matches) notes.setAttribute('open', '');
+    side.appendChild(notes);
+
+    root.appendChild(el('div', { 'class': 'term-page' }, [main, side]));
+    document.title = name + ' · 知否知否';
+  }
+
+  /* ---------- 干支科普页（单篇长文，不是按时间轮换的词条） ---------- */
+  function renderGanzhi(root) {
+    if (!GZ) {
+      root.appendChild(el('div', { 'class': 'list-page' }, [
+        el('h1', { 'class': 'page-title', text: '这一页还在筹备中' }),
+        el('a', { 'class': 'btn', href: 'shichen.html', text: '← 回到十二时辰' })
+      ]));
+      document.title = '干支 · 知否知否';
+      return;
+    }
+    var now = realBeijingNow();
+    var gz = ganzhiOfDate(now.y, now.m, now.d);
+
+    var main = el('div', { 'class': 'term-main' });
+    main.appendChild(el('div', { 'class': 'crumb' }, [
+      el('span', { 'class': 'crumb-text' }, [
+        el('a', { href: 'shichen.html', text: '十二时辰' }),
+        ' · 干支科普 · 今日 ' + gz.name + '日'
+      ]),
+      el('div', { 'class': 'seal', 'aria-hidden': 'true', text: '干' })
+    ]));
+    main.appendChild(el('h1', { 'class': 'hook', text: GZ.hook }));
+    main.appendChild(el('p', { 'class': 'answer', text: GZ.answer }));
+    main.appendChild(el('div', { 'class': 'ornament', 'aria-hidden': 'true' }));
+    GZ.sections.forEach(function (sec) {
+      main.appendChild(el('div', { 'class': 'section-title', text: sec.title }));
+      sec.body.forEach(function (p) { main.appendChild(el('p', { 'class': 'block-text', text: p })); });
+    });
+    if (GZ.tip) {
+      main.appendChild(el('div', { 'class': 'tip-box' }, [
+        el('div', { 'class': 'tip-label', text: '小提示' }),
+        el('p', { text: GZ.tip })
+      ]));
+    }
+    main.appendChild(el('a', { 'class': 'btn', href: 'shichen.html', text: '← 回到十二时辰' }));
+
+    var side = el('aside', { 'class': 'term-side' });
+    var notes = el('details', { 'class': 'notes' }, [
+      el('summary', { text: '批注' }),
+      el('div', { 'class': 'notes-body' }, GZ.notes.map(function (n) {
+        return el('p', {}, [el('span', { 'class': 'note-label', text: n.label }), n.text]);
+      }))
+    ]);
+    if (window.matchMedia && window.matchMedia('(min-width: 1100px)').matches) notes.setAttribute('open', '');
+    side.appendChild(notes);
+
+    root.appendChild(el('div', { 'class': 'term-page' }, [main, side]));
+    document.title = '干支与六十甲子 · 知否知否';
+  }
+
   /* ---------- 入口 ---------- */
   function start() {
     var root = document.getElementById('app');
@@ -484,6 +694,11 @@
     } else if (page === 'jieri') {
       var m2 = /[?&]id=([^&]+)/.exec(location.search);
       if (m2) renderFestival(root, decodeURIComponent(m2[1])); else renderFestivalList(root);
+    } else if (page === 'shichen') {
+      var m3 = /[?&]id=([^&]+)/.exec(location.search);
+      if (m3) renderShichen(root, decodeURIComponent(m3[1])); else renderShichenList(root);
+    } else if (page === 'ganzhi') {
+      renderGanzhi(root);
     }
   }
   start();
