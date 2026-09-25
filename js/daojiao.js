@@ -11,6 +11,7 @@
   var PAGE_LINKS = {
     '上古神话': { href: 'shenhua.html', withId: true },
     '民间神灵': { href: 'shenling.html', withId: true },
+    '佛教体系': { href: 'fojiao.html', withId: true },
     '山海经异兽': { href: 'shanhai.html', withId: true },
     '二十八宿': { href: 'xingxiu.html', withId: false }
   };

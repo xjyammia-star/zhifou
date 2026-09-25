@@ -432,3 +432,52 @@ a.sl-syslink:hover { background: rgba(201, 169, 97, 0.16); color: var(--gold-sof
   .dj-tower { max-width: 420px; }
   .dj-panel { padding: 18px 16px; }
 }
+
+/* ==========================================================
+   佛教体系（六道轮回圆盘 + 三界 + 卡片墙）：.fj-*
+   详情弹窗、卡片墙沿用 .sl-* 的样式，标签页沿用 .sh-tab
+   ========================================================== */
+.fj-tabpage { display: flex; flex-direction: column; gap: 28px; padding-top: 14px; }
+.fj-tabpage[hidden] { display: none; }
+.fj-explore { display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 6fr); gap: 32px; align-items: start; }
+.fj-wheel-wrap { display: flex; flex-direction: column; align-items: center; gap: 8px; }
+.fj-wheel { width: 100%; max-width: 520px; height: auto; display: block; }
+.fj-hint { font-size: 13px; letter-spacing: 0.15em; color: var(--star-muted); }
+.fj-wheel-ring { fill: none; stroke: var(--gold-dim); stroke-width: 1; stroke-dasharray: 3 6; }
+.fj-wheel-arrow { fill: none; stroke: var(--gold); stroke-width: 1.6; stroke-linecap: round; stroke-linejoin: round; }
+.fj-sector { cursor: pointer; outline: none; }
+.fj-sector-bg { fill: rgba(201, 169, 97, 0.10); stroke: var(--gold-dim); stroke-width: 1.2; transition: fill 0.2s, stroke 0.2s; }
+.fj-sector:hover .fj-sector-bg { fill: rgba(201, 169, 97, 0.22); stroke: var(--gold); }
+.fj-sector:focus-visible .fj-sector-bg { stroke: var(--gold-soft); stroke-width: 2.6; }
+.fj-sector.is-on .fj-sector-bg { fill: var(--gold); stroke: var(--gold-soft); }
+.fj-sector-name { font-family: var(--display); font-size: 27px; text-anchor: middle; fill: var(--gold-soft); pointer-events: none; }
+.fj-sector-sub { font-size: 12px; letter-spacing: 0.1em; text-anchor: middle; fill: var(--star-muted); pointer-events: none; }
+.fj-sector.is-on .fj-sector-name, .fj-sector.is-on .fj-sector-sub { fill: var(--night); }
+.fj-hub { fill: var(--night-2); stroke: var(--gold); stroke-width: 1.4; }
+.fj-hub-title { font-family: var(--display); font-size: 26px; text-anchor: middle; fill: var(--gold-soft); }
+.fj-hub-sub { font-size: 12px; letter-spacing: 0.15em; text-anchor: middle; fill: var(--star-muted); }
+
+.fj-panel {
+  display: flex; flex-direction: column; gap: 14px; padding: 22px 24px;
+  background: var(--night-2); border: 1px solid var(--gold-dim); border-top: 2px solid var(--gold); border-radius: 2px;
+}
+.fj-panel-head { display: flex; align-items: center; flex-wrap: wrap; gap: 8px 14px; }
+.fj-panel-name { font-family: var(--display); font-size: 36px; line-height: 1.2; color: var(--gold-soft); }
+.fj-panel-line { font-size: 16px; line-height: 1.8; color: var(--gold); }
+
+.fj-worlds { display: flex; flex-direction: column; gap: 10px; }
+.fj-world {
+  display: grid; grid-template-columns: 110px minmax(0, 1fr); gap: 18px; padding: 16px 20px;
+  background: var(--night-2); border: 1px solid var(--gold-dim); border-left: 3px solid var(--gold-dim); border-radius: 2px;
+  transition: border-color 0.25s, background 0.25s;
+}
+.fj-world.is-hit { border-color: var(--gold); border-left-color: var(--gold); background: var(--night-3); }
+.fj-world-name { font-family: var(--display); font-size: 30px; line-height: 1.2; color: var(--gold-soft); }
+.fj-world-body { display: flex; flex-direction: column; gap: 8px; }
+.fj-world-line { font-size: 15px; line-height: 1.8; color: var(--gold); }
+@media (max-width: 860px) {
+  .fj-explore { grid-template-columns: minmax(0, 1fr); gap: 20px; }
+  .fj-wheel { max-width: 420px; }
+  .fj-panel { padding: 18px 16px; }
+  .fj-world { grid-template-columns: minmax(0, 1fr); gap: 8px; padding: 14px 14px; }
+}

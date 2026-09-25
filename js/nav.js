@@ -29,6 +29,7 @@
         { page: 'xingxiu', label: '二十八宿', href: 'xingxiu.html' },
         { page: 'shenling', label: '民间神灵', href: 'shenling.html' },
         { page: 'daojiao', label: '道教神谱', href: 'daojiao.html' },
+        { page: 'fojiao', label: '佛教体系', href: 'fojiao.html' },
         { page: 'shanhai', label: '山海经异兽', href: 'shanhai.html' }
       ]
     }
