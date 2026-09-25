@@ -12,6 +12,27 @@
   var BIG_TERMS = ['春分', '夏至', '秋分', '冬至'];
   var JR = window.ZHIFOU_JIERI || null;
 
+  /* 配图：目前只有“秋分”“中秋节”两张水墨意境插画样稿，其余词条会陆续补上。
+     没有配图的词条不受影响，页面照常显示，只是没有图片区块。 */
+  var TERM_IMAGES = {
+    '秋分': { file: '秋分.jpg', caption: '雷始收声，蛰虫坯户', source: '《月令七十二候集解》' }
+  };
+  var FEST_IMAGES = {
+    '中秋节': { file: '中秋节.jpg', caption: '但愿人长久，千里共婵娟', source: '苏轼《水调歌头》' }
+  };
+  function imageBlock(kind, name) {
+    var info = (kind === 'term' ? TERM_IMAGES : FEST_IMAGES)[name];
+    if (!info) return null;
+    var folder = kind === 'term' ? '节气' : '节日';
+    return el('div', { 'class': 'term-image' }, [
+      el('img', { src: 'img/' + folder + '/' + encodeURIComponent(info.file), alt: name + ' · 水墨意境插画', loading: 'lazy' }),
+      el('p', { 'class': 'term-image-caption' }, [
+        info.caption,
+        info.source ? el('span', { 'class': 'term-image-source', text: info.source }) : null
+      ])
+    ]);
+  }
+
   /* ---------- 小工具 ---------- */
   function el(tag, attrs, kids) {
     var n = document.createElement(tag);
@@ -298,6 +319,8 @@
     main.appendChild(el('div', { 'class': 'term-nav' }, [navItem('上一个', prevName, true), navItem('下一个', nextName, false)]));
 
     var side = el('aside', { 'class': 'term-side' });
+    var img = imageBlock('term', name);
+    if (img) side.appendChild(img);
     var notes = el('details', { 'class': 'notes' }, [
       el('summary', { text: '批注' }),
       el('div', { 'class': 'notes-body' }, entry.notes.map(function (n) {
@@ -412,6 +435,8 @@
     ]));
 
     var side = el('aside', { 'class': 'term-side' });
+    var img = imageBlock('festival', name);
+    if (img) side.appendChild(img);
     var notes = el('details', { 'class': 'notes' }, [
       el('summary', { text: '批注' }),
       el('div', { 'class': 'notes-body' }, entry.notes.map(function (n) {

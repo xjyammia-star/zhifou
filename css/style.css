@@ -184,6 +184,11 @@ h1, h2, h3 { margin: 0; font-weight: 400; }
 .notes-body p { font-size: 13.5px; line-height: 1.85; color: var(--grey-4); }
 .notes-body .note-label { color: var(--autumn-deep); margin-right: 1em; }
 
+.term-image { margin-bottom: 24px; }
+.term-image img { display: block; width: 100%; height: auto; border: 1px solid var(--line-strong); box-shadow: 0 6px 18px rgba(43, 43, 43, 0.18); }
+.term-image-caption { margin-top: 12px; font-family: var(--display); font-size: 16px; line-height: 1.7; color: var(--grey-3); text-align: center; }
+.term-image-source { display: block; margin-top: 2px; font-family: var(--body); font-size: 12px; letter-spacing: 0.15em; color: var(--grey-2); }
+
 .season-block { margin-top: 36px; }
 .season-block:first-of-type { margin-top: 0; }
 .term-grid { display: grid; grid-template-columns: repeat(6, minmax(0, 1fr)); gap: 12px; margin-top: 14px; }
