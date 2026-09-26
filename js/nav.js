@@ -54,12 +54,10 @@
       items: [
         { page: 'wu', label: '物的入口', href: 'wu.html' },
         { page: 'wenfang', label: '文房四宝', href: 'wenfang.html' },
-        { page: 'wenfang-diangu', label: '典故与演变', href: 'wenfang-diangu.html' },
         { page: 'faming', label: '四大发明', href: 'faming.html' },
-        { page: 'zaozhi', label: '造纸术', href: 'zaozhi.html' },
-        { page: 'yinshua', label: '印刷术', href: 'yinshua.html' },
-        { page: 'huoyao', label: '火药', href: 'huoyao.html' },
-        { page: 'zhinanzhen', label: '指南针', href: 'zhinanzhen.html' }
+        { page: 'taoci', label: '陶瓷', href: 'taoci.html' },
+        { page: 'qingtong', label: '青铜器与玉器', href: 'qingtong.html' },
+        { page: 'fushi', label: '服饰', href: 'fushi.html' }
       ]
     },
     {
@@ -90,7 +88,13 @@
      这里写明它们"算作"哪一项，用来高亮 */
   var ALIAS = {
     'ganzhi': 'shichen',
-    'shengxiao-kepu': 'shengxiao'
+    'shengxiao-kepu': 'shengxiao',
+    /* 文房四宝的第二页、四大发明的四个分页，都算作各自那一个标签 */
+    'wenfang-diangu': 'wenfang',
+    'zaozhi': 'faming',
+    'yinshua': 'faming',
+    'huoyao': 'faming',
+    'zhinanzhen': 'faming'
   };
 
   var page = document.body.getAttribute('data-page') || '';

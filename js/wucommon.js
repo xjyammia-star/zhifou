@@ -30,6 +30,11 @@
     yinshua: '<rect x="12" y="26" width="40" height="26" rx="3"' + A + '/><path d="M20 34 H44 M20 42 H36"/><path d="M22 26 V14 H42 V26"/>',
     huoyao: '<circle cx="32" cy="30" r="5"' + A + '/><path d="M32 8 V18 M32 42 V52 M10 30 H20 M44 30 H54 M16 14 L23 21 M41 39 L48 46 M48 14 L41 21 M23 39 L16 46"/>',
     zhinanzhen: '<circle cx="32" cy="32" r="22"/><path d="M32 12 L38 32 L32 52 L26 32 Z"' + A + '/><circle cx="32" cy="32" r="2.5" fill="currentColor"/>',
+    /* 厅堂里的器物 */
+    taoci: '<path d="M26 8 H38 M27 8 C26 16 22 20 22 30 C22 40 16 42 16 50 Q16 56 24 56 H40 Q48 56 48 50 C48 42 42 40 42 30 C42 20 38 16 37 8"' + A + '/><path d="M22 30 H42 M20 42 H44"/>',
+    qingtong: '<path d="M20 22 V36 Q20 44 32 44 Q44 44 44 36 V22 Z"' + A + '/><path d="M16 22 H48"/><path d="M22 22 V12 M42 22 V12"/><path d="M24 44 V56 M32 46 V56 M40 44 V56"/><path d="M26 30 H38"/>',
+    yu: '<circle cx="32" cy="32" r="22"' + A + '/><circle cx="32" cy="32" r="7"/><path d="M18 20 q6 -6 14 -6 M46 44 q-6 6 -14 6"/>',
+    fushi: '<path d="M22 10 L32 16 L42 10 L54 22 L47 30 L44 26 V56 H20 V26 L17 30 L10 22 Z"' + A + '/><path d="M32 16 V56"/><path d="M28 22 H36"/>',
     /* 造纸七步 */
     z1: '<path d="M12 46 L30 18 M18 48 L36 20 M24 50 L42 22"/><path d="M40 34 H54 V50 H36 Z"' + A + '/>',
     z2: '<path d="M14 30 H50 V50 Q50 54 46 54 H18 Q14 54 14 50 Z"' + A + '/><path d="M10 30 H54"/><path d="M24 24 q-4 -5 0 -9 M34 24 q-4 -5 0 -9 M44 24 q-4 -5 0 -9"/>',

@@ -8,7 +8,7 @@
   var el = W.el;
 
   /* 每一格里放的东西（小图标） */
-  var ICON = { '笔': 'bi', '墨': 'mo', '纸': 'zhi', '砚': 'yan', '造纸术': 'zaozhi', '印刷术': 'yinshua', '火药': 'huoyao', '指南针': 'zhinanzhen' };
+  var ICON = { '笔': 'bi', '墨': 'mo', '纸': 'zhi', '砚': 'yan', '造纸术': 'zaozhi', '印刷术': 'yinshua', '火药': 'huoyao', '指南针': 'zhinanzhen', '陶瓷': 'taoci', '青铜器': 'qingtong', '玉器': 'yu', '服饰': 'fushi' };
 
   function cell(c) {
     var kids = [

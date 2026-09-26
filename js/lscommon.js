@@ -88,8 +88,14 @@
       }
       return mk(tabKey, it.name, o);
     });
-    var longName = s.items.some(function (it) { return it.name.length > 8; });
-    return grid(list, (b.grid ? b.grid + ' ' : '') + (hasFold ? 'has-fold' : 'is-even') + (longName ? ' has-long' : ''));
+    var g = grid(list, (b.grid ? b.grid + ' ' : '') + (hasFold ? 'has-fold' : 'is-even'));
+    if (hasFold) {
+      /* 收起时同一排的卡片一样高；点开某一张时，这一排改成各自的高度，免得邻居被撑出一大块空白 */
+      list.forEach(function (c) {
+        c.addEventListener('toggle', function () { g.classList.toggle('has-open', !!g.querySelector('details[open]:not(.is-static)')); });
+      });
+    }
+    return g;
   }
 
   /* ---------- 表格：cols = [[列标题, 字段名 | '@name', 可选的改写函数], ...] ---------- */
@@ -144,7 +150,7 @@
     }
     foot.push(Z.see(D));
     Z.mount(root, [Z.head(D, cfg.eyebrow), tabsApi.node].concat(foot, Z.tipNotes(D)));
-    document.title = cfg.title + ' · 礼与思 · 知否知否';
+    document.title = cfg.title + (cfg.suffix || ' · 礼与思 · 知否知否');
     Z.openFromQuery();
   }
 
