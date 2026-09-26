@@ -245,23 +245,102 @@
     return svg;
   }
 
-  /* ---------- 首页底部：四个板块入口（每个板块用自己的颜色） ---------- */
-  var PLATES = [
-    { key: 'shi', name: '时', href: 'jieqi.html', desc: '节气 · 节日 · 时辰 · 生肖' },
-    { key: 'shen', name: '神', href: 'shen.html', desc: '神话 · 星宿 · 神灵 · 山海经' },
-    { key: 'jianzhu', name: '建筑', href: 'jianzhu.html', desc: '木构 · 屋顶 · 园林 · 楼阁' },
-    { key: 'wu', name: '物', href: 'wu.html', desc: '文房四宝 · 四大发明' }
-  ];
-  function buildPlates() {
-    return el('section', { 'class': 'plates-wrap', 'aria-label': '四个板块' }, [
-      el('div', { 'class': 'section-title', text: '四个板块' }),
-      el('div', { 'class': 'plates' }, PLATES.map(function (p) {
-        return el('a', { 'class': 'plate plate-' + p.key, href: p.href, 'aria-label': p.name + '板块：' + p.desc }, [
-          el('span', { 'class': 'plate-name', text: p.name }),
-          el('span', { 'class': 'plate-desc', text: p.desc }),
-          el('span', { 'class': 'plate-go', 'aria-hidden': 'true', text: '进入 →' })
-        ]);
-      }))
+  /* ---------- 首页：抽一张（真正点击抽取） ----------
+     卡池在 data/cards.js（由“生成抽卡数据.js”从各板块资料整理而来）。
+     规则：先在四个板块里等概率选一个，再从这个板块里选一张；最近抽过的十几张不会立刻重复。
+     每天第一次抽到的是“今日一签”，记在浏览器里，当天再打开还是它；之后可以随手再抽。 */
+  var CARDS = window.ZHIFOU_CARDS || null;
+  var PLATE_KEYS = ['shi', 'shen', 'jianzhu', 'wu'];
+  var drawCard = null;       /* 当前翻开的卡；null 表示这一次还没抽 */
+  var drawBusy = false;      /* 翻牌动画进行中，避免每分钟的自动重画打断它 */
+  var drawInit = false;
+  function storeGet(k) { try { return JSON.parse(localStorage.getItem(k) || 'null'); } catch (e) { return null; } }
+  function storeSet(k, v) { try { localStorage.setItem(k, JSON.stringify(v)); } catch (e) { /* 忽略：无痕模式等 */ } }
+  function dayKey(ms) { var d = new Date(ms); return d.getUTCFullYear() + '-' + (d.getUTCMonth() + 1) + '-' + d.getUTCDate(); }
+  function cardById(id) {
+    for (var i = 0; i < CARDS.cards.length; i++) if (CARDS.cards[i].id === id) return CARDS.cards[i];
+    return null;
+  }
+  function pickCard() {
+    var recent = storeGet('zhifou_draw_recent') || [];
+    function fresh(c) { return recent.indexOf(c.id) < 0 && (!drawCard || c.id !== drawCard.id); }
+    var plate = PLATE_KEYS[Math.floor(Math.random() * PLATE_KEYS.length)];
+    var pool = CARDS.cards.filter(function (c) { return c.plate === plate && fresh(c); });
+    if (!pool.length) pool = CARDS.cards.filter(fresh);
+    if (!pool.length) pool = CARDS.cards;
+    var c = pool[Math.floor(Math.random() * pool.length)];
+    recent.unshift(c.id);
+    storeSet('zhifou_draw_recent', recent.slice(0, 15));
+    return c;
+  }
+  function drawFace(c) {
+    var myth = c.kind === 'm';
+    return el('div', { 'class': 'draw-face dc-' + c.plate + (myth ? ' is-myth' : '') }, [
+      el('div', { 'class': 'draw-eyebrow' }, [
+        el('span', { 'class': 'draw-dot', 'aria-hidden': 'true' }),
+        (CARDS.plates[c.plate] || '') + ' · ' + c.cat + (myth ? ' · 这话对吗？' : '')
+      ]),
+      el('div', { 'class': 'draw-name' + (c.name.length > 8 ? ' is-long' : ''), text: c.name }),
+      el('p', { 'class': 'draw-line', text: (myth ? '其实：' : '') + c.line }),
+      el('a', { 'class': 'draw-go', href: c.href, text: '去看看 →' })
+    ]);
+  }
+  function buildDraw() {
+    if (!CARDS || !CARDS.cards || !CARDS.cards.length || !CARDS.plates) return null;
+    var today = dayKey(beijingToday());
+    if (!drawInit) {
+      drawInit = true;
+      var saved = storeGet('zhifou_draw_today');
+      if (saved && saved.day === today) drawCard = cardById(saved.id);
+    }
+    var card = el('div', { 'class': 'draw-card' + (drawCard ? ' is-flipped' : '') });
+    var back = el('button', { 'class': 'draw-back', type: 'button', 'aria-label': '点击抽一张' }, [
+      el('span', { 'class': 'draw-seal', 'aria-hidden': 'true', text: '签' }),
+      el('span', { 'class': 'draw-back-text', text: '点一下，翻开' })
+    ]);
+    var front = el('div', { 'class': 'draw-front', 'aria-live': 'polite' });
+    if (drawCard) front.appendChild(drawFace(drawCard));
+    card.appendChild(back);
+    card.appendChild(front);
+
+    var hint = el('p', { 'class': 'draw-hint', text: drawCard ? '这是今天的一签。' : '点一下卡，翻开今天的一签。' });
+    var again = el('button', { 'class': 'draw-again', type: 'button', text: '再抽一张' });
+    again.hidden = !drawCard;
+
+    function reveal(isFirst) {
+      if (drawBusy) return;
+      drawBusy = true;
+      var c = pickCard();
+      var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      function show() {
+        front.textContent = '';
+        front.appendChild(drawFace(c));
+        drawCard = c;
+        card.classList.add('is-flipped');
+        again.hidden = false;
+        hint.textContent = isFirst ? '这是今天的一签。' : '随手再抽的一张。刷新后会回到今天的一签。';
+        setTimeout(function () { drawBusy = false; }, reduce ? 0 : 750);
+      }
+      if (isFirst) storeSet('zhifou_draw_today', { day: today, id: c.id });
+      if (card.classList.contains('is-flipped')) {
+        card.classList.remove('is-flipped');
+        setTimeout(show, reduce ? 0 : 420);
+      } else {
+        show();
+      }
+    }
+    back.addEventListener('click', function () { reveal(true); });
+    again.addEventListener('click', function () { reveal(false); });
+
+    return el('section', { 'class': 'draw', 'aria-label': '今日一签' }, [
+      el('div', { 'class': 'draw-text' }, [
+        el('span', { 'class': 'draw-kicker', text: '今日一签' }),
+        el('h2', { 'class': 'draw-title', text: '抽一张，看看今天遇见什么' }),
+        el('p', { 'class': 'draw-sub', text: '一位神、一个词、一件器物，或者一个常被说错的说法，从神、时、建筑、物四个板块里随手抽出来。' }),
+        hint,
+        again
+      ]),
+      el('div', { 'class': 'draw-stage' }, [card])
     ]);
   }
 
@@ -354,14 +433,15 @@
       nowStrip = el('div', { 'class': 'now-strip' }, stripKids);
     }
 
-    root.appendChild(el('div', { 'class': 'home' }, [left, right, houRow, upcoming, nowStrip, buildPlates()]));
+    var strip = (upcoming || nowStrip) ? el('div', { 'class': 'info-strip' }, [upcoming, nowStrip]) : null;
+    root.appendChild(el('div', { 'class': 'home' }, [left, right, houRow, strip, buildDraw()]));
     document.title = (name ? name + ' · ' : '') + '知否知否 · 每天读一页中国传统文化';
 
     /* 时辰每两小时才会变，但为了让“此刻”看起来是活的，每分钟悄悄重新画一次首页 */
     if (SC && !homeTimerSet && typeof setInterval === 'function') {
       homeTimerSet = true;
       setInterval(function () {
-        if (document.body.getAttribute('data-page') === 'home') start();
+        if (document.body.getAttribute('data-page') === 'home' && !drawBusy) start();
       }, 60000);
     }
   }
