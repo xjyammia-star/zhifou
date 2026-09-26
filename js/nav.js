@@ -96,7 +96,7 @@
   nav.textContent = '';
   nav.appendChild(link('index.html', '今日一页', page === 'home'));
   SECTIONS.forEach(function (s) {
-    nav.appendChild(link(s.home, s.label, current === s, 'is-section'));
+    nav.appendChild(link(s.home, s.label, current === s, 'is-section sec-' + s.key));
   });
 
   /* 二级导航：只在进入某个板块的页面时出现 */

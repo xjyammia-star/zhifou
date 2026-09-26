@@ -1,0 +1,73 @@
+/* 知否知否 · 首页专用样式（"整站的门面"）
+   只在 body.theme-home（首页）生效，不影响"时""神""建筑""物"任何页面。
+   思路：首页比"时"更亮、更干净；朱砂红只留给"今日"最重要的几处；
+   四个板块各带自己的颜色，在页面底部以"客人"的身份出现。 */
+
+body.theme-home {
+  --paper: #fbf8f1;
+  --paper-top: #fdfbf6;
+  --paper-bottom: #f6f1e4;
+  --card: rgba(255, 255, 255, 0.72);
+  --line: #e2dac6;
+  --line-strong: #d0c6ae;
+}
+
+/* 朱砂红：印章、日晷指针、"今候"卡片；其余交互色一律退回墨色 */
+.theme-home a:hover { color: var(--seal); }
+.theme-home .dial-disk { opacity: 0.6; }
+.theme-home .dial a:hover .dial-label { fill: var(--seal); }
+.theme-home .hou-card.is-now { background: rgba(178, 58, 46, 0.07); border-color: var(--seal); }
+.theme-home .hou-card.is-now .hou-label { color: var(--seal); }
+.theme-home .tag { color: var(--grey-1); border-color: var(--line-strong); }
+.theme-home .upcoming:hover, .theme-home .now-card:hover { border-color: var(--seal); color: var(--ink-deep); }
+.theme-home .upcoming:hover .upcoming-name, .theme-home .now-card:hover .now-name { color: var(--seal); }
+
+/* ---------- 底部：四个板块入口 ---------- */
+.plates-wrap { order: 6; display: flex; flex-direction: column; gap: 14px; margin-top: 12px; min-width: 0; }
+.plates { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }
+.plate {
+  --dot: #7c7466;
+  display: flex; flex-direction: column; justify-content: space-between; gap: 10px;
+  min-height: 116px; padding: 16px 18px 14px;
+  border: 1px solid; border-radius: 2px; text-decoration: none; min-width: 0;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+.plate:hover { transform: translateY(-2px); box-shadow: 0 8px 18px rgba(43, 43, 43, 0.16); }
+.plate-name { display: flex; align-items: center; gap: 10px; font-family: var(--display); font-size: 30px; line-height: 1.2; }
+.plate-name::before { content: ''; width: 8px; height: 8px; border-radius: 50%; background: var(--dot); flex: none; }
+.plate-desc { font-size: 13px; line-height: 1.7; letter-spacing: 0.06em; }
+.plate-go { font-size: 12px; letter-spacing: 0.2em; opacity: 0.75; }
+
+/* 时：纸墨 */
+.plate-shi, .plate-shi:hover { background: #f3ecdf; border-color: #cfc5ae; color: #1f1f1f; }
+.plate-shi { --dot: #2b2b2b; }
+.plate-shi .plate-desc { color: #5a5348; }
+/* 神：夜靛金线 */
+.plate-shen, .plate-shen:hover { background: #0f1420; border-color: #7a6a3f; color: #e8dcc0; }
+.plate-shen { --dot: #c9a961; }
+.plate-shen .plate-desc { color: #9a927d; }
+/* 建筑：木与漆 */
+.plate-jianzhu, .plate-jianzhu:hover { background: #3b271b; border-color: #6a4a36; color: #f1e7d1; }
+.plate-jianzhu { --dot: #d0503f; }
+.plate-jianzhu .plate-desc { color: #cdbf9f; }
+/* 物：天青 */
+.plate-wu, .plate-wu:hover { background: #dce9e6; border-color: #bfd2ce; color: #1d4c50; }
+.plate-wu { --dot: #2c6a6e; }
+.plate-wu .plate-desc { color: #4a6260; }
+
+@media (min-width: 900px) {
+  .plates { grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 16px; }
+  .plate { min-height: 128px; }
+}
+@media (min-width: 1100px) {
+  .plates-wrap { grid-column: 1 / -1; grid-row: 5; margin-top: 20px; }
+}
+@media (max-width: 639px) {
+  .plate { min-height: 108px; padding: 14px 14px 12px; }
+  .plate-name { font-size: 26px; }
+  .plate-desc { font-size: 12.5px; letter-spacing: 0.03em; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .plate { transition: none; }
+  .plate:hover { transform: none; }
+}

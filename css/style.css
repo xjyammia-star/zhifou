@@ -60,6 +60,12 @@ h1, h2, h3 { margin: 0; font-weight: 400; }
 .site-nav a:hover, .site-nav a[aria-current="page"] { color: var(--ink-deep); }
 .site-nav a[aria-current="page"] { box-shadow: inset 0 -1px 0 var(--seal); }
 .site-nav a.is-section { font-size: 17px; letter-spacing: 0.3em; }
+/* 板块色点：每个板块一个固定颜色，在浅色和深色页面上都看得清 */
+.site-nav a.is-section::before { content: ''; flex: none; width: 6px; height: 6px; margin-right: 0.55em; border-radius: 50%; background: var(--dot, #7c7466); }
+.site-nav a.sec-shi { --dot: #8a8272; }
+.site-nav a.sec-shen { --dot: #6f86d0; }
+.site-nav a.sec-jianzhu { --dot: #c4573f; }
+.site-nav a.sec-wu { --dot: #3f8f94; }
 
 /* 二级导航：进入某个板块后，页头下面显示这个板块的全部内容 */
 .sub-nav { border-bottom: 1px solid rgba(43, 43, 43, 0.12); background: rgba(255, 255, 255, 0.25); }
@@ -269,11 +275,13 @@ h1, h2, h3 { margin: 0; font-weight: 400; }
   .term-grid.fest-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
 }
 @media (max-width: 639px) {
-  .site-nav { gap: 12px; }
-  .site-nav a { letter-spacing: 0.06em; white-space: nowrap; }
-  .site-nav a.is-section { letter-spacing: 0.1em; }
-  .brand { gap: 8px; }
-  .brand-name { font-size: 24px; white-space: nowrap; }
+  .header-inner { gap: 8px; }
+  .site-nav { gap: 8px; }
+  .site-nav a { font-size: 13px; letter-spacing: 0.04em; white-space: nowrap; }
+  .site-nav a.is-section { font-size: 15px; letter-spacing: 0.06em; }
+  .site-nav a.is-section::before { width: 4px; height: 4px; margin-right: 0.25em; }
+  .brand { gap: 6px; }
+  .brand-name { font-size: 22px; white-space: nowrap; }
   .home { padding-top: 16px; gap: 20px; }
   .home-right { gap: 18px; }
   .dial { aspect-ratio: auto; max-width: none; container-type: normal; }
@@ -296,4 +304,14 @@ h1, h2, h3 { margin: 0; font-weight: 400; }
   .term-grid.fest-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .fest-date { font-size: 24px; }
   .footer-inner { flex-direction: column; gap: 4px; }
+}
+
+/* 很窄的手机（约 375 像素及以下）：页头再收紧一档，保证导航一行放得下 */
+@media (max-width: 400px) {
+  .header-inner { gap: 4px; }
+  .brand-seal { display: none; }
+  .brand-name { font-size: 20px; }
+  .site-nav { gap: 6px; }
+  .site-nav a { font-size: 12px; letter-spacing: 0.02em; }
+  .site-nav a.is-section { font-size: 14px; letter-spacing: 0.04em; }
 }

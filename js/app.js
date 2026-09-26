@@ -245,6 +245,26 @@
     return svg;
   }
 
+  /* ---------- 首页底部：四个板块入口（每个板块用自己的颜色） ---------- */
+  var PLATES = [
+    { key: 'shi', name: '时', href: 'jieqi.html', desc: '节气 · 节日 · 时辰 · 生肖' },
+    { key: 'shen', name: '神', href: 'shen.html', desc: '神话 · 星宿 · 神灵 · 山海经' },
+    { key: 'jianzhu', name: '建筑', href: 'jianzhu.html', desc: '木构 · 屋顶 · 园林 · 楼阁' },
+    { key: 'wu', name: '物', href: 'wu.html', desc: '文房四宝 · 四大发明' }
+  ];
+  function buildPlates() {
+    return el('section', { 'class': 'plates-wrap', 'aria-label': '四个板块' }, [
+      el('div', { 'class': 'section-title', text: '四个板块' }),
+      el('div', { 'class': 'plates' }, PLATES.map(function (p) {
+        return el('a', { 'class': 'plate plate-' + p.key, href: p.href, 'aria-label': p.name + '板块：' + p.desc }, [
+          el('span', { 'class': 'plate-name', text: p.name }),
+          el('span', { 'class': 'plate-desc', text: p.desc }),
+          el('span', { 'class': 'plate-go', 'aria-hidden': 'true', text: '进入 →' })
+        ]);
+      }))
+    ]);
+  }
+
   /* ---------- 首页：今日一页 ---------- */
   function renderHome(root) {
     var today = beijingToday();
@@ -334,7 +354,7 @@
       nowStrip = el('div', { 'class': 'now-strip' }, stripKids);
     }
 
-    root.appendChild(el('div', { 'class': 'home' }, [left, right, houRow, upcoming, nowStrip]));
+    root.appendChild(el('div', { 'class': 'home' }, [left, right, houRow, upcoming, nowStrip, buildPlates()]));
     document.title = (name ? name + ' · ' : '') + '知否知否 · 每天读一页中国传统文化';
 
     /* 时辰每两小时才会变，但为了让“此刻”看起来是活的，每分钟悄悄重新画一次首页 */
