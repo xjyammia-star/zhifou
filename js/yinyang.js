@@ -25,11 +25,12 @@
     var cards = LS.grid(s.items.map(function (it) {
       var m = Z.fmap(it.f);
       return LS.mk(tabKey, it.name, { isStatic: true, body: [el('p', { 'class': 'ls-plain', text: m['说明'] || '' })] });
-    }));
+    }), 'is-fill');
     return Z.section('阴阳鱼图', [
-      el('div', { 'class': 'ls-wx' }, [
+      Z.note(s.bold['说明']),
+      el('div', { 'class': 'ls-wx is-taiji' }, [
         el('div', { 'class': 'ls-wx-svg zy-paper' }, [svg]),
-        el('div', { 'class': 'ls-wx-side' }, [Z.note(s.bold['说明']), cards])
+        el('div', { 'class': 'ls-wx-side' }, [cards])
       ])
     ]);
   }
@@ -85,20 +86,25 @@
       edges.forEach(function (e) { e.node.setAttribute('class', 'ls-edge is-' + e.kind + (e.a === n || e.b === n ? '' : ' is-dim')); });
       nodes.forEach(function (g, j) { g.setAttribute('class', 'ls-node' + (j === i ? ' is-sel' : '')); });
       panel.textContent = '';
-      panel.appendChild(el('div', { 'class': 'zy-kicker', text: '五行 · ' + (i + 1) + ' / ' + ORDER.length }));
-      panel.appendChild(el('h3', { text: n }));
-      panel.appendChild(el('p', { 'class': 'zy-oneline', text: n + '生' + out(n, 'sheng') + '，' + n + '克' + out(n, 'ke') + '。' }));
-      panel.appendChild(Z.kv([
+      panel.appendChild(el('div', { 'class': 'ls-wxhead' }, [
+        el('h3', { text: n }),
+        el('p', { 'class': 'zy-oneline', text: n + '生' + out(n, 'sheng') + '，' + n + '克' + out(n, 'ke') + '。' }),
+        el('span', { 'class': 'zy-kicker', text: (i + 1) + ' / ' + ORDER.length })
+      ]));
+      var kv = Z.kv([
         ['我生', n + ' 生 ' + out(n, 'sheng')],
         ['生我', inn(n, 'sheng') + ' 生 ' + n],
         ['我克', n + ' 克 ' + out(n, 'ke')],
         ['克我', inn(n, 'ke') + ' 克 ' + n],
         ['常见属性', a['常见属性']],
-        ['方位与季节', a['方位'] || a['季节'] ? (a['方位'] || '') + '　' + (a['季节'] || '') : ''],
+        ['方位季节', (a['方位'] || '') + '　' + (a['季节'] || '')],
         ['颜色', p['颜色']],
         ['五音', p['五音']],
         ['脏腑（中医传统）', p['脏腑（中医传统）']]
-      ]));
+      ]);
+      kv.classList.add('ls-kv2');
+      if (kv.lastChild) kv.lastChild.classList.add('is-wide');
+      panel.appendChild(kv);
     }
     ch = Z.chips(ORDER, show, { aria: '五行' });
     ch.pick(0);

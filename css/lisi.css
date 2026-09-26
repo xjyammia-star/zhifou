@@ -171,7 +171,22 @@ body.theme-ls {
 .ls-name b { font-family: var(--body); font-weight: 400; font-size: 11px; color: var(--zy-muted); }
 
 /* ---------- 五行图 ---------- */
-.ls-wx { display: grid; grid-template-columns: minmax(230px, 340px) minmax(0, 1fr); gap: 20px; align-items: start; }
+.ls-wx { display: grid; grid-template-columns: minmax(230px, 340px) minmax(0, 1fr); gap: 20px; align-items: stretch; }
+.ls-wx.is-taiji { grid-template-columns: minmax(230px, 380px) minmax(0, 1fr); }
+.ls-wx.is-taiji .ls-wx-svg { display: flex; align-items: center; }
+.ls-wx-side > .zy-detail { flex: 1; display: flex; flex-direction: column; }
+.ls-wx-side > .zy-detail .ls-kv2 { flex: 1; align-content: space-evenly; }
+.ls-wx-side .zy-grid.is-fill { flex: 1; grid-template-rows: repeat(3, minmax(0, 1fr)); }
+.ls-wx-side .zy-grid.is-fill .zy-card { display: flex; flex-direction: column; }
+.ls-wxhead { display: flex; align-items: baseline; gap: 14px; flex-wrap: wrap; margin-bottom: 8px; }
+.ls-wxhead h3 { margin: 0; font-size: 32px; line-height: 1.2; }
+.ls-wxhead .zy-oneline { margin: 0; }
+.ls-wxhead .zy-kicker { margin-left: auto; }
+.ls-kv2 { display: grid !important; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px 18px; }
+.ls-kv2 > div { flex-direction: row !important; align-items: baseline; gap: 10px !important; }
+.ls-kv2 dt { white-space: nowrap; letter-spacing: 0.1em; }
+.ls-kv2 dd { line-height: 1.6; }
+.ls-kv2 > div.is-wide { grid-column: 1 / -1; }
 .ls-wx-side { display: flex; flex-direction: column; gap: 12px; min-width: 0; }
 .ls-wx-side .zy-grid { grid-template-columns: minmax(0, 1fr); }
 /* 阴阳鱼图 */
