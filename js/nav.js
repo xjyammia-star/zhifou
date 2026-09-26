@@ -72,6 +72,17 @@
         { page: 'wanwu', label: '天地万物的名字', href: 'wanwu.html' },
         { page: 'yanse', label: '传统颜色', href: 'yanse.html' }
       ]
+    },
+    {
+      key: 'lisi', label: '礼与思', home: 'lisi.html',
+      items: [
+        { page: 'lisi', label: '礼与思入口', href: 'lisi.html' },
+        { page: 'liyi', label: '礼仪', href: 'liyi.html' },
+        { page: 'sixiang', label: '诸子与思想', href: 'sixiang.html' },
+        { page: 'yinyang', label: '阴阳五行与八卦', href: 'yinyang.html' },
+        { page: 'jiaoyu', label: '教育与蒙学', href: 'jiaoyu.html' },
+        { page: 'keju', label: '科举与官职', href: 'keju.html' }
+      ]
     }
   ];
 

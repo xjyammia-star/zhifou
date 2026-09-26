@@ -1,0 +1,185 @@
+/* 知否知否 · "礼与思"板块样式（帛黄赭石）
+   只在 body.theme-ls 的页面生效，不影响其他板块和首页。
+   这个板块沿用“字·语”的排版部件（zy-*，见 ziyu.css 和 zycommon.js），这里只换颜色，并补几样自己的：
+   表格、五服搜索、八卦线条、卦名、五行图。
+   底色：帛黄；纸面：象牙黄；点缀：赭石；小印：朱。请先加载 ziyu.css，再加载本文件。 */
+body.theme-ls {
+  --zy-bg: #dcc78f;
+  --zy-bg-2: #cdb277;
+  --zy-paper: #f8f0d8;
+  --zy-paper-2: #fbf5e2;
+  --zy-ink: #2a2016;
+  --zy-ink-2: #46381f;
+  --zy-muted: #64512f;
+  --zy-line: #cdb98a;
+  --zy-green: #7a3f1c;
+  --zy-green-2: #8f5227;
+  --zy-gold: #7a4520;
+  --zy-gold-d: #6b3a1a;
+  --zy-seal: #a83a2c;
+  --zy-cream: #2a2016;
+  --zy-soft: #46381f;
+  background: var(--zy-bg);
+  background-image: linear-gradient(180deg, #e2cf9a 0%, #d3bc82 100%);
+  color: var(--zy-ink);
+}
+.theme-ls [hidden] { display: none !important; }
+.theme-ls a { color: #7a3f1c; }
+.theme-ls a:hover { color: #a83a2c; }
+.theme-ls a:focus-visible, .theme-ls button:focus-visible, .theme-ls summary:focus-visible, .theme-ls input:focus-visible {
+  outline: 2px solid #7a4520; outline-offset: 3px;
+}
+
+/* 页头页脚（放在 a 的规则后面，才不会被盖掉） */
+.theme-ls .site-header { border-bottom-color: rgba(107, 58, 26, 0.35); }
+.theme-ls .brand, .theme-ls .brand:hover { color: #2a1a0c; }
+.theme-ls .brand-tagline { color: #4a3b25; border-left-color: rgba(107, 58, 26, 0.5); }
+.theme-ls .site-nav a { color: #3a2d1c; }
+.theme-ls .site-nav a:hover, .theme-ls .site-nav a[aria-current="page"] { color: #1f160b; }
+.theme-ls .site-nav a[aria-current="page"] { box-shadow: inset 0 -1px 0 #a83a2c; }
+.theme-ls .sub-nav { border-bottom-color: rgba(107, 58, 26, 0.35); background: rgba(255, 250, 235, 0.35); }
+.theme-ls .sub-nav-mark { color: #a83a2c; border-right-color: rgba(107, 58, 26, 0.5); }
+.theme-ls .sub-nav a { color: #3a2d1c; }
+.theme-ls .sub-nav a:hover, .theme-ls .sub-nav a[aria-current="page"] { color: #1f160b; }
+.theme-ls .sub-nav a[aria-current="page"] { box-shadow: inset 0 -1px 0 #a83a2c; }
+.theme-ls .footer-inner { border-top-color: rgba(107, 58, 26, 0.35); color: #4a3b25; }
+.theme-ls .empty-note { color: #4a3b25; }
+
+/* ---------- 页面骨架：把 ziyu.css 里给深色底写死的字色换成深墨色 ---------- */
+.theme-ls .zy-eyebrow { color: var(--zy-gold); }
+.theme-ls .zy-hook { color: #2a1a0c; }
+.theme-ls .zy-answer { color: #33260f; }
+.theme-ls .zy-lead { color: var(--zy-ink-2); }
+.theme-ls .zy-sec-title { color: var(--zy-gold); }
+.theme-ls .zy-sec-title::after { background: rgba(122, 69, 32, 0.4); }
+.theme-ls .zy-note { color: var(--zy-ink-2); }
+.theme-ls .zy-remind { color: #5a3410; border-left-color: var(--zy-gold); }
+.theme-ls .zy-callout { color: #33260f; border-color: rgba(122, 69, 32, 0.6); background: rgba(255, 250, 235, 0.4); }
+.theme-ls .zy-subtitle { color: var(--zy-gold); }
+
+/* 标签页与选项条 */
+.theme-ls .zy-tab, .theme-ls .zy-chip { color: #3a2d1c; border-color: rgba(122, 69, 32, 0.55); }
+.theme-ls .zy-tab:hover, .theme-ls .zy-chip:hover { background: rgba(122, 69, 32, 0.12); }
+.theme-ls .zy-tab[aria-selected="true"], .theme-ls .zy-chip[aria-pressed="true"] { background: #7a4520; border-color: #7a4520; color: #fbf1d6; }
+
+/* 卡片 */
+.theme-ls .zy-card { border-color: var(--zy-line); }
+.theme-ls .zy-card-name { color: #6b3a1a; }
+.theme-ls .zy-card.has-sub > summary { min-height: 0; }
+.theme-ls .zy-card.is-hit { box-shadow: 0 0 0 3px #a83a2c; }
+.theme-ls .zy-kv .is-remind dd { background: #f3e6be; }
+.theme-ls .zy-kv .is-quote dd { color: #6b3a1a; }
+.theme-ls .zy-detail h3, .theme-ls .zy-oneline { color: #6b3a1a; }
+.theme-ls .ls-plain { margin: 0; font-size: 14.5px; line-height: 1.9; color: var(--zy-ink-2); }
+.theme-ls .ls-links a { margin-right: 1em; }
+
+/* 常见说法、另见、小提示、批注 */
+.theme-ls .zy-see-label { color: #5a4a2c; }
+.theme-ls .zy-see a { border-color: rgba(122, 69, 32, 0.5); }
+.theme-ls .zy-see a:hover { background: rgba(122, 69, 32, 0.12); }
+.theme-ls .zy-tip { border-color: rgba(122, 69, 32, 0.6); }
+.theme-ls .zy-tip p { color: #33260f; }
+.theme-ls .zy-notes { border-left-color: var(--zy-gold); }
+.theme-ls .zy-notes summary { color: #5a4a2c; }
+.theme-ls .zy-notes-body p { color: var(--zy-ink-2); }
+.theme-ls .zy-route-title { color: #6b3a1a; }
+.theme-ls .zy-btn { color: var(--zy-green); border-color: var(--zy-green-2); }
+.theme-ls .zy-btn:hover { background: var(--zy-green); color: var(--zy-paper); }
+
+/* ---------- 表格 ---------- */
+.ls-tablewrap { overflow-x: auto; padding: 4px 8px; }
+.ls-table { width: 100%; border-collapse: collapse; font-size: 14.5px; line-height: 1.8; color: var(--zy-ink-2); }
+.ls-table th { text-align: left; font-weight: 400; font-size: 12px; letter-spacing: 0.2em; color: var(--zy-gold-d); padding: 10px 12px; border-bottom: 1px solid var(--zy-line); white-space: nowrap; }
+.ls-table td { padding: 9px 12px; border-bottom: 1px dashed var(--zy-line); vertical-align: top; }
+.ls-table td.is-name { font-family: var(--display); font-size: 19px; line-height: 1.5; color: #6b3a1a; white-space: nowrap; }
+.ls-table.is-narrow td.is-name, .ls-table.is-narrow th:first-child { width: 1%; padding-right: 28px; }
+.ls-table tr:last-child td { border-bottom: 0; }
+.ls-table tr.is-hit td { background: #f3e6be; }
+.ls-check {
+  display: inline-block; margin-left: 0.4em; padding: 0 6px; font-style: normal; font-size: 11.5px; line-height: 18px;
+  letter-spacing: 0.1em; color: #7a2a20; border: 1px solid #a83a2c; border-radius: 2px; vertical-align: 1px; white-space: nowrap;
+}
+
+/* 五服：查亲属 */
+.ls-searchbar { display: flex; flex-direction: column; gap: 8px; }
+.ls-search {
+  width: 100%; max-width: 440px; min-height: 44px; padding: 8px 14px; font-family: var(--body); font-size: 15px; color: var(--zy-ink);
+  background: var(--zy-paper-2); border: 1px solid var(--zy-green-2); border-radius: 3px;
+}
+.ls-count { min-height: 1.9em; }
+
+/* ---------- 八卦：用线条画，不依赖字体里有没有卦符 ---------- */
+.ls-guas { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 12px; }
+.ls-gua { padding: 16px 12px 14px; text-align: center; display: flex; flex-direction: column; gap: 3px; min-width: 0; }
+.ls-gua.is-hit { box-shadow: 0 0 0 3px #a83a2c; }
+.ls-gua-name { font-family: var(--display); font-size: 30px; line-height: 1.3; color: #6b3a1a; }
+.ls-gua-nat { font-size: 13.5px; line-height: 1.7; color: var(--zy-ink-2); }
+.ls-gua-sub { font-size: 12.5px; line-height: 1.7; color: var(--zy-muted); }
+.ls-trigram { display: flex; flex-direction: column; gap: 7px; width: 68px; margin: 2px auto 8px; }
+.ls-yao { display: flex; gap: 10px; height: 9px; }
+.ls-yao i { flex: 1; background: #5b3016; border-radius: 1px; }
+
+/* 六十四卦的卦名、十三经名单 */
+.ls-hexgroup { padding: 12px 16px 14px; display: flex; flex-direction: column; gap: 8px; }
+.ls-hexlabel { font-size: 12px; letter-spacing: 0.2em; color: var(--zy-gold-d); }
+.ls-hexnames, .ls-names { display: flex; flex-wrap: wrap; gap: 6px; }
+.ls-hex, .ls-name {
+  display: inline-flex; align-items: baseline; gap: 6px; padding: 3px 10px; font-family: var(--display); font-size: 21px; line-height: 1.5;
+  color: #6b3a1a; background: var(--zy-paper-2); border: 1px solid var(--zy-line); border-radius: 3px;
+}
+.ls-hex b { font-family: var(--body); font-weight: 400; font-size: 11px; color: var(--zy-muted); }
+.ls-names { padding: 12px 16px; }
+.ls-name b { font-family: var(--body); font-weight: 400; font-size: 11px; color: var(--zy-muted); }
+
+/* ---------- 五行图 ---------- */
+.ls-wx { display: grid; grid-template-columns: minmax(230px, 340px) minmax(0, 1fr); gap: 20px; align-items: start; }
+.ls-wx-side { display: flex; flex-direction: column; gap: 12px; min-width: 0; }
+.ls-wx-svg { padding: 10px; }
+.ls-wx-svg svg { display: block; width: 100%; height: auto; }
+.ls-node { cursor: pointer; }
+.ls-node circle { stroke: #fbf1d6; stroke-width: 3; }
+.ls-node.is-sel circle { stroke: #2a1a0c; stroke-width: 4; }
+.ls-node text { font-family: var(--display); font-size: 28px; fill: #fff; text-anchor: middle; dominant-baseline: central; pointer-events: none; }
+.ls-edge { fill: none; stroke-width: 2.4; transition: opacity 0.2s; }
+.ls-edge.is-sheng { stroke: #7a4520; }
+.ls-edge.is-ke { stroke: #a83a2c; stroke-dasharray: 6 5; }
+.ls-edge.is-dim { opacity: 0.16; }
+.ls-legend { display: flex; flex-wrap: wrap; gap: 6px 18px; font-size: 12.5px; color: var(--zy-muted); padding: 0 6px 6px; }
+.ls-legend i { display: inline-block; width: 26px; height: 0; border-top: 2.4px solid #7a4520; vertical-align: middle; margin-right: 6px; }
+.ls-legend i.is-ke { border-top: 2.4px dashed #a83a2c; }
+
+/* ---------- 入口：一排帛书 ---------- */
+.theme-ls .zy-shelf { background: rgba(255, 250, 235, 0.35); border-bottom-color: #4a2a14; }
+.theme-ls .zy-book { color: #fbf1d6; }
+.theme-ls .zy-book:hover { color: #fff8dc; }
+.theme-ls .zy-book::before { background: rgba(242, 217, 141, 0.7); box-shadow: 0 6px 0 rgba(242, 217, 141, 0.35); }
+.theme-ls .zy-book::after { content: ''; position: absolute; left: -2px; right: -2px; bottom: -6px; height: 8px; border-radius: 4px; background: #3d2412; }
+.theme-ls .zy-book-char { color: #f2d98d; }
+.theme-ls .zy-book-line { color: #f6ecd0; }
+.theme-ls .zy-book-tags { color: #ecdcb0; }
+.theme-ls .zy-book:nth-child(1) { background: #7a4520; }
+.theme-ls .zy-book:nth-child(2) { background: #6b4a2a; }
+.theme-ls .zy-book:nth-child(3) { background: #7d4a35; }
+.theme-ls .zy-book:nth-child(4) { background: #6f5530; }
+.theme-ls .zy-book:nth-child(5) { background: #5f3f2a; }
+.theme-ls .zy-route-links a { color: var(--zy-green); }
+.theme-ls .zy-route-links a:hover { background: var(--zy-green); color: var(--zy-paper); }
+
+/* ---------- 平板与手机 ---------- */
+@media (max-width: 899px) {
+  .ls-wx { grid-template-columns: minmax(0, 1fr); }
+  .ls-wx-svg { max-width: 380px; margin: 0 auto; width: 100%; }
+}
+@media (max-width: 639px) {
+  .ls-tablewrap { padding: 2px 4px; }
+  .ls-table thead { display: none; }
+  .ls-table, .ls-table tbody, .ls-table tr, .ls-table td { display: block; width: 100%; }
+  .ls-table tr { padding: 8px 4px; border-bottom: 1px solid var(--zy-line); }
+  .ls-table tr:last-child { border-bottom: 0; }
+  .ls-table td { border: 0; padding: 2px 8px; white-space: normal; }
+  .ls-table td.is-name { white-space: normal; font-size: 21px; }
+  .ls-table.is-narrow td.is-name { width: 100%; padding-right: 8px; }
+  .ls-table td[data-label]:not(.is-name)::before { content: attr(data-label) "　"; font-size: 12px; letter-spacing: 0.15em; color: var(--zy-gold-d); }
+  .ls-guas { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .ls-hex, .ls-name { font-size: 19px; }
+}

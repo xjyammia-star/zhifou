@@ -40,6 +40,7 @@ body.theme-home {
 .theme-home .site-nav a.sec-jianzhu { --dot: #f4ab95; }
 .theme-home .site-nav a.sec-wu { --dot: #86d3d6; }
 .theme-home .site-nav a.sec-ziyu { --dot: #9ad3a8; }
+.theme-home .site-nav a.sec-lisi { --dot: #e6c26a; }
 
 /* 印章与高亮：秋金 */
 .theme-home .brand-seal, .theme-home .seal { background: var(--gold); }
@@ -170,6 +171,8 @@ body.theme-home {
 .dc-wu .draw-line { color: #2f4a4c; }
 .dc-ziyu { --dot: #d3bf7c; background: #2b4237; border-color: #d3bf7c; color: #ecefe3; }
 .dc-ziyu .draw-line { color: #cdd8c8; }
+.dc-lisi { --dot: #8f5227; background: #dcc78f; border-color: #8f5227; color: #2a2016; }
+.dc-lisi .draw-line { color: #46381f; }
 
 /* ---------- 桌面：抽卡区横跨整页，放在日晷下面；信息带放在右栏 ---------- */
 @media (min-width: 1100px) {

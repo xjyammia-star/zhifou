@@ -67,6 +67,7 @@ h1, h2, h3 { margin: 0; font-weight: 400; }
 .site-nav a.sec-jianzhu { --dot: #c4573f; }
 .site-nav a.sec-wu { --dot: #3f8f94; }
 .site-nav a.sec-ziyu { --dot: #6fae86; }
+.site-nav a.sec-lisi { --dot: #b98a35; }
 
 /* 二级导航：进入某个板块后，页头下面显示这个板块的全部内容 */
 .sub-nav { border-bottom: 1px solid rgba(43, 43, 43, 0.12); background: rgba(255, 255, 255, 0.25); }
