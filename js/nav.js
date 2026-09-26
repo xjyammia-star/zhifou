@@ -54,7 +54,12 @@
       items: [
         { page: 'wu', label: '物的入口', href: 'wu.html' },
         { page: 'wenfang', label: '文房四宝', href: 'wenfang.html' },
-        { page: 'wenfang-diangu', label: '典故与演变', href: 'wenfang-diangu.html' }
+        { page: 'wenfang-diangu', label: '典故与演变', href: 'wenfang-diangu.html' },
+        { page: 'faming', label: '四大发明', href: 'faming.html' },
+        { page: 'zaozhi', label: '造纸术', href: 'zaozhi.html' },
+        { page: 'yinshua', label: '印刷术', href: 'yinshua.html' },
+        { page: 'huoyao', label: '火药', href: 'huoyao.html' },
+        { page: 'zhinanzhen', label: '指南针', href: 'zhinanzhen.html' }
       ]
     }
   ];
