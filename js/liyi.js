@@ -48,6 +48,7 @@
       { key: 'guan', label: '冠笄与婚礼', blocks: [
         { sec: '冠礼', grid: 'is-wide' },
         { sec: '三加', kind: 'steps', grid: 'is-3' },
+        { sec: '冠礼的后半段', grid: 'is-3' },
         { sec: '笄礼', grid: 'is-wide' },
         { sec: '冠礼与笄礼的差异', kind: 'table', cols: [['项目', '@name'], ['冠礼', '冠礼'], ['笄礼', '笄礼']] },
         { sec: '婚礼', grid: 'is-wide' },

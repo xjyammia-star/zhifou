@@ -46,39 +46,50 @@
     return c;
   }
   /* 已经造好的元素（表格行、自己画的卡）也能被 ?id= 找到 */
-  function reg(tabKey, name, node) {
+  function reg(tabKey, name, node, onShow) {
     node.setAttribute('data-ls-name', name);
-    Z.onOpen(name, function () { if (tabKey && tabsApi) tabsApi.show(tabKey); return node; });
+    Z.onOpen(name, function () { if (tabKey && tabsApi) tabsApi.show(tabKey); if (onShow) onShow(); return node; });
     return node;
   }
 
-  /* ---------- 卡片 ---------- */
+  /* ---------- 卡片 ----------
+     文案里有“一句话”的卡：收起时只显示名字和这一句话（高度统一），点开才看到其余字段；
+     没有“一句话”的卡：内容全部摆出来，不折叠。整排卡片在电脑上用等高的行（is-even）；有折叠卡的排不用等高行，避免点开一张时把邻居撑高。 */
+  var QUOTE = ['原文', '名句', '祝辞', '字辞'];
   function cardsIn(s, tabKey, b) {
     var mode = b.mode || 'open';
     var skip = (b.skip || []).slice();
     if (b.kind === 'steps') skip.push('顺序');
+    var hasFold = false;
     var list = s.items.map(function (it, i) {
       var m = Z.fmap(it.f);
       var o = {};
       if (b.kind === 'steps') o.tag = m['顺序'] || (b.stepFmt ? b.stepFmt(i) : '第 ' + (i + 1) + ' 步');
-      var rest = it.f.filter(function (p) { return skip.indexOf(p[0]) < 0; });
+      var one = mode !== 'line' ? m['一句话'] : '';
+      var sk = one ? skip.concat(['一句话']) : skip;
+      var rest = it.f.filter(function (p) { return sk.indexOf(p[0]) < 0; });
       if (mode === 'line') {
         o.sub = rest.map(function (p) { return b.lineLabels === false ? p[1] : p[0] + '：' + p[1]; }).join('　');
         o.isStatic = true;
         o.body = [];
+      } else if (one) {
+        o.sub = one;
+        if (rest.length) { o.body = [Z.kv(pairs(it, sk), { quote: QUOTE })]; o.open = false; hasFold = true; }
+        else { o.isStatic = true; o.body = []; }
       } else if (rest.length === 1 && rest[0][0] === '说明') {
         o.body = [el('p', { 'class': 'ls-plain' }, [rich(rest[0][1])])];
-        if (mode === 'fold') o.open = false; else o.isStatic = true;   /* 内容已经全部摆出来的卡，不再画“－”折叠钮 */
+        if (mode === 'fold') { o.open = false; hasFold = true; } else o.isStatic = true;   /* 内容已经全部摆出来的卡，不再画“－”折叠钮 */
       } else if (rest.length) {
-        o.body = [Z.kv(pairs(it, skip))];
-        if (mode === 'fold') o.open = false; else o.isStatic = true;
+        o.body = [Z.kv(pairs(it, skip), { quote: QUOTE })];
+        if (mode === 'fold') { o.open = false; hasFold = true; } else o.isStatic = true;
       } else {
         o.isStatic = true;
         o.body = [];
       }
       return mk(tabKey, it.name, o);
     });
-    return grid(list, b.grid);
+    var longName = s.items.some(function (it) { return it.name.length > 8; });
+    return grid(list, (b.grid ? b.grid + ' ' : '') + (hasFold ? 'has-fold' : 'is-even') + (longName ? ' has-long' : ''));
   }
 
   /* ---------- 表格：cols = [[列标题, 字段名 | '@name', 可选的改写函数], ...] ---------- */
@@ -139,11 +150,21 @@
 
   /* ---------- 小工具：画线条的三爻卦、画 SVG ---------- */
   var TRI = { 0x2630: '111', 0x2631: '011', 0x2632: '101', 0x2633: '001', 0x2634: '110', 0x2635: '010', 0x2636: '100', 0x2637: '000' };
+  function yaos(bits) {
+    return bits.map(function (b) {
+      return el('div', { 'class': 'ls-yao ' + (b === '1' ? 'is-yang' : 'is-yin') }, b === '1' ? [el('i')] : [el('i'), el('i')]);
+    });
+  }
   function trigram(glyph) {
     var bits = (TRI[String(glyph).charCodeAt(0)] || '000').split('');
-    return el('div', { 'class': 'ls-trigram', role: 'img', 'aria-label': glyph }, bits.map(function (b) {
-      return el('div', { 'class': 'ls-yao ' + (b === '1' ? 'is-yang' : 'is-yin') }, b === '1' ? [el('i')] : [el('i'), el('i')]);
-    }));
+    return el('div', { 'class': 'ls-trigram', role: 'img', 'aria-label': glyph }, yaos(bits));
+  }
+  /* 八个卦的名字 → 三爻（从上往下数，1 是阳爻） */
+  var BITS = { '乾': '111', '兑': '011', '离': '101', '震': '001', '巽': '110', '坎': '010', '艮': '100', '坤': '000' };
+  var GLYPH = { '乾': '☰', '兑': '☱', '离': '☲', '震': '☳', '巽': '☴', '坎': '☵', '艮': '☶', '坤': '☷' };
+  function hexagram(up, down, small) {
+    var bits = (BITS[up] + BITS[down]).split('');
+    return el('div', { 'class': 'ls-trigram ls-hexagram' + (small ? ' is-small' : ''), role: 'img', 'aria-label': up + '上' + down + '下' }, yaos(bits));
   }
   function svgEl(tag, attrs) {
     var n = document.createElementNS('http://www.w3.org/2000/svg', tag);
@@ -151,5 +172,5 @@
     return n;
   }
 
-  window.LS = { S: S, rich: rich, pairs: pairs, grid: grid, mk: mk, reg: reg, block: block, mkPage: mkPage, trigram: trigram, svgEl: svgEl };
+  window.LS = { S: S, rich: rich, pairs: pairs, grid: grid, mk: mk, reg: reg, block: block, mkPage: mkPage, trigram: trigram, hexagram: hexagram, BITS: BITS, GLYPH: GLYPH, svgEl: svgEl };
 })();

@@ -14,11 +14,14 @@
       { key: 'ti', label: '教育体系', blocks: [
         { sec: '教育体系的五种形态', kind: 'table', cols: [['形态', '@name'], ['场所或组织', '场所或组织'], ['主要对象与功能', '主要对象与功能']] },
         { sec: '私塾的一天与教学方法', grid: 'is-wide' },
+        { sec: '私塾一天的节奏', kind: 'steps', grid: 'is-3' },
         { sec: '古代教育的五项核心内容', grid: 'is-wide' },
-        { sec: '书院与经典教育', grid: 'is-wide' }
+        { sec: '书院与经典教育', grid: 'is-wide' },
+        { sec: '四大书院', grid: 'is-wide' }
       ] },
       { key: 'meng', label: '蒙学读物', blocks: [
         { sec: '《三字经》', grid: 'is-wide' },
+        { sec: '《三字经》的句子', grid: 'is-wide' },
         { sec: '《百家姓》与《千字文》', grid: 'is-wide' },
         { sec: '其他蒙学读物', grid: 'is-3' }
       ] },

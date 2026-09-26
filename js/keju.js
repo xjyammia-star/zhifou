@@ -22,16 +22,19 @@
       { key: 'guan', label: '官阶与官服', blocks: [
         { sec: '九品十八级', kind: 'table', cols: [['品级', '@name'], ['结构', '结构'], ['说明', '说明']] },
         { sec: '官服与补子', kind: 'table', cols: [['品级', '@name', function (v) { return v.replace(/的补子$/, ''); }], ['文官', '文官'], ['武官', '武官']] },
-        { sec: '六部各管什么', kind: 'table', cols: [['六部', '@name'], ['主要事务', '主要事务'], ['现代化理解时的边界', '现代化理解时的边界']] }
+        { sec: '六部各管什么', kind: 'table', cols: [['六部', '@name'], ['主要事务', '主要事务'], ['现代化理解时的边界', '现代化理解时的边界']] },
+        { sec: '六部下设各司', kind: 'table', cols: [['六部', '@name'], ['下设的司', '下设的司'], ['说明', '说明']] }
       ] },
       { key: 'zhi', label: '官制与术语', blocks: [
         { sec: '中央官制', grid: 'is-3' },
         { sec: '地方与基层', grid: 'is-3' },
         { sec: '官员的身份与升降', grid: 'is-wide' },
-        { sec: '科举里的相关称谓', grid: 'is-wide' }
+        { sec: '科举里的相关称谓', grid: 'is-wide' },
+        { sec: '科举里的更多称谓', kind: 'table', cols: [['称谓', '@name'], ['意思', '意思']] }
       ] },
       { key: 'dian', label: '典故与人物', blocks: [
         { sec: '著名状元', grid: 'is-wide' },
+        { sec: '连中三元的例子', grid: 'is-wide' },
         { sec: '读书的典故', grid: 'is-wide' },
         { sec: '读制度史的三个边界', grid: 'is-3' }
       ] }
