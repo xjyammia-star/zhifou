@@ -25,9 +25,11 @@
   var sws = [];
   var panel = el('div', { 'class': 'zy-detail zy-paper', 'aria-live': 'polite' });
   var groupRemind = el('div', {});
-  var curGroup = 0;
+  var curSel = 0;
+  var hint = el('p', { 'class': 'zy-note', 'aria-live': 'polite' });
 
   function select(i, scroll) {
+    curSel = i;
     sws.forEach(function (b, j) { b.setAttribute('aria-pressed', j === i ? 'true' : 'false'); });
     var c = colors[i], m = c.m, hasColor = /^#/.test(m['近似色'] || '');
     panel.textContent = '';
@@ -57,8 +59,12 @@
   });
 
   var ch = Z.chips(['全部（' + colors.length + '）'].concat(GROUPS.map(function (g) { return GROUP_LABEL[g]; })), function (i) {
-    curGroup = i;
     sws.forEach(function (b) { b.hidden = i > 0 && b.getAttribute('data-group') !== GROUPS[i - 1]; });
+    var vis = sws.filter(function (b) { return !b.hidden; }).length;
+    hint.textContent = '当前显示：' + (i === 0 ? '全部色系' : GROUP_LABEL[GROUPS[i - 1]]) + '，共 ' + vis + ' 个颜色词。点一个色块，看它的说明。';
+    if (sws[curSel] && sws[curSel].hidden) {
+      for (var k = 0; k < sws.length; k++) { if (!sws[k].hidden) { select(k); break; } }
+    }
     groupRemind.textContent = '';
     if (i > 0 && S(GROUPS[i - 1]).bold['提醒']) groupRemind.appendChild(Z.remind(S(GROUPS[i - 1]).bold['提醒']));
   }, { aria: '五个色系', scroll: true });
@@ -86,7 +92,7 @@
   Z.mount(root, [
     Z.head(D, '字·语 · 传统颜色'),
     Z.callout('页面上的色块，是按颜色名称和古义估的近似色，只用来帮助想象，不是标准色号。', '说明'),
-    Z.section('色谱：五十个颜色词', [ch.node, groupRemind, panel, grid]),
+    Z.section('色谱：五十个颜色词', [ch.node, hint, groupRemind, panel, grid]),
     Z.section('颜色名不等于色卡', [
       Z.note(dq.bold['说明']),
       el('div', { 'class': 'zy-grid' }, dq.items.map(function (it) { return Z.card({ name: it.name, sub: Z.fmap(it.f)['例子'], isStatic: true, body: [] }); }))

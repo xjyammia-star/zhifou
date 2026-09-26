@@ -22,6 +22,8 @@ body.theme-zy {
   color: var(--zy-cream);
 }
 .theme-zy a { color: var(--zy-gold); }
+/* 带 hidden 的元素一律真的隐藏（筛选功能靠它）；否则元素自己设了 display 就会盖掉隐藏 */
+.theme-zy [hidden] { display: none !important; }
 .theme-zy a:hover { color: #f0e2a8; }
 .theme-zy a:focus-visible, .theme-zy button:focus-visible, .theme-zy summary:focus-visible {
   outline: 2px solid var(--zy-gold); outline-offset: 3px;

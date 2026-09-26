@@ -24,14 +24,17 @@
       cards.push(c);
       grid.appendChild(c);
     });
+    var hint = el('p', { 'class': 'zy-note', 'aria-live': 'polite' });
     var ch = Z.chips(['全部'].concat(labels), function (i) {
       cards.forEach(function (c) { c.hidden = i > 0 && c.getAttribute('data-group') !== groups[i - 1]; });
+      var n = cards.filter(function (c) { return !c.hidden; }).length;
+      hint.textContent = '当前显示：' + (i === 0 ? '全部' : labels[i - 1]) + '，共 ' + n + ' 张。点开一张看详情。';
     }, { aria: aria, scroll: true });
     ch.pick(0);
     items.forEach(function (it, i) {
       Z.onOpen(it.name, function () { tabsApi.show(tabKey); ch.pick(0); return cards[i]; });
     });
-    return [ch.node, grid];
+    return [ch.node, hint, grid];
   }
 
   /* ---------- 标签一：词源 ---------- */
