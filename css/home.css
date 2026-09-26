@@ -1,32 +1,36 @@
 /* 知否知否 · 首页专用样式（"整站的大门"）
    只在 body.theme-home（首页）生效，不影响"时""神""建筑""物"任何页面。
-   思路：
-   ·整页朱红（红门、红墙的意象），字用象牙色；印章、当前节气、高亮用金色点缀；
-   ·"今日一签"抽卡区用深墨褐，压在朱红上，像一块漆盘；
-   ·抽到的卡，用来源板块自己的颜色（时=纸墨，神=夜靛金线，建筑=木与漆，物=天青）。 */
+   色彩系统（三层）：
+   ·底：暗朱砂红，纵向渐变（顶亮底沉）；
+   ·面板：深枣褐（三候、今日一签的漆盘）；
+   ·字与线：米金（正文 #EBDCC0，次要 #D8C5A5，边框 35% 透明）；
+   ·强调：秋金 #C79A4B（印章、按钮、当前项边框）；卡面用来源板块自己的颜色，外加一圈统一的秋金内描边。 */
 
 body.theme-home {
   --paper: #8a2a22;
-  --paper-top: #9a3128;
-  --paper-bottom: #741f19;
-  --ink: #f7ecd9;
-  --ink-deep: #fff6e6;
-  --grey-1: #f0d9c6;
-  --grey-2: #e6c7b1;
-  --grey-3: #f7e6d3;
-  --grey-4: #eed6c1;
-  --card: rgba(255, 244, 226, 0.09);
-  --line: rgba(247, 236, 217, 0.28);
-  --line-strong: rgba(247, 236, 217, 0.48);
-  --seal-text: #5a1610;
-  --gold: #e9c98a;
-  --cream: #f7ecd9;
-  --lacquer: #24110f;
-  --lacquer-2: #3a1a16;
+  --paper-top: #983026;
+  --paper-bottom: #6f1e18;
+  --ink: #ebdcc0;
+  --ink-deep: #f8edd6;
+  --grey-1: #e4d3b6;
+  --grey-2: #d8c5a5;
+  --grey-3: #eee0c6;
+  --grey-4: #e4d3b6;
+  --card: rgba(50, 24, 21, 0.55);
+  --line: rgba(232, 214, 179, 0.32);
+  --line-strong: rgba(232, 214, 179, 0.45);
+  --seal-text: #2a1410;
+  --gold: #c79a4b;
+  --gold-text: #ecd29a;
+  --gold-hover: #d8ab5b;
+  --cream: #ebdcc0;
+  --jujube: #321815;
+  --lacquer: #2a120f;
+  --lacquer-2: #3a1c17;
 }
-.theme-home a:focus-visible, .theme-home button:focus-visible { outline-color: var(--gold); }
-.theme-home a:hover { color: var(--gold); }
-.theme-home .site-header { border-bottom-color: rgba(247, 236, 217, 0.25); }
+.theme-home a:focus-visible, .theme-home button:focus-visible { outline-color: var(--gold-text); }
+.theme-home a:hover { color: var(--gold-text); }
+.theme-home .site-header { border-bottom-color: var(--line); }
 .theme-home .footer-inner { border-top-color: var(--line); }
 .theme-home .site-nav a[aria-current="page"] { box-shadow: inset 0 -1px 0 var(--gold); }
 
@@ -36,57 +40,77 @@ body.theme-home {
 .theme-home .site-nav a.sec-jianzhu { --dot: #f4ab95; }
 .theme-home .site-nav a.sec-wu { --dot: #86d3d6; }
 
-/* 印章与高亮：金色 */
+/* 印章与高亮：秋金 */
 .theme-home .brand-seal, .theme-home .seal { background: var(--gold); }
 .theme-home .seal { color: var(--seal-text); }
-.theme-home .ornament::before { background: #d9b79f; }
+.theme-home .ornament::before { background: #c9ad8a; }
 .theme-home .ornament::after { background: var(--gold); }
-.theme-home .dial-ring, .theme-home .dial-sep { stroke: #f0d9c6; }
-.theme-home .dial-disk { fill: #fff4e2; opacity: 0.1; }
+
+/* ---------- 节气环：缩小一档，突出中心，其余节气退后 ---------- */
+.theme-home .dial-ring, .theme-home .dial-sep { stroke: #e4d3b6; }
+.theme-home .dial-disk { fill: #fff4e2; opacity: 0.08; }
+.theme-home .dial-label { opacity: 0.62; }
+.theme-home .dial-label.is-big { opacity: 0.86; }
+.theme-home .dial a:hover .dial-label { fill: var(--gold-text); opacity: 1; }
 .theme-home .dial-now, .theme-home .dial-pointer { fill: var(--gold); }
 .theme-home .dial-now-text { fill: var(--seal-text); }
-.theme-home .dial a:hover .dial-label { fill: var(--gold); }
-.theme-home .hou-card.is-now { background: rgba(233, 201, 138, 0.2); border-color: var(--gold); }
-.theme-home .hou-card.is-now .hou-label { color: var(--gold); }
+@media (min-width: 640px) {
+  .theme-home .term-big { font-size: 17.5cqw; }
+}
+@media (min-width: 1100px) {
+  .theme-home .home { --dial: min(clamp(370px, calc(100vh - 300px), 545px), 40vw); }
+}
+
+/* ---------- 右栏层级：主=今日节气；次=三候（实心面板）；辅=细线分隔的三行文字 ---------- */
+.theme-home .hou-card { background: var(--jujube); border-color: var(--line); }
+.theme-home .hou-card.is-now { background: #431f19; border-color: var(--gold); }
+.theme-home .hou-card.is-now .hou-label { color: var(--gold-text); }
 .theme-home .tag { color: var(--grey-1); border-color: var(--line-strong); }
-.theme-home .btn { border-color: var(--cream); }
-.theme-home .btn:hover { background: var(--cream); color: var(--seal-text); }
 
-/* ---------- 信息带：临近节日 · 此刻 · 今日干支 ---------- */
-.info-strip { order: 4; display: flex; flex-wrap: wrap; gap: 10px; min-width: 0; }
+.info-strip { order: 4; display: flex; flex-direction: column; min-width: 0; border-top: 1px solid var(--line); }
 .theme-home .now-strip { display: contents; }
-.theme-home .upcoming { order: 0; flex: 1 1 100%; padding: 9px 14px; gap: 4px 12px; align-items: center; border-color: var(--line-strong); }
-.theme-home .upcoming-name { font-size: 22px; }
-.theme-home .now-card { order: 1; flex: 1 1 calc(50% - 5px); padding: 9px 14px; border-color: var(--line-strong); }
-.theme-home .now-name { font-size: 20px; }
-.theme-home .upcoming:hover, .theme-home .now-card:hover { border-color: var(--gold); color: var(--ink-deep); }
-.theme-home .upcoming:hover .upcoming-name, .theme-home .now-card:hover .now-name { color: var(--gold); }
+.theme-home .upcoming, .theme-home .now-card {
+  flex: none; order: 1; display: flex; flex-direction: row; align-items: baseline; flex-wrap: wrap; gap: 2px 14px;
+  padding: 9px 2px; border: 0; border-bottom: 1px solid var(--line); background: none; min-height: 0;
+}
+.theme-home .upcoming { order: 0; }
+.theme-home .upcoming, .theme-home .now-card { align-self: stretch; }
+.theme-home .upcoming .eyebrow, .theme-home .now-card .eyebrow { min-width: 5.5em; }
+.theme-home .upcoming-name, .theme-home .now-name { font-size: 20px; line-height: 1.4; }
+.theme-home .upcoming-when, .theme-home .now-when { font-size: 13px; color: var(--grey-2); }
+.theme-home .upcoming .tag { margin-left: auto; align-self: center; }
+.theme-home .upcoming:hover, .theme-home .now-card:hover { color: var(--ink-deep); }
+.theme-home .upcoming:hover .upcoming-name, .theme-home .now-card:hover .now-name { color: var(--gold-text); }
 
-/* ---------- 今日一签 ---------- */
+/* 按钮：全页统一——秋金实心、深色字 */
+.theme-home .btn { color: var(--seal-text); background: var(--gold); border-color: var(--gold); font-weight: 600; }
+.theme-home .btn:hover { background: var(--gold-hover); border-color: var(--gold-hover); color: var(--seal-text); }
+
+/* ---------- 今日一签：第二主视觉 ---------- */
 .draw {
-  order: 5; position: relative; display: flex; align-items: center; justify-content: space-between; gap: 40px;
-  padding: 34px 44px; min-width: 0; color: var(--cream); border-radius: 4px;
+  order: 5; position: relative; display: flex; align-items: center; justify-content: space-between; gap: 48px;
+  padding: 38px 52px; min-width: 0; color: var(--cream); border-radius: 4px;
   background:
-    radial-gradient(ellipse at 88% 10%, rgba(233, 201, 138, 0.12), transparent 55%),
+    radial-gradient(ellipse at 88% 10%, rgba(199, 154, 75, 0.14), transparent 55%),
     linear-gradient(135deg, var(--lacquer) 0%, var(--lacquer-2) 100%);
   box-shadow: 0 14px 30px rgba(0, 0, 0, 0.35);
 }
-.draw::before { content: ''; position: absolute; inset: 9px; border: 1px solid rgba(233, 201, 138, 0.35); border-radius: 2px; pointer-events: none; }
-.draw-text { position: relative; flex: 1 1 auto; min-width: 0; display: flex; flex-direction: column; align-items: flex-start; gap: 12px; }
-.draw-kicker { font-size: 13px; letter-spacing: 0.4em; color: var(--gold); }
-.draw-title { font-family: var(--display); font-size: 38px; line-height: 1.3; color: var(--cream); }
-.draw-sub { max-width: 30em; font-size: 14px; line-height: 1.95; color: rgba(247, 236, 217, 0.88); }
-.draw-hint { font-size: 13px; letter-spacing: 0.1em; color: rgba(247, 236, 217, 0.7); min-height: 1.8em; }
+.draw::before { content: ''; position: absolute; inset: 9px; border: 1px solid rgba(199, 154, 75, 0.4); border-radius: 2px; pointer-events: none; }
+.draw-text { position: relative; flex: 1 1 auto; min-width: 0; display: flex; flex-direction: column; align-items: flex-start; gap: 14px; }
+.draw-kicker { font-size: 13px; letter-spacing: 0.4em; color: var(--gold-text); }
+.draw-title { font-family: var(--display); font-size: 46px; line-height: 1.25; color: #f8edd6; }
+.draw-sub { max-width: 30em; font-size: 14px; line-height: 1.95; color: #d8c5a5; }
+.draw-hint { font-size: 13px; letter-spacing: 0.1em; color: #d8c5a5; min-height: 1.8em; }
 .draw-again {
-  min-height: 44px; padding: 8px 24px; font-family: var(--body); font-size: 14px; letter-spacing: 0.2em;
-  color: var(--gold); background: transparent; border: 1px solid rgba(233, 201, 138, 0.7); cursor: pointer;
+  min-height: 48px; padding: 10px 32px; font-family: var(--body); font-size: 15px; font-weight: 600; letter-spacing: 0.25em;
+  color: var(--seal-text); background: var(--gold); border: 1px solid var(--gold); cursor: pointer;
 }
-.draw-again:hover { background: var(--gold); color: var(--lacquer); }
+.draw-again:hover { background: var(--gold-hover); border-color: var(--gold-hover); }
 .draw-again[hidden] { display: none; }
-.draw-again:focus-visible, .draw-back:focus-visible, .draw-go:focus-visible { outline: 2px solid var(--gold); outline-offset: 3px; }
+.draw-again:focus-visible, .draw-back:focus-visible, .draw-go:focus-visible { outline: 2px solid var(--gold-text); outline-offset: 3px; }
 
 /* 翻牌 */
-.draw-stage { position: relative; flex: none; width: 100%; max-width: 480px; height: 304px; perspective: 1400px; }
+.draw-stage { position: relative; flex: none; width: 100%; max-width: 420px; height: 310px; perspective: 1400px; }
 .draw-card { position: relative; width: 100%; height: 100%; transform-style: preserve-3d; transition: transform 0.7s cubic-bezier(0.3, 0.7, 0.2, 1); }
 .draw-card.is-flipped { transform: rotateY(180deg); }
 .draw-back, .draw-front {
@@ -101,12 +125,12 @@ body.theme-home {
 .draw-back {
   appearance: none; -webkit-appearance: none; padding: 0; margin: 0; cursor: pointer; font: inherit;
   display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 16px;
-  color: #8c2a22; background: #f6ead3; border: 0;
+  color: #8c2a22; background: #f2e4c8; border: 0;
   box-shadow: 0 10px 24px rgba(0, 0, 0, 0.45);
   transition: transform 0.25s ease, box-shadow 0.25s ease;
 }
-.draw-back::before { content: ''; position: absolute; inset: 10px; border: 1px solid rgba(178, 58, 46, 0.55); pointer-events: none; }
-.draw-back::after { content: ''; position: absolute; inset: 15px; border: 1px solid rgba(178, 58, 46, 0.25); pointer-events: none; }
+.draw-back::before { content: ''; position: absolute; inset: 10px; border: 1px solid rgba(199, 154, 75, 0.9); pointer-events: none; }
+.draw-back::after { content: ''; position: absolute; inset: 15px; border: 1px solid rgba(178, 58, 46, 0.35); pointer-events: none; }
 .draw-back:hover { transform: translateY(-3px); box-shadow: 0 16px 30px rgba(0, 0, 0, 0.5); }
 .draw-seal {
   width: 64px; height: 64px; display: flex; align-items: center; justify-content: center;
@@ -114,19 +138,20 @@ body.theme-home {
 }
 .draw-back-text { font-size: 14px; letter-spacing: 0.4em; color: #8c2a22; }
 
-/* 卡面：用来源板块自己的颜色 */
+/* 卡面：各用来源板块自己的底色，外加一圈统一的秋金内描边 */
 .draw-face {
-  --dot: #7c7466;
+  --dot: #7c7466; position: relative;
   height: 100%; padding: 22px 26px; display: flex; flex-direction: column; gap: 8px; min-width: 0;
   border: 1px solid; border-radius: 4px; box-shadow: 0 10px 24px rgba(0, 0, 0, 0.45);
 }
+.draw-face::after { content: ''; position: absolute; inset: 5px; border: 1px solid rgba(199, 154, 75, 0.6); border-radius: 2px; pointer-events: none; }
 .draw-eyebrow { display: flex; align-items: center; gap: 8px; font-size: 13px; letter-spacing: 0.16em; opacity: 0.85; }
 .draw-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--dot); flex: none; }
 .draw-name { font-family: var(--display); font-size: 46px; line-height: 1.25; }
-.draw-name.is-long { font-size: 23px; line-height: 1.45; display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 2; overflow: hidden; }
+.draw-name.is-long { font-size: 22px; line-height: 1.45; display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 2; overflow: hidden; }
 .draw-line {
-  font-size: 15px; line-height: 1.8; flex: 0 1 auto; min-height: 0;
-  display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 3; overflow: hidden;
+  font-size: 15px; line-height: 1.75; flex: 0 1 auto; min-height: 0;
+  display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 4; overflow: hidden;
 }
 .draw-face .draw-go, .draw-face .draw-go:hover {
   margin-top: auto; align-self: flex-start; display: inline-flex; align-items: center; min-height: 36px; padding: 4px 18px;
@@ -136,7 +161,7 @@ body.theme-home {
 
 .dc-shi { --dot: #2b2b2b; background: #f3ecdf; border-color: #cfc5ae; color: #1f1f1f; }
 .dc-shi .draw-line { color: #4a443a; }
-.dc-shen { --dot: #c9a961; background: #0f1420; border-color: #c9a961; color: #e8dcc0; }
+.dc-shen { --dot: #c9a961; background: #151b25; border-color: #c9a961; color: #e8dcc0; }
 .dc-shen .draw-line { color: #cfc7b3; }
 .dc-jianzhu { --dot: #d0503f; background: #3b271b; border-color: #b8593a; color: #f1e7d1; }
 .dc-jianzhu .draw-line { color: #dccfb0; }
@@ -150,19 +175,18 @@ body.theme-home {
 }
 /* ---------- 平板与手机：上下叠放 ---------- */
 @media (max-width: 899px) {
-  .draw { flex-direction: column; align-items: stretch; gap: 22px; padding: 26px 22px; }
-  .draw-title { font-size: 30px; }
-  .draw-stage { align-self: center; height: 304px; }
+  .draw { flex-direction: column; align-items: stretch; gap: 22px; padding: 28px 22px; }
+  .draw-title { font-size: 32px; }
+  .draw-stage { align-self: center; height: 310px; }
 }
 @media (max-width: 639px) {
   .draw { padding: 24px 16px; }
-  .draw-title { font-size: 26px; }
-  .draw-stage { height: 316px; }
+  .draw-title { font-size: 28px; }
+  .draw-stage { height: 326px; }
   .draw-face { padding: 18px 18px; }
   .draw-name { font-size: 38px; }
   .draw-name.is-long { font-size: 21px; }
   .draw-line { font-size: 14px; }
-  .theme-home .upcoming { flex-basis: 100%; }
 }
 @media (prefers-reduced-motion: reduce) {
   .draw-card, .draw-back { transition: none; }
