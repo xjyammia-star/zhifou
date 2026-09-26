@@ -143,7 +143,7 @@
   /* o = { name, sub, tag, body:[元素], id, open, isStatic } */
   function card(o) {
     var body = (o.body || []).filter(Boolean);
-    var d = el('details', { 'class': 'zy-card' + (o.isStatic || !body.length ? ' is-static' : ''), 'data-zy-id': o.id || o.name });
+    var d = el('details', { 'class': 'zy-card' + (o.isStatic || !body.length ? ' is-static' : '') + (o.sub ? ' has-sub' : ''), 'data-zy-id': o.id || o.name });
     if ((o.open || o.isStatic) && body.length) d.setAttribute('open', '');
     d.appendChild(el('summary', {}, [
       o.tag ? el('span', { 'class': 'zy-card-tag', text: o.tag }) : null,

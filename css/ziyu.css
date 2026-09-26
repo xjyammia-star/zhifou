@@ -58,8 +58,7 @@ body.theme-zy {
 .zy-callout { padding: 14px 18px; border: 1px dashed rgba(211, 191, 124, 0.6); font-size: 15px; line-height: 1.9; color: #f0ecd0; }
 
 /* ---------- 标签页 ---------- */
-.zy-tabbar { display: flex; gap: 8px; overflow-x: auto; scrollbar-width: none; padding-bottom: 2px; }
-.zy-tabbar::-webkit-scrollbar { display: none; }
+.zy-tabbar { display: flex; flex-wrap: wrap; gap: 8px; }
 .zy-tab {
   flex: none; min-height: 44px; padding: 8px 22px; font-family: var(--body); font-size: 15px; letter-spacing: 0.2em;
   color: #dfe6d6; background: transparent; border: 1px solid rgba(211, 191, 124, 0.5); cursor: pointer;
@@ -71,7 +70,7 @@ body.theme-zy {
 
 /* ---------- 纸面卡片 ---------- */
 .zy-paper { background: var(--zy-paper); color: var(--zy-ink); border: 1px solid var(--zy-line); border-radius: 4px; }
-.zy-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(232px, 1fr)); gap: 12px; align-items: start; }
+.zy-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(232px, 1fr)); gap: 12px; }
 .zy-grid.is-wide { grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); }
 .zy-grid.is-3 { grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); }
 
@@ -89,6 +88,7 @@ body.theme-zy {
 .zy-card-tag { font-size: 12px; letter-spacing: 0.15em; color: var(--zy-gold-d); }
 .zy-card-sub { font-size: 13.5px; line-height: 1.8; color: var(--zy-muted); }
 .zy-card-body { padding: 0 16px 16px; border-top: 1px dashed var(--zy-line); margin: 0 16px; padding: 12px 0 16px; display: flex; flex-direction: column; gap: 10px; }
+.zy-card.has-sub > summary { min-height: 172px; }   /* 带说明的卡，收起时高度统一 */
 .zy-card.is-static > summary { cursor: default; padding-right: 16px; }
 .zy-card.is-static > summary::after { display: none; }
 
@@ -114,9 +114,7 @@ body.theme-zy {
 }
 .zy-chip:hover { background: rgba(211, 191, 124, 0.15); }
 .zy-chip.is-on, .zy-chip[aria-pressed="true"] { background: var(--zy-gold); border-color: var(--zy-gold); color: var(--zy-ink); font-weight: 600; }
-.zy-chips.is-scroll { flex-wrap: nowrap; overflow-x: auto; scrollbar-width: none; padding-bottom: 2px; }
-.zy-chips.is-scroll::-webkit-scrollbar { display: none; }
-.zy-chips.is-scroll .zy-chip { flex: none; }
+.zy-chips.is-scroll { flex-wrap: wrap; }
 .zy-detail { padding: 20px 22px; display: flex; flex-direction: column; gap: 12px; min-width: 0; }
 .zy-detail h3 { margin: 0; font-family: var(--display); font-weight: 400; font-size: 34px; line-height: 1.3; color: #24452f; }
 .zy-kicker { font-size: 12px; letter-spacing: 0.25em; color: var(--zy-gold-d); }
@@ -127,7 +125,7 @@ body.theme-zy {
 
 /* ---------- 手卷（横向时间线） ---------- */
 .zy-scroll { display: flex; overflow-x: auto; padding: 6px 2px 14px; scrollbar-width: thin; scrollbar-color: rgba(211, 191, 124, 0.5) transparent; }
-.zy-node { flex: 1 0 118px; position: relative; min-height: 84px; padding: 22px 6px 6px; text-align: center; background: none; border: 0; cursor: pointer; color: #dfe6d6; font-family: var(--body); }
+.zy-node { flex: 1 0 104px; position: relative; min-height: 84px; padding: 22px 6px 6px; text-align: center; background: none; border: 0; cursor: pointer; color: #dfe6d6; font-family: var(--body); }
 .zy-node::before { content: ''; position: absolute; top: 8px; left: 0; right: 0; height: 2px; background: rgba(211, 191, 124, 0.4); }
 .zy-node:first-child::before { left: 50%; }
 .zy-node:last-child::before { right: 50%; }
@@ -163,13 +161,13 @@ body.theme-zy {
 .zy-ya-note { font-size: 13px; line-height: 1.8; color: var(--zy-muted); }
 
 .zy-swatches { display: grid; grid-template-columns: repeat(auto-fill, minmax(112px, 1fr)); gap: 10px; }
-.zy-sw { padding: 0; text-align: left; background: var(--zy-paper); color: var(--zy-ink); border: 1px solid var(--zy-line); border-radius: 4px; cursor: pointer; overflow: hidden; font-family: var(--body); }
+.zy-sw { display: flex; flex-direction: column; justify-content: flex-start; align-items: stretch; padding: 0; text-align: left; background: var(--zy-paper); color: var(--zy-ink); border: 1px solid var(--zy-line); border-radius: 4px; cursor: pointer; overflow: hidden; font-family: var(--body); }
 .zy-sw:hover { border-color: var(--zy-green-2); }
 .zy-sw[aria-pressed="true"] { box-shadow: 0 0 0 3px var(--zy-gold); }
-.zy-sw-block { height: 70px; display: flex; align-items: center; justify-content: center; border-bottom: 1px solid rgba(0, 0, 0, 0.12); font-size: 12px; letter-spacing: 0.1em; color: var(--zy-muted); }
+.zy-sw-block { flex: none; height: 70px; display: flex; align-items: center; justify-content: center; border-bottom: 1px solid rgba(0, 0, 0, 0.12); font-size: 12px; letter-spacing: 0.1em; color: var(--zy-muted); }
 .zy-sw-block.is-none { background: repeating-linear-gradient(45deg, #dfe3d2, #dfe3d2 8px, #ecefe3 8px, #ecefe3 16px); }
 .zy-sw-name { display: block; padding: 8px 10px 2px; font-family: var(--display); font-size: 22px; line-height: 1.3; color: #24452f; }
-.zy-sw-sub { display: block; padding: 0 10px 8px; font-size: 12px; line-height: 1.6; color: var(--zy-muted); }
+.zy-sw-sub { display: block; flex: 1 1 auto; padding: 0 10px 8px; font-size: 12px; line-height: 1.6; color: var(--zy-muted); }
 .zy-bigblock { width: 100%; height: 84px; border: 1px solid rgba(0, 0, 0, 0.14); border-radius: 4px; }
 .zy-hex { font-size: 12.5px; letter-spacing: 0.08em; color: var(--zy-muted); }
 
