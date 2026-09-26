@@ -394,6 +394,7 @@ a.fm-card:hover { transform: translateY(-3px); box-shadow: 0 10px 26px rgba(31, 
 .fm-figure { display: flex; align-items: center; justify-content: center; padding: 16px; }
 .fm-figure svg { display: block; width: 100%; max-width: 260px; height: auto; }
 .fm-needle { transform-origin: 100px 100px; }
+.fm-needle.is-tilt { transform: rotate(-10deg); }
 .fm-needle.is-swing { animation: fm-swing 2.6s ease-out both; }
 @keyframes fm-swing { 0% { transform: rotate(58deg); } 25% { transform: rotate(-14deg); } 48% { transform: rotate(9deg); } 68% { transform: rotate(-4deg); } 84% { transform: rotate(2deg); } 100% { transform: rotate(0deg); } }
 .fm-apart { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 18px; }

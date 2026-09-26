@@ -15,7 +15,7 @@
       t += '<line x1="100" y1="' + (long ? 12 : 14) + '" x2="100" y2="' + (long ? 24 : 19) + '" stroke="#6a4a36" stroke-width="' + (long ? 2 : 1.2) + '" transform="rotate(' + (i * 15) + ' 100 100)"/>';
     }
     var guide = withGuide ? '<line x1="100" y1="30" x2="100" y2="170" stroke="#2c6a6e" stroke-width="1.5" stroke-dasharray="5 4"/>' : '';
-    var needle = '<g class="fm-needle" ' + (angle ? 'transform="rotate(' + angle + ' 100 100)"' : '') + '>' +
+    var needle = '<g class="fm-needle' + (angle ? ' is-tilt' : '') + '">' +
       '<path d="M100 40 L107 100 L93 100 Z" fill="#1f3436"/>' +
       '<path d="M93 100 L107 100 L100 160 Z" fill="#b5443a"/>' +
       '<circle cx="100" cy="100" r="4.5" fill="#f5f0e3" stroke="#1f3436" stroke-width="1.5"/></g>';
