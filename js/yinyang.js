@@ -7,6 +7,33 @@
   if (!D || !LS || !Z) return;
   var el = Z.el;
 
+  /* ---------- 阴阳鱼图（太极图）：用 SVG 画，左边是图，右边是三张读图卡 ---------- */
+  function taiji(D2, tabKey) {
+    var s = LS.S(D2, '阴阳鱼图');
+    var svg = LS.svgEl('svg', { viewBox: '0 0 200 200', role: 'img', 'aria-label': '阴阳鱼图：一个圆分成一黑一白两半，黑里有一点白，白里有一点黑' });
+    function add(tag, attrs) { svg.appendChild(LS.svgEl(tag, attrs)); }
+    add('circle', { cx: 100, cy: 100, r: 92, 'class': 'ls-tj-light' });
+    add('path', { d: 'M100 8 A92 92 0 0 1 100 192 A46 46 0 0 0 100 100 A46 46 0 0 1 100 8 Z', 'class': 'ls-tj-dark' });
+    add('circle', { cx: 100, cy: 54, r: 12, 'class': 'ls-tj-light' });
+    add('circle', { cx: 100, cy: 146, r: 12, 'class': 'ls-tj-dark' });
+    add('circle', { cx: 100, cy: 100, r: 92, 'class': 'ls-tj-ring' });
+    [['阳', 48, 'is-on-light'], ['阴', 152, 'is-on-dark']].forEach(function (t) {
+      var n = LS.svgEl('text', { x: t[1], y: 100, 'class': 'ls-tj-txt ' + t[2] });
+      n.textContent = t[0];
+      svg.appendChild(n);
+    });
+    var cards = LS.grid(s.items.map(function (it) {
+      var m = Z.fmap(it.f);
+      return LS.mk(tabKey, it.name, { isStatic: true, body: [el('p', { 'class': 'ls-plain', text: m['说明'] || '' })] });
+    }));
+    return Z.section('阴阳鱼图', [
+      el('div', { 'class': 'ls-wx' }, [
+        el('div', { 'class': 'ls-wx-svg zy-paper' }, [svg]),
+        el('div', { 'class': 'ls-wx-side' }, [Z.note(s.bold['说明']), cards])
+      ])
+    ]);
+  }
+
   /* ---------- 五行图 ---------- */
   var ORDER = ['木', '火', '土', '金', '水'];
   var COLOR = { '木': '#4f7a3f', '火': '#b4432d', '土': '#946a20', '金': '#6f747d', '水': '#2f5f8a' };
@@ -126,6 +153,7 @@
     tabs: [
       { key: 'yin', label: '阴阳', blocks: [
         { sec: '阴阳', grid: 'is-wide' },
+        { custom: taiji },
         { sec: '阴阳的出处', grid: 'is-wide' },
         { sec: '阴阳的三点辨析', grid: 'is-3' }
       ] },

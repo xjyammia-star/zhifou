@@ -23,7 +23,7 @@
     });
     kids.push(LS.grid(rest.map(function (it) {
       var m = Z.fmap(it.f);
-      return LS.mk(tabKey, it.name, { open: true, body: [el('p', { 'class': 'ls-plain', text: m['说明'] || '' })] });
+      return LS.mk(tabKey, it.name, { isStatic: true, body: [el('p', { 'class': 'ls-plain', text: m['说明'] || '' })] });
     }), 'is-wide'));
     return Z.section('十三经', kids);
   }

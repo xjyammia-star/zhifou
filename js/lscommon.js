@@ -68,10 +68,10 @@
         o.body = [];
       } else if (rest.length === 1 && rest[0][0] === '说明') {
         o.body = [el('p', { 'class': 'ls-plain' }, [rich(rest[0][1])])];
-        o.open = mode === 'open';
+        if (mode === 'fold') o.open = false; else o.isStatic = true;   /* 内容已经全部摆出来的卡，不再画“－”折叠钮 */
       } else if (rest.length) {
         o.body = [Z.kv(pairs(it, skip))];
-        o.open = mode === 'open';
+        if (mode === 'fold') o.open = false; else o.isStatic = true;
       } else {
         o.isStatic = true;
         o.body = [];
