@@ -1,7 +1,7 @@
 
 /* 知否知否 · 统一导航
    ----------------------------------------------------------
-   页头右侧的一级导航（今日一页 / 时 / 神 / 建筑 / 物），
+   页头右侧的一级导航（今日一页 / 时 / 神 / 建筑 / 物 / 字·语 / 礼与思 / 艺），
    以及页头下面的二级导航（当前板块里的全部内容）都由这个文件生成。
    以后新增板块或新增页面，只需要改下面的 SECTIONS 和 ALIAS。
    页面靠 <body data-page="…"> 告诉本文件"我是哪一页"。 */
@@ -80,6 +80,16 @@
         { page: 'yinyang', label: '阴阳五行与八卦', href: 'yinyang.html' },
         { page: 'jiaoyu', label: '教育与蒙学', href: 'jiaoyu.html' },
         { page: 'keju', label: '科举与官职', href: 'keju.html' }
+      ]
+    },
+    {
+      key: 'yi', label: '艺', home: 'yi.html',
+      items: [
+        { page: 'yi', label: '琴棋书画', href: 'yi.html' },
+        { page: 'shuhua', label: '书画篆刻', href: 'shuhua.html' },
+        { page: 'yinyue', label: '音乐与戏曲', href: 'yinyue.html' },
+        { page: 'youyi', label: '游艺与茶酒', href: 'youyi.html' },
+        { page: 'gongyi', label: '民间工艺', href: 'gongyi.html' }
       ]
     }
   ];
