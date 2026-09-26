@@ -247,10 +247,10 @@
 
   /* ---------- 首页：抽一张（真正点击抽取） ----------
      卡池在 data/cards.js（由“生成抽卡数据.js”从各板块资料整理而来）。
-     规则：先在四个板块里等概率选一个，再从这个板块里选一张；最近抽过的十几张不会立刻重复。
+     规则：先在五个板块里等概率选一个，再从这个板块里选一张；最近抽过的十几张不会立刻重复。
      每天第一次抽到的是“今日一签”，记在浏览器里，当天再打开还是它；之后可以随手再抽。 */
   var CARDS = window.ZHIFOU_CARDS || null;
-  var PLATE_KEYS = ['shi', 'shen', 'jianzhu', 'wu'];
+  var PLATE_KEYS = ['shi', 'shen', 'jianzhu', 'wu', 'ziyu'];
   var drawCard = null;       /* 当前翻开的卡；null 表示这一次还没抽 */
   var drawBusy = false;      /* 翻牌动画进行中，避免每分钟的自动重画打断它 */
   var drawInit = false;
@@ -336,7 +336,7 @@
       el('div', { 'class': 'draw-text' }, [
         el('span', { 'class': 'draw-kicker', text: '今日一签' }),
         el('h2', { 'class': 'draw-title', text: '抽一张，看看今天遇见什么' }),
-        el('p', { 'class': 'draw-sub', text: '一位神、一个词、一件器物，或者一个常被说错的说法，从神、时、建筑、物四个板块里随手抽出来。' }),
+        el('p', { 'class': 'draw-sub', text: '一位神、一个词、一件器物，或者一个常被说错的说法，从时、神、建筑、物、字·语五个板块里随手抽出来。' }),
         hint,
         again
       ]),

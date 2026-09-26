@@ -61,6 +61,17 @@
         { page: 'huoyao', label: '火药', href: 'huoyao.html' },
         { page: 'zhinanzhen', label: '指南针', href: 'zhinanzhen.html' }
       ]
+    },
+    {
+      key: 'ziyu', label: '字·语', home: 'ziyu.html',
+      items: [
+        { page: 'ziyu', label: '字·语入口', href: 'ziyu.html' },
+        { page: 'hanzi', label: '汉字', href: 'hanzi.html' },
+        { page: 'ciyu', label: '词语的古今', href: 'ciyu.html' },
+        { page: 'chengwei', label: '称谓与名字', href: 'chengwei.html' },
+        { page: 'wanwu', label: '天地万物的名字', href: 'wanwu.html' },
+        { page: 'yanse', label: '传统颜色', href: 'yanse.html' }
+      ]
     }
   ];
 
@@ -98,6 +109,9 @@
   SECTIONS.forEach(function (s) {
     nav.appendChild(link(s.home, s.label, current === s, 'is-section sec-' + s.key));
   });
+  /* 手机上导航放不下时可以左右滑动；进来时把当前项滚到看得见的位置 */
+  var curTop = nav.querySelector('[aria-current="page"]');
+  if (curTop && nav.scrollWidth > nav.clientWidth) nav.scrollLeft = Math.max(0, curTop.offsetLeft - 24);
 
   /* 二级导航：只在进入某个板块的页面时出现 */
   if (!current) return;
@@ -118,4 +132,6 @@
   inner.appendChild(sub);
   bar.appendChild(inner);
   header.parentNode.insertBefore(bar, header.nextSibling);
+  var curSub = sub.querySelector('[aria-current="page"]');
+  if (curSub && sub.scrollWidth > sub.clientWidth) sub.scrollLeft = Math.max(0, curSub.offsetLeft - 80);
 })();

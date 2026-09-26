@@ -66,11 +66,12 @@ h1, h2, h3 { margin: 0; font-weight: 400; }
 .site-nav a.sec-shen { --dot: #6f86d0; }
 .site-nav a.sec-jianzhu { --dot: #c4573f; }
 .site-nav a.sec-wu { --dot: #3f8f94; }
+.site-nav a.sec-ziyu { --dot: #6fae86; }
 
 /* 二级导航：进入某个板块后，页头下面显示这个板块的全部内容 */
 .sub-nav { border-bottom: 1px solid rgba(43, 43, 43, 0.12); background: rgba(255, 255, 255, 0.25); }
 .sub-nav-inner { display: flex; align-items: center; }
-.sub-nav nav { flex: 1 1 auto; min-width: 0; display: flex; align-items: center; gap: 24px; min-height: 48px; overflow-x: auto; white-space: nowrap; scrollbar-width: none; -webkit-overflow-scrolling: touch; }
+.sub-nav nav { position: relative; flex: 1 1 auto; min-width: 0; display: flex; align-items: center; gap: 24px; min-height: 48px; overflow-x: auto; white-space: nowrap; scrollbar-width: none; -webkit-overflow-scrolling: touch; }
 .sub-nav nav::-webkit-scrollbar { display: none; }
 .sub-nav-mark { flex: none; font-family: var(--display); font-size: 20px; line-height: 1; color: var(--seal); padding-right: 14px; border-right: 1px solid var(--line-strong); }
 .sub-nav a { flex: none; display: inline-flex; align-items: center; min-height: 44px; font-size: 14px; letter-spacing: 0.15em; text-decoration: none; color: var(--grey-1); }
@@ -276,6 +277,11 @@ h1, h2, h3 { margin: 0; font-weight: 400; }
 }
 @media (max-width: 639px) {
   .header-inner { gap: 8px; }
+  .brand { flex: none; }
+  /* 板块多了以后一行放不下：导航可以左右滑动，滚动条隐藏 */
+  .site-nav { position: relative; min-width: 0; margin-left: auto; overflow-x: auto; scrollbar-width: none; -webkit-overflow-scrolling: touch; }
+  .site-nav::-webkit-scrollbar { display: none; }
+  .site-nav a { flex: none; }
   .site-nav { gap: 8px; }
   .site-nav a { font-size: 13px; letter-spacing: 0.04em; white-space: nowrap; }
   .site-nav a.is-section { font-size: 15px; letter-spacing: 0.06em; }
