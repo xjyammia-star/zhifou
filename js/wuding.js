@@ -228,7 +228,7 @@
   function render() {
     var page = el('div', { 'class': 'wx-page' });
     page.appendChild(el('div', { 'class': 'wx-head' }, [
-      el('div', { 'class': 'wx-eyebrow', text: '物 · 中国古代建筑 · 屋顶与脊兽' }),
+      el('div', { 'class': 'wx-eyebrow', text: '建筑 · 屋顶与脊兽' }),
       el('h1', { 'class': 'wx-hook', text: D.hook }),
       el('p', { 'class': 'wx-answer', text: D.answer })
     ]));

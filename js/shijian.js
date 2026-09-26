@@ -225,7 +225,7 @@
   function render() {
     var page = el('div', { 'class': 'wx-page' });
     page.appendChild(el('div', { 'class': 'wx-head' }, [
-      el('div', { 'class': 'wx-eyebrow', text: '物 · 中国古代建筑 · 代表建筑时间线' }),
+      el('div', { 'class': 'wx-eyebrow', text: '建筑 · 代表建筑时间线' }),
       el('h1', { 'class': 'wx-hook', text: D.hook }),
       el('p', { 'class': 'wx-answer', text: D.answer })
     ]));

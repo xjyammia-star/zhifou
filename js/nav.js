@@ -1,8 +1,9 @@
+
 /* 知否知否 · 统一导航
    ----------------------------------------------------------
-   页头右侧的一级导航（今日一页 / 时 / 神 / 物），
+   页头右侧的一级导航（今日一页 / 时 / 神 / 建筑 / 物），
    以及页头下面的二级导航（当前板块里的全部内容）都由这个文件生成。
-   以后新增板块或新增页面，只需要改下面的 SECTIONS 和 PAGE_MAP。
+   以后新增板块或新增页面，只需要改下面的 SECTIONS 和 ALIAS。
    页面靠 <body data-page="…"> 告诉本文件"我是哪一页"。 */
 (function () {
   'use strict';
@@ -35,11 +36,9 @@
       ]
     },
     {
-      key: 'wu', label: '物', home: 'wu.html',
+      key: 'jianzhu', label: '建筑', home: 'jianzhu.html',
       items: [
-        { page: 'wu', label: '书斋入口', href: 'wu.html' },
-        { page: 'wenfang', label: '文房四宝', href: 'wenfang.html' },
-        { page: 'wenfang-diangu', label: '典故与演变', href: 'wenfang-diangu.html' },
+        { page: 'jianzhu', label: '建筑入口', href: 'jianzhu.html' },
         { page: 'mugoujia', label: '木构架与榫卯', href: 'mugoujia.html' },
         { page: 'wuding', label: '屋顶与脊兽', href: 'wuding.html' },
         { page: 'minju', label: '院落与民居', href: 'minju.html' },
@@ -48,6 +47,14 @@
         { page: 'louge', label: '楼阁与匾额对联', href: 'louge.html' },
         { page: 'siguan', label: '寺观塔与桥', href: 'siguan.html' },
         { page: 'shijian', label: '代表建筑时间线', href: 'shijian.html' }
+      ]
+    },
+    {
+      key: 'wu', label: '物', home: 'wu.html',
+      items: [
+        { page: 'wu', label: '物的入口', href: 'wu.html' },
+        { page: 'wenfang', label: '文房四宝', href: 'wenfang.html' },
+        { page: 'wenfang-diangu', label: '典故与演变', href: 'wenfang-diangu.html' }
       ]
     }
   ];
