@@ -950,6 +950,8 @@
     main.appendChild(el('a', { 'class': 'btn', href: 'shengxiao.html', text: '← 回到十二生肖' }));
 
     var side = el('aside', { 'class': 'term-side' });
+    var img = imageBlock('shengxiao-kepu', 'main');
+    if (img) side.appendChild(img);
     var notes = el('details', { 'class': 'notes' }, [
       el('summary', { text: '批注' }),
       el('div', { 'class': 'notes-body' }, SXK.notes.map(function (n) {
@@ -993,6 +995,8 @@
     }
 
     var side = el('aside', { 'class': 'term-side' });
+    var img = imageBlock('yuefen', 'main');
+    if (img) side.appendChild(img);
     var notes = el('details', { 'class': 'notes' }, [
       el('summary', { text: '批注' }),
       el('div', { 'class': 'notes-body' }, YF.notes.map(function (n) {
@@ -1036,6 +1040,8 @@
     }
 
     var side = el('aside', { 'class': 'term-side' });
+    var img = imageBlock('shujiusanfu', 'main');
+    if (img) side.appendChild(img);
     var notes = el('details', { 'class': 'notes' }, [
       el('summary', { text: '批注' }),
       el('div', { 'class': 'notes-body' }, SF.notes.map(function (n) {

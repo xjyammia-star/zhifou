@@ -1,7 +1,7 @@
 /* ==========================================================
    知否知否 · 图片登记表（由 工具脚本\生成图片登记表.py 生成，请勿手改）
    图片放在 Cloudinary（云名称 dc7qejbjd）；网页按这里的登记显示图片和图注。
-   键的格式：类别/名称，如 term/立春、festival/中秋节、shengxiao/子鼠、shichen/子时。没有登记的词条不显示图片。
+   键的格式：类别/名称，如 term/立春、festival/中秋节、shengxiao/子鼠、shichen/子时、shengxiao-kepu/main。没有登记的词条不显示图片。
    id 图片编号；v 版本号（图片更新时自动变，防止旧图缓存）；dw、dh 网页里显示的宽高比例；
    crop 保留比例（0.9=四周各裁掉 5% 的旧边框，1=不裁）；ai 为 true 时图注下显示“AI 生成插画”。
    ========================================================== */
@@ -71,6 +71,9 @@ window.ZHIFOU_IMAGES = {
     'shichen/申时': { id: 'zhifou/shichen/shenshi', v: 1790508264, dw: 900, dh: 1200, crop: 1, caption: '哺时、下午', source: '', ai: true },
     'shichen/酉时': { id: 'zhifou/shichen/youshi', v: 1790508266, dw: 900, dh: 1200, crop: 1, caption: '日入、黄昏前', source: '', ai: true },
     'shichen/戌时': { id: 'zhifou/shichen/xushi', v: 1790508267, dw: 900, dh: 1200, crop: 1, caption: '黄昏、起更', source: '', ai: true },
-    'shichen/亥时': { id: 'zhifou/shichen/haishi', v: 1790508268, dw: 900, dh: 1200, crop: 1, caption: '人定、入夜', source: '', ai: true }
+    'shichen/亥时': { id: 'zhifou/shichen/haishi', v: 1790508268, dw: 900, dh: 1200, crop: 1, caption: '人定、入夜', source: '', ai: true },
+    'shengxiao-kepu/main': { id: 'zhifou/kepu/shengxiaokepu', v: 1790515961, dw: 900, dh: 1200, crop: 1, caption: '十二生肖的由来与赛跑传说', source: '', ai: true },
+    'yuefen/main': { id: 'zhifou/kepu/yuefen', v: 1790515965, dw: 900, dh: 1200, crop: 1, caption: '农历是阴阳合历，月相与月份', source: '', ai: true },
+    'shujiusanfu/main': { id: 'zhifou/kepu/shujiusanfu', v: 1790515968, dw: 900, dh: 1200, crop: 1, caption: '数九寒天与三伏酷暑', source: '', ai: true }
   }
 };
