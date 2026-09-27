@@ -74,6 +74,7 @@ window.ZHIFOU_IMAGES = {
     'shichen/亥时': { id: 'zhifou/shichen/haishi', v: 1790508268, dw: 900, dh: 1200, crop: 1, caption: '人定、入夜', source: '', ai: true },
     'shengxiao-kepu/main': { id: 'zhifou/kepu/shengxiaokepu', v: 1790515961, dw: 900, dh: 1200, crop: 1, caption: '十二生肖的由来与赛跑传说', source: '', ai: true },
     'yuefen/main': { id: 'zhifou/kepu/yuefen', v: 1790515965, dw: 900, dh: 1200, crop: 1, caption: '农历是阴阳合历，月相与月份', source: '', ai: true },
-    'shujiusanfu/main': { id: 'zhifou/kepu/shujiusanfu', v: 1790515968, dw: 900, dh: 1200, crop: 1, caption: '数九寒天与三伏酷暑', source: '', ai: true }
+    'shujiusanfu/main': { id: 'zhifou/kepu/shujiusanfu', v: 1790515968, dw: 900, dh: 1200, crop: 1, caption: '数九寒天与三伏酷暑', source: '', ai: true },
+    'ganzhi/main': { id: 'zhifou/kepu/ganzhi', v: 1790516895, dw: 900, dh: 1200, crop: 1, caption: '天干地支相配，组成六十甲子，可纪年纪月纪日纪时', source: '', ai: true }
   }
 };

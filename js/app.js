@@ -801,6 +801,8 @@
     main.appendChild(el('a', { 'class': 'btn', href: 'shichen.html', text: '← 回到十二时辰' }));
 
     var side = el('aside', { 'class': 'term-side' });
+    var img = imageBlock('ganzhi', 'main');
+    if (img) side.appendChild(img);
     var notes = el('details', { 'class': 'notes' }, [
       el('summary', { text: '批注' }),
       el('div', { 'class': 'notes-body' }, GZ.notes.map(function (n) {
