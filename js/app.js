@@ -19,25 +19,34 @@
   var SF = window.ZHIFOU_SHUJIUSANFU || null;
   var homeTimerSet = false;
 
-  /* 配图：目前只有“秋分”“中秋节”两张水墨意境插画样稿，其余词条（含全部十二时辰）
-     会陆续补上。没有配图的词条不受影响，页面照常显示，只是没有图片区块。 */
-  var IMAGE_MAP = {
-    term: { folder: '节气', items: { '秋分': { file: '秋分.jpg', caption: '雷始收声，蛰虫坯户', source: '《月令七十二候集解》' } } },
-    festival: { folder: '节日', items: { '中秋节': { file: '中秋节.jpg', caption: '但愿人长久，千里共婵娟', source: '苏轼《水调歌头》' } } },
-    shichen: { folder: '时辰', items: {} },
-    shengxiao: { folder: '生肖', items: {} }
-  };
+  /* 配图：图片放在 Cloudinary，登记表在 data/images.js。
+     词条有登记就显示图和图注（图注下写“AI 生成插画”）；没登记的词条不显示图片区块。
+     图片加载失败时整块自动隐藏，不留空框。 */
+  var IMGS = window.ZHIFOU_IMAGES || null;
+  function imgUrl(info, w) {
+    var c = (info.crop && info.crop < 1) ? 'c_crop,g_center,h_' + info.crop + ',w_' + info.crop + '/' : '';
+    return IMGS.base + c + 'c_limit,w_' + w + '/f_auto,q_auto/v' + info.v + '/' + info.id;
+  }
   function imageBlock(kind, name) {
-    var group = IMAGE_MAP[kind];
-    var info = group && group.items[name];
+    var info = IMGS && IMGS.items && IMGS.items[kind + '/' + name];
     if (!info) return null;
-    return el('div', { 'class': 'term-image' }, [
-      el('img', { src: 'img/' + group.folder + '/' + encodeURIComponent(info.file), alt: name + ' · 水墨意境插画', loading: 'lazy' }),
+    var img = el('img', {
+      src: imgUrl(info, 960),
+      srcset: imgUrl(info, 640) + ' 640w, ' + imgUrl(info, 960) + ' 960w, ' + imgUrl(info, 1280) + ' 1280w',
+      sizes: '(max-width: 720px) 100vw, 720px',
+      width: info.dw, height: info.dh,
+      alt: name + ' · 水墨意境插画', loading: 'lazy'
+    });
+    var box = el('div', { 'class': 'term-image' }, [
+      img,
       el('p', { 'class': 'term-image-caption' }, [
         info.caption,
-        info.source ? el('span', { 'class': 'term-image-source', text: info.source }) : null
+        info.source ? el('span', { 'class': 'term-image-source', text: info.source }) : null,
+        info.ai ? el('span', { 'class': 'term-image-ai', text: IMGS.aiLabel || 'AI 生成插画' }) : null
       ])
     ]);
+    img.onerror = function () { if (box.parentNode) box.parentNode.removeChild(box); };
+    return box;
   }
 
   /* ---------- 小工具 ---------- */
