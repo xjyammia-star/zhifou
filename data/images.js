@@ -33,6 +33,20 @@ window.ZHIFOU_IMAGES = {
     'term/冬至': { id: 'zhifou/jieqi/dongzhi', v: 1790486977, dw: 900, dh: 1200, crop: 1, caption: '蚯蚓结，麋角解', source: '《月令七十二候集解》', ai: true },
     'term/小寒': { id: 'zhifou/jieqi/xiaohan', v: 1790486978, dw: 900, dh: 1200, crop: 1, caption: '雁北乡，鹊始巢', source: '《月令七十二候集解》', ai: true },
     'term/大寒': { id: 'zhifou/jieqi/dahan', v: 1790486980, dw: 900, dh: 1200, crop: 1, caption: '鸡始乳，征鸟厉疾', source: '《月令七十二候集解》', ai: true },
-    'festival/中秋节': { id: 'zhifou/jieri/zhongqiujie', v: 1790486981, dw: 900, dh: 1204, crop: 1, caption: '但愿人长久，千里共婵娟', source: '苏轼《水调歌头》', ai: true }
+    'festival/春节': { id: 'zhifou/jieri/chunjie', v: 1790492317, dw: 900, dh: 1200, crop: 1, caption: '贴门神、燃爆竹、拜年', source: '', ai: true },
+    'festival/元宵节': { id: 'zhifou/jieri/yuanxiaojie', v: 1790492318, dw: 900, dh: 1200, crop: 1, caption: '挂灯、猜灯谜、吃元宵', source: '', ai: true },
+    'festival/清明节': { id: 'zhifou/jieri/qingmingjie', v: 1790492319, dw: 900, dh: 1200, crop: 1, caption: '扫墓、踏青、插柳', source: '', ai: true },
+    'festival/端午节': { id: 'zhifou/jieri/duanwujie', v: 1790492321, dw: 900, dh: 1200, crop: 1, caption: '赛龙舟、挂艾草、包粽子', source: '', ai: true },
+    'festival/七夕': { id: 'zhifou/jieri/qixi', v: 1790492322, dw: 900, dh: 1200, crop: 1, caption: '穿针乞巧、拜织女', source: '', ai: true },
+    'festival/中元节': { id: 'zhifou/jieri/zhongyuanjie', v: 1790492323, dw: 900, dh: 1200, crop: 1, caption: '放河灯、祭祖', source: '', ai: true },
+    'festival/中秋节': { id: 'zhifou/jieri/zhongqiujie', v: 1790492324, dw: 900, dh: 1200, crop: 1, caption: '赏月、祭月、吃月饼', source: '', ai: true },
+    'festival/重阳节': { id: 'zhifou/jieri/chongyangjie', v: 1790492326, dw: 900, dh: 1200, crop: 1, caption: '登高、佩茱萸、饮菊花酒', source: '', ai: true },
+    'festival/腊八节': { id: 'zhifou/jieri/labajie', v: 1790492327, dw: 900, dh: 1200, crop: 1, caption: '喝腊八粥', source: '', ai: true },
+    'festival/除夕': { id: 'zhifou/jieri/chuxi', v: 1790492328, dw: 900, dh: 1200, crop: 1, caption: '守岁、吃年夜饭、发压岁钱', source: '', ai: true },
+    'festival/花朝节': { id: 'zhifou/jieri/huazhaojie', v: 1790492329, dw: 900, dh: 1200, crop: 1, caption: '赏花、扑蝶、春游', source: '', ai: true },
+    'festival/上巳节': { id: 'zhifou/jieri/shangsijie', v: 1790492331, dw: 900, dh: 1200, crop: 1, caption: '临水祓禊、曲水流觞', source: '', ai: true },
+    'festival/寒食节': { id: 'zhifou/jieri/hanshijie', v: 1790492332, dw: 900, dh: 1200, crop: 1, caption: '禁火、吃冷食', source: '', ai: true },
+    'festival/社日': { id: 'zhifou/jieri/sheri', v: 1790492333, dw: 900, dh: 1200, crop: 1, caption: '祭社神、聚饮分肉', source: '', ai: true },
+    'festival/天贶节': { id: 'zhifou/jieri/tiankuangjie', v: 1790492335, dw: 900, dh: 1200, crop: 1, caption: '晒书、晒衣', source: '', ai: true }
   }
 };
