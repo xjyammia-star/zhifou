@@ -86,7 +86,7 @@ body.theme-shen {
 .xx-image img { position: absolute; inset: 0; display: block; width: 100%; height: 100%; object-fit: cover; }
 .xx-image.is-empty { display: flex; align-items: center; justify-content: center; background: rgba(201, 169, 97, 0.05); border-top-style: dashed; }
 .xx-image-note { font-size: 13px; letter-spacing: 0.25em; color: var(--gold-dim); }
-.zimg-ai-badge { position: absolute; right: 8px; bottom: 8px; padding: 2px 8px; font-size: 10.5px; letter-spacing: 0.1em; color: var(--gold-soft); background: rgba(15, 20, 32, 0.72); border: 1px solid var(--gold-dim); border-radius: 3px; pointer-events: none; }
+.zimg-ai-badge { position: absolute; left: 8px; bottom: 8px; padding: 2px 8px; font-size: 10.5px; letter-spacing: 0.1em; color: var(--gold-soft); background: rgba(15, 20, 32, 0.72); border: 1px solid var(--gold-dim); border-radius: 3px; pointer-events: none; }
 .xx-panel-body { flex: 0 1 auto; min-height: 0; display: flex; flex-direction: column; gap: 10px; padding: 16px 22px 14px; overflow-y: auto; scrollbar-width: thin; scrollbar-color: var(--gold-dim) transparent; }
 .xx-panel-body.has-more { -webkit-mask-image: linear-gradient(to bottom, #000 calc(100% - 32px), transparent); mask-image: linear-gradient(to bottom, #000 calc(100% - 32px), transparent); }
 .xx-panel-kicker { font-size: 13px; letter-spacing: 0.25em; color: var(--star-muted); }
