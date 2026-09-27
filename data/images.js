@@ -1,7 +1,7 @@
 /* ==========================================================
    知否知否 · 图片登记表（由 工具脚本\生成图片登记表.py 生成，请勿手改）
    图片放在 Cloudinary（云名称 dc7qejbjd）；网页按这里的登记显示图片和图注。
-   键的格式：类别/名称，如 term/立春、festival/中秋节。没有登记的词条不显示图片。
+   键的格式：类别/名称，如 term/立春、festival/中秋节、shengxiao/子鼠。没有登记的词条不显示图片。
    id 图片编号；v 版本号（图片更新时自动变，防止旧图缓存）；dw、dh 网页里显示的宽高比例；
    crop 保留比例（0.9=四周各裁掉 5% 的旧边框，1=不裁）；ai 为 true 时图注下显示“AI 生成插画”。
    ========================================================== */
@@ -47,6 +47,18 @@ window.ZHIFOU_IMAGES = {
     'festival/上巳节': { id: 'zhifou/jieri/shangsijie', v: 1790492331, dw: 900, dh: 1200, crop: 1, caption: '临水祓禊、曲水流觞', source: '', ai: true },
     'festival/寒食节': { id: 'zhifou/jieri/hanshijie', v: 1790492332, dw: 900, dh: 1200, crop: 1, caption: '禁火、吃冷食', source: '', ai: true },
     'festival/社日': { id: 'zhifou/jieri/sheri', v: 1790492333, dw: 900, dh: 1200, crop: 1, caption: '祭社神、聚饮分肉', source: '', ai: true },
-    'festival/天贶节': { id: 'zhifou/jieri/tiankuangjie', v: 1790492335, dw: 900, dh: 1200, crop: 1, caption: '晒书、晒衣', source: '', ai: true }
+    'festival/天贶节': { id: 'zhifou/jieri/tiankuangjie', v: 1790492335, dw: 900, dh: 1200, crop: 1, caption: '晒书、晒衣', source: '', ai: true },
+    'shengxiao/子鼠': { id: 'zhifou/shengxiao/zishu', v: 1790504802, dw: 900, dh: 1200, crop: 1, caption: '十二生肖之首', source: '', ai: true },
+    'shengxiao/丑牛': { id: 'zhifou/shengxiao/chouniu', v: 1790504804, dw: 900, dh: 1200, crop: 1, caption: '勤劳与耕作的象征', source: '', ai: true },
+    'shengxiao/寅虎': { id: 'zhifou/shengxiao/yinhu', v: 1790504805, dw: 900, dh: 1200, crop: 1, caption: '山林与威猛的象征', source: '', ai: true },
+    'shengxiao/卯兔': { id: 'zhifou/shengxiao/maotu', v: 1790504806, dw: 900, dh: 1200, crop: 1, caption: '月亮与温顺的联想', source: '', ai: true },
+    'shengxiao/辰龙': { id: 'zhifou/shengxiao/chenlong', v: 1790504807, dw: 900, dh: 1200, crop: 1, caption: '十二生肖里唯一的神话动物', source: '', ai: true },
+    'shengxiao/巳蛇': { id: 'zhifou/shengxiao/sishe', v: 1790504808, dw: 900, dh: 1200, crop: 1, caption: '地支系统里的隐秘一环', source: '', ai: true },
+    'shengxiao/午马': { id: 'zhifou/shengxiao/wuma', v: 1790504810, dw: 900, dh: 1200, crop: 1, caption: '阳刚与奔跑的象征', source: '', ai: true },
+    'shengxiao/未羊': { id: 'zhifou/shengxiao/weiyang', v: 1790504811, dw: 900, dh: 1200, crop: 1, caption: '农业与祭祀里的常见家畜', source: '', ai: true },
+    'shengxiao/申猴': { id: 'zhifou/shengxiao/shenhou', v: 1790504812, dw: 900, dh: 1200, crop: 1, caption: '机灵与结伴的形象', source: '', ai: true },
+    'shengxiao/酉鸡': { id: 'zhifou/shengxiao/youji', v: 1790504813, dw: 900, dh: 1200, crop: 1, caption: '报晓与结伴的形象', source: '', ai: true },
+    'shengxiao/戌狗': { id: 'zhifou/shengxiao/xugou', v: 1790504814, dw: 900, dh: 1200, crop: 1, caption: '看家与忠诚的形象', source: '', ai: true },
+    'shengxiao/亥猪': { id: 'zhifou/shengxiao/haizhu', v: 1790504816, dw: 900, dh: 1200, crop: 1, caption: '安睡与十二生肖的收尾', source: '', ai: true }
   }
 };
