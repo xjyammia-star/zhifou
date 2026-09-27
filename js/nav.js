@@ -91,6 +91,14 @@
         { page: 'youyi', label: '游艺与茶酒', href: 'youyi.html' },
         { page: 'gongyi', label: '民间工艺', href: 'gongyi.html' }
       ]
+    },
+    {
+      /* “文”板块正在一页一页做，items 只列出已经上线的页面；
+         之后每做完一页，就在这里加一行，制作中的页面暂时不出现在二级导航里 */
+      key: 'wen', label: '文', home: 'wen.html',
+      items: [
+        { page: 'wen', label: '文的入口', href: 'wen.html' }
+      ]
     }
   ];
 
