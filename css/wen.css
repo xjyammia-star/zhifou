@@ -7,16 +7,16 @@ body.theme-wen {
   --zy-paper: #322b48;
   --zy-paper-2: #3b3255;
   --zy-ink: #efe6f0;
-  --zy-ink-2: #ddc9e0;
-  --zy-muted: #a494b3;
+  --zy-ink-2: #ecdff0;
+  --zy-muted: #bfaecb;
   --zy-line: rgba(224, 168, 201, 0.28);
   --zy-green: #a8608a;
   --zy-green-2: #c07aa4;
-  --zy-gold: #e0a8c9;
+  --zy-gold: #e6b8d3;
   --zy-gold-d: #f6dcec;
   --zy-seal: #b0568a;
-  --zy-cream: #efe6f0;
-  --zy-soft: #cdb9d4;
+  --zy-cream: #f2ecf3;
+  --zy-soft: #e2cfe9;
   background: var(--zy-bg);
   background-image: linear-gradient(180deg, #2b2440 0%, #1a1729 100%);
   color: var(--zy-cream);
@@ -31,31 +31,34 @@ body.theme-wen {
 /* 页头页脚：和页面同为黛紫（页头不另设底色，透出页面的底） */
 .theme-wen .site-header { border-bottom-color: rgba(224, 168, 201, 0.3); }
 .theme-wen .brand, .theme-wen .brand:hover { color: #f3e9f0; }
-.theme-wen .brand-tagline { color: #b7a5c0; border-left-color: #5f5270; }
-.theme-wen .site-nav a { color: #cbb8ce; }
+.theme-wen .brand-tagline { color: #c7b6cf; border-left-color: #5f5270; }
+.theme-wen .site-nav a { color: #d9c9dc; }
 .theme-wen .site-nav a:hover, .theme-wen .site-nav a[aria-current="page"] { color: #fbeef7; }
 .theme-wen .site-nav a[aria-current="page"] { box-shadow: inset 0 -1px 0 var(--zy-gold); }
 .theme-wen .sub-nav { border-bottom-color: rgba(224, 168, 201, 0.3); background: rgba(20, 16, 32, 0.55); }
 .theme-wen .sub-nav-mark { color: var(--zy-gold); border-right-color: #5f5270; }
-.theme-wen .sub-nav a { color: #cbb8ce; }
+.theme-wen .sub-nav a { color: #d9c9dc; }
 .theme-wen .sub-nav a:hover, .theme-wen .sub-nav a[aria-current="page"] { color: #fbeef7; }
 .theme-wen .sub-nav a[aria-current="page"] { box-shadow: inset 0 -1px 0 var(--zy-gold); }
-.theme-wen .footer-inner { border-top-color: rgba(224, 168, 201, 0.3); color: #b7a5c0; }
-.theme-wen .empty-note { color: #b7a5c0; }
+.theme-wen .footer-inner { border-top-color: rgba(224, 168, 201, 0.3); color: #c7b6cf; }
+.theme-wen .empty-note { color: #c7b6cf; }
 
 /* 页面骨架、标签页：把 ziyu.css 里偏竹绿的点缀色换成藕荷 */
-.theme-wen .zy-answer { color: #eadeee; }
+.theme-wen .zy-answer { color: #f0e6f2; }
+.theme-wen .zy-lead { color: var(--zy-soft); }
+.theme-wen .zy-sec-title { color: var(--zy-gold); }
 .theme-wen .zy-sec-title::after { background: rgba(224, 168, 201, 0.35); }
 .theme-wen .zy-remind { color: #f2cfe6; }
-.theme-wen .zy-callout { border-color: rgba(224, 168, 201, 0.6); color: #f2e6f0; }
-.theme-wen .zy-tab { color: #e9dcec; border-color: rgba(224, 168, 201, 0.55); }
+.theme-wen .zy-callout { border-color: rgba(224, 168, 201, 0.6); color: #f5eaf3; }
+.theme-wen .zy-tab { color: #efe3f0; border-color: rgba(224, 168, 201, 0.55); }
 .theme-wen .zy-tab:hover { background: rgba(224, 168, 201, 0.15); }
 .theme-wen .zy-tab[aria-selected="true"] { background: var(--zy-gold); border-color: var(--zy-gold); color: #2b2140; }
 .theme-wen .zy-see a { border-color: rgba(224, 168, 201, 0.5); }
 .theme-wen .zy-see a:hover { background: rgba(224, 168, 201, 0.15); }
 .theme-wen .zy-tip { border-color: rgba(224, 168, 201, 0.6); }
-.theme-wen .zy-tip p { color: #f0e3ee; }
+.theme-wen .zy-tip p { color: #f5eaf3; }
 .theme-wen .zy-notes { border-left-color: var(--zy-gold); }
+.theme-wen .zy-notes summary, .theme-wen .zy-notes-body p { color: #d9c9dc; }
 .theme-wen .zy-btn { color: var(--zy-green); border-color: var(--zy-green-2); }
 .theme-wen .zy-btn:hover { background: var(--zy-green); color: var(--zy-paper); }
 
@@ -66,68 +69,103 @@ body.theme-wen {
 .theme-wen .zy-kv .is-quote dd { color: #f6dcec; font-size: 16px; line-height: 1.85; }
 
 /* ============================================================
-   入口页：文脉时间线
-   跟其它板块"并排卡片挑一个"的入口不一样：这里画一条横向的线，
-   五个时代按顺序挂在线上，从左到右就是文学史的顺序，点开哪个就进哪一页。
-   桌面上是一条横线，手机上线转成竖的，卡片改成靠右排一列。
+   入口页：文脉时间线（竖排，悬停/点开在右侧展开一页"书"）
+   跟其它板块"并排卡片挑一个"的入口不一样：这里画一条竖线，
+   五个时代从上到下按时间顺序挂在线上，每一段默认只显示圆点和名字，
+   鼠标移上去（或点一下、或键盘 Tab 过去）会像翻开一本书那样，
+   在右侧展开这一段的说明；小屏幕上放不下"右侧"，改成往下展开。
    ============================================================ */
-.theme-wen .wen-timeline { position: relative; padding: 54px 6px 10px; }
+.theme-wen .wen-timeline { position: relative; padding: 6px 6px 6px 4px; }
 .theme-wen .wen-line {
-  position: absolute; left: 4%; right: 4%; top: 54px; height: 2px;
-  background: linear-gradient(90deg, transparent, var(--zy-gold) 6%, var(--zy-gold) 94%, transparent);
-  opacity: 0.55;
+  position: absolute; left: 31px; top: 6px; bottom: 6px; width: 2px;
+  background: linear-gradient(180deg, transparent, var(--zy-gold) 4%, var(--zy-gold) 96%, transparent);
+  opacity: 0.5;
 }
-.theme-wen .wen-nodes { list-style: none; margin: 0; padding: 0; display: flex; gap: 6px; position: relative; }
-.theme-wen .wen-node {
-  flex: 1 1 0; min-width: 0; display: flex; flex-direction: column; align-items: center; text-align: center;
-  text-decoration: none; color: inherit; padding: 0 6px;
+.theme-wen .wen-nodes { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 22px; position: relative; }
+.theme-wen .wen-node { position: relative; display: flex; align-items: flex-start; }
+
+/* 左边：圆点 + 一直看得见的名字（"书脊"），点一下/移上去会展开右边的内容 */
+.theme-wen .wen-node-toggle {
+  flex: none; display: flex; align-items: center; gap: 16px; background: none; border: 0; margin: 0; padding: 4px 4px 4px 0;
+  font: inherit; color: inherit; cursor: pointer; text-align: left;
 }
 .theme-wen .wen-node-dot {
-  position: relative; flex: none; width: 64px; height: 64px; border-radius: 50%; margin-bottom: 18px;
+  position: relative; flex: none; width: 62px; height: 62px; border-radius: 50%;
   display: flex; align-items: center; justify-content: center;
   background: radial-gradient(circle at 35% 30%, #d98fbf, #a8608a 70%, #7c4468 100%);
   box-shadow: 0 0 0 4px rgba(224, 168, 201, 0.18), 0 6px 16px rgba(0, 0, 0, 0.35);
   transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
-.theme-wen .wen-node-mark { font-family: var(--display); font-size: 26px; line-height: 1; color: #fdf1f8; }
+.theme-wen .wen-node-mark { font-family: var(--display); font-size: 24px; line-height: 1; color: #fdf1f8; }
 .theme-wen .wen-node-idx {
-  position: absolute; left: 50%; bottom: -10px; transform: translateX(-50%);
-  font-size: 11px; letter-spacing: 0.1em; color: var(--zy-gold-d); background: var(--zy-bg-2);
-  border: 1px solid rgba(224, 168, 201, 0.5); border-radius: 10px; padding: 1px 8px; white-space: nowrap;
+  position: absolute; right: -6px; bottom: -6px;
+  font-size: 10px; letter-spacing: 0.05em; color: var(--zy-gold-d); background: var(--zy-bg-2);
+  border: 1px solid rgba(224, 168, 201, 0.5); border-radius: 9px; padding: 0 6px; white-space: nowrap;
 }
-.theme-wen .wen-node-card { display: flex; flex-direction: column; gap: 6px; max-width: 220px; }
-.theme-wen .wen-node-era { font-size: 12px; letter-spacing: 0.25em; color: var(--zy-gold); }
-.theme-wen .wen-node-name { font-family: var(--display); font-size: 22px; line-height: 1.35; color: #fbeef7; }
-.theme-wen .wen-node-line { margin: 0; font-size: 13px; line-height: 1.8; color: var(--zy-soft); }
-.theme-wen .wen-node-tags { font-size: 12px; letter-spacing: 0.04em; line-height: 1.7; color: #c9b6d0; }
+.theme-wen .wen-node-spine { display: flex; flex-direction: column; gap: 2px; min-width: 128px; }
+.theme-wen .wen-node-era { font-size: 12px; letter-spacing: 0.22em; color: var(--zy-gold); }
+.theme-wen .wen-node-name { font-family: var(--display); font-size: 21px; line-height: 1.3; color: #fbeef7; }
+
+/* 右边：展开的那"一页" */
+.theme-wen .wen-node-panel {
+  flex: none; max-width: 0; opacity: 0; overflow: hidden;
+  transition: max-width 0.32s ease, opacity 0.22s ease;
+}
+.theme-wen .wen-node-panel-inner {
+  width: 320px; margin-left: 10px; padding: 12px 16px; display: flex; flex-direction: column; gap: 8px;
+  background: var(--zy-paper); border: 1px solid var(--zy-line); border-radius: 4px;
+  transform: scaleX(0.94); transform-origin: left center; opacity: 0.85; transition: transform 0.28s ease, opacity 0.22s ease;
+}
+.theme-wen .wen-node-line { margin: 0; font-size: 13.5px; line-height: 1.85; color: var(--zy-soft); }
+.theme-wen .wen-node-tags { font-size: 12px; letter-spacing: 0.04em; line-height: 1.7; color: #e2cfe6; }
 .theme-wen .wen-node-soon {
-  align-self: center; margin-top: 4px; font-size: 11px; letter-spacing: 0.2em; color: #f2cfe6;
+  align-self: flex-start; font-size: 11px; letter-spacing: 0.2em; color: #f5dcef;
   border: 1px dashed rgba(224, 168, 201, 0.5); border-radius: 10px; padding: 2px 10px;
 }
-.theme-wen a.wen-node:hover .wen-node-dot,
-.theme-wen a.wen-node:focus-visible .wen-node-dot {
-  transform: translateY(-4px); box-shadow: 0 0 0 4px rgba(224, 168, 201, 0.32), 0 10px 20px rgba(0, 0, 0, 0.4);
+.theme-wen .wen-node-link {
+  align-self: flex-start; font-size: 13.5px; letter-spacing: 0.05em; color: var(--zy-gold-d);
+  border-bottom: 1px solid rgba(246, 220, 236, 0.5);
 }
-.theme-wen a.wen-node:hover .wen-node-name,
-.theme-wen a.wen-node:focus-visible .wen-node-name { color: var(--zy-gold-d); }
-.theme-wen .wen-node.is-closed { opacity: 0.68; cursor: default; }
-.theme-wen .wen-node.is-closed .wen-node-dot { filter: grayscale(0.35); }
+.theme-wen .wen-node-link:hover { color: #fff5fb; border-bottom-color: #fff5fb; }
 
-@media (max-width: 899px) {
-  .theme-wen .wen-node-card { max-width: none; }
-  .theme-wen .wen-node-line { -webkit-line-clamp: 3; display: -webkit-box; -webkit-box-orient: vertical; overflow: hidden; }
+/* 展开条件：鼠标移上、键盘 Tab 到、或点一下（.is-open） */
+.theme-wen .wen-node:hover .wen-node-panel,
+.theme-wen .wen-node:focus-within .wen-node-panel,
+.theme-wen .wen-node.is-open .wen-node-panel {
+  max-width: 360px; opacity: 1;
 }
-@media (max-width: 639px) {
-  .theme-wen .wen-timeline { padding: 10px 4px 10px 30px; }
-  .theme-wen .wen-line { left: 21px; right: auto; top: 8px; bottom: 8px; width: 2px; height: auto; background: linear-gradient(180deg, transparent, var(--zy-gold) 4%, var(--zy-gold) 96%, transparent); }
-  .theme-wen .wen-nodes { flex-direction: column; gap: 26px; }
-  .theme-wen .wen-node { flex-direction: row; align-items: flex-start; text-align: left; padding: 0; gap: 16px; }
-  .theme-wen .wen-node-dot { width: 44px; height: 44px; margin-bottom: 0; margin-left: -22px; }
-  .theme-wen .wen-node-mark { font-size: 18px; }
-  .theme-wen .wen-node-idx { left: auto; right: -8px; bottom: -4px; transform: none; font-size: 10px; padding: 0 6px; }
-  .theme-wen .wen-node-card { max-width: none; align-items: flex-start; text-align: left; padding-top: 4px; }
-  .theme-wen .wen-node-soon { align-self: flex-start; }
+.theme-wen .wen-node:hover .wen-node-panel-inner,
+.theme-wen .wen-node:focus-within .wen-node-panel-inner,
+.theme-wen .wen-node.is-open .wen-node-panel-inner {
+  transform: scaleX(1); opacity: 1;
+}
+.theme-wen .wen-node:hover .wen-node-dot,
+.theme-wen .wen-node:focus-within .wen-node-dot,
+.theme-wen .wen-node.is-open .wen-node-dot {
+  transform: translateY(-3px); box-shadow: 0 0 0 4px rgba(224, 168, 201, 0.32), 0 10px 20px rgba(0, 0, 0, 0.4);
+}
+.theme-wen .wen-node:hover .wen-node-name,
+.theme-wen .wen-node:focus-within .wen-node-name,
+.theme-wen .wen-node.is-open .wen-node-name { color: var(--zy-gold-d); }
+.theme-wen .wen-node.is-closed .wen-node-dot { filter: grayscale(0.35); }
+.theme-wen .wen-node.is-closed .wen-node-spine { opacity: 0.75; }
+
+/* 小屏幕放不下"右边展开"，改成往下展开一整条 */
+@media (max-width: 680px) {
+  .theme-wen .wen-node { flex-wrap: wrap; row-gap: 10px; }
+  .theme-wen .wen-node-panel {
+    flex: 1 1 100%; max-width: none !important; max-height: 0; opacity: 0; width: 100%;
+    transition: max-height 0.32s ease, opacity 0.22s ease;
+  }
+  .theme-wen .wen-node:hover .wen-node-panel,
+  .theme-wen .wen-node:focus-within .wen-node-panel,
+  .theme-wen .wen-node.is-open .wen-node-panel { max-height: 480px; }
+  .theme-wen .wen-node-panel-inner { width: auto; margin-left: 78px; }
+}
+@media (max-width: 420px) {
+  .theme-wen .wen-node-spine { min-width: 0; }
+  .theme-wen .wen-node-name { font-size: 19px; }
 }
 @media (prefers-reduced-motion: reduce) {
-  .theme-wen a.wen-node:hover .wen-node-dot, .theme-wen a.wen-node:focus-visible .wen-node-dot { transition: none; }
+  .theme-wen .wen-node-dot, .theme-wen .wen-node-panel, .theme-wen .wen-node-panel-inner { transition: none; }
 }
