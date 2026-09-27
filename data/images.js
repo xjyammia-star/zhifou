@@ -1,7 +1,7 @@
 /* ==========================================================
    知否知否 · 图片登记表（由 工具脚本\生成图片登记表.py 生成，请勿手改）
    图片放在 Cloudinary（云名称 dc7qejbjd）；网页按这里的登记显示图片和图注。
-   键的格式：类别/名称，如 term/立春、festival/中秋节、shengxiao/子鼠。没有登记的词条不显示图片。
+   键的格式：类别/名称，如 term/立春、festival/中秋节、shengxiao/子鼠、shichen/子时。没有登记的词条不显示图片。
    id 图片编号；v 版本号（图片更新时自动变，防止旧图缓存）；dw、dh 网页里显示的宽高比例；
    crop 保留比例（0.9=四周各裁掉 5% 的旧边框，1=不裁）；ai 为 true 时图注下显示“AI 生成插画”。
    ========================================================== */
@@ -59,6 +59,18 @@ window.ZHIFOU_IMAGES = {
     'shengxiao/申猴': { id: 'zhifou/shengxiao/shenhou', v: 1790504812, dw: 900, dh: 1200, crop: 1, caption: '机灵与结伴的形象', source: '', ai: true },
     'shengxiao/酉鸡': { id: 'zhifou/shengxiao/youji', v: 1790504813, dw: 900, dh: 1200, crop: 1, caption: '报晓与结伴的形象', source: '', ai: true },
     'shengxiao/戌狗': { id: 'zhifou/shengxiao/xugou', v: 1790504814, dw: 900, dh: 1200, crop: 1, caption: '看家与忠诚的形象', source: '', ai: true },
-    'shengxiao/亥猪': { id: 'zhifou/shengxiao/haizhu', v: 1790504816, dw: 900, dh: 1200, crop: 1, caption: '安睡与十二生肖的收尾', source: '', ai: true }
+    'shengxiao/亥猪': { id: 'zhifou/shengxiao/haizhu', v: 1790504816, dw: 900, dh: 1200, crop: 1, caption: '安睡与十二生肖的收尾', source: '', ai: true },
+    'shichen/子时': { id: 'zhifou/shichen/zishi', v: 1790508254, dw: 900, dh: 1200, crop: 1, caption: '夜半、一天的起点', source: '', ai: true },
+    'shichen/丑时': { id: 'zhifou/shichen/choushi', v: 1790508256, dw: 900, dh: 1200, crop: 1, caption: '鸡鸣前后', source: '', ai: true },
+    'shichen/寅时': { id: 'zhifou/shichen/yinshi', v: 1790508257, dw: 900, dh: 1200, crop: 1, caption: '平旦、破晓前', source: '', ai: true },
+    'shichen/卯时': { id: 'zhifou/shichen/maoshi', v: 1790508258, dw: 900, dh: 1200, crop: 1, caption: '日出、清晨', source: '', ai: true },
+    'shichen/辰时': { id: 'zhifou/shichen/chenshi', v: 1790508259, dw: 900, dh: 1200, crop: 1, caption: '食时、早饭', source: '', ai: true },
+    'shichen/巳时': { id: 'zhifou/shichen/sishi', v: 1790508260, dw: 900, dh: 1200, crop: 1, caption: '隅中、临近正午', source: '', ai: true },
+    'shichen/午时': { id: 'zhifou/shichen/wushi', v: 1790508261, dw: 900, dh: 1200, crop: 1, caption: '日中、正午', source: '', ai: true },
+    'shichen/未时': { id: 'zhifou/shichen/weishi', v: 1790508263, dw: 900, dh: 1200, crop: 1, caption: '日昳、午后', source: '', ai: true },
+    'shichen/申时': { id: 'zhifou/shichen/shenshi', v: 1790508264, dw: 900, dh: 1200, crop: 1, caption: '哺时、下午', source: '', ai: true },
+    'shichen/酉时': { id: 'zhifou/shichen/youshi', v: 1790508266, dw: 900, dh: 1200, crop: 1, caption: '日入、黄昏前', source: '', ai: true },
+    'shichen/戌时': { id: 'zhifou/shichen/xushi', v: 1790508267, dw: 900, dh: 1200, crop: 1, caption: '黄昏、起更', source: '', ai: true },
+    'shichen/亥时': { id: 'zhifou/shichen/haishi', v: 1790508268, dw: 900, dh: 1200, crop: 1, caption: '人定、入夜', source: '', ai: true }
   }
 };
