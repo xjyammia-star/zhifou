@@ -9,7 +9,7 @@
 
   /* 每种异兽的配图。有了图，把图片放进 img/shen/ 文件夹，再把对应的空引号改成图片路径，
      例如：'九尾狐': 'img/shen/jiuweihu.jpg'。空着的，详情里显示"配图待补"占位。 */
-  var IMAGES = {};
+  /* 配图从 data/images.js 登记表里查，见 js/zimg.js */
 
   var cardByName = {};
   D.cards.forEach(function (c) { cardByName[c.name] = c; });
@@ -117,8 +117,13 @@
 
   function imageSlot(c) {
     var box = el('div', { 'class': 'sl-image' });
-    if (IMAGES[c.name]) {
-      box.appendChild(el('img', { src: IMAGES[c.name], alt: c.name + '配图', loading: 'lazy' }));
+    var img = window.ZIMG && window.ZIMG.get('shanhai', c.name);
+    if (img) {
+      box.appendChild(el('img', {
+        src: img.src, srcset: img.srcset, sizes: '(max-width: 900px) 100vw, 900px',
+        width: img.width, height: img.height, alt: c.name + '配图', loading: 'lazy'
+      }));
+      if (img.ai) box.appendChild(el('span', { 'class': 'zimg-ai-badge', text: img.aiLabel }));
     } else {
       box.classList.add('is-empty');
       box.appendChild(el('span', { 'class': 'sl-image-note', text: '配图待补 · ' + c.name }));

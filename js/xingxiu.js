@@ -16,7 +16,7 @@
   /* 详情框上方的配图。有了图，把图片文件放进 img/shen/ 文件夹，
      再把下面对应的空引号改成图片路径即可，例如：'青龙': 'img/shen/xingxiu-qinglong.jpg'。
      点某一宿时，显示它所属四象的那张图；空着的就显示"配图待补"占位。 */
-  var IMAGES = { '青龙': '', '玄武': '', '白虎': '', '朱雀': '', '中宫': '' };
+  /* 配图从 data/images.js 登记表里查，见 js/zimg.js */
 
   function el(tag, attrs, kids) {
     var n = document.createElement(tag);
@@ -180,8 +180,13 @@
   /* 配图位：有图就显示图，没有就显示占位 */
   function imageSlot(key) {
     var box = el('div', { 'class': 'xx-image' });
-    if (IMAGES[key]) {
-      box.appendChild(el('img', { src: IMAGES[key], alt: key + '配图', loading: 'lazy' }));
+    var img = window.ZIMG && window.ZIMG.get('xingxiu', key);
+    if (img) {
+      box.appendChild(el('img', {
+        src: img.src, srcset: img.srcset, sizes: '(max-width: 900px) 100vw, 900px',
+        width: img.width, height: img.height, alt: key + '配图', loading: 'lazy'
+      }));
+      if (img.ai) box.appendChild(el('span', { 'class': 'zimg-ai-badge', text: img.aiLabel }));
     } else {
       box.classList.add('is-empty');
       box.appendChild(el('span', { 'class': 'xx-image-note', text: '配图待补 · ' + key }));
