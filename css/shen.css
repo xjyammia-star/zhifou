@@ -227,7 +227,7 @@ body:has(.sl-dialog[open]) { overflow: hidden; }
 }
 .sl-close:hover { border-color: var(--gold); }
 .sl-dialog-body { flex: 1 1 auto; min-height: 0; overflow-y: auto; scrollbar-width: thin; scrollbar-color: var(--gold-dim) transparent; }
-.sl-image { position: relative; aspect-ratio: 3 / 1; max-height: 28vh; overflow: hidden; background: var(--night-3); border-bottom: 1px solid var(--gold-dim); }
+.sl-image { position: relative; aspect-ratio: 7 / 3; max-height: 28vh; overflow: hidden; background: var(--night-3); border-bottom: 1px solid var(--gold-dim); }
 .sl-image img { position: absolute; inset: 0; display: block; width: 100%; height: 100%; object-fit: cover; }
 .sl-image.is-empty { display: flex; align-items: center; justify-content: center; background: rgba(201, 169, 97, 0.05); border-bottom-style: dashed; }
 .sl-image-note { font-size: 13px; letter-spacing: 0.25em; color: var(--gold-dim); }
