@@ -1602,6 +1602,19 @@ window.ZHIFOU_CARDS = {
     {"id":"wen:晚唐:罗隐｜蜂","plate":"wen","cat":"晚唐","name":"蜂","line":"不论平地与山尖，无限风光尽被占。","href":"tangshi.html?id=%E7%BD%97%E9%9A%90%EF%BD%9C%E8%9C%82","kind":"e"},
     {"id":"wen:晚唐:罗隐｜自遣","plate":"wen","cat":"晚唐","name":"自遣","line":"得即高歌失即休，多愁多恨亦悠悠。","href":"tangshi.html?id=%E7%BD%97%E9%9A%90%EF%BD%9C%E8%87%AA%E9%81%A3","kind":"e"},
     {"id":"wen:晚唐:韦庄｜台城","plate":"wen","cat":"晚唐","name":"台城","line":"江雨霏霏江草齐，六朝如梦鸟空啼。","href":"tangshi.html?id=%E9%9F%A6%E5%BA%84%EF%BD%9C%E5%8F%B0%E5%9F%8E","kind":"e"},
-    {"id":"wen:晚唐:韦庄｜忆昔","plate":"wen","cat":"晚唐","name":"忆昔","line":"昔年曾向五陵游，子夜歌清月满楼。","href":"tangshi.html?id=%E9%9F%A6%E5%BA%84%EF%BD%9C%E5%BF%86%E6%98%94","kind":"e"}
+    {"id":"wen:晚唐:韦庄｜忆昔","plate":"wen","cat":"晚唐","name":"忆昔","line":"昔年曾向五陵游，子夜歌清月满楼。","href":"tangshi.html?id=%E9%9F%A6%E5%BA%84%EF%BD%9C%E5%BF%86%E6%98%94","kind":"e"},
+    {"id":"wen:中唐:韦应物｜滁州西涧","plate":"wen","cat":"中唐","name":"滁州西涧","line":"独怜幽草涧边生，上有黄鹂深树鸣。","href":"tangshi.html?id=%E9%9F%A6%E5%BA%94%E7%89%A9%EF%BD%9C%E6%BB%81%E5%B7%9E%E8%A5%BF%E6%B6%A7","kind":"e"},
+    {"id":"wen:中唐:韦应物｜秋夜寄邱二十二员外","plate":"wen","cat":"中唐","name":"秋夜寄邱二十二员外","line":"怀君属秋夜，散步咏凉天。","href":"tangshi.html?id=%E9%9F%A6%E5%BA%94%E7%89%A9%EF%BD%9C%E7%A7%8B%E5%A4%9C%E5%AF%84%E9%82%B1%E4%BA%8C%E5%8D%81%E4%BA%8C%E5%91%98%E5%A4%96","kind":"e"},
+    {"id":"wen:中唐:韦应物｜寄李儋元锡","plate":"wen","cat":"中唐","name":"寄李儋元锡","line":"去年花里逢君别，今日花开又一年。","href":"tangshi.html?id=%E9%9F%A6%E5%BA%94%E7%89%A9%EF%BD%9C%E5%AF%84%E6%9D%8E%E5%84%8B%E5%85%83%E9%94%A1","kind":"e"},
+    {"id":"wen:中唐:韦应物｜夕次盱眙县","plate":"wen","cat":"中唐","name":"夕次盱眙县","line":"落帆逗淮镇，停舫临孤驿。","href":"tangshi.html?id=%E9%9F%A6%E5%BA%94%E7%89%A9%EF%BD%9C%E5%A4%95%E6%AC%A1%E7%9B%B1%E7%9C%99%E5%8E%BF","kind":"e"},
+    {"id":"wen:中唐:张继｜枫桥夜泊","plate":"wen","cat":"中唐","name":"枫桥夜泊","line":"月落乌啼霜满天，江枫渔火对愁眠。","href":"tangshi.html?id=%E5%BC%A0%E7%BB%A7%EF%BD%9C%E6%9E%AB%E6%A1%A5%E5%A4%9C%E6%B3%8A","kind":"e"},
+    {"id":"wen:中唐:崔护｜题都城南庄","plate":"wen","cat":"中唐","name":"题都城南庄","line":"去年今日此门中，人面桃花相映红。","href":"tangshi.html?id=%E5%B4%94%E6%8A%A4%EF%BD%9C%E9%A2%98%E9%83%BD%E5%9F%8E%E5%8D%97%E5%BA%84","kind":"e"},
+    {"id":"wen:中唐:韩翃｜寒食","plate":"wen","cat":"中唐","name":"寒食","line":"春城无处不飞花，寒食东风御柳斜。","href":"tangshi.html?id=%E9%9F%A9%E7%BF%83%EF%BD%9C%E5%AF%92%E9%A3%9F","kind":"e"},
+    {"id":"wen:中唐:卢纶｜塞下曲（其二）","plate":"wen","cat":"中唐","name":"塞下曲（其二）","line":"林暗草惊风，将军夜引弓。","href":"tangshi.html?id=%E5%8D%A2%E7%BA%B6%EF%BD%9C%E5%A1%9E%E4%B8%8B%E6%9B%B2%EF%BC%88%E5%85%B6%E4%BA%8C%EF%BC%89","kind":"e"},
+    {"id":"wen:中唐:卢纶｜塞下曲（其三）","plate":"wen","cat":"中唐","name":"塞下曲（其三）","line":"月黑雁飞高，单于夜遁逃。","href":"tangshi.html?id=%E5%8D%A2%E7%BA%B6%EF%BD%9C%E5%A1%9E%E4%B8%8B%E6%9B%B2%EF%BC%88%E5%85%B6%E4%B8%89%EF%BC%89","kind":"e"},
+    {"id":"wen:中唐:金昌绪｜春怨","plate":"wen","cat":"中唐","name":"春怨","line":"打起黄莺儿，莫教枝上啼。","href":"tangshi.html?id=%E9%87%91%E6%98%8C%E7%BB%AA%EF%BD%9C%E6%98%A5%E6%80%A8","kind":"e"},
+    {"id":"wen:中唐:杜秋娘｜金缕衣","plate":"wen","cat":"中唐","name":"金缕衣","line":"劝君莫惜金缕衣，劝君惜取少年时。","href":"tangshi.html?id=%E6%9D%9C%E7%A7%8B%E5%A8%98%EF%BD%9C%E9%87%91%E7%BC%95%E8%A1%A3","kind":"e"},
+    {"id":"wen:晚唐:张祜｜何满子","plate":"wen","cat":"晚唐","name":"何满子","line":"故国三千里，深宫二十年。","href":"tangshi.html?id=%E5%BC%A0%E7%A5%9C%EF%BD%9C%E4%BD%95%E6%BB%A1%E5%AD%90","kind":"e"},
+    {"id":"wen:晚唐:张祜｜题金陵渡","plate":"wen","cat":"晚唐","name":"题金陵渡","line":"金陵津渡小山楼，一宿行人自可愁。","href":"tangshi.html?id=%E5%BC%A0%E7%A5%9C%EF%BD%9C%E9%A2%98%E9%87%91%E9%99%B5%E6%B8%A1","kind":"e"}
   ]
 };
