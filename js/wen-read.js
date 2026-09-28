@@ -32,7 +32,12 @@
             el('span', { 'class': 'wr-facts-note', text: it.note })
           ]);
         }));
-        return b.heading ? wrapCollapsible(b.heading, factsNode) : el('div', { 'class': 'wr-block' }, [factsNode]);
+        // 要点表后面偶尔也需要补一句说明（跟"works"块同样的处理方式），
+        // 要跟表格一起收进同一个折叠块，不能单独露在外面。
+        var factsBody = b.tip
+          ? el('div', { 'class': 'wr-works-wrap' }, [factsNode, el('p', { 'class': 'wr-block-tip', text: b.tip })])
+          : factsNode;
+        return b.heading ? wrapCollapsible(b.heading, factsBody) : el('div', { 'class': 'wr-block' }, [factsBody]);
       }
 
       case 'works': {
