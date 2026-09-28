@@ -4,9 +4,9 @@
    每一段正文延续入口页那种"书页"质感（宣纸颗粒、折角阴影、印章、标题双线）。
    只在 body.theme-wen 的页面生效；请在 wen.css 之后加载本文件。 */
 
-.theme-wen .wr-wrap { display: flex; align-items: flex-start; gap: 28px; }
+.theme-wen .wr-wrap { display: flex; flex-direction: row-reverse; align-items: flex-start; gap: 28px; }
 
-/* 左边书签栏：滚动的时候一直贴在顶部，当前读到哪一段会自动高亮 */
+/* 右边书签栏：滚动的时候一直贴在顶部，当前读到哪一段会自动高亮 */
 .theme-wen .wr-nav {
   position: sticky; top: 84px; flex: 0 0 190px; display: flex; flex-direction: column; gap: 6px;
 }
@@ -31,12 +31,12 @@
 /* 每一大段都是一"页"：宣纸颗粒底 + 右上角折角阴影 + 印章，跟入口页的书页是同一套质感 */
 .theme-wen .wr-section {
   position: relative; border-radius: 6px; padding: 34px 38px; scroll-margin-top: 84px;
-  background-color: #40355c;
+  background-color: #564976;
   background-image:
-    radial-gradient(rgba(255, 255, 255, 0.035) 1px, transparent 1px),
-    linear-gradient(180deg, rgba(255, 255, 255, 0.025), transparent 45%);
+    radial-gradient(rgba(255, 255, 255, 0.045) 1px, transparent 1px),
+    linear-gradient(180deg, rgba(255, 255, 255, 0.03), transparent 45%);
   background-size: 5px 5px, auto;
-  box-shadow: 0 14px 34px rgba(0, 0, 0, 0.32), 0 0 0 1px var(--zy-line);
+  box-shadow: 0 14px 34px rgba(0, 0, 0, 0.28), 0 0 0 1px var(--zy-line);
 }
 .theme-wen .wr-section::before {
   content: ''; position: absolute; top: 0; right: 0; width: 88px; height: 88px; pointer-events: none;
@@ -61,7 +61,7 @@
   background-size: 100% 1px; background-position: top, bottom; background-repeat: no-repeat; opacity: 0.75;
 }
 
-.theme-wen .wr-para { position: relative; z-index: 1; margin: 0 0 18px; font-size: 16.5px; line-height: 1.95; color: #e6d7ea; max-width: 52em; }
+.theme-wen .wr-para { position: relative; z-index: 1; margin: 0 0 18px; font-size: 16.5px; line-height: 1.95; color: #f1e6f0; max-width: 52em; }
 
 .theme-wen .wr-block { position: relative; z-index: 1; margin: 0 0 22px; }
 .theme-wen .wr-block:last-child { margin-bottom: 0; }
@@ -88,12 +88,12 @@
 .theme-wen .wr-facts { display: flex; flex-direction: column; gap: 10px; }
 .theme-wen .wr-facts-row { display: flex; gap: 12px; align-items: baseline; }
 .theme-wen .wr-facts-term { flex: none; min-width: 2.2em; font-family: var(--display); font-size: 16.5px; color: var(--zy-gold-d); }
-.theme-wen .wr-facts-note { font-size: 15px; line-height: 1.85; color: #f0dcf0; }
+.theme-wen .wr-facts-note { font-size: 15px; line-height: 1.85; color: #f5e6f4; }
 
 .theme-wen .wr-works { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 14px; }
 .theme-wen .wr-works li { display: flex; flex-direction: column; gap: 4px; }
 .theme-wen .wr-works b { font-size: 16px; color: #fbeef7; }
-.theme-wen .wr-works span { font-size: 15px; line-height: 1.9; color: #e6d7ea; }
+.theme-wen .wr-works span { font-size: 15px; line-height: 1.9; color: #f1e6f0; }
 
 .theme-wen .wr-quotes { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 10px; }
 .theme-wen .wr-quotes li { border-left: 2px solid var(--zy-gold); padding-left: 14px; }
@@ -125,7 +125,7 @@
 .theme-wen .wr-allusions { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: 9px 18px; }
 .theme-wen .wr-allusions li { display: flex; align-items: baseline; gap: 6px; font-size: 14.5px; }
 .theme-wen .wr-allusions b { color: var(--zy-gold-d); }
-.theme-wen .wr-allusions span { color: #e6d7ea; }
+.theme-wen .wr-allusions span { color: #f1e6f0; }
 
 @media (max-width: 760px) {
   .theme-wen .wr-wrap { flex-direction: column; }

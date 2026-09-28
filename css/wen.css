@@ -2,23 +2,23 @@
    由 ziyu.css 的骨架换色而来；页面底、页头是深色（和"字·语""艺"同一类做法）。
    只在 body.theme-wen 的页面生效，不影响其他板块和首页。请先加载 ziyu.css，再加载本文件。 */
 body.theme-wen {
-  --zy-bg: #332c4c;
-  --zy-bg-2: #241f38;
-  --zy-paper: #3d3457;
-  --zy-paper-2: #463a60;
-  --zy-ink: #f5eef7;
-  --zy-ink-2: #f0e4f2;
-  --zy-muted: #cbb9d6;
-  --zy-line: rgba(230, 190, 215, 0.3);
-  --zy-green: #b8749c;
-  --zy-green-2: #cf8fb2;
-  --zy-gold: #edc2de;
-  --zy-gold-d: #fbeaf5;
-  --zy-seal: #c17aa0;
-  --zy-cream: #f6f0f7;
-  --zy-soft: #ecdcf0;
+  --zy-bg: #4a4170;
+  --zy-bg-2: #362f52;
+  --zy-paper: #4e4368;
+  --zy-paper-2: #574a72;
+  --zy-ink: #f7f0f9;
+  --zy-ink-2: #f3e9f5;
+  --zy-muted: #ded0e6;
+  --zy-line: rgba(230, 190, 215, 0.34);
+  --zy-green: #c589ac;
+  --zy-green-2: #d7a0c0;
+  --zy-gold: #f0cde3;
+  --zy-gold-d: #fdf0f8;
+  --zy-seal: #cd8cae;
+  --zy-cream: #faf6fb;
+  --zy-soft: #f2e5f3;
   background: var(--zy-bg);
-  background-image: linear-gradient(180deg, #392f57 0%, #241f38 100%);
+  background-image: linear-gradient(180deg, #4d4374 0%, #362f52 100%);
   color: var(--zy-cream);
 }
 .theme-wen a { color: var(--zy-gold); }
@@ -31,17 +31,17 @@ body.theme-wen {
 /* 页头页脚：和页面同为黛紫（页头不另设底色，透出页面的底） */
 .theme-wen .site-header { border-bottom-color: rgba(230, 190, 215, 0.3); }
 .theme-wen .brand, .theme-wen .brand:hover { color: #f6eff5; }
-.theme-wen .brand-tagline { color: #d1c1d8; border-left-color: #665978; }
-.theme-wen .site-nav a { color: #e2d3e4; }
+.theme-wen .brand-tagline { color: #ddd0e2; border-left-color: #7a6c8c; }
+.theme-wen .site-nav a { color: #ece0ee; }
 .theme-wen .site-nav a:hover, .theme-wen .site-nav a[aria-current="page"] { color: #fef4fb; }
 .theme-wen .site-nav a[aria-current="page"] { box-shadow: inset 0 -1px 0 var(--zy-gold); }
-.theme-wen .sub-nav { border-bottom-color: rgba(230, 190, 215, 0.3); background: rgba(28, 23, 42, 0.55); }
-.theme-wen .sub-nav-mark { color: var(--zy-gold); border-right-color: #665978; }
-.theme-wen .sub-nav a { color: #e2d3e4; }
+.theme-wen .sub-nav { border-bottom-color: rgba(230, 190, 215, 0.3); background: rgba(46, 39, 68, 0.5); }
+.theme-wen .sub-nav-mark { color: var(--zy-gold); border-right-color: #7a6c8c; }
+.theme-wen .sub-nav a { color: #ece0ee; }
 .theme-wen .sub-nav a:hover, .theme-wen .sub-nav a[aria-current="page"] { color: #fef4fb; }
 .theme-wen .sub-nav a[aria-current="page"] { box-shadow: inset 0 -1px 0 var(--zy-gold); }
-.theme-wen .footer-inner { border-top-color: rgba(230, 190, 215, 0.3); color: #d1c1d8; }
-.theme-wen .empty-note { color: #d1c1d8; }
+.theme-wen .footer-inner { border-top-color: rgba(230, 190, 215, 0.3); color: #ddd0e2; }
+.theme-wen .empty-note { color: #ddd0e2; }
 
 /* 页面骨架、标签页：把 ziyu.css 里偏竹绿的点缀色换成藕荷，并整体调亮 */
 .theme-wen .zy-answer { color: #f6eef7; }
@@ -58,7 +58,7 @@ body.theme-wen {
 .theme-wen .zy-tip { border-color: rgba(230, 190, 215, 0.6); }
 .theme-wen .zy-tip p { color: #f9eff6; }
 .theme-wen .zy-notes { border-left-color: var(--zy-gold); }
-.theme-wen .zy-notes summary, .theme-wen .zy-notes-body p { color: #e2d3e4; }
+.theme-wen .zy-notes summary, .theme-wen .zy-notes-body p { color: #ece0ee; }
 .theme-wen .zy-btn { color: var(--zy-green); border-color: var(--zy-green-2); }
 .theme-wen .zy-btn:hover { background: var(--zy-green); color: var(--zy-paper); }
 
@@ -82,7 +82,7 @@ body.theme-wen {
   box-shadow: 0 20px 50px rgba(0, 0, 0, 0.4), 0 0 0 1px var(--zy-line);
 }
 .theme-wen .wen-toc {
-  flex: 0 0 230px; background: #2b2540; padding: 22px 14px 22px 28px; overflow-y: auto; position: relative;
+  flex: 0 0 230px; background: #3a3358; padding: 22px 14px 22px 28px; overflow-y: auto; position: relative;
 }
 /* 目录左边一排线装书的"穿线孔"，暗示这一整本是"线装"起来的 */
 .theme-wen .wen-toc::before {
@@ -98,10 +98,10 @@ body.theme-wen {
   position: relative; flex: 1 1 auto; min-width: 0; padding: 36px 42px; display: flex; align-items: flex-start;
   transition: opacity 0.16s ease, transform 0.16s ease; transform-origin: left center;
   /* 底色不再是纯色，叠一层很淡的宣纸颗粒感 + 顶部微光，让书页有点纸的质地 */
-  background-color: #40355c;
+  background-color: #564976;
   background-image:
-    radial-gradient(rgba(255, 255, 255, 0.035) 1px, transparent 1px),
-    linear-gradient(180deg, rgba(255, 255, 255, 0.025), transparent 45%);
+    radial-gradient(rgba(255, 255, 255, 0.045) 1px, transparent 1px),
+    linear-gradient(180deg, rgba(255, 255, 255, 0.03), transparent 45%);
   background-size: 5px 5px, auto;
 }
 /* 右上角一道淡淡的折角阴影，暗示这是摊开的"一页"而不是一块平板 */
@@ -145,11 +145,11 @@ body.theme-wen {
   background-size: 100% 1px; background-position: top, bottom; background-repeat: no-repeat; opacity: 0.75;
 }
 .theme-wen .wen-page-line { margin: 0; font-size: 16.5px; line-height: 1.95; color: var(--zy-soft); max-width: 46em; }
-.theme-wen .wen-page-detail { margin: 0; font-size: 16px; line-height: 1.95; color: #e6d7ea; max-width: 46em; }
+.theme-wen .wen-page-detail { margin: 0; font-size: 16px; line-height: 1.95; color: #f1e6f0; max-width: 46em; }
 .theme-wen .wen-page-picks { list-style: none; margin: 2px 0 0; padding: 0; display: flex; flex-direction: column; gap: 8px; }
-.theme-wen .wen-page-pick { display: flex; align-items: baseline; gap: 8px; font-size: 15px; color: #f0dcf0; }
+.theme-wen .wen-page-pick { display: flex; align-items: baseline; gap: 8px; font-size: 15px; color: #f5e6f4; }
 .theme-wen .wen-pick-mark { font-size: 9px; color: var(--zy-gold); }
-.theme-wen .wen-page-tags { margin: 0; font-size: 14px; letter-spacing: 0.06em; color: #f0dcf0; }
+.theme-wen .wen-page-tags { margin: 0; font-size: 14px; letter-spacing: 0.06em; color: #f5e6f4; }
 /* 右上角的印章：用数据里本来就有的那个"标记字"（诗/唐/宋/元/说），刻成一枚朱红小印 */
 .theme-wen .wen-page-seal {
   position: absolute; top: 2px; right: 4px; z-index: 2; width: 46px; height: 46px; flex: none;
