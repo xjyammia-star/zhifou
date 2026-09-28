@@ -1615,6 +1615,16 @@ window.ZHIFOU_CARDS = {
     {"id":"wen:中唐:金昌绪｜春怨","plate":"wen","cat":"中唐","name":"春怨","line":"打起黄莺儿，莫教枝上啼。","href":"tangshi.html?id=%E9%87%91%E6%98%8C%E7%BB%AA%EF%BD%9C%E6%98%A5%E6%80%A8","kind":"e"},
     {"id":"wen:中唐:杜秋娘｜金缕衣","plate":"wen","cat":"中唐","name":"金缕衣","line":"劝君莫惜金缕衣，劝君惜取少年时。","href":"tangshi.html?id=%E6%9D%9C%E7%A7%8B%E5%A8%98%EF%BD%9C%E9%87%91%E7%BC%95%E8%A1%A3","kind":"e"},
     {"id":"wen:晚唐:张祜｜何满子","plate":"wen","cat":"晚唐","name":"何满子","line":"故国三千里，深宫二十年。","href":"tangshi.html?id=%E5%BC%A0%E7%A5%9C%EF%BD%9C%E4%BD%95%E6%BB%A1%E5%AD%90","kind":"e"},
-    {"id":"wen:晚唐:张祜｜题金陵渡","plate":"wen","cat":"晚唐","name":"题金陵渡","line":"金陵津渡小山楼，一宿行人自可愁。","href":"tangshi.html?id=%E5%BC%A0%E7%A5%9C%EF%BD%9C%E9%A2%98%E9%87%91%E9%99%B5%E6%B8%A1","kind":"e"}
+    {"id":"wen:晚唐:张祜｜题金陵渡","plate":"wen","cat":"晚唐","name":"题金陵渡","line":"金陵津渡小山楼，一宿行人自可愁。","href":"tangshi.html?id=%E5%BC%A0%E7%A5%9C%EF%BD%9C%E9%A2%98%E9%87%91%E9%99%B5%E6%B8%A1","kind":"e"},
+    {"id":"wen:初唐:王勃｜蜀中九日","plate":"wen","cat":"初唐","name":"蜀中九日","line":"九月九日望乡台，他席他乡送客杯。","href":"tangshi.html?id=%E7%8E%8B%E5%8B%83%EF%BD%9C%E8%9C%80%E4%B8%AD%E4%B9%9D%E6%97%A5","kind":"e"},
+    {"id":"wen:初唐:王勃｜江亭夜月送别（其二）","plate":"wen","cat":"初唐","name":"江亭夜月送别（其二）","line":"乱烟笼碧砌，飞月向南端。","href":"tangshi.html?id=%E7%8E%8B%E5%8B%83%EF%BD%9C%E6%B1%9F%E4%BA%AD%E5%A4%9C%E6%9C%88%E9%80%81%E5%88%AB%EF%BC%88%E5%85%B6%E4%BA%8C%EF%BC%89","kind":"e"},
+    {"id":"wen:初唐:骆宾王｜于易水送人","plate":"wen","cat":"初唐","name":"于易水送人","line":"此地别燕丹，壮士发冲冠。","href":"tangshi.html?id=%E9%AA%86%E5%AE%BE%E7%8E%8B%EF%BD%9C%E4%BA%8E%E6%98%93%E6%B0%B4%E9%80%81%E4%BA%BA","kind":"e"},
+    {"id":"wen:初唐:贺知章｜题袁氏别业","plate":"wen","cat":"初唐","name":"题袁氏别业","line":"主人不相识，偶坐为林泉。","href":"tangshi.html?id=%E8%B4%BA%E7%9F%A5%E7%AB%A0%EF%BD%9C%E9%A2%98%E8%A2%81%E6%B0%8F%E5%88%AB%E4%B8%9A","kind":"e"},
+    {"id":"wen:盛唐:张九龄｜自君之出矣","plate":"wen","cat":"盛唐","name":"自君之出矣","line":"自君之出矣，不复理残机。","href":"tangshi.html?id=%E5%BC%A0%E4%B9%9D%E9%BE%84%EF%BD%9C%E8%87%AA%E5%90%9B%E4%B9%8B%E5%87%BA%E7%9F%A3","kind":"e"},
+    {"id":"wen:中唐:柳宗元｜别舍弟宗一","plate":"wen","cat":"中唐","name":"别舍弟宗一","line":"零落残魂倍黯然，双垂别泪越江边。","href":"tangshi.html?id=%E6%9F%B3%E5%AE%97%E5%85%83%EF%BD%9C%E5%88%AB%E8%88%8D%E5%BC%9F%E5%AE%97%E4%B8%80","kind":"e"},
+    {"id":"wen:中唐:柳宗元｜酬曹侍御过象县见寄","plate":"wen","cat":"中唐","name":"酬曹侍御过象县见寄","line":"破额山前碧玉流，骚人遥驻木兰舟。","href":"tangshi.html?id=%E6%9F%B3%E5%AE%97%E5%85%83%EF%BD%9C%E9%85%AC%E6%9B%B9%E4%BE%8D%E5%BE%A1%E8%BF%87%E8%B1%A1%E5%8E%BF%E8%A7%81%E5%AF%84","kind":"e"},
+    {"id":"wen:中唐:韩愈｜春雪","plate":"wen","cat":"中唐","name":"春雪","line":"新年都未有芳华，二月初惊见草芽。","href":"tangshi.html?id=%E9%9F%A9%E6%84%88%EF%BD%9C%E6%98%A5%E9%9B%AA","kind":"e"},
+    {"id":"wen:中唐:韩愈｜精卫填海","plate":"wen","cat":"中唐","name":"精卫填海","line":"鸟有偿冤者，终年抱寸诚。","href":"tangshi.html?id=%E9%9F%A9%E6%84%88%EF%BD%9C%E7%B2%BE%E5%8D%AB%E5%A1%AB%E6%B5%B7","kind":"e"},
+    {"id":"wen:中唐:韩愈｜葡萄","plate":"wen","cat":"中唐","name":"葡萄","line":"新茎未遍半犹枯，高架支离倒复扶。","href":"tangshi.html?id=%E9%9F%A9%E6%84%88%EF%BD%9C%E8%91%A1%E8%90%84","kind":"e"}
   ]
 };
