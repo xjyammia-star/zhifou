@@ -2,10 +2,10 @@
    由 ziyu.css 的骨架换色而来；页面底、页头是深色（和"字·语""艺"同一类做法）。
    只在 body.theme-wen 的页面生效，不影响其他板块和首页。请先加载 ziyu.css，再加载本文件。 */
 body.theme-wen {
-  --zy-bg: #4a4170;
-  --zy-bg-2: #362f52;
-  --zy-paper: #4e4368;
-  --zy-paper-2: #574a72;
+  --zy-bg: #12091d;
+  --zy-bg-2: #0a0613;
+  --zy-paper: #1e1630;
+  --zy-paper-2: #291f42;
   --zy-ink: #f7f0f9;
   --zy-ink-2: #f3e9f5;
   --zy-muted: #ded0e6;
@@ -18,7 +18,7 @@ body.theme-wen {
   --zy-cream: #faf6fb;
   --zy-soft: #f2e5f3;
   background: var(--zy-bg);
-  background-image: linear-gradient(180deg, #4d4374 0%, #362f52 100%);
+  background-image: linear-gradient(180deg, #150e22 0%, #0a0613 100%);
   color: var(--zy-cream);
 }
 .theme-wen a { color: var(--zy-gold); }
@@ -35,7 +35,7 @@ body.theme-wen {
 .theme-wen .site-nav a { color: #ece0ee; }
 .theme-wen .site-nav a:hover, .theme-wen .site-nav a[aria-current="page"] { color: #fef4fb; }
 .theme-wen .site-nav a[aria-current="page"] { box-shadow: inset 0 -1px 0 var(--zy-gold); }
-.theme-wen .sub-nav { border-bottom-color: rgba(230, 190, 215, 0.3); background: rgba(46, 39, 68, 0.5); }
+.theme-wen .sub-nav { border-bottom-color: rgba(230, 190, 215, 0.3); background: rgba(10, 6, 19, 0.65); }
 .theme-wen .sub-nav-mark { color: var(--zy-gold); border-right-color: #7a6c8c; }
 .theme-wen .sub-nav a { color: #ece0ee; }
 .theme-wen .sub-nav a:hover, .theme-wen .sub-nav a[aria-current="page"] { color: #fef4fb; }
@@ -65,7 +65,7 @@ body.theme-wen {
 /* 卡片（这一页目前只有页头和"书"，卡片规则留着给以后的内容页用） */
 .theme-wen .zy-card { border-color: var(--zy-line); }
 .theme-wen .zy-card-name { color: #fbeaf5; }
-.theme-wen .zy-kv .is-remind dd { background: #463a60; }
+.theme-wen .zy-kv .is-remind dd { background: var(--zy-paper); }
 .theme-wen .zy-kv .is-quote dd { color: #fbeaf5; font-size: 16px; line-height: 1.85; }
 
 /* ============================================================
@@ -82,7 +82,7 @@ body.theme-wen {
   box-shadow: 0 20px 50px rgba(0, 0, 0, 0.4), 0 0 0 1px var(--zy-line);
 }
 .theme-wen .wen-toc {
-  flex: 0 0 230px; background: #3a3358; padding: 22px 14px 22px 28px; overflow-y: auto; position: relative;
+  flex: 0 0 230px; background: var(--zy-bg-2); padding: 22px 14px 22px 28px; overflow-y: auto; position: relative;
 }
 /* 目录左边一排线装书的"穿线孔"，暗示这一整本是"线装"起来的 */
 .theme-wen .wen-toc::before {
@@ -98,7 +98,7 @@ body.theme-wen {
   position: relative; flex: 1 1 auto; min-width: 0; padding: 36px 42px; display: flex; align-items: flex-start;
   transition: opacity 0.16s ease, transform 0.16s ease; transform-origin: left center;
   /* 底色不再是纯色，叠一层很淡的宣纸颗粒感 + 顶部微光，让书页有点纸的质地 */
-  background-color: #564976;
+  background-color: var(--zy-paper);
   background-image:
     radial-gradient(rgba(255, 255, 255, 0.045) 1px, transparent 1px),
     linear-gradient(180deg, rgba(255, 255, 255, 0.03), transparent 45%);

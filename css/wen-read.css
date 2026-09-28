@@ -31,7 +31,7 @@
 /* 每一大段都是一"页"：宣纸颗粒底 + 右上角折角阴影 + 印章，跟入口页的书页是同一套质感 */
 .theme-wen .wr-section {
   position: relative; border-radius: 6px; padding: 34px 38px; scroll-margin-top: 84px;
-  background-color: #564976;
+  background-color: var(--zy-paper);
   background-image:
     radial-gradient(rgba(255, 255, 255, 0.045) 1px, transparent 1px),
     linear-gradient(180deg, rgba(255, 255, 255, 0.03), transparent 45%);
@@ -159,7 +159,7 @@
 .theme-wen .wr-char-modal-card {
   position: relative; width: 100%; max-width: 420px; max-height: 80vh; overflow-y: auto;
   border-radius: 10px; padding: 30px 26px 24px;
-  background-color: #564976;
+  background-color: var(--zy-paper-2);
   background-image:
     radial-gradient(rgba(255, 255, 255, 0.045) 1px, transparent 1px),
     linear-gradient(180deg, rgba(255, 255, 255, 0.03), transparent 45%);
