@@ -98,7 +98,8 @@
       key: 'wen', label: '文', home: 'wen.html',
       items: [
         { page: 'wen', label: '文的入口', href: 'wen.html' },
-        { page: 'shijing', label: '诗经到魏晋', href: 'shijing.html' }
+        { page: 'shijing', label: '诗经到魏晋', href: 'shijing.html' },
+        { page: 'mingqing', label: '四大名著', href: 'mingqing.html' }
       ]
     }
   ];
