@@ -4,6 +4,9 @@
    左边是窄窄一条目录（五个时代竖排的书脊，一直都看得见），
    右边是一大块摊开的书页，点目录里哪个时代，右边这一整页就换成对应内容，
    中间有一道书脊阴影，翻页时右边内容会有一个轻微的"翻页"过渡。
+   本轮更新：书页里加了展开介绍（detail）和代表作/代表人物（picks），
+   并在右上角加了一枚印章装饰（用的还是数据里原来就有的 mark 字），
+   给页面多一点内容和一点"书卷气"。
    数据来自 data/wen-index.js（window.ZHIFOU_WEN_INDEX）；排版小工具沿用 js/zycommon.js（window.ZY）。 */
 (function () {
   'use strict';
@@ -29,11 +32,25 @@
     return el('li', { 'class': 'wen-toc-item' }, [btn]);
   }
 
+  function pickItem(text) {
+    return el('li', { 'class': 'wen-page-pick' }, [
+      el('span', { 'class': 'wen-pick-mark', 'aria-hidden': 'true', text: '○' }),
+      el('span', { 'class': 'wen-pick-text', text: text })
+    ]);
+  }
+
   function pageContent(it, i) {
     var kids = [
+      el('div', { 'class': 'wen-page-seal', 'aria-hidden': 'true' }, [
+        el('span', { text: it.mark })
+      ]),
       el('span', { 'class': 'wen-page-idx', text: '0' + (i + 1) + ' · ' + it.era }),
       el('h3', { 'class': 'wen-page-name', text: it.name }),
       el('p', { 'class': 'wen-page-line', text: it.line }),
+      it.detail ? el('p', { 'class': 'wen-page-detail', text: it.detail }) : null,
+      it.picks && it.picks.length
+        ? el('ul', { 'class': 'wen-page-picks' }, it.picks.map(pickItem))
+        : null,
       el('p', { 'class': 'wen-page-tags', text: it.tags.join(' · ') }),
       it.open
         ? el('a', { 'class': 'wen-page-cta', href: it.href, text: '进去看看这一段 →' })
