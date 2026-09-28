@@ -127,6 +127,64 @@
 .theme-wen .wr-allusions b { color: var(--zy-gold-d); }
 .theme-wen .wr-allusions span { color: #f1e6f0; }
 
+/* 人物名字高亮标签：出现在人物介绍正文里的核心人物名字，虚线下划线 + 点击提示，
+   点了以后弹出下面的居中关系卡片 */
+.theme-wen .wr-char-link {
+  color: var(--zy-gold-d);
+  cursor: pointer;
+  border-bottom: 1px dashed var(--zy-gold);
+  padding: 0 1px;
+  border-radius: 2px;
+  transition: color 0.15s ease, background 0.15s ease;
+}
+.theme-wen .wr-char-link:hover,
+.theme-wen .wr-char-link:focus-visible {
+  color: #ffffff;
+  background: rgba(240, 205, 227, 0.2);
+  outline: none;
+}
+
+/* 居中弹窗：人物关系卡片，整页只有一份，点哪个名字就显示哪个人物的关系网 */
+.theme-wen .wr-char-modal-overlay {
+  position: fixed; inset: 0; z-index: 60;
+  display: flex; align-items: center; justify-content: center;
+  padding: 20px;
+  background: rgba(20, 16, 32, 0.62);
+  opacity: 0; visibility: hidden; pointer-events: none;
+  transition: opacity 0.18s ease;
+}
+.theme-wen .wr-char-modal-overlay.is-open {
+  opacity: 1; visibility: visible; pointer-events: auto;
+}
+.theme-wen .wr-char-modal-card {
+  position: relative; width: 100%; max-width: 420px; max-height: 80vh; overflow-y: auto;
+  border-radius: 10px; padding: 30px 26px 24px;
+  background-color: #564976;
+  background-image:
+    radial-gradient(rgba(255, 255, 255, 0.045) 1px, transparent 1px),
+    linear-gradient(180deg, rgba(255, 255, 255, 0.03), transparent 45%);
+  background-size: 5px 5px, auto;
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.4), 0 0 0 1px var(--zy-line);
+  transform: translateY(10px) scale(0.98);
+  transition: transform 0.18s ease;
+}
+.theme-wen .wr-char-modal-overlay.is-open .wr-char-modal-card { transform: translateY(0) scale(1); }
+.theme-wen .wr-char-modal-close {
+  position: absolute; top: 14px; right: 14px; width: 30px; height: 30px;
+  display: flex; align-items: center; justify-content: center;
+  border: 0; border-radius: 50%; background: rgba(0, 0, 0, 0.18); color: #f5e6f4;
+  font-size: 19px; line-height: 1; cursor: pointer;
+}
+.theme-wen .wr-char-modal-close:hover { background: rgba(0, 0, 0, 0.32); }
+.theme-wen .wr-char-modal-title {
+  margin: 0 30px 16px 0; font-family: var(--display); font-size: 21px; line-height: 1.4; color: #fbeef7;
+}
+.theme-wen .wr-char-modal-list { display: flex; flex-direction: column; gap: 11px; }
+
+@media (max-width: 760px) {
+  .theme-wen .wr-char-modal-card { padding: 24px 20px 20px; }
+}
+
 @media (max-width: 760px) {
   .theme-wen .wr-wrap { flex-direction: column; }
   .theme-wen .wr-nav {

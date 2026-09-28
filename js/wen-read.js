@@ -75,6 +75,85 @@
     }
   }
 
+  /* 人物关系高亮 + 弹窗：某一段（目前是"三国演义"）如果带了 relations 数据，
+     就把正文里出现的这些人物名字自动包一层可点击的高亮标签，点了以后弹出居中的关系卡片。
+     这段逻辑写成通用的，以后别的书（比如水浒传）想加同样的功能，只要在数据里加 relations 就行，
+     不用再改这个文件。 */
+  function escapeRegExp(s) {
+    return s.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+  }
+
+  function highlightRelationNames(sectionNode, relations) {
+    var names = Object.keys(relations || {});
+    if (!names.length) return;
+    // 名字长的先匹配，避免短名字截断长名字（这里几乎不会撞车，但保险一点）
+    names.sort(function (a, b) { return b.length - a.length; });
+    var re = new RegExp('(' + names.map(escapeRegExp).join('|') + ')', 'g');
+
+    var walker = document.createTreeWalker(sectionNode, NodeFilter.SHOW_TEXT, null, false);
+    var targets = [];
+    var node;
+    while ((node = walker.nextNode())) {
+      re.lastIndex = 0;
+      if (node.nodeValue && re.test(node.nodeValue)) targets.push(node);
+    }
+
+    targets.forEach(function (textNode) {
+      var text = textNode.nodeValue;
+      var frag = document.createDocumentFragment();
+      var lastIndex = 0;
+      var m;
+      re.lastIndex = 0;
+      while ((m = re.exec(text))) {
+        if (m.index > lastIndex) frag.appendChild(document.createTextNode(text.slice(lastIndex, m.index)));
+        var span = document.createElement('span');
+        span.className = 'wr-char-link';
+        span.setAttribute('data-char', m[0]);
+        span.setAttribute('tabindex', '0');
+        span.setAttribute('role', 'button');
+        span.textContent = m[0];
+        frag.appendChild(span);
+        lastIndex = re.lastIndex;
+      }
+      if (lastIndex < text.length) frag.appendChild(document.createTextNode(text.slice(lastIndex)));
+      textNode.parentNode.replaceChild(frag, textNode);
+    });
+  }
+
+  /* 建一个居中弹窗卡片，整页只建一次，点哪个人物名字就把哪个人物的关系数据填进去显示 */
+  function buildRelationModal() {
+    var titleEl = el('h3', { 'class': 'wr-char-modal-title' });
+    var listEl = el('div', { 'class': 'wr-char-modal-list' });
+    var closeBtn = el('button', {
+      'class': 'wr-char-modal-close', type: 'button', 'aria-label': '关闭'
+    }, [el('span', { 'aria-hidden': 'true', text: '×' })]);
+    var card = el('div', { 'class': 'wr-char-modal-card', role: 'dialog', 'aria-modal': 'true' }, [closeBtn, titleEl, listEl]);
+    var overlay = el('div', { 'class': 'wr-char-modal-overlay', 'aria-hidden': 'true' }, [card]);
+    document.body.appendChild(overlay);
+
+    function close() {
+      overlay.classList.remove('is-open');
+      overlay.setAttribute('aria-hidden', 'true');
+    }
+    function open(data) {
+      titleEl.textContent = data.label || '';
+      while (listEl.firstChild) listEl.removeChild(listEl.firstChild);
+      (data.items || []).forEach(function (it) {
+        listEl.appendChild(el('div', { 'class': 'wr-facts-row' }, [
+          el('span', { 'class': 'wr-facts-term', text: it.term }),
+          el('span', { 'class': 'wr-facts-note', text: it.note })
+        ]));
+      });
+      overlay.classList.add('is-open');
+      overlay.setAttribute('aria-hidden', 'false');
+    }
+    overlay.addEventListener('click', function (e) { if (e.target === overlay) close(); });
+    closeBtn.addEventListener('click', close);
+    document.addEventListener('keydown', function (e) { if (e.key === 'Escape') close(); });
+
+    return { open: open, close: close };
+  }
+
   function renderSection(sec, i) {
     var kids = [
       el('div', { 'class': 'wr-seal', 'aria-hidden': 'true' }, [el('span', { text: sec.mark })]),
@@ -128,6 +207,33 @@
     ].concat(Z.tipNotes(D)));
 
     document.title = (D.hook || '') + ' · 知否知否';
+
+    /* 有 relations 数据的段落（目前只有"三国演义"），把人物名字高亮成可点击标签，
+       点了以后弹出居中卡片显示这个人物的关系网 */
+    var allRelations = {};
+    D.sections.forEach(function (sec) {
+      if (!sec.relations) return;
+      var node = document.getElementById('wr-' + sec.key);
+      if (node) highlightRelationNames(node, sec.relations);
+      Object.keys(sec.relations).forEach(function (name) { allRelations[name] = sec.relations[name]; });
+    });
+    if (Object.keys(allRelations).length) {
+      var modal = buildRelationModal();
+      var openFor = function (target) {
+        var link = target.closest ? target.closest('.wr-char-link') : null;
+        if (!link) return;
+        var data = allRelations[link.getAttribute('data-char')];
+        if (data) modal.open(data);
+      };
+      main.addEventListener('click', function (e) { openFor(e.target); });
+      main.addEventListener('keydown', function (e) {
+        if (e.key !== 'Enter' && e.key !== ' ') return;
+        var link = e.target.closest ? e.target.closest('.wr-char-link') : null;
+        if (!link) return;
+        e.preventDefault();
+        openFor(e.target);
+      });
+    }
 
     /* 滚动到哪一段，左边书签就跟着亮哪一个；不支持 IntersectionObserver 的旧浏览器就不加这个效果，不影响阅读 */
     if (window.IntersectionObserver) {
