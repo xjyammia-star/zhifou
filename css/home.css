@@ -176,6 +176,8 @@ body.theme-home {
 .dc-lisi .draw-line { color: #46381f; }
 .dc-yi { --dot: #c9622f; background: #2b2724; border-color: #c9622f; color: #f1e9db; }
 .dc-yi .draw-line { color: #d8cdb8; }
+.dc-wen { --dot: #f0cde3; background: #1e1630; border-color: #e6cbe0; color: #f2e5f3; }
+.dc-wen .draw-line { color: #d9c9e0; }
 
 /* ---------- 桌面：抽卡区横跨整页，放在日晷下面；信息带放在右栏 ---------- */
 @media (min-width: 1100px) {

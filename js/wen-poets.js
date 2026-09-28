@@ -84,6 +84,22 @@
       el('div', { 'class': 'tp-poet-groups' }, (poet.groups || []).map(function (g) { return groupNode(g, onPick); }))
     ]);
     d.appendChild(body);
+
+    /* 首页"每日一签"抽到某一首诗时，会带着 ?id=诗人｜作品名 跳过来；
+       这里给每一首作品登记一个"直达"：展开这位诗人的卡片，并直接弹出这首诗的详情。
+       用"诗人｜作品名"而不是单独用作品名，是因为个别作品名在不同诗人之间会重复（比如《感遇（其二）》）。 */
+    if (Z.onOpen) {
+      (poet.groups || []).forEach(function (g) {
+        (g.works || []).forEach(function (w) {
+          Z.onOpen(poet.name + '｜' + w.title, function () {
+            d.open = true;
+            onPick(w);
+            return d;
+          });
+        });
+      });
+    }
+
     return d;
   }
 
@@ -111,6 +127,9 @@
     ].concat(Z.tipNotes(D)));
 
     document.title = (D.hook || '') + ' · 知否知否';
+
+    /* 页面搭好之后，再看网址里有没有 ?id=，有就展开对应诗人、弹出对应作品 */
+    if (Z.openFromQuery) Z.openFromQuery();
   }
 
   window.ZHIFOU_WENPOETS = { mount: mount };
