@@ -85,6 +85,9 @@
 .theme-wen .wr-collapsible > .wr-block-h:hover::before { color: var(--zy-gold-d); }
 .theme-wen .wr-collapsible > *:not(summary) { margin-top: 13px; }
 
+/* 名单下面的补充说明（比如"五虎上将不是官方称号"），跟在名单后面、字号更小、颜色更淡 */
+.theme-wen .wr-block-tip { margin: 14px 0 0; font-size: 13.5px; line-height: 1.85; color: var(--zy-soft); }
+
 .theme-wen .wr-facts { display: flex; flex-direction: column; gap: 10px; }
 .theme-wen .wr-facts-row { display: flex; gap: 12px; align-items: baseline; }
 .theme-wen .wr-facts-term { flex: none; min-width: 2.2em; font-family: var(--display); font-size: 16.5px; color: var(--zy-gold-d); }

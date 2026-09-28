@@ -39,7 +39,12 @@
         var worksNode = el('ul', { 'class': 'wr-works' }, b.items.map(function (it) {
           return el('li', {}, [el('b', { text: it.name }), el('span', { text: it.note })]);
         }));
-        return b.heading ? wrapCollapsible(b.heading, worksNode) : el('div', { 'class': 'wr-block' }, [worksNode]);
+        // 有些人物分组（比如"五虎上将""五子良将"）需要在名单下面补一句说明，
+        // 这句说明要跟着名单一起收进同一个可展开的折叠块里，不能单独露在外面。
+        var worksBody = b.tip
+          ? el('div', { 'class': 'wr-works-wrap' }, [worksNode, el('p', { 'class': 'wr-block-tip', text: b.tip })])
+          : worksNode;
+        return b.heading ? wrapCollapsible(b.heading, worksBody) : el('div', { 'class': 'wr-block' }, [worksBody]);
       }
 
       case 'quotes': {
