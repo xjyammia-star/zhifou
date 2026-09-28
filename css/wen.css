@@ -1,171 +1,154 @@
-/* 知否知否 · "文"板块的样式（黛紫藕荷）
+/* 知否知否 · "文"板块的样式（黛紫藕荷，本轮调淡调亮）
    由 ziyu.css 的骨架换色而来；页面底、页头是深色（和"字·语""艺"同一类做法）。
    只在 body.theme-wen 的页面生效，不影响其他板块和首页。请先加载 ziyu.css，再加载本文件。 */
 body.theme-wen {
-  --zy-bg: #251f38;
-  --zy-bg-2: #1a1729;
-  --zy-paper: #322b48;
-  --zy-paper-2: #3b3255;
-  --zy-ink: #efe6f0;
-  --zy-ink-2: #ecdff0;
-  --zy-muted: #bfaecb;
-  --zy-line: rgba(224, 168, 201, 0.28);
-  --zy-green: #a8608a;
-  --zy-green-2: #c07aa4;
-  --zy-gold: #e6b8d3;
-  --zy-gold-d: #f6dcec;
-  --zy-seal: #b0568a;
-  --zy-cream: #f2ecf3;
-  --zy-soft: #e2cfe9;
+  --zy-bg: #332c4c;
+  --zy-bg-2: #241f38;
+  --zy-paper: #3d3457;
+  --zy-paper-2: #463a60;
+  --zy-ink: #f5eef7;
+  --zy-ink-2: #f0e4f2;
+  --zy-muted: #cbb9d6;
+  --zy-line: rgba(230, 190, 215, 0.3);
+  --zy-green: #b8749c;
+  --zy-green-2: #cf8fb2;
+  --zy-gold: #edc2de;
+  --zy-gold-d: #fbeaf5;
+  --zy-seal: #c17aa0;
+  --zy-cream: #f6f0f7;
+  --zy-soft: #ecdcf0;
   background: var(--zy-bg);
-  background-image: linear-gradient(180deg, #2b2440 0%, #1a1729 100%);
+  background-image: linear-gradient(180deg, #392f57 0%, #241f38 100%);
   color: var(--zy-cream);
 }
 .theme-wen a { color: var(--zy-gold); }
 .theme-wen [hidden] { display: none !important; }
-.theme-wen a:hover { color: #f6d2ea; }
+.theme-wen a:hover { color: #fff0f8; }
 .theme-wen a:focus-visible, .theme-wen button:focus-visible, .theme-wen summary:focus-visible {
   outline: 2px solid var(--zy-gold); outline-offset: 3px;
 }
 
 /* 页头页脚：和页面同为黛紫（页头不另设底色，透出页面的底） */
-.theme-wen .site-header { border-bottom-color: rgba(224, 168, 201, 0.3); }
-.theme-wen .brand, .theme-wen .brand:hover { color: #f3e9f0; }
-.theme-wen .brand-tagline { color: #c7b6cf; border-left-color: #5f5270; }
-.theme-wen .site-nav a { color: #d9c9dc; }
-.theme-wen .site-nav a:hover, .theme-wen .site-nav a[aria-current="page"] { color: #fbeef7; }
+.theme-wen .site-header { border-bottom-color: rgba(230, 190, 215, 0.3); }
+.theme-wen .brand, .theme-wen .brand:hover { color: #f6eff5; }
+.theme-wen .brand-tagline { color: #d1c1d8; border-left-color: #665978; }
+.theme-wen .site-nav a { color: #e2d3e4; }
+.theme-wen .site-nav a:hover, .theme-wen .site-nav a[aria-current="page"] { color: #fef4fb; }
 .theme-wen .site-nav a[aria-current="page"] { box-shadow: inset 0 -1px 0 var(--zy-gold); }
-.theme-wen .sub-nav { border-bottom-color: rgba(224, 168, 201, 0.3); background: rgba(20, 16, 32, 0.55); }
-.theme-wen .sub-nav-mark { color: var(--zy-gold); border-right-color: #5f5270; }
-.theme-wen .sub-nav a { color: #d9c9dc; }
-.theme-wen .sub-nav a:hover, .theme-wen .sub-nav a[aria-current="page"] { color: #fbeef7; }
+.theme-wen .sub-nav { border-bottom-color: rgba(230, 190, 215, 0.3); background: rgba(28, 23, 42, 0.55); }
+.theme-wen .sub-nav-mark { color: var(--zy-gold); border-right-color: #665978; }
+.theme-wen .sub-nav a { color: #e2d3e4; }
+.theme-wen .sub-nav a:hover, .theme-wen .sub-nav a[aria-current="page"] { color: #fef4fb; }
 .theme-wen .sub-nav a[aria-current="page"] { box-shadow: inset 0 -1px 0 var(--zy-gold); }
-.theme-wen .footer-inner { border-top-color: rgba(224, 168, 201, 0.3); color: #c7b6cf; }
-.theme-wen .empty-note { color: #c7b6cf; }
+.theme-wen .footer-inner { border-top-color: rgba(230, 190, 215, 0.3); color: #d1c1d8; }
+.theme-wen .empty-note { color: #d1c1d8; }
 
-/* 页面骨架、标签页：把 ziyu.css 里偏竹绿的点缀色换成藕荷 */
-.theme-wen .zy-answer { color: #f0e6f2; }
+/* 页面骨架、标签页：把 ziyu.css 里偏竹绿的点缀色换成藕荷，并整体调亮 */
+.theme-wen .zy-answer { color: #f6eef7; }
 .theme-wen .zy-lead { color: var(--zy-soft); }
 .theme-wen .zy-sec-title { color: var(--zy-gold); }
-.theme-wen .zy-sec-title::after { background: rgba(224, 168, 201, 0.35); }
-.theme-wen .zy-remind { color: #f2cfe6; }
-.theme-wen .zy-callout { border-color: rgba(224, 168, 201, 0.6); color: #f5eaf3; }
-.theme-wen .zy-tab { color: #efe3f0; border-color: rgba(224, 168, 201, 0.55); }
-.theme-wen .zy-tab:hover { background: rgba(224, 168, 201, 0.15); }
+.theme-wen .zy-sec-title::after { background: rgba(230, 190, 215, 0.35); }
+.theme-wen .zy-remind { color: #fbe4f2; }
+.theme-wen .zy-callout { border-color: rgba(230, 190, 215, 0.6); color: #f9eff6; }
+.theme-wen .zy-tab { color: #f3e8f2; border-color: rgba(230, 190, 215, 0.55); }
+.theme-wen .zy-tab:hover { background: rgba(230, 190, 215, 0.15); }
 .theme-wen .zy-tab[aria-selected="true"] { background: var(--zy-gold); border-color: var(--zy-gold); color: #2b2140; }
-.theme-wen .zy-see a { border-color: rgba(224, 168, 201, 0.5); }
-.theme-wen .zy-see a:hover { background: rgba(224, 168, 201, 0.15); }
-.theme-wen .zy-tip { border-color: rgba(224, 168, 201, 0.6); }
-.theme-wen .zy-tip p { color: #f5eaf3; }
+.theme-wen .zy-see a { border-color: rgba(230, 190, 215, 0.5); }
+.theme-wen .zy-see a:hover { background: rgba(230, 190, 215, 0.15); }
+.theme-wen .zy-tip { border-color: rgba(230, 190, 215, 0.6); }
+.theme-wen .zy-tip p { color: #f9eff6; }
 .theme-wen .zy-notes { border-left-color: var(--zy-gold); }
-.theme-wen .zy-notes summary, .theme-wen .zy-notes-body p { color: #d9c9dc; }
+.theme-wen .zy-notes summary, .theme-wen .zy-notes-body p { color: #e2d3e4; }
 .theme-wen .zy-btn { color: var(--zy-green); border-color: var(--zy-green-2); }
 .theme-wen .zy-btn:hover { background: var(--zy-green); color: var(--zy-paper); }
 
-/* 卡片（这一页目前只有页头和时间线，卡片规则留着给以后的内容页用） */
+/* 卡片（这一页目前只有页头和"书"，卡片规则留着给以后的内容页用） */
 .theme-wen .zy-card { border-color: var(--zy-line); }
-.theme-wen .zy-card-name { color: #f6dcec; }
-.theme-wen .zy-kv .is-remind dd { background: #3b3255; }
-.theme-wen .zy-kv .is-quote dd { color: #f6dcec; font-size: 16px; line-height: 1.85; }
+.theme-wen .zy-card-name { color: #fbeaf5; }
+.theme-wen .zy-kv .is-remind dd { background: #463a60; }
+.theme-wen .zy-kv .is-quote dd { color: #fbeaf5; font-size: 16px; line-height: 1.85; }
 
 /* ============================================================
-   入口页：文脉时间线（竖排，悬停/点开在右侧展开一页"书"）
-   跟其它板块"并排卡片挑一个"的入口不一样：这里画一条竖线，
-   五个时代从上到下按时间顺序挂在线上，每一段默认只显示圆点和名字，
-   鼠标移上去（或点一下、或键盘 Tab 过去）会像翻开一本书那样，
-   在右侧展开这一段的说明；小屏幕上放不下"右侧"，改成往下展开。
+   入口页：开卷两页式
+   跟其它板块"并排卡片挑一个"的入口不一样：这里做成一本摊开的书——
+   左边是窄窄一条目录（五个时代竖排的书脊，一直都看得见），
+   右边是一大块摊开的书页；点目录里哪个时代，右边整页换成对应内容，
+   中间一道书脊阴影，换页时右边会有一个轻微的翻页过渡。
+   小屏幕上放不下"两页并排"，目录改成顶部一条可以横滑的书签栏，书页在下面。
    ============================================================ */
-.theme-wen .wen-timeline { position: relative; padding: 6px 6px 6px 4px; }
-.theme-wen .wen-line {
-  position: absolute; left: 31px; top: 6px; bottom: 6px; width: 2px;
-  background: linear-gradient(180deg, transparent, var(--zy-gold) 4%, var(--zy-gold) 96%, transparent);
-  opacity: 0.5;
+.theme-wen .wen-book {
+  position: relative; display: flex; align-items: stretch; min-height: 380px;
+  border-radius: 6px; overflow: hidden; perspective: 900px;
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.4), 0 0 0 1px var(--zy-line);
 }
-.theme-wen .wen-nodes { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 22px; position: relative; }
-.theme-wen .wen-node { position: relative; display: flex; align-items: flex-start; }
+.theme-wen .wen-toc { flex: 0 0 230px; background: #2b2540; padding: 22px 10px; overflow-y: auto; }
+.theme-wen .wen-book-spine {
+  position: absolute; top: 0; bottom: 0; left: 230px; width: 26px; margin-left: -13px; z-index: 2; pointer-events: none;
+  background: linear-gradient(90deg, rgba(0, 0, 0, 0.32), rgba(0, 0, 0, 0.04) 42%, rgba(255, 255, 255, 0.05) 58%, rgba(0, 0, 0, 0.22));
+}
+.theme-wen .wen-page-wrap {
+  flex: 1 1 auto; min-width: 0; background: #40355c; padding: 36px 42px; display: flex; align-items: flex-start;
+  transition: opacity 0.16s ease, transform 0.16s ease; transform-origin: left center;
+}
+.theme-wen .wen-page-wrap.is-flipping { opacity: 0; transform: translateX(8px) rotateY(5deg); }
 
-/* 左边：圆点 + 一直看得见的名字（"书脊"），点一下/移上去会展开右边的内容 */
-.theme-wen .wen-node-toggle {
-  flex: none; display: flex; align-items: center; gap: 16px; background: none; border: 0; margin: 0; padding: 4px 4px 4px 0;
-  font: inherit; color: inherit; cursor: pointer; text-align: left;
+.theme-wen .wen-toc-list { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 4px; }
+.theme-wen .wen-toc-item { min-width: 0; }
+.theme-wen .wen-toc-btn {
+  width: 100%; display: flex; align-items: center; gap: 12px; padding: 11px 10px;
+  background: none; border: 0; border-radius: 6px; color: inherit; font: inherit; text-align: left; cursor: pointer;
+  transition: background 0.18s ease;
 }
-.theme-wen .wen-node-dot {
-  position: relative; flex: none; width: 62px; height: 62px; border-radius: 50%;
-  display: flex; align-items: center; justify-content: center;
-  background: radial-gradient(circle at 35% 30%, #d98fbf, #a8608a 70%, #7c4468 100%);
-  box-shadow: 0 0 0 4px rgba(224, 168, 201, 0.18), 0 6px 16px rgba(0, 0, 0, 0.35);
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
+.theme-wen .wen-toc-btn:hover { background: rgba(255, 255, 255, 0.07); }
+.theme-wen .wen-toc-btn[aria-current="true"] { background: rgba(237, 194, 222, 0.18); box-shadow: inset 3px 0 0 var(--zy-gold); }
+.theme-wen .wen-toc-dot {
+  flex: none; width: 38px; height: 38px; border-radius: 50%; display: flex; align-items: center; justify-content: center;
+  background: radial-gradient(circle at 35% 30%, #f0bede, #cf8fb2 70%, #a5688e 100%);
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
 }
-.theme-wen .wen-node-mark { font-family: var(--display); font-size: 24px; line-height: 1; color: #fdf1f8; }
-.theme-wen .wen-node-idx {
-  position: absolute; right: -6px; bottom: -6px;
-  font-size: 10px; letter-spacing: 0.05em; color: var(--zy-gold-d); background: var(--zy-bg-2);
-  border: 1px solid rgba(224, 168, 201, 0.5); border-radius: 9px; padding: 0 6px; white-space: nowrap;
+.theme-wen .wen-toc-mark { font-family: var(--display); font-size: 16px; line-height: 1; color: #fdf1f8; }
+.theme-wen .wen-toc-label { display: flex; flex-direction: column; gap: 1px; min-width: 0; }
+.theme-wen .wen-toc-era { font-size: 11px; letter-spacing: 0.16em; color: var(--zy-gold); }
+.theme-wen .wen-toc-name { font-family: var(--display); font-size: 16.5px; line-height: 1.3; color: #f6eef6; }
+.theme-wen .wen-toc-btn[aria-current="true"] .wen-toc-name { color: var(--zy-gold-d); }
+.theme-wen .wen-toc-soon {
+  margin-left: auto; flex: none; font-size: 10px; color: #fbe4f2;
+  border: 1px dashed rgba(230, 190, 215, 0.55); border-radius: 8px; padding: 0 6px; line-height: 16px;
 }
-.theme-wen .wen-node-spine { display: flex; flex-direction: column; gap: 2px; min-width: 128px; }
-.theme-wen .wen-node-era { font-size: 12px; letter-spacing: 0.22em; color: var(--zy-gold); }
-.theme-wen .wen-node-name { font-family: var(--display); font-size: 21px; line-height: 1.3; color: #fbeef7; }
 
-/* 右边：展开的那"一页" */
-.theme-wen .wen-node-panel {
-  flex: none; max-width: 0; opacity: 0; overflow: hidden;
-  transition: max-width 0.32s ease, opacity 0.22s ease;
+.theme-wen .wen-page { display: flex; flex-direction: column; gap: 14px; max-width: 640px; }
+.theme-wen .wen-page-idx { font-size: 12px; letter-spacing: 0.25em; color: var(--zy-gold); }
+.theme-wen .wen-page-name { margin: 0; font-family: var(--display); font-size: 36px; line-height: 1.25; color: #fbeef7; }
+.theme-wen .wen-page-line { margin: 0; font-size: 16.5px; line-height: 1.95; color: var(--zy-soft); max-width: 46em; }
+.theme-wen .wen-page-tags { margin: 0; font-size: 13px; letter-spacing: 0.06em; color: #f0dcf0; }
+.theme-wen .wen-page-cta {
+  align-self: flex-start; margin-top: 6px; display: inline-flex; align-items: center; min-height: 44px; padding: 0 22px;
+  font-size: 14.5px; letter-spacing: 0.05em; color: #2b2140; background: var(--zy-gold); border-radius: 3px; text-decoration: none;
 }
-.theme-wen .wen-node-panel-inner {
-  width: 320px; margin-left: 10px; padding: 12px 16px; display: flex; flex-direction: column; gap: 8px;
-  background: var(--zy-paper); border: 1px solid var(--zy-line); border-radius: 4px;
-  transform: scaleX(0.94); transform-origin: left center; opacity: 0.85; transition: transform 0.28s ease, opacity 0.22s ease;
+.theme-wen .wen-page-cta:hover { background: #fff5fb; color: #2b2140; }
+.theme-wen .wen-page-soon {
+  align-self: flex-start; margin-top: 6px; font-size: 13px; letter-spacing: 0.12em; color: #fbe4f2;
+  border: 1px dashed rgba(230, 190, 215, 0.55); border-radius: 10px; padding: 8px 18px;
 }
-.theme-wen .wen-node-line { margin: 0; font-size: 13.5px; line-height: 1.85; color: var(--zy-soft); }
-.theme-wen .wen-node-tags { font-size: 12px; letter-spacing: 0.04em; line-height: 1.7; color: #e2cfe6; }
-.theme-wen .wen-node-soon {
-  align-self: flex-start; font-size: 11px; letter-spacing: 0.2em; color: #f5dcef;
-  border: 1px dashed rgba(224, 168, 201, 0.5); border-radius: 10px; padding: 2px 10px;
-}
-.theme-wen .wen-node-link {
-  align-self: flex-start; font-size: 13.5px; letter-spacing: 0.05em; color: var(--zy-gold-d);
-  border-bottom: 1px solid rgba(246, 220, 236, 0.5);
-}
-.theme-wen .wen-node-link:hover { color: #fff5fb; border-bottom-color: #fff5fb; }
 
-/* 展开条件：鼠标移上、键盘 Tab 到、或点一下（.is-open） */
-.theme-wen .wen-node:hover .wen-node-panel,
-.theme-wen .wen-node:focus-within .wen-node-panel,
-.theme-wen .wen-node.is-open .wen-node-panel {
-  max-width: 360px; opacity: 1;
-}
-.theme-wen .wen-node:hover .wen-node-panel-inner,
-.theme-wen .wen-node:focus-within .wen-node-panel-inner,
-.theme-wen .wen-node.is-open .wen-node-panel-inner {
-  transform: scaleX(1); opacity: 1;
-}
-.theme-wen .wen-node:hover .wen-node-dot,
-.theme-wen .wen-node:focus-within .wen-node-dot,
-.theme-wen .wen-node.is-open .wen-node-dot {
-  transform: translateY(-3px); box-shadow: 0 0 0 4px rgba(224, 168, 201, 0.32), 0 10px 20px rgba(0, 0, 0, 0.4);
-}
-.theme-wen .wen-node:hover .wen-node-name,
-.theme-wen .wen-node:focus-within .wen-node-name,
-.theme-wen .wen-node.is-open .wen-node-name { color: var(--zy-gold-d); }
-.theme-wen .wen-node.is-closed .wen-node-dot { filter: grayscale(0.35); }
-.theme-wen .wen-node.is-closed .wen-node-spine { opacity: 0.75; }
-
-/* 小屏幕放不下"右边展开"，改成往下展开一整条 */
-@media (max-width: 680px) {
-  .theme-wen .wen-node { flex-wrap: wrap; row-gap: 10px; }
-  .theme-wen .wen-node-panel {
-    flex: 1 1 100%; max-width: none !important; max-height: 0; opacity: 0; width: 100%;
-    transition: max-height 0.32s ease, opacity 0.22s ease;
+@media (max-width: 760px) {
+  .theme-wen .wen-book { flex-direction: column; min-height: 0; }
+  .theme-wen .wen-book-spine { display: none; }
+  .theme-wen .wen-toc { flex: none; width: 100%; overflow-x: auto; overflow-y: visible; padding: 14px 12px; }
+  .theme-wen .wen-toc-list { flex-direction: row; gap: 8px; }
+  .theme-wen .wen-toc-item { flex: none; }
+  .theme-wen .wen-toc-btn { flex-direction: column; align-items: center; text-align: center; min-width: 96px; gap: 6px; padding: 10px 10px 8px; }
+  .theme-wen .wen-toc-btn[aria-current="true"] { box-shadow: inset 0 -3px 0 var(--zy-gold); }
+  .theme-wen .wen-toc-label { align-items: center; }
+  .theme-wen .wen-toc-name { font-size: 13px; max-width: 84px; }
+  .theme-wen .wen-toc-soon { margin-left: 0; }
+  .theme-wen .wen-page-wrap {
+    padding: 24px 20px; border-top: 1px solid var(--zy-line);
+    box-shadow: inset 0 8px 14px -12px rgba(0, 0, 0, 0.6);
   }
-  .theme-wen .wen-node:hover .wen-node-panel,
-  .theme-wen .wen-node:focus-within .wen-node-panel,
-  .theme-wen .wen-node.is-open .wen-node-panel { max-height: 480px; }
-  .theme-wen .wen-node-panel-inner { width: auto; margin-left: 78px; }
-}
-@media (max-width: 420px) {
-  .theme-wen .wen-node-spine { min-width: 0; }
-  .theme-wen .wen-node-name { font-size: 19px; }
+  .theme-wen .wen-page-name { font-size: 27px; }
+  .theme-wen .wen-page-line { font-size: 15px; }
 }
 @media (prefers-reduced-motion: reduce) {
-  .theme-wen .wen-node-dot, .theme-wen .wen-node-panel, .theme-wen .wen-node-panel-inner { transition: none; }
+  .theme-wen .wen-page-wrap { transition: none; }
 }
