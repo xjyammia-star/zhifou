@@ -1,0 +1,115 @@
+/* 知否知否 · "文"板块 · 内容页通用样式（诗经到魏晋、唐诗、宋词、元曲、四大名著与明清小说共用）
+   接着 wen.css 的 theme-wen 配色往下写，专门给"长文阅读页"用：
+   左边一条窄窄的书签栏（这一页内部分几大类），右边是可以往下滚动的正文，
+   每一段正文延续入口页那种"书页"质感（宣纸颗粒、折角阴影、印章、标题双线）。
+   只在 body.theme-wen 的页面生效；请在 wen.css 之后加载本文件。 */
+
+.theme-wen .wr-wrap { display: flex; align-items: flex-start; gap: 28px; }
+
+/* 左边书签栏：滚动的时候一直贴在顶部，当前读到哪一段会自动高亮 */
+.theme-wen .wr-nav {
+  position: sticky; top: 84px; flex: 0 0 190px; display: flex; flex-direction: column; gap: 6px;
+}
+.theme-wen .wr-nav-btn {
+  display: flex; align-items: center; gap: 10px; padding: 9px 10px;
+  background: none; border: 0; border-radius: 6px; color: inherit; font: inherit; text-align: left; cursor: pointer;
+  transition: background 0.18s ease;
+}
+.theme-wen .wr-nav-btn:hover { background: rgba(255, 255, 255, 0.07); }
+.theme-wen .wr-nav-btn[aria-current="true"] { background: rgba(237, 194, 222, 0.18); box-shadow: inset 3px 0 0 var(--zy-gold); }
+.theme-wen .wr-nav-dot {
+  flex: none; width: 30px; height: 30px; border-radius: 50%; display: flex; align-items: center; justify-content: center;
+  background: radial-gradient(circle at 35% 30%, #f0bede, #cf8fb2 70%, #a5688e 100%);
+  box-shadow: 0 3px 8px rgba(0, 0, 0, 0.3);
+}
+.theme-wen .wr-nav-dot span { font-family: var(--display); font-size: 13px; color: #fdf1f8; }
+.theme-wen .wr-nav-label { font-family: var(--display); font-size: 14.5px; color: #f3e8f2; }
+.theme-wen .wr-nav-btn[aria-current="true"] .wr-nav-label { color: var(--zy-gold-d); }
+
+.theme-wen .wr-main { flex: 1 1 auto; min-width: 0; display: flex; flex-direction: column; gap: 44px; }
+
+/* 每一大段都是一"页"：宣纸颗粒底 + 右上角折角阴影 + 印章，跟入口页的书页是同一套质感 */
+.theme-wen .wr-section {
+  position: relative; border-radius: 6px; padding: 34px 38px; scroll-margin-top: 84px;
+  background-color: #40355c;
+  background-image:
+    radial-gradient(rgba(255, 255, 255, 0.035) 1px, transparent 1px),
+    linear-gradient(180deg, rgba(255, 255, 255, 0.025), transparent 45%);
+  background-size: 5px 5px, auto;
+  box-shadow: 0 14px 34px rgba(0, 0, 0, 0.32), 0 0 0 1px var(--zy-line);
+}
+.theme-wen .wr-section::before {
+  content: ''; position: absolute; top: 0; right: 0; width: 88px; height: 88px; pointer-events: none;
+  background: linear-gradient(225deg, rgba(0, 0, 0, 0.16), transparent 60%);
+}
+.theme-wen .wr-seal {
+  position: absolute; top: 26px; right: 34px; z-index: 2; width: 44px; height: 44px;
+  display: flex; align-items: center; justify-content: center; border-radius: 4px; transform: rotate(-3deg);
+  background: linear-gradient(160deg, #d24d6c, #a3283f);
+  box-shadow: 0 3px 8px rgba(0, 0, 0, 0.35), inset 0 0 0 1px rgba(255, 255, 255, 0.15);
+}
+.theme-wen .wr-seal span { font-family: 'Ma Shan Zheng', var(--display); font-size: 22px; color: #fbe3e8; }
+
+.theme-wen .wr-idx { position: relative; z-index: 1; font-size: 12px; letter-spacing: 0.25em; color: var(--zy-gold); }
+.theme-wen .wr-title {
+  position: relative; z-index: 1; margin: 6px 0 20px; padding-bottom: 12px; max-width: 80%;
+  font-family: var(--display); font-size: 26px; line-height: 1.35; color: #fbeef7;
+}
+.theme-wen .wr-title::after {
+  content: ''; position: absolute; left: 0; bottom: 0; width: 72px; height: 5px;
+  background-image: linear-gradient(var(--zy-gold), var(--zy-gold)), linear-gradient(var(--zy-gold), var(--zy-gold));
+  background-size: 100% 1px; background-position: top, bottom; background-repeat: no-repeat; opacity: 0.75;
+}
+
+.theme-wen .wr-para { position: relative; z-index: 1; margin: 0 0 18px; font-size: 15px; line-height: 1.95; color: #e6d7ea; max-width: 52em; }
+
+.theme-wen .wr-block { position: relative; z-index: 1; margin: 0 0 22px; }
+.theme-wen .wr-block:last-child { margin-bottom: 0; }
+.theme-wen .wr-block-h { font-size: 12.5px; letter-spacing: 0.14em; color: var(--zy-gold); margin-bottom: 10px; }
+
+.theme-wen .wr-facts { display: flex; flex-direction: column; gap: 8px; }
+.theme-wen .wr-facts-row { display: flex; gap: 12px; align-items: baseline; }
+.theme-wen .wr-facts-term { flex: none; min-width: 2.2em; font-family: var(--display); font-size: 15px; color: var(--zy-gold-d); }
+.theme-wen .wr-facts-note { font-size: 13.5px; line-height: 1.8; color: #f0dcf0; }
+
+.theme-wen .wr-works { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 12px; }
+.theme-wen .wr-works li { display: flex; flex-direction: column; gap: 3px; }
+.theme-wen .wr-works b { font-size: 14.5px; color: #fbeef7; }
+.theme-wen .wr-works span { font-size: 13.5px; line-height: 1.85; color: #e6d7ea; }
+
+.theme-wen .wr-quotes { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 10px; }
+.theme-wen .wr-quotes li { border-left: 2px solid var(--zy-gold); padding-left: 14px; }
+.theme-wen .wr-quote-text { display: block; font-family: var(--display); font-size: 16px; line-height: 1.6; color: #fbeef7; }
+.theme-wen .wr-quote-note { display: block; margin-top: 2px; font-size: 12.5px; color: var(--zy-soft); }
+
+/* 完整原文：单独一块深色底，逐行居中，像摊开的一小页竖排古籍的横排替代版 */
+.theme-wen .wr-poem {
+  position: relative; z-index: 1; margin: 4px 0 22px; padding: 18px 22px; border-radius: 4px;
+  background: rgba(0, 0, 0, 0.14); box-shadow: inset 0 0 0 1px rgba(230, 190, 215, 0.22);
+}
+.theme-wen .wr-poem-title { font-family: var(--display); font-size: 15.5px; color: var(--zy-gold); margin-bottom: 10px; }
+.theme-wen .wr-poem-body p { margin: 0 0 6px; font-size: 15.5px; line-height: 1.9; color: #fbeef7; text-align: center; }
+.theme-wen .wr-poem-body p:last-child { margin-bottom: 0; }
+.theme-wen .wr-poem-tip { margin: 12px 0 0; font-size: 12.5px; line-height: 1.8; color: var(--zy-soft); }
+
+.theme-wen .wr-allusions { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: 8px 18px; }
+.theme-wen .wr-allusions li { display: flex; align-items: baseline; gap: 6px; font-size: 13px; }
+.theme-wen .wr-allusions b { color: var(--zy-gold-d); }
+.theme-wen .wr-allusions span { color: #e6d7ea; }
+
+@media (max-width: 760px) {
+  .theme-wen .wr-wrap { flex-direction: column; }
+  .theme-wen .wr-nav {
+    position: sticky; top: 0; z-index: 3; flex-direction: row; overflow-x: auto; width: 100%; gap: 8px;
+    padding: 10px 2px; background: rgba(20, 16, 32, 0.9); border-radius: 6px;
+  }
+  .theme-wen .wr-nav-btn { flex: none; flex-direction: column; text-align: center; gap: 4px; padding: 8px 10px; }
+  .theme-wen .wr-nav-label { font-size: 12.5px; }
+  .theme-wen .wr-section { padding: 24px 20px; scroll-margin-top: 54px; }
+  .theme-wen .wr-title { font-size: 21px; max-width: 100%; }
+  .theme-wen .wr-seal { width: 36px; height: 36px; top: 18px; right: 18px; }
+  .theme-wen .wr-seal span { font-size: 18px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .theme-wen .wr-nav-btn { transition: none; }
+}

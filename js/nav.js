@@ -97,7 +97,8 @@
          之后每做完一页，就在这里加一行，制作中的页面暂时不出现在二级导航里 */
       key: 'wen', label: '文', home: 'wen.html',
       items: [
-        { page: 'wen', label: '文的入口', href: 'wen.html' }
+        { page: 'wen', label: '文的入口', href: 'wen.html' },
+        { page: 'shijing', label: '诗经到魏晋', href: 'shijing.html' }
       ]
     }
   ];
