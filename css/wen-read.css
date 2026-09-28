@@ -61,51 +61,51 @@
   background-size: 100% 1px; background-position: top, bottom; background-repeat: no-repeat; opacity: 0.75;
 }
 
-.theme-wen .wr-para { position: relative; z-index: 1; margin: 0 0 18px; font-size: 15px; line-height: 1.95; color: #e6d7ea; max-width: 52em; }
+.theme-wen .wr-para { position: relative; z-index: 1; margin: 0 0 18px; font-size: 16.5px; line-height: 1.95; color: #e6d7ea; max-width: 52em; }
 
 .theme-wen .wr-block { position: relative; z-index: 1; margin: 0 0 22px; }
 .theme-wen .wr-block:last-child { margin-bottom: 0; }
-.theme-wen .wr-block-h { font-size: 12.5px; letter-spacing: 0.14em; color: var(--zy-gold); margin-bottom: 10px; }
+.theme-wen .wr-block-h { font-size: 13.5px; letter-spacing: 0.14em; color: var(--zy-gold); margin-bottom: 10px; }
 
-.theme-wen .wr-facts { display: flex; flex-direction: column; gap: 8px; }
+.theme-wen .wr-facts { display: flex; flex-direction: column; gap: 10px; }
 .theme-wen .wr-facts-row { display: flex; gap: 12px; align-items: baseline; }
-.theme-wen .wr-facts-term { flex: none; min-width: 2.2em; font-family: var(--display); font-size: 15px; color: var(--zy-gold-d); }
-.theme-wen .wr-facts-note { font-size: 13.5px; line-height: 1.8; color: #f0dcf0; }
+.theme-wen .wr-facts-term { flex: none; min-width: 2.2em; font-family: var(--display); font-size: 16.5px; color: var(--zy-gold-d); }
+.theme-wen .wr-facts-note { font-size: 15px; line-height: 1.85; color: #f0dcf0; }
 
-.theme-wen .wr-works { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 12px; }
-.theme-wen .wr-works li { display: flex; flex-direction: column; gap: 3px; }
-.theme-wen .wr-works b { font-size: 14.5px; color: #fbeef7; }
-.theme-wen .wr-works span { font-size: 13.5px; line-height: 1.85; color: #e6d7ea; }
+.theme-wen .wr-works { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 14px; }
+.theme-wen .wr-works li { display: flex; flex-direction: column; gap: 4px; }
+.theme-wen .wr-works b { font-size: 16px; color: #fbeef7; }
+.theme-wen .wr-works span { font-size: 15px; line-height: 1.9; color: #e6d7ea; }
 
 .theme-wen .wr-quotes { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 10px; }
 .theme-wen .wr-quotes li { border-left: 2px solid var(--zy-gold); padding-left: 14px; }
-.theme-wen .wr-quote-text { display: block; font-family: var(--display); font-size: 16px; line-height: 1.6; color: #fbeef7; }
-.theme-wen .wr-quote-note { display: block; margin-top: 2px; font-size: 12.5px; color: var(--zy-soft); }
+.theme-wen .wr-quote-text { display: block; font-family: var(--display); font-size: 17.5px; line-height: 1.65; color: #fbeef7; }
+.theme-wen .wr-quote-note { display: block; margin-top: 3px; font-size: 13.5px; color: var(--zy-soft); }
 
 /* 完整原文：单独一块深色底，逐行居中，像摊开的一小页竖排古籍的横排替代版 */
 .theme-wen .wr-poem {
   position: relative; z-index: 1; margin: 4px 0 22px; padding: 18px 22px; border-radius: 4px;
   background: rgba(0, 0, 0, 0.14); box-shadow: inset 0 0 0 1px rgba(230, 190, 215, 0.22);
 }
-.theme-wen .wr-poem-title { font-family: var(--display); font-size: 15.5px; color: var(--zy-gold); margin-bottom: 10px; }
-.theme-wen .wr-poem-body p { margin: 0 0 6px; font-size: 15.5px; line-height: 1.9; color: #fbeef7; text-align: center; }
+.theme-wen .wr-poem-title { font-family: var(--display); font-size: 16.5px; color: var(--zy-gold); margin-bottom: 10px; }
+.theme-wen .wr-poem-body p { margin: 0 0 7px; font-size: 17px; line-height: 1.9; color: #fbeef7; text-align: center; }
 .theme-wen .wr-poem-body p:last-child { margin-bottom: 0; }
 
 /* 白话翻译：默认收起，点开才显示，不干扰直接读原文的人 */
 .theme-wen .wr-poem-trans { margin: 14px 0 0; padding-top: 12px; border-top: 1px dashed rgba(230, 190, 215, 0.3); }
 .theme-wen .wr-poem-trans summary {
-  cursor: pointer; font-size: 12.5px; letter-spacing: 0.08em; color: var(--zy-gold);
+  cursor: pointer; font-size: 13.5px; letter-spacing: 0.08em; color: var(--zy-gold);
   list-style: none;
 }
 .theme-wen .wr-poem-trans summary::-webkit-details-marker { display: none; }
 .theme-wen .wr-poem-trans summary::before { content: '▸ '; }
 .theme-wen .wr-poem-trans[open] summary::before { content: '▾ '; }
-.theme-wen .wr-poem-trans p { margin: 10px 0 0; font-size: 13.5px; line-height: 1.9; color: #f0dcf0; }
+.theme-wen .wr-poem-trans p { margin: 10px 0 0; font-size: 15.5px; line-height: 1.95; color: #f0dcf0; }
 
-.theme-wen .wr-poem-tip { margin: 12px 0 0; font-size: 12.5px; line-height: 1.8; color: var(--zy-soft); }
+.theme-wen .wr-poem-tip { margin: 12px 0 0; font-size: 13.5px; line-height: 1.85; color: var(--zy-soft); }
 
-.theme-wen .wr-allusions { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: 8px 18px; }
-.theme-wen .wr-allusions li { display: flex; align-items: baseline; gap: 6px; font-size: 13px; }
+.theme-wen .wr-allusions { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: 9px 18px; }
+.theme-wen .wr-allusions li { display: flex; align-items: baseline; gap: 6px; font-size: 14.5px; }
 .theme-wen .wr-allusions b { color: var(--zy-gold-d); }
 .theme-wen .wr-allusions span { color: #e6d7ea; }
 

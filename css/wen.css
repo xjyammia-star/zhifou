@@ -145,11 +145,11 @@ body.theme-wen {
   background-size: 100% 1px; background-position: top, bottom; background-repeat: no-repeat; opacity: 0.75;
 }
 .theme-wen .wen-page-line { margin: 0; font-size: 16.5px; line-height: 1.95; color: var(--zy-soft); max-width: 46em; }
-.theme-wen .wen-page-detail { margin: 0; font-size: 14.5px; line-height: 1.95; color: #e6d7ea; max-width: 46em; }
-.theme-wen .wen-page-picks { list-style: none; margin: 2px 0 0; padding: 0; display: flex; flex-direction: column; gap: 6px; }
-.theme-wen .wen-page-pick { display: flex; align-items: baseline; gap: 8px; font-size: 13.5px; color: #f0dcf0; }
+.theme-wen .wen-page-detail { margin: 0; font-size: 16px; line-height: 1.95; color: #e6d7ea; max-width: 46em; }
+.theme-wen .wen-page-picks { list-style: none; margin: 2px 0 0; padding: 0; display: flex; flex-direction: column; gap: 8px; }
+.theme-wen .wen-page-pick { display: flex; align-items: baseline; gap: 8px; font-size: 15px; color: #f0dcf0; }
 .theme-wen .wen-pick-mark { font-size: 9px; color: var(--zy-gold); }
-.theme-wen .wen-page-tags { margin: 0; font-size: 13px; letter-spacing: 0.06em; color: #f0dcf0; }
+.theme-wen .wen-page-tags { margin: 0; font-size: 14px; letter-spacing: 0.06em; color: #f0dcf0; }
 /* 右上角的印章：用数据里本来就有的那个"标记字"（诗/唐/宋/元/说），刻成一枚朱红小印 */
 .theme-wen .wen-page-seal {
   position: absolute; top: 2px; right: 4px; z-index: 2; width: 46px; height: 46px; flex: none;
