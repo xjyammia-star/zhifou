@@ -90,6 +90,18 @@
 .theme-wen .wr-poem-title { font-family: var(--display); font-size: 15.5px; color: var(--zy-gold); margin-bottom: 10px; }
 .theme-wen .wr-poem-body p { margin: 0 0 6px; font-size: 15.5px; line-height: 1.9; color: #fbeef7; text-align: center; }
 .theme-wen .wr-poem-body p:last-child { margin-bottom: 0; }
+
+/* 白话翻译：默认收起，点开才显示，不干扰直接读原文的人 */
+.theme-wen .wr-poem-trans { margin: 14px 0 0; padding-top: 12px; border-top: 1px dashed rgba(230, 190, 215, 0.3); }
+.theme-wen .wr-poem-trans summary {
+  cursor: pointer; font-size: 12.5px; letter-spacing: 0.08em; color: var(--zy-gold);
+  list-style: none;
+}
+.theme-wen .wr-poem-trans summary::-webkit-details-marker { display: none; }
+.theme-wen .wr-poem-trans summary::before { content: '▸ '; }
+.theme-wen .wr-poem-trans[open] summary::before { content: '▾ '; }
+.theme-wen .wr-poem-trans p { margin: 10px 0 0; font-size: 13.5px; line-height: 1.9; color: #f0dcf0; }
+
 .theme-wen .wr-poem-tip { margin: 12px 0 0; font-size: 12.5px; line-height: 1.8; color: var(--zy-soft); }
 
 .theme-wen .wr-allusions { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: 8px 18px; }

@@ -50,6 +50,10 @@
         return el('div', { 'class': 'wr-poem' }, [
           el('div', { 'class': 'wr-poem-title', text: b.title }),
           el('div', { 'class': 'wr-poem-body' }, b.lines.map(function (line) { return el('p', { text: line }); })),
+          b.translation ? el('details', { 'class': 'wr-poem-trans' }, [
+            el('summary', { text: '看白话翻译' }),
+            el('p', { text: b.translation })
+          ]) : null,
           b.tip ? el('p', { 'class': 'wr-poem-tip', text: b.tip }) : null
         ]);
 
