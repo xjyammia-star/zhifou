@@ -67,6 +67,24 @@
 .theme-wen .wr-block:last-child { margin-bottom: 0; }
 .theme-wen .wr-block-h { font-size: 13.5px; letter-spacing: 0.14em; color: var(--zy-gold); margin-bottom: 10px; }
 
+/* 有标题的分区块：默认收起，点标题展开，避免一本书的内容全部摊开显得太长 */
+.theme-wen .wr-collapsible {
+  border-radius: 6px; padding: 13px 16px; background: rgba(0, 0, 0, 0.12);
+  box-shadow: inset 0 0 0 1px rgba(230, 190, 215, 0.14);
+}
+.theme-wen .wr-collapsible > .wr-block-h {
+  margin-bottom: 0; cursor: pointer; list-style: none; user-select: none;
+  display: flex; align-items: center; gap: 7px; transition: color 0.15s ease;
+}
+.theme-wen .wr-collapsible > .wr-block-h::-webkit-details-marker { display: none; }
+.theme-wen .wr-collapsible > .wr-block-h::before {
+  content: '▸'; font-size: 11px; color: var(--zy-gold); transition: transform 0.15s ease;
+}
+.theme-wen .wr-collapsible[open] > .wr-block-h::before { transform: rotate(90deg); }
+.theme-wen .wr-collapsible > .wr-block-h:hover { color: var(--zy-gold-d); }
+.theme-wen .wr-collapsible > .wr-block-h:hover::before { color: var(--zy-gold-d); }
+.theme-wen .wr-collapsible > *:not(summary) { margin-top: 13px; }
+
 .theme-wen .wr-facts { display: flex; flex-direction: column; gap: 10px; }
 .theme-wen .wr-facts-row { display: flex; gap: 12px; align-items: baseline; }
 .theme-wen .wr-facts-term { flex: none; min-width: 2.2em; font-family: var(--display); font-size: 16.5px; color: var(--zy-gold-d); }

@@ -11,40 +11,46 @@
   var Z = window.ZY;
   var el = Z && Z.el;
 
+  /* 有标题的分区块（成书背景、主要人物、主题意义……）统一做成"默认收起、点标题展开"的样式，
+     避免一部作品的内容全部展开时篇幅太长；没有标题的块（比如开头的概述段落）不折叠，直接显示。 */
+  function wrapCollapsible(heading, contentNode) {
+    return el('details', { 'class': 'wr-block wr-collapsible' }, [
+      el('summary', { 'class': 'wr-block-h', text: heading }),
+      contentNode
+    ]);
+  }
+
   function renderBlock(b) {
     switch (b.type) {
       case 'para':
         return el('p', { 'class': 'wr-para', text: b.text });
 
-      case 'facts':
-        return el('div', { 'class': 'wr-block' }, [
-          b.heading ? el('div', { 'class': 'wr-block-h', text: b.heading }) : null,
-          el('div', { 'class': 'wr-facts' }, b.items.map(function (it) {
-            return el('div', { 'class': 'wr-facts-row' }, [
-              el('span', { 'class': 'wr-facts-term', text: it.term }),
-              el('span', { 'class': 'wr-facts-note', text: it.note })
-            ]);
-          }))
-        ]);
+      case 'facts': {
+        var factsNode = el('div', { 'class': 'wr-facts' }, b.items.map(function (it) {
+          return el('div', { 'class': 'wr-facts-row' }, [
+            el('span', { 'class': 'wr-facts-term', text: it.term }),
+            el('span', { 'class': 'wr-facts-note', text: it.note })
+          ]);
+        }));
+        return b.heading ? wrapCollapsible(b.heading, factsNode) : el('div', { 'class': 'wr-block' }, [factsNode]);
+      }
 
-      case 'works':
-        return el('div', { 'class': 'wr-block' }, [
-          b.heading ? el('div', { 'class': 'wr-block-h', text: b.heading }) : null,
-          el('ul', { 'class': 'wr-works' }, b.items.map(function (it) {
-            return el('li', {}, [el('b', { text: it.name }), el('span', { text: it.note })]);
-          }))
-        ]);
+      case 'works': {
+        var worksNode = el('ul', { 'class': 'wr-works' }, b.items.map(function (it) {
+          return el('li', {}, [el('b', { text: it.name }), el('span', { text: it.note })]);
+        }));
+        return b.heading ? wrapCollapsible(b.heading, worksNode) : el('div', { 'class': 'wr-block' }, [worksNode]);
+      }
 
-      case 'quotes':
-        return el('div', { 'class': 'wr-block' }, [
-          b.heading ? el('div', { 'class': 'wr-block-h', text: b.heading }) : null,
-          el('ul', { 'class': 'wr-quotes' }, b.items.map(function (it) {
-            return el('li', {}, [
-              el('span', { 'class': 'wr-quote-text', text: '"' + it.text + '"' }),
-              el('span', { 'class': 'wr-quote-note', text: it.note })
-            ]);
-          }))
-        ]);
+      case 'quotes': {
+        var quotesNode = el('ul', { 'class': 'wr-quotes' }, b.items.map(function (it) {
+          return el('li', {}, [
+            el('span', { 'class': 'wr-quote-text', text: '"' + it.text + '"' }),
+            el('span', { 'class': 'wr-quote-note', text: it.note })
+          ]);
+        }));
+        return b.heading ? wrapCollapsible(b.heading, quotesNode) : el('div', { 'class': 'wr-block' }, [quotesNode]);
+      }
 
       case 'fulltext':
         return el('div', { 'class': 'wr-poem' }, [
@@ -57,13 +63,12 @@
           b.tip ? el('p', { 'class': 'wr-poem-tip', text: b.tip }) : null
         ]);
 
-      case 'allusions':
-        return el('div', { 'class': 'wr-block' }, [
-          b.heading ? el('div', { 'class': 'wr-block-h', text: b.heading }) : null,
-          el('ul', { 'class': 'wr-allusions' }, b.items.map(function (it) {
-            return el('li', {}, [el('b', { text: it.term }), el('span', { text: it.note })]);
-          }))
-        ]);
+      case 'allusions': {
+        var allusionsNode = el('ul', { 'class': 'wr-allusions' }, b.items.map(function (it) {
+          return el('li', {}, [el('b', { text: it.term }), el('span', { text: it.note })]);
+        }));
+        return b.heading ? wrapCollapsible(b.heading, allusionsNode) : el('div', { 'class': 'wr-block' }, [allusionsNode]);
+      }
 
       default:
         return null;
