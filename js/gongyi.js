@@ -13,37 +13,37 @@
     suffix: ' · 艺术 · 知否知否',
     tabs: [
       { key: 'jianzhi', label: '剪纸与年画', blocks: [
-        { sec: '民间工艺是什么' },
-        { sec: '剪纸', grid: 'is-3' },
-        { sec: '剪纸的制作方法' },
-        { sec: '剪纸的题材与地域' },
-        { sec: '年画', grid: 'is-3' },
+        { sec: '民间工艺是什么', img: 'gongyi' },
+        { sec: '剪纸', img: 'gongyi', grid: 'is-3' },
+        { sec: '剪纸的制作方法', img: 'gongyi' },
+        { sec: '剪纸的题材与地域', img: 'gongyi' },
+        { sec: '年画', img: 'gongyi', grid: 'is-3' },
         { sec: '木版年画的制作流程', kind: 'steps' },
-        { sec: '年画的六种类型' },
-        { sec: '代表性年画产地' },
-        { sec: '年画里的典故' }
+        { sec: '年画的六种类型', img: 'gongyi' },
+        { sec: '代表性年画产地', img: 'gongyi' },
+        { sec: '年画里的典故', img: 'gongyi' }
       ] },
       { key: 'pixing', label: '皮影与刺绣', blocks: [
-        { sec: '皮影', grid: 'is-3' },
+        { sec: '皮影', img: 'gongyi', grid: 'is-3' },
         { sec: '皮影的制作流程', kind: 'steps' },
-        { sec: '皮影的表演结构' },
-        { sec: '皮影的题材与代表传统' },
-        { sec: '刺绣', grid: 'is-3' },
-        { sec: '常见的刺绣针法' },
-        { sec: '四大名绣' },
-        { sec: '刺绣里的更多内容' },
-        { sec: '刺绣里的题材与寓意' }
+        { sec: '皮影的表演结构', img: 'gongyi' },
+        { sec: '皮影的题材与代表传统', img: 'gongyi' },
+        { sec: '刺绣', img: 'gongyi', grid: 'is-3' },
+        { sec: '常见的刺绣针法', img: 'gongyi' },
+        { sec: '四大名绣', img: 'gongyi' },
+        { sec: '刺绣里的更多内容', img: 'gongyi' },
+        { sec: '刺绣里的题材与寓意', img: 'gongyi' }
       ] },
       { key: 'gengduo', label: '更多工艺', blocks: [
-        { sec: '其他民间工艺' },
-        { sec: '工艺术语', grid: 'is-3' },
-        { sec: '少数民族工艺' }
+        { sec: '其他民间工艺', img: 'gongyi' },
+        { sec: '工艺术语', img: 'gongyi', grid: 'is-3' },
+        { sec: '少数民族工艺', img: 'gongyi' }
       ] },
       { key: 'chuancheng', label: '比较与传承', blocks: [
-        { sec: '四类工艺的比较' },
-        { sec: '传承、保护与现代变化', grid: 'is-3' },
-        { sec: '民间工艺的代表人物与传承' },
-        { sec: '民间工艺里的典故' }
+        { sec: '四类工艺的比较', img: 'gongyi' },
+        { sec: '传承、保护与现代变化', img: 'gongyi', grid: 'is-3' },
+        { sec: '民间工艺的代表人物与传承', img: 'gongyi' },
+        { sec: '民间工艺里的典故', img: 'gongyi' }
       ] }
     ]
   });
