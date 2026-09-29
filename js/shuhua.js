@@ -8,9 +8,9 @@
 
   LS.mkPage({
     D: D,
-    eyebrow: '艺 · 书画篆刻',
+    eyebrow: '艺术 · 书画篆刻',
     title: '书画篆刻',
-    suffix: ' · 艺 · 知否知否',
+    suffix: ' · 艺术 · 知否知否',
     tabs: [
       { key: 'shufa', label: '书法', blocks: [
         { sec: '书法的四个层面' },

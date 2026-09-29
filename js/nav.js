@@ -1,7 +1,7 @@
 
 /* 知否知否 · 统一导航
    ----------------------------------------------------------
-   页头右侧的一级导航（今日一页 / 时 / 神 / 建筑 / 物 / 字·语 / 礼与思 / 艺），
+   页头右侧的一级导航（今日一页 / 时令 / 神灵 / 建筑 / 器物 / 字语 / 礼思 / 艺术 / 文学），
    以及页头下面的二级导航（当前板块里的全部内容）都由这个文件生成。
    以后新增板块或新增页面，只需要改下面的 SECTIONS 和 ALIAS。
    页面靠 <body data-page="…"> 告诉本文件"我是哪一页"。 */
@@ -12,7 +12,7 @@
      items 是二级导航里的全部内容，按显示顺序排列 */
   var SECTIONS = [
     {
-      key: 'shi', label: '时', home: 'jieqi.html',
+      key: 'shi', label: '时令', home: 'jieqi.html',
       items: [
         { page: 'jieqi', label: '廿四节气', href: 'jieqi.html' },
         { page: 'jieri', label: '传统节日', href: 'jieri.html' },
@@ -23,7 +23,7 @@
       ]
     },
     {
-      key: 'shen', label: '神', home: 'shen.html',
+      key: 'shen', label: '神灵', home: 'shen.html',
       items: [
         { page: 'shen', label: '三界地图', href: 'shen.html' },
         { page: 'shenhua', label: '上古神话', href: 'shenhua.html' },
@@ -50,9 +50,9 @@
       ]
     },
     {
-      key: 'wu', label: '物', home: 'wu.html',
+      key: 'wu', label: '器物', home: 'wu.html',
       items: [
-        { page: 'wu', label: '物的入口', href: 'wu.html' },
+        { page: 'wu', label: '器物入口', href: 'wu.html' },
         { page: 'wenfang', label: '文房四宝', href: 'wenfang.html' },
         { page: 'faming', label: '四大发明', href: 'faming.html' },
         { page: 'taoci', label: '陶瓷', href: 'taoci.html' },
@@ -61,9 +61,9 @@
       ]
     },
     {
-      key: 'ziyu', label: '字·语', home: 'ziyu.html',
+      key: 'ziyu', label: '字语', home: 'ziyu.html',
       items: [
-        { page: 'ziyu', label: '字·语入口', href: 'ziyu.html' },
+        { page: 'ziyu', label: '字语入口', href: 'ziyu.html' },
         { page: 'hanzi', label: '汉字', href: 'hanzi.html' },
         { page: 'ciyu', label: '词语的古今', href: 'ciyu.html' },
         { page: 'chengwei', label: '称谓与名字', href: 'chengwei.html' },
@@ -72,9 +72,9 @@
       ]
     },
     {
-      key: 'lisi', label: '礼与思', home: 'lisi.html',
+      key: 'lisi', label: '礼思', home: 'lisi.html',
       items: [
-        { page: 'lisi', label: '礼与思入口', href: 'lisi.html' },
+        { page: 'lisi', label: '礼思入口', href: 'lisi.html' },
         { page: 'liyi', label: '礼仪', href: 'liyi.html' },
         { page: 'sixiang', label: '诸子与思想', href: 'sixiang.html' },
         { page: 'yinyang', label: '阴阳五行与八卦', href: 'yinyang.html' },
@@ -83,7 +83,7 @@
       ]
     },
     {
-      key: 'yi', label: '艺', home: 'yi.html',
+      key: 'yi', label: '艺术', home: 'yi.html',
       items: [
         { page: 'yi', label: '琴棋书画', href: 'yi.html' },
         { page: 'shuhua', label: '书画篆刻', href: 'shuhua.html' },
@@ -93,11 +93,11 @@
       ]
     },
     {
-      /* “文”板块正在一页一页做，items 只列出已经上线的页面；
+      /* “文学”板块正在一页一页做，items 只列出已经上线的页面；
          之后每做完一页，就在这里加一行，制作中的页面暂时不出现在二级导航里 */
-      key: 'wen', label: '文', home: 'wen.html',
+      key: 'wen', label: '文学', home: 'wen.html',
       items: [
-        { page: 'wen', label: '文的入口', href: 'wen.html' },
+        { page: 'wen', label: '文学入口', href: 'wen.html' },
         { page: 'shijing', label: '诗经到魏晋', href: 'shijing.html' },
         { page: 'tangshi', label: '唐诗', href: 'tangshi.html' },
         { page: 'songci', label: '宋词', href: 'songci.html' },

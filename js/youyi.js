@@ -10,9 +10,9 @@
 
   LS.mkPage({
     D: D,
-    eyebrow: '艺 · 游艺与茶酒',
+    eyebrow: '艺术 · 游艺与茶酒',
     title: '游艺与茶酒',
-    suffix: ' · 艺 · 知否知否',
+    suffix: ' · 艺术 · 知否知否',
     tabs: [
       { key: 'youxi', label: '古代游戏', blocks: [
         { sec: '怎样理解古代游戏', grid: 'is-3' },

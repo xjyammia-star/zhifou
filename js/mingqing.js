@@ -5,5 +5,5 @@
 (function () {
   'use strict';
   if (!window.ZHIFOU_WENREAD || !window.ZHIFOU_MINGQING) return;
-  window.ZHIFOU_WENREAD.mount('app', window.ZHIFOU_MINGQING, { eyebrow: '文 · 四大名著', sectionTitle: '四部书' });
+  window.ZHIFOU_WENREAD.mount('app', window.ZHIFOU_MINGQING, { eyebrow: '文学 · 四大名著', sectionTitle: '四部书' });
 })();

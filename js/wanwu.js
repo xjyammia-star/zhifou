@@ -1,4 +1,4 @@
-/* 知否知否 · 字·语 · 天地万物的名字页
+/* 知否知否 · 字语 · 天地万物的名字页
    数据：data/zy-wanwu.js（由文案库自动生成）；排版工具：js/zycommon.js */
 (function () {
   'use strict';
@@ -78,7 +78,7 @@
   var nx = S('暂不收录的词');
 
   Z.mount(root, [
-    Z.head(D, '字·语 · 天地万物的名字'),
+    Z.head(D, '字语 · 天地万物的名字'),
     Z.section('怎么看这些词', [
       Z.note(how.bold['说明']),
       Z.card({ name: how.items[0] ? how.items[0].name : '雅称的收录标准', body: [Z.kv(howKv)] })
@@ -91,6 +91,6 @@
     ]),
     Z.see(D)
   ].concat(Z.tipNotes(D)));
-  document.title = '天地万物的名字 · 字·语 · 知否知否';
+  document.title = '天地万物的名字 · 字语 · 知否知否';
   Z.openFromQuery();
 })();

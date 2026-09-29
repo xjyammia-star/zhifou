@@ -4,7 +4,7 @@
   'use strict';
   if (!window.ZHIFOU_WENPOETS || !window.ZHIFOU_YUANQU) return;
   window.ZHIFOU_WENPOETS.mount('app', window.ZHIFOU_YUANQU, {
-    eyebrow: '文 · 元曲',
+    eyebrow: '文学 · 元曲',
     sectionTitle: '按作者浏览',
     unit: '篇',
     textTag: '曲文',

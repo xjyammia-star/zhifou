@@ -1,4 +1,4 @@
-/* 知否知否 · 字·语 · 入口页（字典架）
+/* 知否知否 · 字语 · 入口页（字典架）
    数据：data/zy-index.js（由文案库自动生成）；排版工具：js/zycommon.js */
 (function () {
   'use strict';
@@ -10,7 +10,7 @@
   var pages = Z.sec(D, '页面');
   var route = Z.sec(D, '路线');
 
-  var shelf = el('nav', { 'class': 'zy-shelf', 'aria-label': '字·语的五个页面' }, pages.items.map(function (it) {
+  var shelf = el('nav', { 'class': 'zy-shelf', 'aria-label': '字语的五个页面' }, pages.items.map(function (it) {
     var m = Z.fmap(it.f);
     return el('a', { 'class': 'zy-book', href: m['地址'] || '#', 'aria-label': it.name + '：' + (m['一句话'] || '') }, [
       el('span', { 'class': 'zy-book-char', 'aria-hidden': 'true', text: m['书脊字'] || '' }),
@@ -30,9 +30,9 @@
   }));
 
   Z.mount(root, [
-    Z.head(D, '字·语'),
+    Z.head(D, '字语'),
     Z.section('五个页面', [shelf]),
     Z.section('怎么逛', [routeBox])
   ].concat(Z.tipNotes(D)));
-  document.title = '字·语 · 知否知否';
+  document.title = '字语 · 知否知否';
 })();

@@ -20,7 +20,7 @@
 
    结构说明（给下一个读这份文件的人）：
    window.ZHIFOU_TANGSHI = {
-     hook, answer, intro：页头三行，用法同其他"文"板块数据文件。
+     hook, answer, intro：页头三行，用法同其他"文学"板块数据文件。
      eras: [
        { key, label：时代的键和显示名（如"盛唐"）
          poets: [

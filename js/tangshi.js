@@ -4,5 +4,5 @@
 (function () {
   'use strict';
   if (!window.ZHIFOU_WENPOETS || !window.ZHIFOU_TANGSHI) return;
-  window.ZHIFOU_WENPOETS.mount('app', window.ZHIFOU_TANGSHI, { eyebrow: '文 · 唐诗', sectionTitle: '按作者浏览' });
+  window.ZHIFOU_WENPOETS.mount('app', window.ZHIFOU_TANGSHI, { eyebrow: '文学 · 唐诗', sectionTitle: '按作者浏览' });
 })();

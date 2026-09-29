@@ -8,9 +8,9 @@
 
   LS.mkPage({
     D: D,
-    eyebrow: '物 · 青铜器与玉器',
+    eyebrow: '器物 · 青铜器与玉器',
     title: '青铜器与玉器',
-    suffix: ' · 物 · 知否知否',
+    suffix: ' · 器物 · 知否知否',
     tabs: [
       { key: 'tong', label: '青铜器', blocks: [
         { sec: '青铜与玉的位置', grid: 'is-wide' },

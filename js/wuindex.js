@@ -35,5 +35,5 @@
     return el('section', { 'aria-label': '物的博古架' }, [el('div', { 'class': 'fm-shelf' }, kids)]);
   }
 
-  W.mount(root, W.head(D, '物').concat([shelf()]).concat(W.tipNotes(D)));
+  W.mount(root, W.head(D, '器物').concat([shelf()]).concat(W.tipNotes(D)));
 })();

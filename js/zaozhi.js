@@ -69,7 +69,7 @@
     return D.background ? W.section('当时的背景', [W.note(D.background)]) : null;
   }
 
-  W.mount(root, W.head(D, '物 · 四大发明 · 造纸术').concat([
+  W.mount(root, W.head(D, '器物 · 四大发明 · 造纸术').concat([
     before(), cai(), steps(), spread(), impact(), background(), W.myths(D.myths), W.see(D.see)
   ]).concat(W.tipNotes(D)));
 })();

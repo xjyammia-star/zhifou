@@ -1,4 +1,4 @@
-/* 知否知否 · 礼与思 · 礼仪页
+/* 知否知否 · 礼思 · 礼仪页
    数据：data/ls-liyi.js（由文案库自动生成）；排版工具：js/zycommon.js、js/lscommon.js */
 (function () {
   'use strict';
@@ -36,7 +36,7 @@
 
   LS.mkPage({
     D: D,
-    eyebrow: '礼与思 · 礼仪',
+    eyebrow: '礼思 · 礼仪',
     title: '礼仪',
     tabs: [
       { key: 'li', label: '礼是什么', blocks: [

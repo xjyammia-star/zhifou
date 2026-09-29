@@ -8,9 +8,9 @@
 
   LS.mkPage({
     D: D,
-    eyebrow: '物 · 服饰',
+    eyebrow: '器物 · 服饰',
     title: '服饰',
-    suffix: ' · 物 · 知否知否',
+    suffix: ' · 器物 · 知否知否',
     tabs: [
       { key: 'xing', label: '形制与冠服', blocks: [
         { sec: '看服饰的六个方面' },

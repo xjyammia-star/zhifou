@@ -1,4 +1,4 @@
-/* 知否知否 · 字·语 · 汉字页
+/* 知否知否 · 字语 · 汉字页
    数据：data/zy-hanzi.js（由文案库自动生成）；排版工具：js/zycommon.js */
 (function () {
   'use strict';
@@ -154,7 +154,7 @@
   var mem = S('最简记忆版').bold;
   var src = S('出处');
   Z.mount(root, [
-    Z.head(D, '字·语 · 汉字'),
+    Z.head(D, '字语 · 汉字'),
     tabsApi.node,
     Z.myths(S('常见说法').items),
     Z.section('最简记忆版', [Z.memory([['演变主线', mem['演变主线']], ['六书', mem['六书']], ['书体', mem['书体']]])]),
@@ -163,6 +163,6 @@
     }))]),
     Z.see(D)
   ].concat(Z.tipNotes(D)));
-  document.title = '汉字 · 字·语 · 知否知否';
+  document.title = '汉字 · 字语 · 知否知否';
   Z.openFromQuery();
 })();

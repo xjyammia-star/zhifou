@@ -1,4 +1,4 @@
-/* 知否知否 · "礼与思"板块共用的页面搭建工具
+/* 知否知否 · "礼思"板块共用的页面搭建工具
    ----------------------------------------------------------
    建立在 zycommon.js（window.ZY）之上：按“配置”把文案库里的分区排成标签页。
    一个分区可以排成：卡片（默认，展开）、步骤卡（带“第几步”）、一行一句的小卡（mode:'line'）、表格（kind:'table'）。
@@ -150,7 +150,7 @@
     }
     foot.push(Z.see(D));
     Z.mount(root, [Z.head(D, cfg.eyebrow), tabsApi.node].concat(foot, Z.tipNotes(D)));
-    document.title = cfg.title + (cfg.suffix || ' · 礼与思 · 知否知否');
+    document.title = cfg.title + (cfg.suffix || ' · 礼思 · 知否知否');
     Z.openFromQuery();
   }
 

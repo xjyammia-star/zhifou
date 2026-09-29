@@ -1,5 +1,5 @@
 
-/* 知否知否 · "文"板块 · 诗人卡片墙通用渲染器（唐诗 / 以后的宋词、元曲共用）
+/* 知否知否 · "文学"板块 · 诗人卡片墙通用渲染器（唐诗 / 以后的宋词、元曲共用）
    ------------------------------------------------------------
    跟 js/wen-read.js（"长文阅读页"）是两套不同的排版逻辑：
    这一套是"卡片墙 + 详情弹窗"——按时代分组，每个时代下面是一排诗人卡片；
@@ -182,7 +182,7 @@
   }
 
   /* 一位诗人一张卡片：收起时只看到姓名和小传的头一句；点开才展开完整小传和作品目录。
-     用原生 <details> 实现折叠，跟"礼与思""字·语"板块的卡片是同一个交互习惯。 */
+     用原生 <details> 实现折叠，跟"礼思""字语"板块的卡片是同一个交互习惯。 */
   function poetCard(poet, onPick) {
     var lifeFirst = (poet.life || '').split('。')[0];
     var worksCount = (poet.groups || []).reduce(function (n, g) { return n + (g.works || []).length; }, 0);
@@ -458,7 +458,7 @@
     update();
   }
 
-  /* mount(容器id, 数据, {eyebrow})：eyebrow 是页头小字（比如"文 · 唐诗"）。 */
+  /* mount(容器id, 数据, {eyebrow})：eyebrow 是页头小字（比如"文学 · 唐诗"）。 */
   function mount(rootId, D, opts) {
     opts = opts || {};
     unit = opts.unit || '首';
@@ -481,7 +481,7 @@
     var statD = { tip: '共 ' + poetTotal + ' 位作者、' + workTotal + ' ' + unit + '作品。', notes: D.notes };
 
     Z.mount(root, [
-      Z.head(D, opts.eyebrow || '文'),
+      Z.head(D, opts.eyebrow || '文学'),
       searchBar,
       Z.section(opts.sectionTitle || '按作者浏览', [eras])
     ].concat(Z.tipNotes(statD)));

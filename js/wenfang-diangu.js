@@ -156,7 +156,7 @@
   function render() {
     var page = el('div', { 'class': 'wx-page' });
     page.appendChild(el('div', { 'class': 'wx-head' }, [
-      el('div', { 'class': 'wx-eyebrow', text: '物 · 文房四宝 · 典故与演变' }),
+      el('div', { 'class': 'wx-eyebrow', text: '器物 · 文房四宝 · 典故与演变' }),
       el('h1', { 'class': 'wx-hook', text: D.hook }),
       el('p', { 'class': 'wx-answer', text: D.answer })
     ]));

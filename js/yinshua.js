@@ -61,7 +61,7 @@
     return W.section('印刷改变了什么', [W.note(I.note), W.cards(I.items.map(function (x) { return { name: x.name, text: x.text }; }))]);
   }
 
-  W.mount(root, W.head(D, '物 · 四大发明 · 印刷术').concat([
+  W.mount(root, W.head(D, '器物 · 四大发明 · 印刷术').concat([
     diaoban(), huozi(), compare(), later(), impact(), W.myths(D.myths), W.see(D.see)
   ]).concat(W.tipNotes(D)));
 })();

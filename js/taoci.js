@@ -8,9 +8,9 @@
 
   LS.mkPage({
     D: D,
-    eyebrow: '物 · 陶瓷',
+    eyebrow: '器物 · 陶瓷',
     title: '陶瓷',
-    suffix: ' · 物 · 知否知否',
+    suffix: ' · 器物 · 知否知否',
     tabs: [
       { key: 'tao', label: '陶与瓷', blocks: [
         { sec: '陶器与瓷器', grid: 'is-wide' },

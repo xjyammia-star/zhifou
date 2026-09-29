@@ -1,4 +1,4 @@
-/* 知否知否 · 礼与思 · 入口页（一排帛书）
+/* 知否知否 · 礼思 · 入口页（一排帛书）
    数据：data/ls-index.js（由文案库自动生成）；排版工具：js/zycommon.js */
 (function () {
   'use strict';
@@ -10,7 +10,7 @@
   var pages = Z.sec(D, '页面');
   var route = Z.sec(D, '路线');
 
-  var shelf = el('nav', { 'class': 'zy-shelf', 'aria-label': '礼与思的五个页面' }, pages.items.map(function (it) {
+  var shelf = el('nav', { 'class': 'zy-shelf', 'aria-label': '礼思的五个页面' }, pages.items.map(function (it) {
     var m = Z.fmap(it.f);
     return el('a', { 'class': 'zy-book', href: m['地址'] || '#', 'aria-label': it.name + '：' + (m['一句话'] || '') }, [
       el('span', { 'class': 'zy-book-char', 'aria-hidden': 'true', text: m['卷首字'] || '' }),
@@ -30,9 +30,9 @@
   }));
 
   Z.mount(root, [
-    Z.head(D, '礼与思'),
+    Z.head(D, '礼思'),
     Z.section('五卷帛书', [shelf]),
     Z.section('怎么逛', [routeBox])
   ].concat(Z.tipNotes(D)));
-  document.title = '礼与思 · 知否知否';
+  document.title = '礼思 · 知否知否';
 })();

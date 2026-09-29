@@ -1,4 +1,4 @@
-/* 知否知否 · 字·语 · 词语的古今页
+/* 知否知否 · 字语 · 词语的古今页
    数据：data/zy-ciyu.js（由文案库自动生成）；排版工具：js/zycommon.js */
 (function () {
   'use strict';
@@ -98,7 +98,7 @@
     { key: 'shu', label: '数字成语', build: buildShu }
   ]);
 
-  Z.mount(root, [Z.head(D, '字·语 · 词语的古今'), tabsApi.node, Z.see(D)].concat(Z.tipNotes(D)));
-  document.title = '词语的古今 · 字·语 · 知否知否';
+  Z.mount(root, [Z.head(D, '字语 · 词语的古今'), tabsApi.node, Z.see(D)].concat(Z.tipNotes(D)));
+  document.title = '词语的古今 · 字语 · 知否知否';
   Z.openFromQuery();
 })();

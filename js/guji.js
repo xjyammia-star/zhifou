@@ -160,7 +160,7 @@
     var page = el('div', { 'class': 'xx-page sl-page' });
 
     page.appendChild(el('div', { 'class': 'xx-head' }, [
-      el('div', { 'class': 'xx-eyebrow', text: '神 · 古籍书架' }),
+      el('div', { 'class': 'xx-eyebrow', text: '神灵 · 古籍书架' }),
       el('h1', { 'class': 'xx-hook', text: D.hook }),
       el('p', { 'class': 'xx-answer', text: D.answer })
     ]));

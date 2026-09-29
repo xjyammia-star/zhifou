@@ -227,7 +227,7 @@
     var page = el('div', { 'class': 'xx-page dj-page' });
 
     page.appendChild(el('div', { 'class': 'xx-head' }, [
-      el('div', { 'class': 'xx-eyebrow', text: '神 · 道教神谱' }),
+      el('div', { 'class': 'xx-eyebrow', text: '神灵 · 道教神谱' }),
       el('h1', { 'class': 'xx-hook', text: D.hook }),
       el('p', { 'class': 'xx-answer', text: D.answer })
     ]));

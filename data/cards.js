@@ -1,5 +1,5 @@
 window.ZHIFOU_CARDS = {
-  plates: { shi: "时", shen: "神", jianzhu: "建筑", wu: "物", ziyu: "字·语", lisi: "礼与思", yi: "艺", wen: "文" },
+  plates: { shi: "时令", shen: "神灵", jianzhu: "建筑", wu: "器物", ziyu: "字语", lisi: "礼思", yi: "艺术", wen: "文学" },
   cards: [
     {"id":"shen:上古神话:盘古","plate":"shen","cat":"上古神话","name":"盘古","line":"生于混沌，分开天地，身体化为山川日月。","href":"shenhua.html?id=%E7%9B%98%E5%8F%A4","kind":"e"},
     {"id":"shen:上古神话:女娲","plate":"shen","cat":"上古神话","name":"女娲","line":"用黄土造人，又炼五色石补天。","href":"shenhua.html?id=%E5%A5%B3%E5%A8%B2","kind":"e"},

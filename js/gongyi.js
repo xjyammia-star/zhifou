@@ -8,9 +8,9 @@
 
   LS.mkPage({
     D: D,
-    eyebrow: '艺 · 民间工艺',
+    eyebrow: '艺术 · 民间工艺',
     title: '民间工艺',
-    suffix: ' · 艺 · 知否知否',
+    suffix: ' · 艺术 · 知否知否',
     tabs: [
       { key: 'jianzhi', label: '剪纸与年画', blocks: [
         { sec: '民间工艺是什么' },

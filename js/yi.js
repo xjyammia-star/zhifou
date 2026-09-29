@@ -39,8 +39,8 @@
 
   LS.mkPage({
     D: D,
-    eyebrow: '艺',
-    title: '艺 · 琴棋书画',
+    eyebrow: '艺术',
+    title: '艺术 · 琴棋书画',
     suffix: ' · 知否知否',
     tabs: [
       { key: 'zonglan', label: '琴棋书画', blocks: [

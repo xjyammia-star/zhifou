@@ -345,7 +345,7 @@
       el('div', { 'class': 'draw-text' }, [
         el('span', { 'class': 'draw-kicker', text: '今日一签' }),
         el('h2', { 'class': 'draw-title', text: '抽一张，看看今天遇见什么' }),
-        el('p', { 'class': 'draw-sub', text: '一位神、一个词、一件器物、一首诗，或者一个常被说错的说法，从时、神、建筑、物、字·语、礼与思、艺、文八个板块里随手抽出来。' }),
+        el('p', { 'class': 'draw-sub', text: '一位神、一个词、一件器物、一首诗，或者一个常被说错的说法，从时令、神灵、建筑、器物、字语、礼思、艺术、文学八个板块里随手抽出来。' }),
         hint,
         again
       ]),

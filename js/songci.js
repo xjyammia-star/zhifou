@@ -4,7 +4,7 @@
   'use strict';
   if (!window.ZHIFOU_WENPOETS || !window.ZHIFOU_SONGCI) return;
   window.ZHIFOU_WENPOETS.mount('app', window.ZHIFOU_SONGCI, {
-    eyebrow: '文 · 宋词',
+    eyebrow: '文学 · 宋词',
     sectionTitle: '按词人浏览',
     unit: '首',
     textTag: '词句',

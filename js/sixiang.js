@@ -1,4 +1,4 @@
-/* 知否知否 · 礼与思 · 诸子与思想页
+/* 知否知否 · 礼思 · 诸子与思想页
    数据：data/ls-sixiang.js（由文案库自动生成）；排版工具：js/zycommon.js、js/lscommon.js */
 (function () {
   'use strict';
@@ -30,7 +30,7 @@
 
   LS.mkPage({
     D: D,
-    eyebrow: '礼与思 · 诸子与思想',
+    eyebrow: '礼思 · 诸子与思想',
     title: '诸子与思想',
     tabs: [
       { key: 'zhuzi', label: '诸子百家', blocks: [

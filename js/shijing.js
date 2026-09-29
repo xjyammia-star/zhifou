@@ -5,5 +5,5 @@
 (function () {
   'use strict';
   if (!window.ZHIFOU_WENREAD || !window.ZHIFOU_SHIJING) return;
-  window.ZHIFOU_WENREAD.mount('app', window.ZHIFOU_SHIJING, { eyebrow: '文 · 诗经到魏晋', sectionTitle: '四段读法' });
+  window.ZHIFOU_WENREAD.mount('app', window.ZHIFOU_SHIJING, { eyebrow: '文学 · 诗经到魏晋', sectionTitle: '四段读法' });
 })();

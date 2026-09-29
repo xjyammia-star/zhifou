@@ -101,8 +101,8 @@
   }
 
   Z.mount(root, [
-    Z.head(D, '文'),
+    Z.head(D, '文学'),
     Z.section('五段文脉', [bookBlock()])
   ].concat(Z.tipNotes(D)));
-  document.title = '文 · 知否知否';
+  document.title = '文学 · 知否知否';
 })();

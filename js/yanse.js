@@ -1,4 +1,4 @@
-/* 知否知否 · 字·语 · 传统颜色页
+/* 知否知否 · 字语 · 传统颜色页
    数据：data/zy-yanse.js（由文案库自动生成）；排版工具：js/zycommon.js
    色块的颜色是按名称和古义估的“近似色”，不是标准色号（页面上写明）。 */
 (function () {
@@ -90,7 +90,7 @@
   bio.items.forEach(function (it) { Z.onOpen(it.name, function () { return bioCards[it.name]; }); });
 
   Z.mount(root, [
-    Z.head(D, '字·语 · 传统颜色'),
+    Z.head(D, '字语 · 传统颜色'),
     Z.callout('页面上的色块，是按颜色名称和古义估的近似色，只用来帮助想象，不是标准色号。', '说明'),
     Z.section('色谱：五十个颜色词', [ch.node, hint, groupRemind, panel, grid]),
     Z.section('颜色名不等于色卡', [
@@ -108,6 +108,6 @@
     Z.section('出处', [el('div', { 'class': 'zy-grid is-3' }, src.items.map(function (it) { return Z.card({ name: it.name, isStatic: true, body: [Z.kv(it.f)] }); }))]),
     Z.see(D)
   ].concat(Z.tipNotes(D)));
-  document.title = '传统颜色 · 字·语 · 知否知否';
+  document.title = '传统颜色 · 字语 · 知否知否';
   Z.openFromQuery();
 })();

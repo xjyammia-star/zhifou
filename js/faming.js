@@ -109,7 +109,7 @@
     }))]);
   }
 
-  W.mount(root, W.head(D, '物 · 四大发明').concat([
+  W.mount(root, W.head(D, '器物 · 四大发明').concat([
     origin(), layers(), timeline(), chains(), W.myths(D.myths), pages()
   ]).concat(W.tipNotes(D)));
 })();

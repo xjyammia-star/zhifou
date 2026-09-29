@@ -1,4 +1,4 @@
-/* 知否知否 · 字·语 · 称谓与名字页
+/* 知否知否 · 字语 · 称谓与名字页
    数据：data/zy-chengwei.js（由文案库自动生成）；排版工具：js/zycommon.js */
 (function () {
   'use strict';
@@ -139,7 +139,7 @@
   var yzList = yz.items[0] ? yz.items[0].f.map(function (p) { return p[1]; }) : [];
   var src = S('出处');
   Z.mount(root, [
-    Z.head(D, '字·语 · 称谓与名字'),
+    Z.head(D, '字语 · 称谓与名字'),
     tabsApi.node,
     Z.myths(S('常见说法').items),
     Z.section('使用与查证原则', [Z.note(yz.bold['说明']), el('div', { 'class': 'zy-detail zy-paper' }, [Z.kv([['五条原则', yzList]])])]),
@@ -148,6 +148,6 @@
     }))]),
     Z.see(D)
   ].concat(Z.tipNotes(D)));
-  document.title = '称谓与名字 · 字·语 · 知否知否';
+  document.title = '称谓与名字 · 字语 · 知否知否';
   Z.openFromQuery();
 })();

@@ -1,4 +1,4 @@
-/* 知否知否 · 礼与思 · 教育与蒙学页
+/* 知否知否 · 礼思 · 教育与蒙学页
    数据：data/ls-jiaoyu.js（由文案库自动生成）；排版工具：js/zycommon.js、js/lscommon.js */
 (function () {
   'use strict';
@@ -7,7 +7,7 @@
 
   LS.mkPage({
     D: D,
-    eyebrow: '礼与思 · 教育与蒙学',
+    eyebrow: '礼思 · 教育与蒙学',
     title: '教育与蒙学',
     after: [{ sec: '给今天的启发', grid: 'is-3' }],
     tabs: [

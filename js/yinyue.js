@@ -8,9 +8,9 @@
 
   LS.mkPage({
     D: D,
-    eyebrow: '艺 · 音乐与戏曲',
+    eyebrow: '艺术 · 音乐与戏曲',
     title: '音乐与戏曲',
-    suffix: ' · 艺 · 知否知否',
+    suffix: ' · 艺术 · 知否知否',
     tabs: [
       { key: 'yueqi', label: '乐器与乐理', blocks: [
         { sec: '看古代音乐的三条线索', grid: 'is-3' },

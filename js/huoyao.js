@@ -59,7 +59,7 @@
     return W.section('传播与影响', [W.note(S.note), W.cards(S.items.map(function (x) { return { name: x.name, text: x.text }; }))]);
   }
 
-  W.mount(root, W.head(D, '物 · 四大发明 · 火药').concat([
+  W.mount(root, W.head(D, '器物 · 四大发明 · 火药').concat([
     three(), lit(), arms(), tech(), spread(), W.myths(D.myths), W.see(D.see)
   ]).concat(W.tipNotes(D)));
 })();
