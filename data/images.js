@@ -3,7 +3,8 @@
    图片放在 Cloudinary（云名称 dc7qejbjd）；网页按这里的登记显示图片和图注。
    键的格式：类别/名称，如 term/立春、festival/中秋节、shengxiao/子鼠、shichen/子时、shengxiao-kepu/main。没有登记的词条不显示图片。
    id 图片编号；v 版本号（图片更新时自动变，防止旧图缓存）；dw、dh 网页里显示的宽高比例；
-   crop 保留比例（0.9=四周各裁掉 5% 的旧边框，1=不裁）；ai 为 true 时图注下显示“AI 生成插画”。
+   crop 保留比例（0.9=四周各裁掉 5% 的旧边框，1=不裁）；ai 为 true 时图注下显示“AI 生成插画”；
+   link 是真实照片的出处网址（维基共享资源），source 是摄影者和授权，页面上作为署名显示。
    ========================================================== */
 window.ZHIFOU_IMAGES = {
   base: 'https://res.cloudinary.com/dc7qejbjd/image/upload/',
@@ -174,6 +175,35 @@ window.ZHIFOU_IMAGES = {
     'shengxiao-kepu/main': { id: 'zhifou/kepu/shengxiaokepu', v: 1790515961, dw: 900, dh: 1200, crop: 1, caption: '十二生肖的由来与赛跑传说', source: '', ai: true },
     'yuefen/main': { id: 'zhifou/kepu/yuefen', v: 1790515965, dw: 900, dh: 1200, crop: 1, caption: '农历是阴阳合历，月相与月份', source: '', ai: true },
     'shujiusanfu/main': { id: 'zhifou/kepu/shujiusanfu', v: 1790515968, dw: 900, dh: 1200, crop: 1, caption: '数九寒天与三伏酷暑', source: '', ai: true },
-    'ganzhi/main': { id: 'zhifou/kepu/ganzhi', v: 1790516895, dw: 900, dh: 1200, crop: 1, caption: '天干地支相配，组成六十甲子，可纪年纪月纪日纪时', source: '', ai: true }
+    'ganzhi/main': { id: 'zhifou/kepu/ganzhi', v: 1790516895, dw: 900, dh: 1200, crop: 1, caption: '天干地支相配，组成六十甲子，可纪年纪月纪日纪时', source: '', ai: true },
+    'qingtong/青铜器': { id: 'zhifou/wu/fangding', v: 1790682967, dw: 900, dh: 600, crop: 1, caption: '商代青铜方鼎，辽宁省博物馆展品', source: '摄影：Gary Todd · CC0', link: 'https://commons.wikimedia.org/wiki/File:Shang_Bronze_Square_Ding_-_Liaoning.jpg', ai: false },
+    'qingtong/玉器': { id: 'zhifou/wu/hanbi', v: 1790682968, dw: 900, dh: 600, crop: 1, caption: '汉代玉璧，上海博物馆玉器馆展品', source: '摄影：Gary Lee Todd, Ph.D. · CC0', link: 'https://commons.wikimedia.org/wiki/File:Han_Jade_Bi_Disc_06.jpg', ai: false },
+    'qingtong/鼎': { id: 'zhifou/wu/yuanding', v: 1790682969, dw: 900, dh: 600, crop: 1, caption: '商代青铜三足圆鼎，山西博物院展品', source: '摄影：Gary Lee Todd, Ph.D. · CC0', link: 'https://commons.wikimedia.org/wiki/File:Shang_Bronze_Tripod_Ding_01.jpg', ai: false },
+    'qingtong/爵': { id: 'zhifou/wu/jue', v: 1790682970, dw: 900, dh: 1200, crop: 1, caption: '商代青铜爵，纽约大都会艺术博物馆藏', source: '图片：纽约大都会艺术博物馆开放获取 · CC0', link: 'https://commons.wikimedia.org/wiki/File:%E5%95%86_%E9%9D%92%E9%8A%85%E7%88%B5-Wine_Vessel_(Jue)_MET_DP140742.jpg', ai: false },
+    'qingtong/簋': { id: 'zhifou/wu/gui', v: 1790682971, dw: 900, dh: 699, crop: 1, caption: '西周青铜簋（约公元前 10 世纪），史密森尼学会弗利尔美术馆藏', source: '图片：史密森尼学会开放获取 · CC0', link: 'https://commons.wikimedia.org/wiki/File:Ritual_food_vessel_(gui)_F1911.53.jpg', ai: false },
+    'qingtong/饕餮纹': { id: 'zhifou/wu/taotie', v: 1790682971, dw: 900, dh: 600, crop: 1, caption: '商晚期青铜觥（约公元前 1100—前 1050 年）上的兽面纹，弗利尔美术馆藏', source: '摄影：Gary Todd · CC0', link: 'https://commons.wikimedia.org/wiki/File:Bronze_Gong,_Middle_Yangzi,_c._1100-1050_BC_(10434277324).jpg', ai: false },
+    'qingtong/璧': { id: 'zhifou/wu/liangzhubi', v: 1790682972, dw: 900, dh: 600, crop: 1, caption: '良渚文化玉璧，上海博物馆玉器馆展品', source: '摄影：Gary Lee Todd, Ph.D. · CC0', link: 'https://commons.wikimedia.org/wiki/File:Liangzhu_Culture_Jade_Bi_Disc_03.jpg', ai: false },
+    'qingtong/琮': { id: 'zhifou/wu/liangzhucong', v: 1790682973, dw: 900, dh: 600, crop: 1, caption: '良渚文化玉琮，上海博物馆玉器馆展品', source: '摄影：Gary Lee Todd, Ph.D. · CC0', link: 'https://commons.wikimedia.org/wiki/File:Liangzhu_Culture_Jade_Cong_08.jpg', ai: false },
+    'qingtong/圭': { id: 'zhifou/wu/gui_yu', v: 1790682973, dw: 900, dh: 600, crop: 1, caption: '西周青玉圭，故宫博物院展品', source: '摄影：Gary Todd from Xinzheng, China · CC0', link: 'https://commons.wikimedia.org/wiki/File:Western_Zhou_Green_Jade_Gui,_Forbidden_City_Palace_Museum_(9862331605).jpg', ai: false },
+    'qingtong/璋': { id: 'zhifou/wu/zhang', v: 1790682974, dw: 900, dh: 1350, crop: 1, caption: '龙山文化玉璋，首都博物馆展品', source: '摄影：Gary Todd · CC0', link: 'https://commons.wikimedia.org/wiki/File:Longshan_Culture_Jade_Zhang.jpg', ai: false },
+    'qingtong/璜': { id: 'zhifou/wu/huang', v: 1790682975, dw: 900, dh: 732, crop: 1, caption: '西周玉璜（公元前 10 或 9 世纪），芝加哥艺术博物馆藏', source: '图片：芝加哥艺术博物馆开放获取 · CC0', link: 'https://commons.wikimedia.org/wiki/File:Arc-shaped_pendant_(huang),Western_Zhou_period,_10th_or_9th_century_BC.jpg', ai: false },
+    'qingtong/后母戊鼎': { id: 'zhifou/wu/houmuwuding', v: 1790682975, dw: 900, dh: 1172, crop: 1, caption: '后母戊鼎，商代晚期', source: '摄影：Mlogic · CC BY-SA 3.0', link: 'https://commons.wikimedia.org/wiki/File:HouMuWuDingFullView.jpg', ai: false },
+    'qingtong/毛公鼎': { id: 'zhifou/wu/maogongding', v: 1790682976, dw: 900, dh: 600, crop: 1, caption: '毛公鼎，西周晚期，台北故宫博物院藏', source: '摄影：Gary Todd · CC0', link: 'https://commons.wikimedia.org/wiki/File:Bronze_Mao_Gong_Ding,_Late_Western_Zhou.jpg', ai: false },
+    'qingtong/四羊方尊': { id: 'zhifou/wu/siyangfangzun', v: 1790682977, dw: 900, dh: 940, crop: 1, caption: '四羊方尊，商代晚期，1938 年湖南宁乡出土', source: '摄影：Bairuilong · CC0', link: 'https://commons.wikimedia.org/wiki/File:Fyra_baggars_kvadripod.jpg', ai: false },
+    'qingtong/良渚玉琮': { id: 'zhifou/wu/liangzhucong2', v: 1790682978, dw: 900, dh: 600, crop: 1, caption: '良渚文化玉琮，上海博物馆玉器馆展品', source: '摄影：Gary Lee Todd, Ph.D. · CC0', link: 'https://commons.wikimedia.org/wiki/File:Liangzhu_Culture_Jade_Cong_09.jpg', ai: false },
+    'qingtong/看铭文与痕迹': { id: 'zhifou/wu/maogongming', v: 1790682979, dw: 900, dh: 600, crop: 1, caption: '毛公鼎内壁的铭文，西周晚期，台北故宫博物院藏', source: '摄影：Gary Todd · CC0', link: 'https://commons.wikimedia.org/wiki/File:Bronze_Mao_Gong_Ding,_Late_Western_Zhou-_Longest_Bronze_Inscription_in_the_World_a.jpg', ai: false },
+    'taoci/陶器': { id: 'zhifou/wu/yangshaohu', v: 1790682979, dw: 900, dh: 597, crop: 1, caption: '仰韶文化彩陶双联壶，河南博物院展品', source: '摄影：Gary Todd · CC0', link: 'https://commons.wikimedia.org/wiki/File:Yangshao_Culture_Painted_Pottery_Twin_Flasks.jpg', ai: false },
+    'taoci/瓷器': { id: 'zhifou/wu/daoguangping', v: 1790682980, dw: 900, dh: 1350, crop: 1, caption: '清道光年间景德镇窑彩绘瓷瓶，上海博物馆展品', source: '摄影：Gary Todd · CC0', link: 'https://commons.wikimedia.org/wiki/File:Qing_Jingdezhen_Porcelain,_Daoguang_Reign_01.jpg', ai: false },
+    'taoci/汝窑': { id: 'zhifou/wu/ruyao', v: 1790682981, dw: 900, dh: 600, crop: 1, caption: '北宋汝窑盘，上海博物馆展品', source: '摄影：Gary Todd from Xinzheng, China · CC0', link: 'https://commons.wikimedia.org/wiki/File:Northern_Song_Ru_Ware_Dish_(10180352174).jpg', ai: false },
+    'taoci/官窑': { id: 'zhifou/wu/guanyao', v: 1790682981, dw: 900, dh: 675, crop: 1, caption: '南宋官窑碗（12—13 世纪），弗利尔美术馆藏', source: '摄影：Daderot · CC0', link: 'https://commons.wikimedia.org/wiki/File:Bowl,_Guan_ware,_Hangzhou,_Zhejiang_province,_China,_Southern_Song_dynasty,_12th-13th_century_AD,_stoneware_with_Guan_glaze_-_Freer_Gallery_of_Art_-_DSC05570.JPG', ai: false },
+    'taoci/哥窑': { id: 'zhifou/wu/geyao', v: 1790682982, dw: 900, dh: 675, crop: 1, caption: '哥窑笔洗（13—14 世纪），纽约大都会艺术博物馆藏', source: '图片：纽约大都会艺术博物馆开放获取 · CC0', link: 'https://commons.wikimedia.org/wiki/File:MET_DP323428.jpg', ai: false },
+    'taoci/钧窑': { id: 'zhifou/wu/junyao', v: 1790682983, dw: 900, dh: 953, crop: 1, caption: '钧窑盖罐（约公元 960—1200 年），大英博物馆藏', source: '摄影：Daderot · CC0', link: 'https://commons.wikimedia.org/wiki/File:Covered_jar,_Jun_ware,_Yuxian,_China,_c._960-1200_AD_-_British_Museum_-_DSC01304.jpg', ai: false },
+    'taoci/定窑': { id: 'zhifou/wu/dingyao', v: 1790682984, dw: 900, dh: 600, crop: 1, caption: '北宋定窑白瓷碗，台北故宫博物院展品', source: '摄影：Gary Todd from Xinzheng, China · CC0', link: 'https://commons.wikimedia.org/wiki/File:Ding_Ware_White_Porcelain,_Northern_Song_(24113446667).jpg', ai: false },
+    'taoci/越窑青瓷': { id: 'zhifou/wu/yueyao', v: 1790682984, dw: 900, dh: 1350, crop: 1, caption: '唐代越窑青瓷执壶，上海博物馆展品', source: '摄影：Gary Lee Todd, Ph.D. · CC0', link: 'https://commons.wikimedia.org/wiki/File:Tang_Yue-Ware_Celadon_01.jpg', ai: false },
+    'taoci/龙泉窑青瓷': { id: 'zhifou/wu/longquanyao', v: 1790682985, dw: 900, dh: 600, crop: 1, caption: '南宋龙泉窑青瓷香炉，上海博物馆展品', source: '摄影：Gary Lee Todd, Ph.D. · CC0', link: 'https://commons.wikimedia.org/wiki/File:Southern_Song_Longquan_Ware_Celadon_Censer.jpg', ai: false },
+    'taoci/景德镇窑': { id: 'zhifou/wu/jdzyao', v: 1790682986, dw: 900, dh: 600, crop: 1, caption: '明宣德年间景德镇窑青花瓷，上海博物馆展品', source: '摄影：Gary Lee Todd, Ph.D. · CC0', link: 'https://commons.wikimedia.org/wiki/File:Ming_Jingdezhen_Porcelain,_Xuande_Reign_02.jpg', ai: false },
+    'taoci/青花是什么': { id: 'zhifou/wu/qinghua1', v: 1790682986, dw: 900, dh: 600, crop: 1, caption: '明弘治年间景德镇窑青花瓷碗，上海博物馆展品', source: '摄影：Gary Lee Todd, Ph.D. · CC0', link: 'https://commons.wikimedia.org/wiki/File:Ming_Jingdezhen_Porcelain,_Hongzhi_Reign_03.jpg', ai: false },
+    'taoci/青花的视觉特点': { id: 'zhifou/wu/qinghua2', v: 1790682987, dw: 900, dh: 600, crop: 1, caption: '明永乐青花盘', source: '摄影：Windmemories · CC BY-SA 4.0', link: 'https://commons.wikimedia.org/wiki/File:20241025_Blue_and_White_Porcelain_Plate_of_Yongle_Reign,_Ming_Dynasty.jpg', ai: false },
+    'taoci/开片': { id: 'zhifou/wu/kaipian', v: 1790682988, dw: 900, dh: 675, crop: 1, caption: '哥窑笔洗（13—14 世纪）上的开片，纽约大都会艺术博物馆藏', source: '图片：纽约大都会艺术博物馆开放获取 · CC0', link: 'https://commons.wikimedia.org/wiki/File:MET_DP342667.jpg', ai: false }
   }
 };

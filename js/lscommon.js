@@ -86,6 +86,8 @@
         o.isStatic = true;
         o.body = [];
       }
+      /* 分区配置里写了 img:'类别'，就到图片登记表里按“类别/卡片名”找配图（真实文物照片） */
+      if (b.img && window.ZIMG) { var im = window.ZIMG.get(b.img, it.name); if (im) o.image = im; }
       return mk(tabKey, it.name, o);
     });
     var g = grid(list, (b.grid ? b.grid + ' ' : '') + (hasFold ? 'has-fold' : 'is-even'));

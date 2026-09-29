@@ -22,6 +22,7 @@ window.ZIMG = (function () {
       height: info.dh,
       caption: info.caption,
       source: info.source,
+      link: info.link || '',
       ai: !!info.ai,
       aiLabel: (IMGS && IMGS.aiLabel) || 'AI 生成插画'
     };

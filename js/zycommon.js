@@ -141,17 +141,39 @@
     return dl;
   }
   /* o = { name, sub, tag, body:[元素], id, open, isStatic } */
+  /* 卡片顶部的配图（真实文物照片）：上面一个固定高度的相框，下面一行图注和一行“摄影者 · 授权 · 出处链接”。
+     图片信息 info 来自 js/zimg.js 的 ZIMG.get（登记在 data/images.js）。相框里放两层：底层是同一张图放大虚化，
+     上层是完整的图，这样不管照片是横的还是竖的，都不会被裁掉，也不会露出难看的空边。 */
+  function figure(info, name) {
+    var alt = name + '：' + (info.caption || '');
+    var frame = el('span', { 'class': 'zy-fig' }, [
+      el('img', { 'class': 'zy-fig-bg', src: info.src, alt: '', 'aria-hidden': 'true', loading: 'lazy', decoding: 'async' }),
+      el('img', { 'class': 'zy-fig-img', src: info.src, srcset: info.srcset, sizes: '(max-width: 640px) 90vw, 360px', alt: alt, loading: 'lazy', decoding: 'async' })
+    ]);
+    var credit = info.link
+      ? el('a', { 'class': 'zy-fig-src', href: info.link, target: '_blank', rel: 'noopener noreferrer', text: info.source || '图片来源' })
+      : (info.source ? el('span', { 'class': 'zy-fig-src', text: info.source }) : null);
+    var cap = el('span', { 'class': 'zy-fig-cap' }, [
+      info.caption ? el('span', { 'class': 'zy-fig-txt', text: info.caption }) : null,
+      credit
+    ]);
+    return { frame: frame, cap: cap };
+  }
   function card(o) {
     var body = (o.body || []).filter(Boolean);
     var d = el('details', { 'class': 'zy-card' + (o.isStatic || !body.length ? ' is-static' : '') + (o.sub ? ' has-sub' : ''), 'data-zy-id': o.id || o.name });
     if ((o.open || o.isStatic) && body.length) d.setAttribute('open', '');
+    var fig = o.image ? figure(o.image, o.name) : null;
+    if (fig) d.classList.add('has-fig');
     d.appendChild(el('summary', {}, [
+      fig ? fig.frame : null,
       o.tag ? el('span', { 'class': 'zy-card-tag', text: o.tag }) : null,
       el('span', { 'class': 'zy-card-name', text: o.name }),
-      o.sub ? el('span', { 'class': 'zy-card-sub', text: o.sub }) : null
+      o.sub ? el('span', { 'class': 'zy-card-sub', text: o.sub }) : null,
+      fig ? fig.cap : null
     ]));
     if (body.length) d.appendChild(el('div', { 'class': 'zy-card-body' }, body));
-    if (d.classList.contains('is-static')) d.addEventListener('click', function (e) { if (e && e.target && e.target.closest && e.target.closest('summary')) e.preventDefault(); });
+    if (d.classList.contains('is-static')) d.addEventListener('click', function (e) { if (e && e.target && e.target.closest && e.target.closest('summary') && !e.target.closest('a')) e.preventDefault(); });
     return d;
   }
   /* 拆字：“字｜说明。；字｜说明。” → 一个个字的小块 */

@@ -13,17 +13,17 @@
     suffix: ' · 器物 · 知否知否',
     tabs: [
       { key: 'tao', label: '陶与瓷', blocks: [
-        { sec: '陶器与瓷器', grid: 'is-wide' },
+        { sec: '陶器与瓷器', img: 'taoci', grid: 'is-wide' },
         { sec: '瓷器名称的由来', grid: 'is-wide' }
       ] },
       { key: 'yao', label: '五大名窑', blocks: [
-        { sec: '五大名窑', grid: 'is-wide' },
+        { sec: '五大名窑', img: 'taoci', grid: 'is-wide' },
         { sec: '五大名窑的比较', kind: 'table', cols: [['窑口', '@name'], ['釉色特征', '釉色特征'], ['观察关键词', '观察关键词'], ['需要注意', '需要注意']], wide: true },
-        { sec: '其他重要窑口', grid: 'is-3' }
+        { sec: '其他重要窑口', img: 'taoci', grid: 'is-3' }
       ] },
       { key: 'you', label: '青花与釉色', blocks: [
-        { sec: '青花瓷', grid: 'is-3' },
-        { sec: '釉色' },
+        { sec: '青花瓷', img: 'taoci', grid: 'is-3' },
+        { sec: '釉色', img: 'taoci' },
         { sec: '装饰技法的层次', kind: 'steps', grid: 'is-3' }
       ] },
       { key: 'kan', label: '怎么看一件瓷器', blocks: [
