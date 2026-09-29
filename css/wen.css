@@ -193,3 +193,4 @@ body.theme-wen {
 @media (prefers-reduced-motion: reduce) {
   .theme-wen .wen-page-wrap { transition: none; }
 }
+.theme-wen .wen-page-stat { margin: 0 0 10px; font-size: 13.5px; letter-spacing: 0.08em; color: var(--zy-gold); }

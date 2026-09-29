@@ -51,6 +51,7 @@
       it.picks && it.picks.length
         ? el('ul', { 'class': 'wen-page-picks' }, it.picks.map(pickItem))
         : null,
+      it.stat ? el('p', { 'class': 'wen-page-stat', text: it.stat }) : null,
       el('p', { 'class': 'wen-page-tags', text: it.tags.join(' · ') }),
       it.open
         ? el('a', { 'class': 'wen-page-cta', href: it.href, text: '进去看看这一段 →' })
