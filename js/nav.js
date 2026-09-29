@@ -155,7 +155,7 @@
      只在“点一级导航切换到另一个板块”时播放，同一次访问里每个板块只播一次；
      首页抽卡直达、板块内换页、刷新页面都不播。在板块首页网址后加 ?fx=1 可强制播放，方便查看。
      新增有动画的板块：在 sectionfx.js 加效果，再把板块名加进下面的 FX_KEYS。 */
-  var FX_KEYS = { shen: 1, wen: 1 };
+  var FX_KEYS = { shi: 1, shen: 1, jianzhu: 1, wu: 1, ziyu: 1, lisi: 1, yi: 1, wen: 1 };
   try {
     nav.addEventListener('click', function (e) {
       var a = e.target && e.target.closest ? e.target.closest('a.is-section') : null;
