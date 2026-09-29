@@ -189,3 +189,5 @@ body.ys-lock { overflow: hidden; }
 .ys-hr-p.is-bing { background: #a58a4c; font-size: 15px; }
 .ys-hr-exit { width: 50%; margin: 4px auto 0; padding: 2px 0; text-align: center; font-size: 12px; color: #8a7b62; border: 2px dashed #b58a68; border-top: 0; border-radius: 0 0 8px 8px; }
 .ys-qq { cursor: default; background: #efe6d3; }
+
+.ys-xq, .ys-go { max-width: 420px; margin: 0 auto; cursor: default; }

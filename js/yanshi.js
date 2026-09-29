@@ -466,7 +466,159 @@
     items.forEach(draw);
   }
 
-  var DEMOS = { '投壶': touhu, '升官图': shengguan, '华容道': huarong, '七巧板': qiqiao };
+  /* ---------- 象棋残局 ---------- */
+  /* 每道题的“红先，两步将死”都已用程序把所有黑方应法逐一算过，答案可靠。
+     棋子：[字, 颜色(r红/b黑), 列 x(0-8 对应 a-i), 行 y(0-9，红方底线为 0)] */
+  var XQ = [
+    { tip: '红先，两步将死。红方有两个车，黑将被红炮和自己的士堵在角上。',
+      p: [['帅', 'r', 3, 0], ['车', 'r', 4, 5], ['炮', 'r', 6, 9], ['车', 'r', 0, 2], ['将', 'b', 5, 9], ['士', 'b', 3, 9], ['卒', 'b', 6, 4]],
+      s: [{ f: [0, 2], t: [5, 2], say: '红车从左边横着走到将所在的那一条线上，将军。另一只车守着旁边的线，黑将无路可走。' },
+          { f: [6, 4], t: [5, 4], say: '黑只有一个办法：用卒挡在中间。' },
+          { f: [5, 2], t: [5, 4], say: '红车吃掉挡路的卒，再次将军，黑将上不去、下不来，将死。' }] },
+    { tip: '红先，两步将死。看看马和炮怎样配合。',
+      p: [['帅', 'r', 5, 0], ['炮', 'r', 8, 7], ['兵', 'r', 1, 5], ['马', 'r', 1, 4], ['马', 'r', 4, 7], ['将', 'b', 4, 9], ['士', 'b', 3, 9], ['士', 'b', 5, 9], ['炮', 'b', 6, 4]],
+      s: [{ f: [4, 7], t: [6, 8], say: '红马跳到黑将斜前方将军，黑士不能吃它。' },
+          { f: [4, 9], t: [4, 8], say: '黑将只能往前走一步。' },
+          { f: [8, 7], t: [8, 8], say: '红炮平到底线旁，隔着自己的马打将（炮要隔一个子才能吃），黑将无处可逃，将死。' }] },
+    { tip: '红先，两步将死。先看红车怎样将军，再看黑怎么挡。',
+      p: [['帅', 'r', 4, 0], ['炮', 'r', 1, 2], ['马', 'r', 8, 5], ['车', 'r', 8, 4], ['将', 'b', 3, 9], ['士', 'b', 5, 9], ['炮', 'b', 2, 5]],
+      s: [{ f: [8, 4], t: [3, 4], say: '红车横走到黑将所在的那一条线上，将军。' },
+          { f: [2, 5], t: [3, 5], say: '黑方只能用炮挡在中间。' },
+          { f: [3, 4], t: [3, 5], say: '红车吃掉挡路的炮，继续将军，黑将无路可走，将死。' }] },
+    { tip: '红先，两步将死。这一题的第一步不是将军，而是一步“静招”。',
+      p: [['帅', 'r', 5, 0], ['马', 'r', 8, 8], ['炮', 'r', 8, 3], ['炮', 'r', 0, 3], ['将', 'b', 4, 9], ['士', 'b', 3, 9], ['士', 'b', 5, 9]],
+      s: [{ f: [8, 8], t: [6, 7], say: '红马跳到这里，不将军，但封住了黑将往前走的路，黑方只剩下士可以动。' },
+          { f: [3, 9], t: [4, 8], say: '黑走左边的士。（如果黑走右边的士到同一格，红就用左边的炮平到底线将死。）' },
+          { f: [8, 3], t: [8, 9], say: '红炮直冲到底线，隔着黑士打将，黑将躲不开，将死。' }] }
+  ];
+  function xiangqi(body) {
+    var M = 30, C = 40, W = M * 2 + C * 8, H = M * 2 + C * 9;
+    var NS = 'http://www.w3.org/2000/svg';
+    function sx(x) { return M + x * C; }
+    function sy(y) { return M + (9 - y) * C; }
+    var svg = document.createElementNS(NS, 'svg');
+    svg.setAttribute('viewBox', '0 0 ' + W + ' ' + H); svg.setAttribute('class', 'ys-canvas ys-xq'); svg.setAttribute('role', 'img'); svg.setAttribute('aria-label', '象棋残局');
+    function add(tag, attrs, parent) {
+      var n = document.createElementNS(NS, tag);
+      Object.keys(attrs).forEach(function (k) { n.setAttribute(k, attrs[k]); });
+      (parent || svg).appendChild(n); return n;
+    }
+    function line(x1, y1, x2, y2) { add('line', { x1: x1, y1: y1, x2: x2, y2: y2, stroke: '#6b4a2a', 'stroke-width': 1.4 }); }
+    add('rect', { x: 0, y: 0, width: W, height: H, fill: '#ecd9ae' });
+    add('rect', { x: M, y: M, width: C * 8, height: C * 9, fill: 'none', stroke: '#6b4a2a', 'stroke-width': 2.4 });
+    for (var r = 1; r < 9; r++) line(M, M + r * C, M + 8 * C, M + r * C);
+    for (var c = 1; c < 8; c++) { line(sx(c), M, sx(c), M + 4 * C); line(sx(c), M + 5 * C, sx(c), M + 9 * C); }
+    line(sx(3), sy(9), sx(5), sy(7)); line(sx(5), sy(9), sx(3), sy(7));
+    line(sx(3), sy(2), sx(5), sy(0)); line(sx(5), sy(2), sx(3), sy(0));
+    var rv = add('text', { x: W / 2, y: M + 4.62 * C, 'text-anchor': 'middle', 'font-size': 18, fill: '#8a6a3a', 'letter-spacing': 14 }, svg); rv.textContent = '楚河    汉界';
+    var hl = add('g', {}); var pg = add('g', {});
+    var msg = el('p', { 'class': 'ys-msg' });
+    var bAns = el('button', { 'class': 'ys-btn', type: 'button', text: '看答案' });
+    var bNew = el('button', { 'class': 'ys-btn is-ghost', type: 'button', text: '换一个残局' });
+    body.appendChild(svg); body.appendChild(msg);
+    body.appendChild(el('div', { 'class': 'ys-row' }, [bAns, bNew]));
+    body.appendChild(el('p', { 'class': 'ys-note', text: '象棋的残局，是棋盘上只剩几个棋子的局面。这里放的是“杀法”小题：红方先走，几步之内把黑将将死。棋盘下方是红方，红字是红棋，黑字是黑棋。“看答案”会一步步演示。' }));
+
+    var idx = -1, pieces = [], step = 0;
+    function drawPieces() {
+      pg.innerHTML = '';
+      pieces.forEach(function (p) {
+        var g = add('g', {}, pg);
+        add('circle', { cx: sx(p.x), cy: sy(p.y), r: 17, fill: '#f8f0dc', stroke: p.c === 'r' ? '#b5321f' : '#222', 'stroke-width': 2 }, g);
+        add('circle', { cx: sx(p.x), cy: sy(p.y), r: 13.5, fill: 'none', stroke: p.c === 'r' ? '#b5321f' : '#222', 'stroke-width': 1 }, g);
+        var t = add('text', { x: sx(p.x), y: sy(p.y) + 6.5, 'text-anchor': 'middle', 'font-size': 20, 'font-weight': 'bold', fill: p.c === 'r' ? '#b5321f' : '#222' }, g);
+        t.textContent = p.ch;
+      });
+    }
+    function mark(f, t) {
+      hl.innerHTML = '';
+      [f, t].forEach(function (q, i) {
+        add('rect', { x: sx(q[0]) - 20, y: sy(q[1]) - 20, width: 40, height: 40, rx: 4, fill: 'none', stroke: i ? '#2f7f4a' : '#c9a63a', 'stroke-width': 2.5, 'stroke-dasharray': i ? '' : '4 3' }, hl);
+      });
+    }
+    function load(i) {
+      idx = i; step = 0; hl.innerHTML = '';
+      pieces = XQ[i].p.map(function (q) { return { ch: q[0], c: q[1], x: q[2], y: q[3] }; });
+      drawPieces(); msg.textContent = XQ[i].tip;
+      bAns.textContent = '看答案'; bAns.disabled = false;
+    }
+    bAns.addEventListener('click', function () {
+      var s = XQ[idx].s;
+      if (step >= s.length) { load(idx); return; }
+      var m = s[step];
+      pieces = pieces.filter(function (p) { return !(p.x === m.t[0] && p.y === m.t[1]); });
+      pieces.forEach(function (p) { if (p.x === m.f[0] && p.y === m.f[1]) { p.x = m.t[0]; p.y = m.t[1]; } });
+      drawPieces(); mark(m.f, m.t);
+      msg.textContent = (step + 1) + '. ' + m.say;
+      step++;
+      bAns.textContent = step >= s.length ? '重新摆一遍' : '下一步';
+    });
+    bNew.addEventListener('click', function () {
+      var n; do { n = Math.floor(Math.random() * XQ.length); } while (n === idx && XQ.length > 1);
+      load(n);
+    });
+    load(Math.floor(Math.random() * XQ.length));
+  }
+
+  /* ---------- 围棋吃子题 ---------- */
+  /* 7×7 的局部棋盘。b/w 为黑白棋子坐标 [列, 行]，行从上往下数；a 是答案点。
+     每题都用程序验证过：黑先下 a 这一手，白无论怎么应，黑下一手都能把白棋提掉；换别处则不行。 */
+  var GO = [
+    { tip: '黑先。怎样才能把中间的两颗白子提掉？',
+      b: [[3, 0], [4, 0], [5, 1], [5, 2], [4, 3]], w: [[4, 1], [4, 2]], a: [3, 2],
+      say: '黑1贴住白子，白子只剩下一口“气”（也就是只剩一个出路），这叫“打吃”。白想逃也逃不出去，黑下一手就能把它们提掉。' },
+    { tip: '黑先。白有两颗子连在一起，看看黑该下在哪里。',
+      b: [[3, 1], [4, 1], [5, 2], [2, 3], [4, 3]], w: [[3, 2], [4, 2]], a: [2, 2],
+      say: '黑1堵住白子向左的出路，白子只剩一口气，被打吃。白再怎么长，黑下一手都能提掉。' },
+    { tip: '黑先。中间的两颗白子已经被围了大半，最后一步怎么下？',
+      b: [[2, 1], [1, 2], [3, 2], [1, 3], [3, 4]], w: [[2, 2], [2, 3]], a: [2, 4],
+      say: '黑1从下面堵住，白子只剩一口气，被打吃。白无路可逃，黑下一手就能提掉。' }
+  ];
+  function weiqi(body) {
+    var N = 7, M = 26, C = 42, S = M * 2 + C * (N - 1);
+    var NS = 'http://www.w3.org/2000/svg';
+    var svg = document.createElementNS(NS, 'svg');
+    svg.setAttribute('viewBox', '0 0 ' + S + ' ' + S); svg.setAttribute('class', 'ys-canvas ys-go'); svg.setAttribute('role', 'img'); svg.setAttribute('aria-label', '围棋吃子题');
+    function add(tag, attrs, parent) {
+      var n = document.createElementNS(NS, tag);
+      Object.keys(attrs).forEach(function (k) { n.setAttribute(k, attrs[k]); });
+      (parent || svg).appendChild(n); return n;
+    }
+    function px(v) { return M + v * C; }
+    add('rect', { x: 0, y: 0, width: S, height: S, fill: '#e8c98a' });
+    for (var i = 0; i < N; i++) {
+      add('line', { x1: px(0), y1: px(i), x2: px(N - 1), y2: px(i), stroke: '#6b4a2a', 'stroke-width': 1.2 });
+      add('line', { x1: px(i), y1: px(0), x2: px(i), y2: px(N - 1), stroke: '#6b4a2a', 'stroke-width': 1.2 });
+    }
+    var sg = add('g', {});
+    var msg = el('p', { 'class': 'ys-msg' });
+    var bAns = el('button', { 'class': 'ys-btn', type: 'button', text: '看答案' });
+    var bNew = el('button', { 'class': 'ys-btn is-ghost', type: 'button', text: '换一题' });
+    body.appendChild(svg); body.appendChild(msg);
+    body.appendChild(el('div', { 'class': 'ys-row' }, [bAns, bNew]));
+    body.appendChild(el('p', { 'class': 'ys-note', text: '围棋的棋子放在线的交叉点上。棋子相邻的空交叉点叫“气”，把对方一块棋的气全部占住，就可以把它提掉。这里只截取棋盘的一小块，作为吃子练习。' }));
+
+    var idx = -1;
+    function load(k) {
+      idx = k; sg.innerHTML = ''; var g = GO[k];
+      g.b.forEach(function (q) { add('circle', { cx: px(q[0]), cy: px(q[1]), r: 18, fill: '#1c1c1c', stroke: '#000', 'stroke-width': 1 }, sg); });
+      g.w.forEach(function (q) { add('circle', { cx: px(q[0]), cy: px(q[1]), r: 18, fill: '#fbf8f0', stroke: '#555', 'stroke-width': 1.2 }, sg); });
+      msg.textContent = g.tip; bAns.textContent = '看答案'; bAns.disabled = false;
+    }
+    bAns.addEventListener('click', function () {
+      var g = GO[idx];
+      add('circle', { cx: px(g.a[0]), cy: px(g.a[1]), r: 18, fill: '#1c1c1c', stroke: '#c9302c', 'stroke-width': 3 }, sg);
+      var t = add('text', { x: px(g.a[0]), y: px(g.a[1]) + 6, 'text-anchor': 'middle', 'font-size': 18, 'font-weight': 'bold', fill: '#fff' }, sg); t.textContent = '1';
+      msg.textContent = g.say; bAns.disabled = true;
+    });
+    bNew.addEventListener('click', function () {
+      var n; do { n = Math.floor(Math.random() * GO.length); } while (n === idx && GO.length > 1);
+      load(n);
+    });
+    load(Math.floor(Math.random() * GO.length));
+  }
+
+  var DEMOS = { '投壶': touhu, '升官图': shengguan, '华容道': huarong, '七巧板': qiqiao, '象棋': xiangqi, '围棋': weiqi };
 
   /* ---------- 给卡片加“演示”标签 ---------- */
   function decorate() {
