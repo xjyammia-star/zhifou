@@ -8,7 +8,6 @@
 
    每一条的字段（对应《文案库》里的词条格式）：
      id        编号，唯一、固定，如“节气-秋分”
-     status    审核状态：“待审”或“已审”（页面目前不显示）
      season    季节，如“秋”
      seasonNo  这是该季第几个节气
      yearNo    这是全年第几个节气
@@ -35,7 +34,6 @@ window.ZHIFOU_JIEQI = {
   entries: {
     "立春": {
       "id": "节气-立春",
-      "status": "已审",
       "season": "春",
       "seasonNo": 1,
       "yearNo": 1,
@@ -86,7 +84,6 @@ window.ZHIFOU_JIEQI = {
     },
     "雨水": {
       "id": "节气-雨水",
-      "status": "已审",
       "season": "春",
       "seasonNo": 2,
       "yearNo": 2,
@@ -133,7 +130,6 @@ window.ZHIFOU_JIEQI = {
     },
     "惊蛰": {
       "id": "节气-惊蛰",
-      "status": "已审",
       "season": "春",
       "seasonNo": 3,
       "yearNo": 3,
@@ -180,7 +176,6 @@ window.ZHIFOU_JIEQI = {
     },
     "春分": {
       "id": "节气-春分",
-      "status": "已审",
       "season": "春",
       "seasonNo": 4,
       "yearNo": 4,
@@ -227,7 +222,6 @@ window.ZHIFOU_JIEQI = {
     },
     "清明": {
       "id": "节气-清明",
-      "status": "已审",
       "season": "春",
       "seasonNo": 5,
       "yearNo": 5,
@@ -274,7 +268,6 @@ window.ZHIFOU_JIEQI = {
     },
     "谷雨": {
       "id": "节气-谷雨",
-      "status": "已审",
       "season": "春",
       "seasonNo": 6,
       "yearNo": 6,
@@ -321,7 +314,6 @@ window.ZHIFOU_JIEQI = {
     },
     "立夏": {
       "id": "节气-立夏",
-      "status": "已审",
       "season": "夏",
       "seasonNo": 1,
       "yearNo": 7,
@@ -368,7 +360,6 @@ window.ZHIFOU_JIEQI = {
     },
     "小满": {
       "id": "节气-小满",
-      "status": "已审",
       "season": "夏",
       "seasonNo": 2,
       "yearNo": 8,
@@ -415,7 +406,6 @@ window.ZHIFOU_JIEQI = {
     },
     "芒种": {
       "id": "节气-芒种",
-      "status": "已审",
       "season": "夏",
       "seasonNo": 3,
       "yearNo": 9,
@@ -462,7 +452,6 @@ window.ZHIFOU_JIEQI = {
     },
     "夏至": {
       "id": "节气-夏至",
-      "status": "已审",
       "season": "夏",
       "seasonNo": 4,
       "yearNo": 10,
@@ -509,7 +498,6 @@ window.ZHIFOU_JIEQI = {
     },
     "小暑": {
       "id": "节气-小暑",
-      "status": "已审",
       "season": "夏",
       "seasonNo": 5,
       "yearNo": 11,
@@ -555,7 +543,6 @@ window.ZHIFOU_JIEQI = {
     },
     "大暑": {
       "id": "节气-大暑",
-      "status": "已审",
       "season": "夏",
       "seasonNo": 6,
       "yearNo": 12,
@@ -602,7 +589,6 @@ window.ZHIFOU_JIEQI = {
     },
     "立秋": {
       "id": "节气-立秋",
-      "status": "已审",
       "season": "秋",
       "seasonNo": 1,
       "yearNo": 13,
@@ -649,7 +635,6 @@ window.ZHIFOU_JIEQI = {
     },
     "处暑": {
       "id": "节气-处暑",
-      "status": "已审",
       "season": "秋",
       "seasonNo": 2,
       "yearNo": 14,
@@ -695,7 +680,6 @@ window.ZHIFOU_JIEQI = {
     },
     "白露": {
       "id": "节气-白露",
-      "status": "已审",
       "season": "秋",
       "seasonNo": 3,
       "yearNo": 15,
@@ -742,7 +726,6 @@ window.ZHIFOU_JIEQI = {
     },
     "秋分": {
       "id": "节气-秋分",
-      "status": "已审",
       "season": "秋",
       "seasonNo": 4,
       "yearNo": 16,
@@ -789,7 +772,6 @@ window.ZHIFOU_JIEQI = {
     },
     "寒露": {
       "id": "节气-寒露",
-      "status": "已审",
       "season": "秋",
       "seasonNo": 5,
       "yearNo": 17,
@@ -836,7 +818,6 @@ window.ZHIFOU_JIEQI = {
     },
     "霜降": {
       "id": "节气-霜降",
-      "status": "已审",
       "season": "秋",
       "seasonNo": 6,
       "yearNo": 18,
@@ -883,7 +864,6 @@ window.ZHIFOU_JIEQI = {
     },
     "立冬": {
       "id": "节气-立冬",
-      "status": "已审",
       "season": "冬",
       "seasonNo": 1,
       "yearNo": 19,
@@ -929,7 +909,6 @@ window.ZHIFOU_JIEQI = {
     },
     "小雪": {
       "id": "节气-小雪",
-      "status": "已审",
       "season": "冬",
       "seasonNo": 2,
       "yearNo": 20,
@@ -975,7 +954,6 @@ window.ZHIFOU_JIEQI = {
     },
     "大雪": {
       "id": "节气-大雪",
-      "status": "已审",
       "season": "冬",
       "seasonNo": 3,
       "yearNo": 21,
@@ -1022,7 +1000,6 @@ window.ZHIFOU_JIEQI = {
     },
     "冬至": {
       "id": "节气-冬至",
-      "status": "已审",
       "season": "冬",
       "seasonNo": 4,
       "yearNo": 22,
@@ -1064,16 +1041,11 @@ window.ZHIFOU_JIEQI = {
         {
           "label": "说法不一",
           "text": "习俗各地不同，不能把某一地的习惯当作全国统一；“候”约五天，各地各年实际出现的时间不一样。"
-        },
-        {
-          "label": "关键原文",
-          "text": "“阴极之至，阳气始生”，出处待补。"
         }
       ]
     },
     "小寒": {
       "id": "节气-小寒",
-      "status": "已审",
       "season": "冬",
       "seasonNo": 5,
       "yearNo": 23,
@@ -1119,7 +1091,6 @@ window.ZHIFOU_JIEQI = {
     },
     "大寒": {
       "id": "节气-大寒",
-      "status": "已审",
       "season": "冬",
       "seasonNo": 6,
       "yearNo": 24,

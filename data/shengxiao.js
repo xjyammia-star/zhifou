@@ -19,7 +19,6 @@ window.ZHIFOU_SHENGXIAO = {
   "entries": {
     "子鼠": {
       "id": "子鼠",
-      "status": "待审",
       "no": 1,
       "time": "23:00—01:00",
       "theme": "十二生肖之首",
@@ -42,7 +41,6 @@ window.ZHIFOU_SHENGXIAO = {
     },
     "丑牛": {
       "id": "丑牛",
-      "status": "待审",
       "no": 2,
       "time": "01:00—03:00",
       "theme": "勤劳与耕作的象征",
@@ -63,7 +61,6 @@ window.ZHIFOU_SHENGXIAO = {
     },
     "寅虎": {
       "id": "寅虎",
-      "status": "待审",
       "no": 3,
       "time": "03:00—05:00",
       "theme": "山林与威猛的象征",
@@ -84,7 +81,6 @@ window.ZHIFOU_SHENGXIAO = {
     },
     "卯兔": {
       "id": "卯兔",
-      "status": "待审",
       "no": 4,
       "time": "05:00—07:00",
       "theme": "月亮与温顺的联想",
@@ -107,7 +103,6 @@ window.ZHIFOU_SHENGXIAO = {
     },
     "辰龙": {
       "id": "辰龙",
-      "status": "待审",
       "no": 5,
       "time": "07:00—09:00",
       "theme": "十二生肖里唯一的神话动物",
@@ -128,7 +123,6 @@ window.ZHIFOU_SHENGXIAO = {
     },
     "巳蛇": {
       "id": "巳蛇",
-      "status": "待审",
       "no": 6,
       "time": "09:00—11:00",
       "theme": "地支系统里的隐秘一环",
@@ -151,7 +145,6 @@ window.ZHIFOU_SHENGXIAO = {
     },
     "午马": {
       "id": "午马",
-      "status": "待审",
       "no": 7,
       "time": "11:00—13:00",
       "theme": "阳刚与奔跑的象征",
@@ -172,7 +165,6 @@ window.ZHIFOU_SHENGXIAO = {
     },
     "未羊": {
       "id": "未羊",
-      "status": "待审",
       "no": 8,
       "time": "13:00—15:00",
       "theme": "农业与祭祀里的常见家畜",
@@ -193,7 +185,6 @@ window.ZHIFOU_SHENGXIAO = {
     },
     "申猴": {
       "id": "申猴",
-      "status": "待审",
       "no": 9,
       "time": "15:00—17:00",
       "theme": "机灵与结伴的形象",
@@ -216,7 +207,6 @@ window.ZHIFOU_SHENGXIAO = {
     },
     "酉鸡": {
       "id": "酉鸡",
-      "status": "待审",
       "no": 10,
       "time": "17:00—19:00",
       "theme": "报晓与结伴的形象",
@@ -239,7 +229,6 @@ window.ZHIFOU_SHENGXIAO = {
     },
     "戌狗": {
       "id": "戌狗",
-      "status": "待审",
       "no": 11,
       "time": "19:00—21:00",
       "theme": "看家与忠诚的形象",
@@ -260,7 +249,6 @@ window.ZHIFOU_SHENGXIAO = {
     },
     "亥猪": {
       "id": "亥猪",
-      "status": "待审",
       "no": 12,
       "time": "21:00—23:00",
       "theme": "安睡与十二生肖的收尾",

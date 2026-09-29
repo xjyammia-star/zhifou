@@ -28,7 +28,6 @@ window.ZHIFOU_SHICHEN = {
   "entries": {
     "子时": {
       "id": "时辰-子时",
-      "status": "待审",
       "no": 1,
       "time": "23:00—01:00",
       "theme": "夜半、一天的起点",
@@ -50,7 +49,6 @@ window.ZHIFOU_SHICHEN = {
     },
     "丑时": {
       "id": "时辰-丑时",
-      "status": "待审",
       "no": 2,
       "time": "01:00—03:00",
       "theme": "鸡鸣前后",
@@ -72,7 +70,6 @@ window.ZHIFOU_SHICHEN = {
     },
     "寅时": {
       "id": "时辰-寅时",
-      "status": "待审",
       "no": 3,
       "time": "03:00—05:00",
       "theme": "平旦、破晓前",
@@ -100,7 +97,6 @@ window.ZHIFOU_SHICHEN = {
     },
     "卯时": {
       "id": "时辰-卯时",
-      "status": "待审",
       "no": 4,
       "time": "05:00—07:00",
       "theme": "日出、清晨",
@@ -122,7 +118,6 @@ window.ZHIFOU_SHICHEN = {
     },
     "辰时": {
       "id": "时辰-辰时",
-      "status": "待审",
       "no": 5,
       "time": "07:00—09:00",
       "theme": "食时、早饭",
@@ -144,7 +139,6 @@ window.ZHIFOU_SHICHEN = {
     },
     "巳时": {
       "id": "时辰-巳时",
-      "status": "待审",
       "no": 6,
       "time": "09:00—11:00",
       "theme": "隅中、临近正午",
@@ -165,7 +159,6 @@ window.ZHIFOU_SHICHEN = {
     },
     "午时": {
       "id": "时辰-午时",
-      "status": "待审",
       "no": 7,
       "time": "11:00—13:00",
       "theme": "日中、正午",
@@ -188,7 +181,6 @@ window.ZHIFOU_SHICHEN = {
     },
     "未时": {
       "id": "时辰-未时",
-      "status": "待审",
       "no": 8,
       "time": "13:00—15:00",
       "theme": "日昳、午后",
@@ -209,7 +201,6 @@ window.ZHIFOU_SHICHEN = {
     },
     "申时": {
       "id": "时辰-申时",
-      "status": "待审",
       "no": 9,
       "time": "15:00—17:00",
       "theme": "哺时、下午",
@@ -230,7 +221,6 @@ window.ZHIFOU_SHICHEN = {
     },
     "酉时": {
       "id": "时辰-酉时",
-      "status": "待审",
       "no": 10,
       "time": "17:00—19:00",
       "theme": "日入、黄昏前",
@@ -251,7 +241,6 @@ window.ZHIFOU_SHICHEN = {
     },
     "戌时": {
       "id": "时辰-戌时",
-      "status": "待审",
       "no": 11,
       "time": "19:00—21:00",
       "theme": "黄昏、起更",
@@ -274,7 +263,6 @@ window.ZHIFOU_SHICHEN = {
     },
     "亥时": {
       "id": "时辰-亥时",
-      "status": "待审",
       "no": 12,
       "time": "21:00—23:00",
       "theme": "人定、入夜",

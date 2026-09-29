@@ -76,7 +76,6 @@
   var six = S('古人怎么造词');
   var sixF = six.items[0] ? six.items[0].f : [];
   var nx = S('暂不收录的词');
-  var todo = S('待继续核查');
 
   Z.mount(root, [
     Z.head(D, '字·语 · 天地万物的名字'),
@@ -89,10 +88,6 @@
     Z.section('暂不收录的词', [
       Z.note(nx.bold['说明']),
       el('div', { 'class': 'zy-grid is-3' }, nx.items.map(function (it) { return Z.card({ name: it.name, isStatic: true, body: [Z.kv(it.f)] }); }))
-    ]),
-    Z.section('还在收集', [
-      Z.note(todo.bold['说明']),
-      el('div', { 'class': 'zy-grid is-3' }, todo.items.map(function (it) { return Z.card({ name: it.name, isStatic: true, body: [Z.kv(it.f)] }); }))
     ]),
     Z.see(D)
   ].concat(Z.tipNotes(D)));
