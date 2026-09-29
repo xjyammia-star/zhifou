@@ -462,8 +462,6 @@ window.ZHIFOU_IMAGES = {
     'youyi/击壤': { id: 'zhifou/yi/game_jirang', v: 1790701298, dw: 900, dh: 900, crop: 1, caption: '击壤（示意图）', source: '图片：本站原创示意图', ai: false },
     'youyi/七巧板': { id: 'zhifou/yi/game_qiqiao', v: 1790701299, dw: 900, dh: 900, crop: 1, caption: '七巧板（示意图）', source: '图片：本站原创示意图', ai: false },
     'youyi/孔明锁': { id: 'zhifou/yi/game_kongming', v: 1790701301, dw: 900, dh: 900, crop: 1, caption: '孔明锁（示意图）', source: '图片：本站原创示意图', ai: false },
-    'youyi/华容道': { id: 'zhifou/yi/game_huarong', v: 1790701303, dw: 900, dh: 900, crop: 1, caption: '华容道（示意图）', source: '图片：本站原创示意图', ai: false },
-    'youyi/射覆的基本玩法': { id: 'zhifou/yi/game_shefu', v: 1790701304, dw: 900, dh: 900, crop: 1, caption: '射覆的基本玩法（示意图）', source: '图片：本站原创示意图', ai: false },
-    'youyi/藏钩': { id: 'zhifou/yi/game_canggou', v: 1790701306, dw: 900, dh: 900, crop: 1, caption: '藏钩（示意图）', source: '图片：本站原创示意图', ai: false }
+    'youyi/华容道': { id: 'zhifou/yi/game_huarong', v: 1790701303, dw: 900, dh: 900, crop: 1, caption: '华容道（示意图）', source: '图片：本站原创示意图', ai: false }
   }
 };
