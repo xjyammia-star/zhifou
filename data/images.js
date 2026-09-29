@@ -438,6 +438,15 @@ window.ZHIFOU_IMAGES = {
     'gongyi/景泰蓝': { id: 'zhifou/yi/jingtailan_1', v: 1790698107, dw: 900, dh: 1350, crop: 1, caption: '清代景泰蓝瓶', source: '图片：Windmemories · CC BY-SA 4.0', link: 'https://commons.wikimedia.org/wiki/File:20241025_Cloisonne_Vase_with_Fret_Design_and_Two_Rings,_Qing_Dynasty.jpg', ai: false },
     'gongyi/竹雕': { id: 'zhifou/yi/mudiao_4', v: 1790698107, dw: 900, dh: 1029, crop: 1, caption: '清代竹雕（斯珀洛克博物馆）', source: '图片：维基共享资源 · CC0', link: 'https://commons.wikimedia.org/wiki/File:Fu_Dog,_China,_Qing_dynasty,_18th_century_AD,_bamboo_-_Spurlock_Museum,_UIUC_-_DSC05965.jpg', ai: false },
     'shuhua/《洛神赋图》': { id: 'zhifou/yi/luoshen_1', v: 1790698050, dw: 900, dh: 461, crop: 1, caption: '《洛神赋图》（宋摹本，传顾恺之原作）', source: '图片：维基共享资源 · 公有领域', link: 'https://commons.wikimedia.org/wiki/File:The_Nymph_of_the_Luo_River,_a_handscroll_painting.jpg', ai: false },
-    'shuhua/《乙瑛碑》': { id: 'zhifou/yi/yiying_2', v: 1790698886, dw: 900, dh: 735, crop: 1, caption: '《乙瑛碑》明拓本册页（局部）', source: '图片：维基共享资源 · 公有领域', link: 'https://commons.wikimedia.org/wiki/File:%E6%98%8E%E6%8B%93%E9%B2%81%E7%9B%B8%E4%B9%99%E7%91%9B%E8%AF%B7%E7%BD%AE%E7%99%BE%E7%9F%B3%E5%8D%92%E5%8F%B2%E7%A2%91%E5%86%8C_18.jpg', ai: false }
+    'shuhua/《乙瑛碑》': { id: 'zhifou/yi/yiying_2', v: 1790698886, dw: 900, dh: 735, crop: 1, caption: '《乙瑛碑》明拓本册页（局部）', source: '图片：维基共享资源 · 公有领域', link: 'https://commons.wikimedia.org/wiki/File:%E6%98%8E%E6%8B%93%E9%B2%81%E7%9B%B8%E4%B9%99%E7%91%9B%E8%AF%B7%E7%BD%AE%E7%99%BE%E7%9F%B3%E5%8D%92%E5%8F%B2%E7%A2%91%E5%86%8C_18.jpg', ai: false },
+    'yinyue/红': { id: 'zhifou/yi/lianpu_hong', v: 1790699554, dw: 900, dh: 900, crop: 1, caption: '红脸：红色底色的脸谱基本样式（示意图）', source: '图片：本站原创示意图', ai: false },
+    'yinyue/紫': { id: 'zhifou/yi/lianpu_zi', v: 1790699556, dw: 900, dh: 900, crop: 1, caption: '紫脸：紫色底色的脸谱基本样式（示意图）', source: '图片：本站原创示意图', ai: false },
+    'yinyue/黑': { id: 'zhifou/yi/lianpu_hei', v: 1790699558, dw: 900, dh: 900, crop: 1, caption: '黑脸：黑色底色的脸谱基本样式（示意图）', source: '图片：本站原创示意图', ai: false },
+    'yinyue/白': { id: 'zhifou/yi/lianpu_bai', v: 1790699560, dw: 900, dh: 900, crop: 1, caption: '白脸：白色底色的脸谱基本样式（示意图）', source: '图片：本站原创示意图', ai: false },
+    'yinyue/蓝': { id: 'zhifou/yi/lianpu_lan', v: 1790699561, dw: 900, dh: 900, crop: 1, caption: '蓝脸：蓝色底色的脸谱基本样式（示意图）', source: '图片：本站原创示意图', ai: false },
+    'yinyue/绿': { id: 'zhifou/yi/lianpu_lv', v: 1790699563, dw: 900, dh: 900, crop: 1, caption: '绿脸：绿色底色的脸谱基本样式（示意图）', source: '图片：本站原创示意图', ai: false },
+    'yinyue/黄': { id: 'zhifou/yi/lianpu_huang', v: 1790699565, dw: 900, dh: 900, crop: 1, caption: '黄脸：黄色底色的脸谱基本样式（示意图）', source: '图片：本站原创示意图', ai: false },
+    'yinyue/金与银': { id: 'zhifou/yi/lianpu_jinyin', v: 1790699567, dw: 900, dh: 900, crop: 1, caption: '金脸与银脸：金、银底色的脸谱基本样式（左金右银仅为示意）（示意图）', source: '图片：本站原创示意图', ai: false },
+    'youyi/捶丸': { id: 'zhifou/yi/chuiwan', v: 1790699569, dw: 900, dh: 900, crop: 1, caption: '捶丸：球杖击球入窝的示意（示意图）', source: '图片：本站原创示意图', ai: false }
   }
 };
