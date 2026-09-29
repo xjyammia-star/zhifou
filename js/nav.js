@@ -199,3 +199,34 @@
   var curSub = sub.querySelector('[aria-current="page"]');
   if (curSub && sub.scrollWidth > sub.clientWidth) sub.scrollLeft = Math.max(0, curSub.offsetLeft - 80);
 })();
+
+/* ---------- 页面底部的“批注”：只留读者用得上的说明 ----------
+   各页的“批注”里，有一部分是整理文案时写给作者自己的备忘（“见笔记某节”“请核对”“将来某页做好后再加链接”等），
+   读者看了没用。这里在页面画好之后，把这类备忘句子去掉；剩下的（比如“示意图不是实测图”“走兽只讲清代官式”）
+   继续显示，标题改成“说明”；一条都不剩时，整个“批注”块不再显示。
+   判断用的是下面这条规则 INTERNAL：以后新增的批注只要带这些字样，也会自动被去掉。 */
+(function () {
+  'use strict';
+  var INTERNAL = /笔记|Obsidian|请核对|逐个核对|我(补|按|把|根据|合并|为了|估|新起)|归属表|将来|之后会|做好|没有增加|网站正文|文案|按[《“"].*整理|整理.*为准|抽卡|卡池|口径与|知识缺口补全|来自《/;
+  function clean(d) {
+    if (d.getAttribute('data-notes-clean')) return;
+    var s = d.firstElementChild;
+    if (!s || s.tagName !== 'SUMMARY' || s.textContent.replace(/\s+/g, '') !== '批注') return;
+    d.setAttribute('data-notes-clean', '1');
+    var body = s.nextElementSibling;
+    if (!body) return;
+    var kept = 0;
+    Array.prototype.slice.call(body.children).forEach(function (p) {
+      if (INTERNAL.test(p.textContent)) p.parentNode.removeChild(p); else kept++;
+    });
+    if (!kept) d.parentNode.removeChild(d); else s.textContent = '说明';
+  }
+  function sweep() {
+    var list = document.querySelectorAll('details');
+    for (var i = 0; i < list.length; i++) clean(list[i]);
+  }
+  var timer = 0;
+  function later() { if (!timer) timer = setTimeout(function () { timer = 0; sweep(); }, 30); }
+  if (window.MutationObserver) new MutationObserver(later).observe(document.documentElement, { childList: true, subtree: true });
+  if (document.readyState !== 'loading') sweep(); else document.addEventListener('DOMContentLoaded', sweep);
+})();
