@@ -142,3 +142,39 @@ body.theme-yi {
   .theme-yi .zy-fig { height: 170px; }
   .theme-yi .zy-card.has-fig > summary::after { top: 184px; }
 }
+
+
+/* ---------- 游戏“演示”标签与弹窗（js/yanshi.js） ---------- */
+.theme-yi .ys-tag { display: inline-block; margin: 6px 0 2px; padding: 3px 12px; font: inherit; font-size: 13px; line-height: 1.6; color: #fff6e6; background: #9c4318; border: 0; border-radius: 999px; cursor: pointer; letter-spacing: 0.08em; }
+.theme-yi .ys-tag:hover { background: #7a3512; }
+.theme-yi .ys-tag:focus-visible { outline: 2px solid var(--zy-gold); outline-offset: 2px; }
+body.ys-lock { overflow: hidden; }
+.ys-overlay { position: fixed; inset: 0; z-index: 1000; display: flex; align-items: center; justify-content: center; padding: 16px; background: rgba(20, 16, 13, 0.72); }
+.ys-box { width: 100%; max-width: 560px; max-height: 92vh; overflow: auto; background: #f5efe2; color: #2b2724; border-radius: 8px; box-shadow: 0 12px 40px rgba(0, 0, 0, 0.5); }
+.ys-head { display: flex; align-items: center; justify-content: space-between; padding: 12px 16px; border-bottom: 1px solid #d8ccb4; }
+.ys-title { font-size: 18px; color: #7a3512; letter-spacing: 0.1em; }
+.ys-close { width: 34px; height: 34px; font-size: 24px; line-height: 1; color: #7a3512; background: transparent; border: 0; border-radius: 50%; cursor: pointer; }
+.ys-close:hover { background: #e9dcc8; }
+.ys-body { padding: 14px 16px 4px; }
+.ys-canvas { display: block; width: 100%; height: auto; touch-action: none; border-radius: 6px; border: 1px solid #d8ccb4; background: #efe6d3; cursor: grab; }
+.ys-msg { min-height: 3em; margin: 10px 0 6px; font-size: 15px; line-height: 1.7; color: #3b2a1a; }
+.ys-row { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; margin: 6px 0; }
+.ys-count { font-size: 14px; color: #6a5f54; margin-right: auto; }
+.ys-note { margin: 8px 0 4px; font-size: 13px; line-height: 1.8; color: #6a5f54; }
+.ys-foot { margin: 0; padding: 8px 16px 14px; font-size: 12px; line-height: 1.7; color: #8a7b62; }
+.ys-btn { padding: 6px 18px; font: inherit; font-size: 15px; color: #fff6e6; background: #9c4318; border: 0; border-radius: 4px; cursor: pointer; }
+.ys-btn:hover { background: #7a3512; }
+.ys-btn:disabled { opacity: 0.45; cursor: default; }
+.ys-btn.is-ghost { color: #7a3512; background: transparent; border: 1px solid #b58a68; }
+.ys-btn.is-ghost:hover { background: #e9dcc8; }
+.ys-dice { width: 48px; height: 48px; font-size: 34px; line-height: 1; color: #7a3512; background: #fff; border: 1px solid #d8ccb4; border-radius: 8px; cursor: pointer; }
+.ys-board { display: grid; gap: 6px; }
+.ys-cell { position: relative; display: flex; flex-direction: column; align-items: center; justify-content: center; min-height: 64px; padding: 6px 2px; text-align: center; background: #efe6d3; border: 1px solid #d8ccb4; border-radius: 6px; }
+.ys-cell.is-up { background: #e6ecd2; border-color: #a7b57a; }
+.ys-cell.is-down { background: #efd9cf; border-color: #c9917a; }
+.ys-cell.is-start, .ys-cell.is-end { background: #f0dfae; border-color: #c9a655; }
+.ys-cell.is-here { box-shadow: 0 0 0 2px #9c4318; }
+.ys-idx { position: absolute; left: 4px; top: 2px; font-size: 10px; color: #8a7b62; }
+.ys-name { font-size: 13px; line-height: 1.4; color: #3b2a1a; }
+.ys-token { position: absolute; right: 4px; bottom: 4px; width: 14px; height: 14px; background: #c9302c; border: 2px solid #fff; border-radius: 50%; box-shadow: 0 1px 3px rgba(0, 0, 0, 0.4); }
+@media (max-width: 480px) { .ys-name { font-size: 12px; } .ys-cell { min-height: 58px; } }
