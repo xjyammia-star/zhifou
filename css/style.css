@@ -324,3 +324,22 @@ h1, h2, h3 { margin: 0; font-weight: 400; }
   .site-nav a { font-size: 12px; letter-spacing: 0.02em; }
   .site-nav a.is-section { font-size: 14px; letter-spacing: 0.04em; }
 }
+
+/* ---------- 导航适配：板块名改成两个字之后 ----------
+   名字和“知否知否”都不折行；宽度不够时先收起页头副标题、收紧间距，
+   再窄就像手机一样左右滑动（手机本来就是这样，不受影响） */
+.site-nav a { white-space: nowrap; }
+.brand { flex: none; }
+.brand-name { white-space: nowrap; }
+@media (max-width: 1399px) {
+  .brand-tagline { display: none; }
+}
+@media (min-width: 640px) and (max-width: 1399px) {
+  .site-nav { gap: 18px; }
+}
+@media (min-width: 640px) and (max-width: 1023px) {
+  .header-inner { gap: 8px; }
+  .site-nav { position: relative; min-width: 0; margin-left: auto; overflow-x: auto; scrollbar-width: none; -webkit-overflow-scrolling: touch; gap: 14px; }
+  .site-nav::-webkit-scrollbar { display: none; }
+  .site-nav a { flex: none; }
+}

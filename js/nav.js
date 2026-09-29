@@ -151,6 +151,32 @@
   var curTop = nav.querySelector('[aria-current="page"]');
   if (curTop && nav.scrollWidth > nav.clientWidth) nav.scrollLeft = Math.max(0, curTop.offsetLeft - 24);
 
+  /* 板块切换动画（具体效果在 js/sectionfx.js）：
+     只在“点一级导航切换到另一个板块”时播放，同一次访问里每个板块只播一次；
+     首页抽卡直达、板块内换页、刷新页面都不播。在板块首页网址后加 ?fx=1 可强制播放，方便查看。
+     新增有动画的板块：在 sectionfx.js 加效果，再把板块名加进下面的 FX_KEYS。 */
+  var FX_KEYS = { shen: 1, wen: 1 };
+  try {
+    nav.addEventListener('click', function (e) {
+      var a = e.target && e.target.closest ? e.target.closest('a.is-section') : null;
+      if (!a || a.getAttribute('aria-current') === 'page') return;
+      var m = /sec-(\w+)/.exec(a.className);
+      if (m) sessionStorage.setItem('zf-fx-next', m[1]);
+    });
+    var fxNext = sessionStorage.getItem('zf-fx-next');
+    sessionStorage.removeItem('zf-fx-next');
+    var fxDone = (sessionStorage.getItem('zf-fx-done') || '').split(',');
+    var fxForce = /[?&]fx=1(&|$)/.test(location.search);
+    if (current && FX_KEYS[current.key] && (fxForce || (fxNext === current.key && fxDone.indexOf(current.key) < 0))) {
+      if (!fxForce) sessionStorage.setItem('zf-fx-done', fxDone.concat(current.key).join(','));
+      var fxKey = current.key;
+      var fxScript = document.createElement('script');
+      fxScript.src = 'js/sectionfx.js';
+      fxScript.onload = function () { if (window.ZFSectionFX) window.ZFSectionFX.play(fxKey); };
+      document.head.appendChild(fxScript);
+    }
+  } catch (err) { /* 浏览器不让用存储时，就不播放动画，不影响页面 */ }
+
   /* 二级导航：只在进入某个板块的页面时出现 */
   if (!current) return;
   var bar = document.createElement('div');
