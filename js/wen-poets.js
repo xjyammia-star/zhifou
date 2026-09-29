@@ -453,11 +453,16 @@
     var eras = el('div', { 'class': 'tp-eras' }, D.eras.map(function (era) { return eraSection(era, onPick); }));
     var searchBar = buildSearch(modal);
 
+    /* 页面底部的统计：只写作者数和作品数，由数据自动算出，以后增删作品不用再手改 */
+    var poetTotal = 0, workTotal = 0;
+    registry.forEach(function (r) { poetTotal += 1; workTotal += r.count; });
+    var statD = { tip: '共 ' + poetTotal + ' 位作者、' + workTotal + ' ' + unit + '作品。', notes: D.notes };
+
     Z.mount(root, [
       Z.head(D, opts.eyebrow || '文'),
       searchBar,
       Z.section(opts.sectionTitle || '按作者浏览', [eras])
-    ].concat(Z.tipNotes(D)));
+    ].concat(Z.tipNotes(statD)));
 
     document.title = (D.hook || '') + ' · 知否知否';
 
