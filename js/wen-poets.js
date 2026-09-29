@@ -17,19 +17,86 @@
      搜索命中后就靠它找到该展开、该高亮的那个页面元素。 */
   var registry = [];
   var currentEraLabel = '';
+  var unit = '首', textTag = '诗句', searchPh = '搜索诗人、作品名或诗句关键词，如：李白、静夜思、明月';   /* 作品的量词：唐诗"首"，元曲"篇"（mount 时可以改） */
 
-  /* 造一个跟"三国人物关系弹窗"外观一致的居中弹窗，但内容换成"原文 + 白话讲解"，
+  /* ---------- 弹窗里各个区块的填充（原文 / 讲解 / 注解 / 出处） ----------
+     数据里 gloss（注解）和 source（出处）是可选的：唐诗没有，元曲有；没有就不显示对应区块。 */
+  function clear(node) { while (node.firstChild) node.removeChild(node.firstChild); }
+
+  /* 元曲的曲词常以"【曲牌】曲词"或"〔曲牌〕曲词"开头，把曲牌名单独标出来，方便看出唱到哪一支曲子 */
+  function fillPoem(poemEl, lines) {
+    clear(poemEl);
+    poemEl.appendChild(el('div', { 'class': 'wr-poem-body' }, (lines || []).map(function (line) {
+      var m = /^([【〔][^】〕]+[】〕])\s*([\s\S]*)$/.exec(line);
+      if (!m) return el('p', { text: line });
+      return el('p', {}, [el('span', { 'class': 'tp-qupai', text: m[1] }), m[2]]);
+    })));
+  }
+
+  /* 讲解：用换行分段 */
+  function fillNote(noteEl, text) {
+    clear(noteEl);
+    String(text || '').split('\n').forEach(function (t) {
+      t = t.trim();
+      if (t) noteEl.appendChild(el('p', { text: t }));
+    });
+  }
+
+  /* 注解：每一项可以是一句话，也可以是 { h: 曲牌名, t: [句子…] }（杂剧一折里每支曲牌各有一组注解）。
+     条目不多时默认展开，很多时（比如整折曲词）默认收起，避免弹窗太长。 */
+  function fillGloss(glossEl, gloss) {
+    clear(glossEl);
+    glossEl.hidden = true;
+    if (!gloss || !gloss.length) return;
+    var total = 0;
+    gloss.forEach(function (g) { total += (typeof g === 'string') ? 1 : (g.t || []).length; });
+    var body = el('div', { 'class': 'tp-gloss-body' });
+    var plain = el('ul', { 'class': 'tp-gloss-list' });
+    gloss.forEach(function (g) {
+      if (typeof g === 'string') {
+        plain.appendChild(el('li', { text: g }));
+      } else {
+        if (plain.childNodes.length) { body.appendChild(plain); plain = el('ul', { 'class': 'tp-gloss-list' }); }
+        body.appendChild(el('div', { 'class': 'tp-gloss-h', text: g.h }));
+        body.appendChild(el('ul', { 'class': 'tp-gloss-list' }, (g.t || []).map(function (t) { return el('li', { text: t }); })));
+      }
+    });
+    if (plain.childNodes.length) body.appendChild(plain);
+    var d = el('details', { 'class': 'tp-gloss' }, [
+      el('summary', { 'class': 'tp-gloss-summary', text: '注解（' + total + ' 条）' }), body
+    ]);
+    if (total <= 12) d.open = true;
+    glossEl.appendChild(d);
+    glossEl.hidden = false;
+  }
+
+  /* 出处：可点击的链接，新窗口打开 */
+  function fillSrc(srcEl, sources) {
+    clear(srcEl);
+    srcEl.hidden = true;
+    if (!sources || !sources.length) return;
+    srcEl.appendChild(el('span', { 'class': 'tp-src-label', text: '出处：' }));
+    sources.forEach(function (s, i) {
+      if (i) srcEl.appendChild(document.createTextNode('；'));
+      srcEl.appendChild(el('a', { href: s.u, target: '_blank', rel: 'noopener noreferrer', text: s.t }));
+    });
+    srcEl.hidden = false;
+  }
+
+  /* 造一个跟"三国人物关系弹窗"外观一致的居中弹窗，但内容换成"原文 + 讲解（+ 注解、出处）"，
      整页只建一次，点哪首作品就把哪首作品的数据填进去显示。 */
   function buildWorkModal() {
     var titleEl = el('h3', { 'class': 'wr-char-modal-title' });
     var formEl = el('div', { 'class': 'tp-modal-form' });
     var poemEl = el('div', { 'class': 'wr-poem tp-modal-poem' });
-    var noteEl = el('p', { 'class': 'tp-modal-note' });
+    var noteEl = el('div', { 'class': 'tp-modal-note' });
+    var glossEl = el('div', { 'class': 'tp-modal-gloss' });
+    var srcEl = el('div', { 'class': 'tp-modal-src' });
     var closeBtn = el('button', {
       'class': 'wr-char-modal-close', type: 'button', 'aria-label': '关闭'
     }, [el('span', { 'aria-hidden': 'true', text: '×' })]);
     var card = el('div', { 'class': 'wr-char-modal-card tp-modal-card', role: 'dialog', 'aria-modal': 'true' },
-      [closeBtn, titleEl, formEl, poemEl, noteEl]);
+      [closeBtn, titleEl, formEl, poemEl, noteEl, glossEl, srcEl]);
     var overlay = el('div', { 'class': 'wr-char-modal-overlay', 'aria-hidden': 'true' }, [card]);
     document.body.appendChild(overlay);
 
@@ -45,11 +112,13 @@
     function open(work) {
       titleEl.textContent = work.title || '';
       formEl.textContent = work.form || '';
-      while (poemEl.firstChild) poemEl.removeChild(poemEl.firstChild);
-      poemEl.appendChild(el('div', { 'class': 'wr-poem-body' }, (work.original || []).map(function (line) {
-        return el('p', { text: line });
-      })));
-      noteEl.textContent = work.note || '';
+      fillPoem(poemEl, work.original);
+      fillNote(noteEl, work.note);
+      fillGloss(glossEl, work.gloss);
+      fillSrc(srcEl, work.source);
+      /* 有注解/出处的作品（元曲）内容更多，弹窗放宽一点；唐诗不受影响 */
+      card.classList.toggle('tp-modal-wide', !!((work.gloss && work.gloss.length) || (work.source && work.source.length)));
+      card.scrollTop = 0;
       overlay.classList.add('is-open');
       overlay.setAttribute('aria-hidden', 'false');
     }
@@ -73,10 +142,18 @@
     return b;
   }
 
+  /* 一组作品：组名 +（可选）一段简介 + 作品按钮。
+     简介 intro 用于元曲的杂剧（一部剧一组，先说这部剧写什么）；没有收录曲文的剧目只显示简介。 */
   function groupNode(group, onPick) {
+    var works = group.works || [];
     return el('div', { 'class': 'tp-group' }, [
       el('div', { 'class': 'tp-group-label', text: group.label }),
-      el('div', { 'class': 'tp-works' }, (group.works || []).map(function (w) { return workBtn(w, onPick); }))
+      group.intro ? el('div', { 'class': 'tp-group-intro' }, String(group.intro).split('\n').filter(function (t) { return t.trim(); }).map(function (t) {
+        return el('p', { text: t.trim() });
+      })) : null,
+      works.length
+        ? el('div', { 'class': 'tp-works' }, works.map(function (w) { return workBtn(w, onPick); }))
+        : (group.intro ? el('div', { 'class': 'tp-group-empty', text: '曲文暂未收录，先看上面的简介。' }) : null)
     ]);
   }
 
@@ -89,7 +166,7 @@
     d.appendChild(el('summary', { 'class': 'tp-poet-summary' }, [
       el('span', { 'class': 'tp-poet-name', text: poet.name }),
       el('span', { 'class': 'tp-poet-hint', text: lifeFirst + '。' }),
-      el('span', { 'class': 'tp-poet-count', text: '收录 ' + worksCount + ' 首' })
+      el('span', { 'class': 'tp-poet-count', text: '收录 ' + worksCount + ' ' + unit })
     ]));
     var body = el('div', { 'class': 'tp-poet-body' }, [
       el('p', { 'class': 'tp-poet-life', text: poet.life }),
@@ -142,7 +219,7 @@
 
   /* 匹配前先去掉空格和标点，这样输入"床前明月光疑是地上霜"（不带逗号）也能匹配到原文 */
   function norm(s) {
-    return String(s || '').replace(/[\s，。、；：？！“”‘’"'（）()《》〈〉…—·,.;:?!\-]/g, '').toLowerCase();
+    return String(s || '').replace(/[\s，。、；：？！“”‘’"'（）()《》〈〉【】〔〕…—·,.;:?!\-]/g, '').toLowerCase();
   }
 
   /* 给每位诗人、每首作品建一条可搜索的记录 */
@@ -212,8 +289,8 @@
     var input = el('input', {
       'class': 'tp-search-input', type: 'text', autocomplete: 'off', autocapitalize: 'off',
       spellcheck: 'false', enterkeyhint: 'search',
-      placeholder: '搜索诗人、作品名或诗句关键词，如：李白、静夜思、明月',
-      'aria-label': '搜索诗人、作品名或诗句关键词'
+      placeholder: searchPh,
+      'aria-label': searchPh
     });
     var clearBtn = el('button', { 'class': 'tp-search-clear', type: 'button', 'aria-label': '清空搜索', hidden: 'hidden' }, [
       el('span', { 'aria-hidden': 'true', text: '×' })
@@ -264,8 +341,9 @@
       var raw = String(line || '');
       var qq = q.replace(/\s+/g, '');
       var at = qq ? raw.indexOf(qq) : -1;
-      if (at < 0) return [raw];
-      return [raw.slice(0, at), el('mark', { text: qq }), raw.slice(at + qq.length)];
+      if (at < 0) return [raw.length > 44 ? raw.slice(0, 44) + '…' : raw];
+      var from = Math.max(0, at - 14), to = Math.min(raw.length, at + qq.length + 24);
+      return [(from > 0 ? '…' : '') + raw.slice(from, at), el('mark', { text: qq }), raw.slice(at + qq.length, to) + (to < raw.length ? '…' : '')];
     }
 
     function itemNode(hit, q) {
@@ -273,13 +351,13 @@
       if (hit.type === 'poet') {
         t = tag('诗人', 'tp-sr-tag-poet');
         main = el('span', { 'class': 'tp-sr-main', text: r.poet.name });
-        sub = el('span', { 'class': 'tp-sr-sub', text: r.eraLabel + ' · 收录 ' + r.count + ' 首' });
+        sub = el('span', { 'class': 'tp-sr-sub', text: r.eraLabel + ' · 收录 ' + r.count + ' ' + unit });
       } else if (hit.type === 'title') {
         t = tag('作品', 'tp-sr-tag-work');
         main = el('span', { 'class': 'tp-sr-main', text: e.item.work.title });
         sub = el('span', { 'class': 'tp-sr-sub', text: r.poet.name + (e.item.work.form ? ' · ' + e.item.work.form : '') });
       } else {
-        t = tag('诗句', 'tp-sr-tag-text');
+        t = tag(textTag, 'tp-sr-tag-text');
         main = el('span', { 'class': 'tp-sr-main' }, lineWithMark((e.item.work.original || [])[hit.line], q));
         sub = el('span', { 'class': 'tp-sr-sub', text: '《' + e.item.work.title + '》' + r.poet.name });
       }
@@ -337,6 +415,9 @@
   /* mount(容器id, 数据, {eyebrow})：eyebrow 是页头小字（比如"文 · 唐诗"）。 */
   function mount(rootId, D, opts) {
     opts = opts || {};
+    unit = opts.unit || '首';
+    textTag = opts.textTag || '诗句';
+    if (opts.searchPlaceholder) searchPh = opts.searchPlaceholder;
     var root = document.getElementById(rootId);
     if (!Z || !root || !D || !D.eras || !D.eras.length) return;
 

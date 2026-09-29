@@ -125,3 +125,18 @@
   .theme-wen .tp-poet-grid { grid-template-columns: 1fr; }
   .theme-wen .tp-search-input { font-size: 16px; }
 }
+
+/* ---------- 元曲页新增：曲牌、注解折叠、出处、分组简介、宽弹窗 ---------- */
+.theme-wen .tp-modal-card.tp-modal-wide { max-width: 560px; }
+.theme-wen .tp-qupai { display: inline-block; margin-right: 6px; color: var(--zy-gold); font-size: 0.86em; letter-spacing: 0.06em; }
+.theme-wen .tp-modal-note p { margin: 0 0 10px; }
+.theme-wen .tp-modal-note p:last-child { margin-bottom: 0; }
+.theme-wen .tp-modal-gloss { margin-top: 14px; }
+.theme-wen .tp-gloss { border-top: 1px solid rgba(240, 205, 227, 0.18); padding-top: 10px; }
+.theme-wen .tp-gloss-summary { cursor: pointer; font-size: 13px; letter-spacing: 0.1em; color: var(--zy-gold); }
+.theme-wen .tp-gloss-h { margin: 10px 0 4px; font-size: 13px; color: var(--zy-gold); }
+.theme-wen .tp-gloss-list { margin: 6px 0 0; padding-left: 1.2em; font-size: 13.5px; line-height: 1.85; color: #e9dce8; }
+.theme-wen .tp-modal-src { margin-top: 14px; font-size: 12.5px; line-height: 1.8; color: var(--zy-soft); }
+.theme-wen .tp-modal-src a { color: var(--zy-soft); text-decoration: underline; text-underline-offset: 3px; word-break: break-all; }
+.theme-wen .tp-group-intro { margin: -2px 0 8px; font-size: 13px; line-height: 1.8; color: var(--zy-soft); }
+.theme-wen .tp-group-empty { font-size: 13px; color: var(--zy-soft); }
