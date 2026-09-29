@@ -436,6 +436,28 @@
     return bar;
   }
 
+  /* 回到顶部按钮：页面往下滚一段距离后，在右下角浮出一个圆形按钮，点一下平滑回到页面最上方；
+     滚回顶部附近时自动隐藏。唐诗、宋词、元曲三页共用。 */
+  function buildToTop() {
+    var btn = el('button', { 'class': 'tp-totop', type: 'button', 'aria-label': '回到顶部', title: '回到顶部', hidden: 'hidden' }, [
+      el('span', { 'aria-hidden': 'true', text: '↑' })
+    ]);
+    document.body.appendChild(btn);
+    var shown = false;
+    function update() {
+      var want = (window.pageYOffset || document.documentElement.scrollTop || 0) > 500;
+      if (want === shown) return;
+      shown = want;
+      btn.hidden = !want;
+    }
+    window.addEventListener('scroll', update, { passive: true });
+    btn.addEventListener('click', function () {
+      var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      window.scrollTo({ top: 0, behavior: reduce ? 'auto' : 'smooth' });
+    });
+    update();
+  }
+
   /* mount(容器id, 数据, {eyebrow})：eyebrow 是页头小字（比如"文 · 唐诗"）。 */
   function mount(rootId, D, opts) {
     opts = opts || {};
@@ -464,6 +486,7 @@
       Z.section(opts.sectionTitle || '按作者浏览', [eras])
     ].concat(Z.tipNotes(statD)));
 
+    buildToTop();
     document.title = (D.hook || '') + ' · 知否知否';
 
     /* 页面搭好之后，再看网址里有没有 ?id=，有就展开对应诗人、弹出对应作品 */
