@@ -18,6 +18,7 @@
   var registry = [];
   var currentEraLabel = '';
   var unit = '首', textTag = '诗句', searchPh = '搜索诗人、作品名或诗句关键词，如：李白、静夜思、明月';   /* 作品的量词：唐诗"首"，元曲"篇"（mount 时可以改） */
+  var glossLabel = '注解';   /* 注解区块的标题：唐诗/元曲叫"注解"，宋词叫"词句解读"（mount 时可以改） */
 
   /* ---------- 弹窗里各个区块的填充（原文 / 讲解 / 注解 / 出处） ----------
      数据里 gloss（注解）和 source（出处）是可选的：唐诗没有，元曲有；没有就不显示对应区块。 */
@@ -33,18 +34,39 @@
     })));
   }
 
-  /* 讲解：用换行分段 */
+  /* 讲解：用换行分段。宋词的讲解每段开头有"创作背景：""艺术特点与历史地位："这样的小标题，
+     只认下面这几个固定的标题，把它单独加粗提亮；别的作品（唐诗、元曲）的讲解不受影响。 */
+  var NOTE_HEADS = /^(创作时间|作者说明|创作背景|艺术特点与历史地位)：/;
   function fillNote(noteEl, text) {
     clear(noteEl);
     String(text || '').split('\n').forEach(function (t) {
       t = t.trim();
-      if (t) noteEl.appendChild(el('p', { text: t }));
+      if (!t) return;
+      var m = NOTE_HEADS.exec(t);
+      noteEl.appendChild(m
+        ? el('p', {}, [el('strong', { 'class': 'tp-note-h', text: m[1] }), t.slice(m[1].length)])
+        : el('p', { text: t }));
     });
+  }
+
+  /* 白话译文（宋词有，唐诗、元曲没有这个字段就不显示）：一整段译文，默认展开 */
+  function fillTrans(transEl, text) {
+    clear(transEl);
+    transEl.hidden = true;
+    var paras = String(text || '').split('\n').map(function (t) { return t.trim(); }).filter(Boolean);
+    if (!paras.length) return;
+    var d = el('details', { 'class': 'tp-trans' }, [
+      el('summary', { 'class': 'tp-gloss-summary', text: '白话译文' }),
+      el('div', { 'class': 'tp-trans-body' }, paras.map(function (t) { return el('p', { text: t }); }))
+    ]);
+    d.open = true;
+    transEl.appendChild(d);
+    transEl.hidden = false;
   }
 
   /* 注解：每一项可以是一句话，也可以是 { h: 曲牌名, t: [句子…] }（杂剧一折里每支曲牌各有一组注解）。
      条目不多时默认展开，很多时（比如整折曲词）默认收起，避免弹窗太长。 */
-  function fillGloss(glossEl, gloss) {
+  function fillGloss(glossEl, gloss, startClosed) {
     clear(glossEl);
     glossEl.hidden = true;
     if (!gloss || !gloss.length) return;
@@ -63,9 +85,9 @@
     });
     if (plain.childNodes.length) body.appendChild(plain);
     var d = el('details', { 'class': 'tp-gloss' }, [
-      el('summary', { 'class': 'tp-gloss-summary', text: '注解（' + total + ' 条）' }), body
+      el('summary', { 'class': 'tp-gloss-summary', text: glossLabel + '（' + total + ' 条）' }), body
     ]);
-    if (total <= 12) d.open = true;
+    if (total <= 12 && !startClosed) d.open = true;
     glossEl.appendChild(d);
     glossEl.hidden = false;
   }
@@ -89,6 +111,7 @@
     var titleEl = el('h3', { 'class': 'wr-char-modal-title' });
     var formEl = el('div', { 'class': 'tp-modal-form' });
     var poemEl = el('div', { 'class': 'wr-poem tp-modal-poem' });
+    var transEl = el('div', { 'class': 'tp-modal-trans' });
     var noteEl = el('div', { 'class': 'tp-modal-note' });
     var glossEl = el('div', { 'class': 'tp-modal-gloss' });
     var srcEl = el('div', { 'class': 'tp-modal-src' });
@@ -96,7 +119,7 @@
       'class': 'wr-char-modal-close', type: 'button', 'aria-label': '关闭'
     }, [el('span', { 'aria-hidden': 'true', text: '×' })]);
     var card = el('div', { 'class': 'wr-char-modal-card tp-modal-card', role: 'dialog', 'aria-modal': 'true' },
-      [closeBtn, titleEl, formEl, poemEl, noteEl, glossEl, srcEl]);
+      [closeBtn, titleEl, formEl, poemEl, transEl, noteEl, glossEl, srcEl]);
     var overlay = el('div', { 'class': 'wr-char-modal-overlay', 'aria-hidden': 'true' }, [card]);
     document.body.appendChild(overlay);
 
@@ -113,11 +136,12 @@
       titleEl.textContent = work.title || '';
       formEl.textContent = work.form || '';
       fillPoem(poemEl, work.original);
+      fillTrans(transEl, work.trans);
       fillNote(noteEl, work.note);
-      fillGloss(glossEl, work.gloss);
+      fillGloss(glossEl, work.gloss, !!work.trans);   /* 有译文时，逐句解读默认收起，弹窗不至于太长 */
       fillSrc(srcEl, work.source);
       /* 有注解/出处的作品（元曲）内容更多，弹窗放宽一点；唐诗不受影响 */
-      card.classList.toggle('tp-modal-wide', !!((work.gloss && work.gloss.length) || (work.source && work.source.length)));
+      card.classList.toggle('tp-modal-wide', !!((work.gloss && work.gloss.length) || (work.source && work.source.length) || work.trans));
       card.scrollTop = 0;
       overlay.classList.add('is-open');
       overlay.setAttribute('aria-hidden', 'false');
@@ -417,6 +441,7 @@
     opts = opts || {};
     unit = opts.unit || '首';
     textTag = opts.textTag || '诗句';
+    glossLabel = opts.glossLabel || '注解';
     if (opts.searchPlaceholder) searchPh = opts.searchPlaceholder;
     var root = document.getElementById(rootId);
     if (!Z || !root || !D || !D.eras || !D.eras.length) return;

@@ -140,3 +140,10 @@
 .theme-wen .tp-modal-src a { color: var(--zy-soft); text-decoration: underline; text-underline-offset: 3px; word-break: break-all; }
 .theme-wen .tp-group-intro { margin: -2px 0 8px; font-size: 13px; line-height: 1.8; color: var(--zy-soft); }
 .theme-wen .tp-group-empty { font-size: 13px; color: var(--zy-soft); }
+/* 宋词：白话译文区块和讲解小标题 */
+.theme-wen .tp-modal-trans { margin: 0 0 14px; }
+.theme-wen .tp-trans { border-top: 1px solid rgba(240, 205, 227, 0.18); padding-top: 10px; }
+.theme-wen .tp-trans-body { margin-top: 6px; font-size: 14.5px; line-height: 1.95; color: #f1e6f0; }
+.theme-wen .tp-trans-body p { margin: 0 0 8px; }
+.theme-wen .tp-trans-body p:last-child { margin-bottom: 0; }
+.theme-wen .tp-note-h { margin-right: 4px; font-weight: 600; letter-spacing: 0.06em; color: var(--zy-gold); }
