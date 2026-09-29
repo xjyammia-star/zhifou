@@ -311,7 +311,162 @@
     return function () { timers.forEach(clearTimeout); };
   }
 
-  var DEMOS = { '投壶': touhu, '升官图': shengguan };
+  /* ---------- 华容道 ---------- */
+  /* 4 列 × 5 行的滑块盘；最常见的“横刀立马”开局。目标：让“曹操”滑到底部中间的出口。 */
+  function huarong(body) {
+    var CW = 4, CH = 5;
+    var START = [
+      { n: '曹操', x: 1, y: 0, w: 2, h: 2, c: 'cao' },
+      { n: '张飞', x: 0, y: 0, w: 1, h: 2, c: 'jiang' },
+      { n: '赵云', x: 3, y: 0, w: 1, h: 2, c: 'jiang' },
+      { n: '马超', x: 0, y: 2, w: 1, h: 2, c: 'jiang' },
+      { n: '黄忠', x: 3, y: 2, w: 1, h: 2, c: 'jiang' },
+      { n: '关羽', x: 1, y: 2, w: 2, h: 1, c: 'guan' },
+      { n: '兵', x: 1, y: 3, w: 1, h: 1, c: 'bing' },
+      { n: '兵', x: 2, y: 3, w: 1, h: 1, c: 'bing' },
+      { n: '兵', x: 0, y: 4, w: 1, h: 1, c: 'bing' },
+      { n: '兵', x: 3, y: 4, w: 1, h: 1, c: 'bing' }
+    ];
+    var ps = [];
+    var wrap = el('div', { 'class': 'ys-hr-wrap' });
+    var board = el('div', { 'class': 'ys-hr', role: 'group', 'aria-label': '华容道棋盘' });
+    var exit = el('div', { 'class': 'ys-hr-exit', text: '出口' });
+    wrap.appendChild(board); wrap.appendChild(exit);
+    var msg = el('p', { 'class': 'ys-msg', text: '把方块推到空位里：按住方块向空位的方向拖一下，或者直接点它。目标是让“曹操”走到下面的出口。' });
+    var reset = el('button', { 'class': 'ys-btn is-ghost', type: 'button', text: '重新开始' });
+    body.appendChild(wrap);
+    body.appendChild(msg);
+    body.appendChild(el('div', { 'class': 'ys-row' }, [reset]));
+    body.appendChild(el('p', { 'class': 'ys-note', text: '华容道是一种滑块拼图，名字来自三国里曹操败走华容道的故事：大方块是曹操，其他人物挡在前后，要一步步挪开让路。这里只演示“推方块”的感觉。' }));
+
+    function fits(p, nx, ny) {
+      if (nx < 0 || ny < 0 || nx + p.w > CW || ny + p.h > CH) return false;
+      for (var i = 0; i < ps.length; i++) {
+        var q = ps[i]; if (q === p) continue;
+        if (nx < q.x + q.w && nx + p.w > q.x && ny < q.y + q.h && ny + p.h > q.y) return false;
+      }
+      return true;
+    }
+    function layout() {
+      ps.forEach(function (p) {
+        p.node.style.left = (p.x * 25) + '%'; p.node.style.top = (p.y * 20) + '%';
+        p.node.style.width = (p.w * 25) + '%'; p.node.style.height = (p.h * 20) + '%';
+      });
+      if (ps[0].x === 1 && ps[0].y === 3) msg.textContent = '曹操走到出口了——这就是华容道要做的事。可以点“重新开始”再试一遍。';
+    }
+    var DIRS = { l: [-1, 0], r: [1, 0], u: [0, -1], d: [0, 1] };
+    function tryMove(p, d) {
+      var v = DIRS[d]; if (!fits(p, p.x + v[0], p.y + v[1])) return false;
+      p.x += v[0]; p.y += v[1]; layout(); return true;
+    }
+    function init() {
+      board.innerHTML = ''; ps = [];
+      START.forEach(function (s) {
+        var p = { n: s.n, x: s.x, y: s.y, w: s.w, h: s.h };
+        p.node = el('div', { 'class': 'ys-hr-p is-' + s.c, role: 'button', tabindex: '0', 'aria-label': s.n }, [el('span', { text: s.n })]);
+        var sx = 0, sy = 0, down = false, moved = false;
+        p.node.addEventListener('pointerdown', function (e) { down = true; moved = false; sx = e.clientX; sy = e.clientY; p.node.setPointerCapture && p.node.setPointerCapture(e.pointerId); e.preventDefault(); });
+        p.node.addEventListener('pointermove', function (e) {
+          if (!down) return;
+          var dx = e.clientX - sx, dy = e.clientY - sy;
+          if (Math.max(Math.abs(dx), Math.abs(dy)) < 16) return;
+          var d = Math.abs(dx) > Math.abs(dy) ? (dx > 0 ? 'r' : 'l') : (dy > 0 ? 'd' : 'u');
+          moved = true; tryMove(p, d); sx = e.clientX; sy = e.clientY;
+        });
+        p.node.addEventListener('pointerup', function () {
+          if (down && !moved) {
+            var ok = ['l', 'r', 'u', 'd'].filter(function (d) { var v = DIRS[d]; return fits(p, p.x + v[0], p.y + v[1]); });
+            if (ok.length === 1) tryMove(p, ok[0]);
+            else if (ok.length > 1) msg.textContent = '这块有几个方向可以走，请按住它往想去的方向拖一下。';
+            else msg.textContent = '这块四周都被挡住了，先挪开别的方块。';
+          }
+          down = false;
+        });
+        p.node.addEventListener('pointercancel', function () { down = false; });
+        board.appendChild(p.node); ps.push(p);
+      });
+      layout();
+    }
+    init();
+    reset.addEventListener('click', function () {
+      init(); msg.textContent = '把方块推到空位里：按住方块向空位的方向拖一下，或者直接点它。目标是让“曹操”走到下面的出口。';
+    });
+  }
+
+  /* ---------- 七巧板 ---------- */
+  /* 边长 4 的正方形切成七块：两块大三角、一块中三角、两块小三角、一块正方形、一块平行四边形。 */
+  function qiqiao(body) {
+    var NS = 'http://www.w3.org/2000/svg';
+    var SHAPES = [
+      { n: '大三角一', p: [[0, 0], [4, 0], [2, 2]], c: '#c9563a' },
+      { n: '大三角二', p: [[0, 0], [2, 2], [0, 4]], c: '#d98a3a' },
+      { n: '中三角', p: [[4, 2], [4, 4], [2, 4]], c: '#3f7f6a' },
+      { n: '小三角一', p: [[4, 0], [4, 2], [3, 1]], c: '#4c6fa5' },
+      { n: '小三角二', p: [[2, 2], [3, 3], [1, 3]], c: '#8a5a9c' },
+      { n: '正方形', p: [[2, 2], [3, 1], [4, 2], [3, 3]], c: '#c9a63a' },
+      { n: '平行四边形', p: [[1, 3], [3, 3], [2, 4], [0, 4]], c: '#7a8f3a' }
+    ];
+    var VW = 12, VH = 9, S = 40;
+    var svg = document.createElementNS(NS, 'svg');
+    svg.setAttribute('viewBox', '0 0 ' + VW + ' ' + VH);
+    svg.setAttribute('class', 'ys-canvas ys-qq');
+    svg.setAttribute('role', 'img'); svg.setAttribute('aria-label', '七巧板演示画面');
+    var msg = el('p', { 'class': 'ys-msg', text: '按住一块拖动；点一下选中，再用下面的按钮旋转或翻转。' });
+    var bRot = el('button', { 'class': 'ys-btn', type: 'button', text: '旋转选中的块' });
+    var bFlip = el('button', { 'class': 'ys-btn is-ghost', type: 'button', text: '翻转' });
+    var bSq = el('button', { 'class': 'ys-btn is-ghost', type: 'button', text: '拼回正方形' });
+    var bShuf = el('button', { 'class': 'ys-btn is-ghost', type: 'button', text: '打散' });
+    body.appendChild(svg);
+    body.appendChild(msg);
+    body.appendChild(el('div', { 'class': 'ys-row' }, [bRot, bFlip, bSq, bShuf]));
+    body.appendChild(el('p', { 'class': 'ys-note', text: '七巧板由这七块板组成，用它们可以拼出人物、动物、房屋等许多图案。这里没有题目，只让你亲手拖一拖、转一转。' }));
+
+    var items = [], sel = null;
+    SHAPES.forEach(function (s) {
+      var cx = 0, cy = 0; s.p.forEach(function (q) { cx += q[0]; cy += q[1]; }); cx /= s.p.length; cy /= s.p.length;
+      var g = document.createElementNS(NS, 'g'); g.setAttribute('style', 'cursor:grab;touch-action:none');
+      var poly = document.createElementNS(NS, 'polygon');
+      poly.setAttribute('points', s.p.map(function (q) { return (q[0] - cx) + ',' + (q[1] - cy); }).join(' '));
+      poly.setAttribute('fill', s.c); poly.setAttribute('stroke', '#fff6e6'); poly.setAttribute('stroke-width', '0.06'); poly.setAttribute('stroke-linejoin', 'round');
+      g.appendChild(poly); svg.appendChild(g);
+      var it = { g: g, poly: poly, home: [cx + 4, cy + 2.5], x: cx + 4, y: cy + 2.5, rot: 0, flip: 1 };
+      items.push(it);
+      var drag = null;
+      g.addEventListener('pointerdown', function (e) {
+        var pt = toSvg(e); drag = { dx: it.x - pt.x, dy: it.y - pt.y, moved: false };
+        select(it); svg.appendChild(g); g.setPointerCapture && g.setPointerCapture(e.pointerId); e.preventDefault();
+      });
+      g.addEventListener('pointermove', function (e) {
+        if (!drag) return; var pt = toSvg(e);
+        it.x = Math.max(0.5, Math.min(VW - 0.5, pt.x + drag.dx)); it.y = Math.max(0.5, Math.min(VH - 0.5, pt.y + drag.dy)); drag.moved = true; draw(it);
+      });
+      g.addEventListener('pointerup', function () { drag = null; });
+      g.addEventListener('pointercancel', function () { drag = null; });
+    });
+    function toSvg(e) {
+      var r = svg.getBoundingClientRect();
+      return { x: (e.clientX - r.left) * VW / r.width, y: (e.clientY - r.top) * VH / r.height };
+    }
+    function draw(it) { it.g.setAttribute('transform', 'translate(' + it.x + ' ' + it.y + ') rotate(' + it.rot + ') scale(' + it.flip + ' 1)'); }
+    function select(it) {
+      sel = it;
+      items.forEach(function (o) { o.poly.setAttribute('stroke', o === it ? '#2b190c' : '#fff6e6'); o.poly.setAttribute('stroke-width', o === it ? '0.12' : '0.06'); });
+    }
+    function need() { if (!sel) { msg.textContent = '先点一下要转的那一块。'; return false; } return true; }
+    bRot.addEventListener('click', function () { if (need()) { sel.rot = (sel.rot + 45) % 360; draw(sel); } });
+    bFlip.addEventListener('click', function () { if (need()) { sel.flip *= -1; draw(sel); } });
+    bSq.addEventListener('click', function () { items.forEach(function (it) { it.x = it.home[0]; it.y = it.home[1]; it.rot = 0; it.flip = 1; draw(it); }); msg.textContent = '七块板拼成了一个正方形。'; });
+    bShuf.addEventListener('click', function () {
+      items.forEach(function (it, i) {
+        it.x = 1.6 + (i % 4) * 2.6 + Math.random() * 0.6; it.y = 1.8 + Math.floor(i / 4) * 3.6 + Math.random() * 0.6;
+        it.rot = [0, 45, 90, 135, 180, 225, 270, 315][Math.floor(Math.random() * 8)]; draw(it);
+      });
+      msg.textContent = '打散了。试着拖一拖、转一转，把它们拼回正方形，或者拼出别的样子。';
+    });
+    items.forEach(draw);
+  }
+
+  var DEMOS = { '投壶': touhu, '升官图': shengguan, '华容道': huarong, '七巧板': qiqiao };
 
   /* ---------- 给卡片加“演示”标签 ---------- */
   function decorate() {
