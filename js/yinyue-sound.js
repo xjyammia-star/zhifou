@@ -16,11 +16,19 @@
     suona: { f: 'suona.mp3', who: '录音：Francesc Fort 唢呐', lic: 'CC BY-SA 4.0', link: W + 'Suona.ogg' },
     dizi: { f: 'dizi.mp3', who: '录音：Gorgoroth6669 笛子', lic: 'CC0', link: W + 'DiZi_Chinese_Flute_Sample.ogg' },
     xun: { f: 'xun.mp3', who: '录音：David290 演奏埙', lic: 'CC BY-SA 3.0', link: W + 'Recording_of_Xun.ogg' },
-    sheng: { f: 'sheng_scale.mp3', who: '录音：S099001 笙吹奏半音阶（片段）', lic: 'CC0', link: W + 'Soprano_Sheng_Chromatic_Scale.ogg' }
+    sheng: { f: 'sheng_scale.mp3', who: '录音：S099001 笙吹奏半音阶（片段）', lic: 'CC0', link: W + 'Soprano_Sheng_Chromatic_Scale.ogg' },
+    zheng: { f: 'zheng.mp3', who: '录音：neolein 古筝独奏（片段）', lic: 'CC0', site: 'Freesound', link: 'https://freesound.org/people/neolein/sounds/472707/' },
+    xiao: { f: 'xiao.mp3', who: '录音：xserra 箫', lic: 'CC BY 4.0', site: 'Freesound', link: 'https://freesound.org/people/xserra/sounds/161912/' },
+    zhongruan: { f: 'zhongruan.mp3', who: '录音：Francesc Fort 中阮', lic: 'CC BY-SA 4.0', link: W + 'Zhongruan.ogg' },
+    pingsha: { f: 'pingsha.mp3', who: '古琴《平沙落雁》（片段，演奏者见来源页）', lic: 'CC BY 2.5', link: W + 'Pingsha_Luoyan.ogg' },
+    gong: { f: 'gong.mp3', who: '录音：the_very_Real_Horst 大锣（片段）', lic: 'CC0', link: W + '240382_the-very-real-horst_chinese-gong-finish-session-2014-06-10-29-143.wav' },
+    muyu: { f: 'muyu.mp3', who: '录音：the_very_Real_Horst 木鱼（片段）', lic: 'CC BY 4.0', site: 'Freesound', link: 'https://freesound.org/people/the_very_Real_Horst/sounds/205999/' },
+    drum: { f: 'drum.mp3', who: '录音：kevp888 舞龙鼓乐（片段）', lic: 'CC BY 4.0', site: 'Freesound', link: 'https://freesound.org/people/kevp888/sounds/725086/' }
   };
   var CARDS = {
     '古琴': 'zuiyu', '古琴音乐的特点': 'zuiyu', '《阳关三叠》': 'yangguan', '二胡': 'erhu', '琵琶': 'pipa',
-    '唢呐': 'suona', '笛': 'dizi', '土': 'xun', '匏': 'sheng'
+    '唢呐': 'suona', '笛': 'dizi', '土': 'xun', '匏': 'sheng',
+    '古筝': 'zheng', '箫': 'xiao', '阮': 'zhongruan', '《平沙落雁》': 'pingsha', '金': 'gong', '木': 'muyu', '革': 'drum'
   };
   var WU = { '宫': 'gong', '商': 'shang', '角': 'jue', '徵': 'zhi', '羽': 'yu' };
   var WU_ORDER = ['宫', '商', '角', '徵', '羽'];
@@ -72,7 +80,7 @@
   function credit(c, info) {
     var p = el('p', { 'class': 'yq-credit' });
     p.appendChild(document.createTextNode('🔊 ' + info.who + ' · '));
-    var a = el('a', { href: info.link, target: '_blank', rel: 'noopener' }, '维基共享资源 · ' + info.lic);
+    var a = el('a', { href: info.link, target: '_blank', rel: 'noopener' }, (info.site || '维基共享资源') + ' · ' + info.lic);
     p.appendChild(a);
     c.appendChild(p);
   }
