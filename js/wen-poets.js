@@ -17,7 +17,7 @@
      搜索命中后就靠它找到该展开、该高亮的那个页面元素。 */
   var registry = [];
   var currentEraLabel = '';
-  var unit = '首', textTag = '诗句', searchPh = '搜索诗人、作品名或诗句关键词，如：李白、静夜思、明月';   /* 作品的量词：唐诗"首"，元曲"篇"（mount 时可以改） */
+  var unit = '首', textTag = '诗句', poetTag = '诗人', searchPh = '搜索诗人、作品名或诗句关键词，如：李白、静夜思、明月';   /* 作品的量词：唐诗"首"，元曲"篇"（mount 时可以改） */
   var glossLabel = '注解';   /* 注解区块的标题：唐诗/元曲叫"注解"，宋词叫"词句解读"（mount 时可以改） */
 
   /* ---------- 弹窗里各个区块的填充（原文 / 讲解 / 注解 / 出处） ----------
@@ -36,7 +36,7 @@
 
   /* 讲解：用换行分段。宋词的讲解每段开头有"创作背景：""艺术特点与历史地位："这样的小标题，
      只认下面这几个固定的标题，把它单独加粗提亮；别的作品（唐诗、元曲）的讲解不受影响。 */
-  var NOTE_HEADS = /^(创作时间|作者说明|创作背景|艺术特点与历史地位)：/;
+  var NOTE_HEADS = /^(创作时间|作者说明|创作背景|艺术特点与历史地位|大意|作品意义|阅读边界|阅读提示)：/;
   function fillNote(noteEl, text) {
     clear(noteEl);
     String(text || '').split('\n').forEach(function (t) {
@@ -373,7 +373,7 @@
     function itemNode(hit, q) {
       var e = hit.e, r = e.rec, main, sub, t;
       if (hit.type === 'poet') {
-        t = tag('诗人', 'tp-sr-tag-poet');
+        t = tag(poetTag, 'tp-sr-tag-poet');
         main = el('span', { 'class': 'tp-sr-main', text: r.poet.name });
         sub = el('span', { 'class': 'tp-sr-sub', text: r.eraLabel + ' · 收录 ' + r.count + ' ' + unit });
       } else if (hit.type === 'title') {
@@ -462,7 +462,7 @@
   function mount(rootId, D, opts) {
     opts = opts || {};
     unit = opts.unit || '首';
-    textTag = opts.textTag || '诗句';
+    textTag = opts.textTag || '诗句'; poetTag = opts.poetTag || '诗人';
     glossLabel = opts.glossLabel || '注解';
     if (opts.searchPlaceholder) searchPh = opts.searchPlaceholder;
     var root = document.getElementById(rootId);
@@ -478,7 +478,7 @@
     /* 页面底部的统计：只写作者数和作品数，由数据自动算出，以后增删作品不用再手改 */
     var poetTotal = 0, workTotal = 0;
     registry.forEach(function (r) { poetTotal += 1; workTotal += r.count; });
-    var statD = { tip: '共 ' + poetTotal + ' 位作者、' + workTotal + ' ' + unit + '作品。', notes: D.notes };
+    var statD = { tip: '共 ' + poetTotal + (opts.poetLabel || ' 位作者') + '、' + workTotal + ' ' + unit + '作品。', notes: D.notes };
 
     Z.mount(root, [
       Z.head(D, opts.eyebrow || '文学'),

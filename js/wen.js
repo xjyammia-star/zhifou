@@ -55,7 +55,12 @@
       el('p', { 'class': 'wen-page-tags', text: it.tags.join(' · ') }),
       it.open
         ? el('a', { 'class': 'wen-page-cta', href: it.href, text: '进去看看这一段 →' })
-        : el('span', { 'class': 'wen-page-soon', text: '这一段正在制作中，先看个预告' })
+        : el('span', { 'class': 'wen-page-soon', text: '这一段正在制作中，先看个预告' }),
+      it.links && it.links.length
+        ? el('p', { 'class': 'wen-page-links' }, [el('span', { 'class': 'wen-links-label', text: '更多篇目：' })].concat(it.links.map(function (l) {
+          return el('a', { href: l.href, text: l.text + ' →' });
+        })))
+        : null
     ];
     return kids;
   }
@@ -75,7 +80,7 @@
       });
       function fill() {
         page.textContent = '';
-        pageContent(D.eras[i], i).forEach(function (n) { page.appendChild(n); });
+        pageContent(D.eras[i], i).forEach(function (n) { if (n) page.appendChild(n); });
       }
       if (skipAnim) { fill(); return; }
       pageWrap.classList.add('is-flipping');

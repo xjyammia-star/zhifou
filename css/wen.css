@@ -194,3 +194,9 @@ body.theme-wen {
   .theme-wen .wen-page-wrap { transition: none; }
 }
 .theme-wen .wen-page-stat { margin: 0 0 10px; font-size: 13.5px; letter-spacing: 0.08em; color: var(--zy-gold); }
+
+/* 入口页某一段下面的"更多篇目"链接（比如"诗经到魏晋"下面的诗经、楚辞两页） */
+.theme-wen .wen-page-links { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 14px; margin: 4px 0 0; font-size: 14px; letter-spacing: 0.05em; color: #f5e6f4; }
+.theme-wen .wen-page-links .wen-links-label { color: var(--zy-gold); }
+.theme-wen .wen-page-links a { display: inline-flex; align-items: center; min-height: 40px; padding: 0 14px; color: #fbeef7; text-decoration: none; border: 1px solid var(--zy-gold); border-radius: 3px; }
+.theme-wen .wen-page-links a:hover, .theme-wen .wen-page-links a:focus-visible { background: rgba(84, 48, 120, 0.7); }
