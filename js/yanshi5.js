@@ -54,7 +54,7 @@
     var bReset = el('button', { 'class': 'ys-btn is-ghost', type: 'button', text: '重新开始' });
     body.appendChild(track); body.appendChild(dice); body.appendChild(msg);
     body.appendChild(el('div', { 'class': 'ys-row' }, [bRoll, bH1, bH2, bReset]));
-    note(body, '打马是宋代的一种掷骰行马游戏，李清照写过《打马图经》讲它的玩法。原来的棋盘很长，每人有 20 匹马，用三枚骰子，还有很多“采”的名目和赏罚。这里是大大简化的示意：只保留“掷三骰、走马、走到对方的马那里就把它撞回起点”这几个意思，格子数和走法都是本站简化的，不是《打马图经》的原规则。');
+    note(body, '打马是宋代的一种掷骰行马游戏，李清照写过《打马图经》讲它的玩法。据书中记载，她最喜欢的“依经马”是二至五人参加，每人 20 匹马、没有“将”，用三枚骰子，在九十一路的长棋盘上走，要靠“采”（骰子点数的组合）、下马、叠马、入窝、打马等推进，还要凑钱放进公盆，按赏罚结算。这里是大大简化的示意，不涉及钱：27 格、按三个骰子的点数之和走步，都是本站简化的。原规则里，“打马”要比双方马的多少，被打掉的马还可以重新下马，这里简化成回到赤岸驿重新出发。');
 
     function reset() {
       tm.forEach(clearTimeout); tm = [];
@@ -82,7 +82,7 @@
       else {
         var hit = -1;
         other.forEach(function (o, j) { if (o === np && np !== 0) hit = j; });
-        if (hit >= 0) { other[hit] = 0; text = '撞上了对方的马，把它撞回了赤岸驿！'; }
+        if (hit >= 0) { other[hit] = 0; text = '打掉了对方的马，它回到赤岸驿重新出发！'; }
       }
       draw();
       return text;
