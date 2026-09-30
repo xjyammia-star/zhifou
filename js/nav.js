@@ -230,3 +230,54 @@
   if (window.MutationObserver) new MutationObserver(later).observe(document.documentElement, { childList: true, subtree: true });
   if (document.readyState !== 'loading') sweep(); else document.addEventListener('DOMContentLoaded', sweep);
 })();
+
+
+/* ---------- 全站“回到顶部”按钮 ----------
+   页面往下滚过约 600 像素后，右下角浮出一个圆形按钮，点一下平滑回到页面最上方；回到顶部附近自动隐藏。
+   每个页面都会引入 nav.js，所以这里加一次，全站 60 个页面都有，不用改每个 html。
+   唐诗、宋词、元曲三页自己有一个同款按钮（js/wen-poets.js），这三页这里不再重复显示。
+   颜色跟着各板块的金线色走（取不到就用默认金色）。 */
+(function () {
+  'use strict';
+  if (window.__zfToTop) return;
+  window.__zfToTop = 1;
+
+  var st = document.createElement('style');
+  st.textContent =
+    '.zf-totop{position:fixed;right:18px;bottom:calc(22px + env(safe-area-inset-bottom,0px));z-index:40;' +
+    'width:46px;height:46px;padding:0;border-radius:50%;cursor:pointer;display:flex;align-items:center;justify-content:center;' +
+    'color:#f6ecd8;background:rgba(43,38,34,.9);border:1px solid var(--zy-gold,#c2a15a);' +
+    'box-shadow:0 4px 16px rgba(0,0,0,.4);-webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px);' +
+    'transition:background .2s,transform .2s}' +
+    '.zf-totop[hidden]{display:none}' +
+    '.zf-totop:hover,.zf-totop:focus-visible{background:rgba(70,58,48,.96);transform:translateY(-2px)}' +
+    '.zf-totop svg{width:20px;height:20px;display:block}' +
+    '@media (max-width:600px){.zf-totop{right:12px;bottom:calc(16px + env(safe-area-inset-bottom,0px));width:42px;height:42px}}';
+  document.head.appendChild(st);
+
+  var btn = document.createElement('button');
+  btn.type = 'button';
+  btn.className = 'zf-totop';
+  btn.hidden = true;
+  btn.setAttribute('aria-label', '回到顶部');
+  btn.title = '回到顶部';
+  btn.innerHTML = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 15l7-7 7 7" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+
+  function update() {
+    var y = window.pageYOffset || document.documentElement.scrollTop || 0;
+    var want = y > 600 && !document.querySelector('.tp-totop');
+    if (btn.hidden === !want) return;
+    btn.hidden = !want;
+  }
+  btn.addEventListener('click', function () {
+    var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    window.scrollTo({ top: 0, behavior: reduce ? 'auto' : 'smooth' });
+  });
+
+  function start() {
+    document.body.appendChild(btn);
+    window.addEventListener('scroll', update, { passive: true });
+    update();
+  }
+  if (document.body) start(); else document.addEventListener('DOMContentLoaded', start);
+})();
