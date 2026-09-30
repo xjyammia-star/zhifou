@@ -529,6 +529,10 @@ window.ZHIFOU_IMAGES = {
     'shuhua/智永': { id: 'zhifou/yi/qianziwen_0', v: 1790698034, dw: 900, dh: 1980, crop: 1, caption: '智永《真草千字文》', source: '图片：维基共享资源 · 公有领域', link: 'https://commons.wikimedia.org/wiki/File:ZhiYong1000charcter.Color.jpg', ai: false },
     'shuhua/孙过庭': { id: 'zhifou/yi/shupu_4', v: 1790698033, dw: 900, dh: 674, crop: 1, caption: '孙过庭《书谱》', source: '图片：维基共享资源 · CC0', link: 'https://commons.wikimedia.org/wiki/File:%E5%94%90%E5%AD%AB%E9%81%8E%E5%BA%AD%E6%9B%B8%E8%AD%9C_%E5%8D%B7.png', ai: false },
     'shuhua/怀仁集字': { id: 'zhifou/yi/shengjiao_3', v: 1790698035, dw: 900, dh: 813, crop: 1, caption: '《集王圣教序》：怀仁集王羲之字刻成', source: '图片：维基共享资源 · 公有领域', link: 'https://commons.wikimedia.org/wiki/File:%E6%80%80%E4%BB%81%E9%9B%86%E7%8E%8B%E5%9C%A3%E6%95%99%E5%BA%8F_4.jpg', ai: false },
-    'shuhua/苏轼': { id: 'zhifou/yi/hanshi_0', v: 1790698032, dw: 900, dh: 1543, crop: 1, caption: '苏轼《黄州寒食诗帖》', source: '图片：维基共享资源 · 公有领域', link: 'https://commons.wikimedia.org/wiki/File:Su_shi-calligraphy.jpg', ai: false }
+    'shuhua/苏轼': { id: 'zhifou/yi/hanshi_0', v: 1790698032, dw: 900, dh: 1543, crop: 1, caption: '苏轼《黄州寒食诗帖》', source: '图片：维基共享资源 · 公有领域', link: 'https://commons.wikimedia.org/wiki/File:Su_shi-calligraphy.jpg', ai: false },
+    'shuhua/人物画': { id: 'zhifou/yi/luoshen_1', v: 1790698050, dw: 900, dh: 461, crop: 1, caption: '传顾恺之《洛神赋图》（宋代摹本）：人物画的名作', source: '图片：维基共享资源 · 公有领域', link: 'https://commons.wikimedia.org/wiki/File:The_Nymph_of_the_Luo_River,_a_handscroll_painting.jpg', ai: false },
+    'shuhua/花鸟画': { id: 'zhifou/yi/sh3_01', v: 1790738177, dw: 900, dh: 528, crop: 1, caption: '黄筌《写生珍禽图》（五代至北宋）：花鸟画的早期名作', source: '图片：维基共享资源 · 公有领域', link: 'https://commons.wikimedia.org/wiki/File:Huang-Quan-Xie-sheng-zhen-qin-tu.jpg', ai: false },
+    'shuhua/折枝花鸟': { id: 'zhifou/yi/sh3_02', v: 1790738178, dw: 900, dh: 2461, crop: 1, caption: '王冕《墨梅》（元代）', source: '图片：维基共享资源 · 公有领域', link: 'https://commons.wikimedia.org/wiki/File:Wang_Mian,_Blossoming_Plum.jpg', ai: false },
+    'shuhua/张大千': { id: 'zhifou/yi/sh3_03', v: 1790738178, dw: 900, dh: 1129, crop: 1, caption: '张大千（1967 年）', source: '图片：维基共享资源 · 公有领域', link: 'https://commons.wikimedia.org/wiki/File:196710%E5%BC%B5%E5%A4%A7%E5%8D%83.jpg', ai: false }
   }
 };
