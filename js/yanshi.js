@@ -647,4 +647,6 @@
       setTimeout(function () { pending = false; decorate(); }, 30);
     }).observe(root, { childList: true, subtree: true });
   }
+  /* 给 yanshi2.js 等后续文件使用：共用的小工具、演示表和“加标签”函数 */
+  window.ZY_YS = { el: el, demos: DEMOS, decorate: decorate };
 })();
