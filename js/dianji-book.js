@@ -11,16 +11,8 @@
   var BOARDS = { '时令': 'jieqi.html', '神灵': 'shen.html', '建筑': 'jianzhu.html', '器物': 'wu.html', '字语': 'ziyu.html', '礼思': 'lisi.html', '艺术': 'yi.html', '文学': 'wen.html' };
 
   /* 文学板块里对应的专页：书的代号 → [页面名, 地址] */
-  var WEN_PAGES = {
-    'shijing': ['诗经', 'shijingpian.html'], 'chuci': ['楚辞', 'chuci.html'],
-    'yuefushiji': ['汉乐府与魏晋诗', 'hanweishi.html'], 'gushi-shijiushou': ['汉乐府与魏晋诗', 'hanweishi.html'],
-    'taoyuanming-ji': ['汉乐府与魏晋诗', 'hanweishi.html'], 'wenxuan': ['汉乐府与魏晋诗', 'hanweishi.html'],
-    'li-du-ji': ['唐诗', 'tangshi.html'], 'tangshi-sanbaishou': ['唐诗', 'tangshi.html'],
-    'sushi-ji': ['宋词', 'songci.html'], 'songci-sanbaishou': ['宋词', 'songci.html'],
-    'xixiangji': ['元曲', 'yuanqu.html'], 'yuanquxuan': ['元曲', 'yuanqu.html'],
-    'xiyouji': ['名著', 'mingqing.html'], 'sanguoyanyi': ['名著', 'mingqing.html'], 'shuihuzhuan': ['名著', 'mingqing.html'],
-    'hongloumeng': ['名著', 'mingqing.html'], 'fengshenyanyi': ['名著', 'mingqing.html']
-  };
+  /* 划分原则：除“诗经”（五经之一，两边都有）外，一本书只放典籍或文学其中一边 */
+  var WEN_PAGES = { 'shijing': ['诗经', 'shijingpian.html'] };
 
   var id = null;
   try { id = new URLSearchParams(location.search).get('id'); } catch (e) { /* 忽略 */ }

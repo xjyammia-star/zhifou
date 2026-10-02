@@ -307,8 +307,8 @@
 
     var books = GUJI_BOOKS.filter(function (b) { return (p.source || '').indexOf('《' + b) >= 0; });
     if (books.length) {
-      var brow = el('div', { 'class': 'sl-origin' }, [el('span', { 'class': 'sl-origin-label', text: '翻到典籍' })]);
-      books.forEach(function (b) { brow.appendChild(el('a', { 'class': 'sl-syslink', href: 'dianji-book.html?id=' + GUJI_SLUG[b] + '#shen', text: '《' + b + '》 →' })); });
+      var brow = el('div', { 'class': 'sl-origin' }, [el('span', { 'class': 'sl-origin-label', text: '翻到原书' })]);
+      books.forEach(function (b) { brow.appendChild(el('a', { 'class': 'sl-syslink', href: (b === '楚辞' ? 'chuci.html' : 'dianji-book.html?id=' + GUJI_SLUG[b] + '#shen'), text: '《' + b + '》 →' })); });
       inner.appendChild(brow);
     }
 

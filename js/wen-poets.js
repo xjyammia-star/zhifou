@@ -487,22 +487,18 @@
     var statD = { tip: '共 ' + poetTotal + (opts.poetLabel || ' 位作者') + '、' + workTotal + ' ' + unit + '作品。', notes: D.notes };
 
     /* 页面底部：这一页讲的作品，在“典籍”板块里各有一页书页（和 js/wen-read.js 里的同名对照表保持一致） */
+    /* 划分原则：一本书只放文学或典籍其中一边；只有《诗经》是五经之一，两边都有 */
     var DJ_LINKS = {
-      shijingpian: [['《诗经》', 'shijing']],
-      chuci: [['《楚辞》', 'chuci']],
-      hanweishi: [['《乐府诗集》', 'yuefushiji'], ['《古诗十九首》', 'gushi-shijiushou'], ['《陶渊明集》', 'taoyuanming-ji'], ['《文选》', 'wenxuan']],
-      tangshi: [['《唐诗三百首》', 'tangshi-sanbaishou'], ['《李太白集、杜工部集》', 'li-du-ji']],
-      songci: [['《宋词三百首》', 'songci-sanbaishou'], ['《苏轼集》', 'sushi-ji']],
-      yuanqu: [['《西厢记》', 'xixiangji'], ['《元曲选》', 'yuanquxuan']]
+      shijingpian: [['《诗经》书页（五经之一）', 'shijing']]
     };
     var pageKey = document.body.getAttribute('data-page');
     var djBlock = null;
     if (DJ_LINKS[pageKey]) {
-      djBlock = Z.section('回到典籍，看原书', [
-        el('p', { 'class': 'wr-dj-lead', text: '这一页讲的作品，在“典籍”板块里各有一页书页：作者与成书、版本、代表选段，以及和其他领域的联系。' }),
+      djBlock = Z.section('《诗经》是五经之一', [
+        el('p', { 'class': 'wr-dj-lead', text: '《诗经》既是中国最早的诗歌总集，也是儒家“五经”（《诗》《书》《礼》《易》《春秋》）之一。这一页读诗，“典籍”板块的“四书五经”里有它作为经典的书页：成书、传本、注本和历代解读。' }),
         el('div', { 'class': 'wr-dj-links' }, DJ_LINKS[pageKey].map(function (b) {
           return el('a', { 'class': 'wr-dj-link', href: 'dianji-book.html?id=' + b[1], text: b[0] + ' →' });
-        }).concat([el('a', { 'class': 'wr-dj-link is-all', href: 'dianji.html', text: '回到典籍书架 →' })]))
+        }).concat([el('a', { 'class': 'wr-dj-link is-all', href: 'dianji.html', text: '去典籍书架 →' })]))
       ]);
     }
 

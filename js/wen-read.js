@@ -229,15 +229,8 @@
     }
 
     /* 页面底部：这一页讲的作品，在“典籍”板块里各有一页书页（原书、版本、选段……）；按页面名对应 */
-    var DJ_LINKS = {
-      shijingpian: [['《诗经》', 'shijing']],
-      chuci: [['《楚辞》', 'chuci']],
-      hanweishi: [['《乐府诗集》', 'yuefushiji'], ['《古诗十九首》', 'gushi-shijiushou'], ['《陶渊明集》', 'taoyuanming-ji'], ['《文选》', 'wenxuan']],
-      tangshi: [['《唐诗三百首》', 'tangshi-sanbaishou'], ['《李太白集、杜工部集》', 'li-du-ji']],
-      songci: [['《宋词三百首》', 'songci-sanbaishou'], ['《苏轼集》', 'sushi-ji']],
-      yuanqu: [['《西厢记》', 'xixiangji'], ['《元曲选》', 'yuanquxuan']],
-      mingqing: [['《西游记》', 'xiyouji'], ['《三国演义》', 'sanguoyanyi'], ['《水浒传》', 'shuihuzhuan'], ['《红楼梦》', 'hongloumeng'], ['《封神演义》', 'fengshenyanyi']]
-    };
+    /* 划分原则：一本书只放文学或典籍其中一边（名著只在文学）；只有《诗经》是五经之一，两边都有，其链接在 js/wen-poets.js */
+    var DJ_LINKS = {};
     var pageKey = document.body.getAttribute('data-page');
     var djBlock = null;
     if (DJ_LINKS[pageKey]) {
