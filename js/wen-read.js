@@ -164,16 +164,32 @@
     return { open: open, close: close };
   }
 
+  /* 名著页用：每本书只露出标题、图片和第一段“一句话”，其余全部（简介、成书背景、人物、主题……）
+     收进一个默认收起的“展开详细介绍”里，点开才看，避免一本书的篇幅太长（由 mount 的 collapseRest 选项打开）。 */
+  var collapseRest = false;
+
   function renderSection(sec, i) {
     var kids = [
       el('div', { 'class': 'wr-seal', 'aria-hidden': 'true' }, [el('span', { text: sec.mark })]),
       el('span', { 'class': 'wr-idx', text: '0' + (i + 1) + ' · ' + sec.label }),
       el('h2', { 'class': 'wr-title', text: sec.title })
     ];
-    (sec.blocks || []).forEach(function (b) {
+    var rest = [];
+    (sec.blocks || []).forEach(function (b, bi) {
       var n = renderBlock(b);
-      if (n) kids.push(n);
+      if (!n) return;
+      if (collapseRest && bi > 0) rest.push(n); else kids.push(n);
     });
+    if (rest.length) {
+      var parts = (sec.blocks || []).filter(function (b) { return b.heading; }).length;
+      kids.push(el('details', { 'class': 'wr-more' }, [
+        el('summary', { 'class': 'wr-more-sum' }, [
+          el('span', { 'class': 'wr-more-open', text: '展开详细介绍（' + parts + ' 个部分）' }),
+          el('span', { 'class': 'wr-more-close', text: '收起详细介绍' })
+        ]),
+        el('div', { 'class': 'wr-more-body' }, rest)
+      ]));
+    }
     return el('article', { 'class': 'wr-section', id: 'wr-' + sec.key, 'aria-label': sec.title }, kids);
   }
 
@@ -192,6 +208,7 @@
      sectionTitle 是整块正文区的标题（比如"诗经到魏晋"这一页可以传"四段读法"）。 */
   function mount(rootId, D, opts) {
     opts = opts || {};
+    collapseRest = !!opts.collapseRest;
     var root = document.getElementById(rootId);
     if (!Z || !root || !D || !D.sections || !D.sections.length) return;
 

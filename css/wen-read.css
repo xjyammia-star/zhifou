@@ -204,3 +204,18 @@
 @media (prefers-reduced-motion: reduce) {
   .theme-wen .wr-nav-btn { transition: none; }
 }
+
+/* 名著页：每本书只露出图片和“一句话”，其余收进“展开详细介绍”（默认收起） */
+.theme-wen .wr-more { position: relative; z-index: 1; margin: 6px 0 4px; }
+.theme-wen .wr-more > summary {
+  display: inline-flex; align-items: center; gap: 8px; cursor: pointer; list-style: none; user-select: none;
+  padding: 10px 22px; border-radius: 999px; font-size: 14px; letter-spacing: 0.12em;
+  color: var(--zy-gold); border: 1px solid var(--zy-gold); background: rgba(0, 0, 0, 0.14);
+  transition: background 0.15s ease, color 0.15s ease;
+}
+.theme-wen .wr-more > summary::-webkit-details-marker { display: none; }
+.theme-wen .wr-more > summary:hover { color: var(--zy-gold-d); border-color: var(--zy-gold-d); background: rgba(0, 0, 0, 0.26); }
+.theme-wen .wr-more > summary .wr-more-close { display: none; }
+.theme-wen .wr-more[open] > summary .wr-more-open { display: none; }
+.theme-wen .wr-more[open] > summary .wr-more-close { display: inline; }
+.theme-wen .wr-more-body { margin-top: 18px; }
