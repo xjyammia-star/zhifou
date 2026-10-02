@@ -280,7 +280,12 @@
         el('div', { 'class': 'gd-tomb-label', text: T.below }),
         el('div', { 'class': 'gd-cards gd-cards-1' }, boxes('地下'))
       ]),
-      reps
+      reps,
+      el('p', { 'class': 'wx-hint' }, [
+        el('span', { 'class': 'wx-note-label', text: '另见' }),
+        document.createTextNode('墓葬的习俗、年代和类型，以及秦始皇陵、明孝陵、清东陵等 38 座名墓的详页：'),
+        el('a', { href: 'lingmu.html', text: '陵墓与墓葬 →' })
+      ])
     ]);
   }
 

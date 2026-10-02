@@ -45,6 +45,7 @@
         { page: 'yuanlin', label: '园林', href: 'yuanlin.html' },
         { page: 'louge', label: '楼阁与匾额对联', href: 'louge.html' },
         { page: 'siguan', label: '寺观塔与桥', href: 'siguan.html' },
+        { page: 'lingmu', label: '陵墓与墓葬', href: 'lingmu.html' },
         { page: 'shijian', label: '代表建筑时间线', href: 'shijian.html' }
       ]
     },
@@ -133,7 +134,9 @@
     'huoyao': 'faming',
     'zhinanzhen': 'faming',
     /* 典籍：每本书的页面都算作“典籍书架” */
-    'dianji-book': 'dianji'
+    'dianji-book': 'dianji',
+    /* 陵墓与墓葬：每座墓的详页都算作“陵墓与墓葬” */
+    'lingmu-detail': 'lingmu'
   };
 
   var page = document.body.getAttribute('data-page') || '';

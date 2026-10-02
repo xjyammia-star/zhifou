@@ -81,7 +81,7 @@
     ]));
 
     page.appendChild(el('section', { 'class': 'wx-section', 'aria-label': '全部页面' }, [
-      el('div', { 'class': 'wx-sec-title', text: '全部八页' }),
+      el('div', { 'class': 'wx-sec-title', text: '全部九页' }),
       el('div', { 'class': 'jz-grid' }, D.pages.map(buildCard))
     ]));
 

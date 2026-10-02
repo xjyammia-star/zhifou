@@ -1,0 +1,115 @@
+/* 知否知否 · 建筑 · 陵墓与墓葬（首页 lingmu.html、详页 lingmu-detail.html）
+   借用 jianzhu.css 里的"木与漆"配色和 wx- 开头的页头、纸面、小节标题；这里只补陵墓页自己的部件，类名统一用 lm- 开头。 */
+
+body.theme-jz .lm-page { max-width: 1100px; }
+
+/* ---- 正文文字 ---- */
+.theme-jz .lm-p { font-size: 15.5px; line-height: 1.95; margin: 0 0 12px; }
+.theme-jz .lm-p:last-child { margin-bottom: 0; }
+.theme-jz .lm-p b, .theme-jz .lm-li b { color: var(--lac-deep); font-weight: 600; }
+.theme-jz .lm-ul { list-style: none; margin: 0 0 12px; padding: 0; display: flex; flex-direction: column; gap: 8px; }
+.theme-jz .lm-li { position: relative; padding-left: 18px; font-size: 15px; line-height: 1.9; }
+.theme-jz .lm-li::before { content: ''; position: absolute; left: 3px; top: 0.85em; width: 6px; height: 6px; background: var(--lac); transform: rotate(45deg); }
+.theme-jz .lm-lab { color: var(--lac-deep); font-weight: 600; }
+.theme-jz .lm-ol { margin: 0 0 12px; padding: 0 0 0 4px; list-style: none; display: flex; flex-direction: column; gap: 12px; counter-reset: lm; }
+.theme-jz .lm-ol > li { position: relative; padding-left: 38px; font-size: 15px; line-height: 1.9; counter-increment: lm; }
+.theme-jz .lm-ol > li::before { content: counter(lm); position: absolute; left: 0; top: 2px; width: 26px; height: 26px; border-radius: 50%; background: var(--lac); color: #fff6e6; font-size: 13px; line-height: 26px; text-align: center; }
+.theme-jz .lm-q { margin: 0 0 12px; padding: 10px 14px; border-left: 3px solid var(--lac-soft); background: rgba(178, 58, 46, 0.07); font-size: 14px; line-height: 1.85; color: var(--ink-muted); }
+.theme-jz .lm-paper { padding: 22px 24px; }
+.theme-jz .lm-paper .lm-p:first-child { margin-top: 0; }
+.theme-jz .lm-xref { color: var(--lac); text-decoration: underline; text-decoration-color: rgba(178, 58, 46, 0.4); text-underline-offset: 3px; }
+
+/* ---- 四个专题的标签 ---- */
+.theme-jz .lm-tabbar { display: flex; flex-wrap: wrap; gap: 8px; }
+.theme-jz .lm-tab { min-height: 44px; padding: 0 20px; border: 1px solid rgba(234, 223, 198, 0.4); background: transparent; color: var(--cream); font: inherit; font-size: 15px; letter-spacing: 0.12em; cursor: pointer; border-radius: 2px; }
+.theme-jz .lm-tab:hover { border-color: var(--lac-soft); }
+.theme-jz .lm-tab[aria-selected="true"] { background: var(--lac); border-color: var(--lac); color: #fff6e6; }
+.theme-jz .lm-tabsub { font-size: 14px; color: var(--cream-muted); margin: 2px 0 0; }
+.theme-jz .lm-panel { display: flex; flex-direction: column; gap: 12px; margin-top: 14px; }
+.theme-jz .lm-blk { padding: 0; }
+.theme-jz .lm-blk > summary { min-height: 52px; display: flex; align-items: center; gap: 12px; padding: 8px 22px; cursor: pointer; list-style: none; font-size: 17px; font-weight: 600; color: var(--ink-w); }
+.theme-jz .lm-blk > summary::-webkit-details-marker { display: none; }
+.theme-jz .lm-blk > summary::after { content: '＋'; margin-left: auto; color: var(--lac); font-size: 18px; font-weight: 400; }
+.theme-jz .lm-blk[open] > summary::after { content: '－'; }
+.theme-jz .lm-blk-body { padding: 4px 24px 20px; border-top: 1px dashed var(--ivory-line); }
+.theme-jz .lm-blk-body > :first-child { margin-top: 14px; }
+.theme-jz .lm-intro { padding: 16px 22px; }
+
+/* ---- 名墓名单 ---- */
+.theme-jz .lm-search { width: 100%; max-width: 420px; min-height: 44px; padding: 0 14px; border: 1px solid rgba(234, 223, 198, 0.45); background: rgba(0, 0, 0, 0.18); color: #f6ecd5; font: inherit; font-size: 15px; border-radius: 2px; }
+.theme-jz .lm-search::placeholder { color: var(--cream-muted); }
+.theme-jz .lm-group { display: flex; flex-direction: column; gap: 12px; }
+.theme-jz .lm-group[hidden] { display: none; }
+.theme-jz .lm-gh { display: flex; flex-wrap: wrap; align-items: baseline; gap: 6px 14px; }
+.theme-jz .lm-gname { font-family: var(--display); font-size: 22px; color: #f6ecd5; }
+.theme-jz .lm-gline { font-size: 14px; line-height: 1.8; color: var(--cream-muted); flex: 1 1 320px; }
+.theme-jz .lm-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 14px; }
+.theme-jz .lm-card { display: flex; flex-direction: column; text-decoration: none; overflow: hidden; color: var(--ink-w); transition: transform 0.18s ease, box-shadow 0.18s ease; }
+.theme-jz .lm-card:hover { transform: translateY(-2px); box-shadow: 0 10px 26px rgba(0, 0, 0, 0.45); color: var(--ink-w); }
+.theme-jz .lm-card[hidden] { display: none; }
+.theme-jz .lm-card-img { aspect-ratio: 16 / 10; background: var(--ivory-2); overflow: hidden; }
+.theme-jz .lm-card-img img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.theme-jz .lm-card-noimg { aspect-ratio: 16 / 10; display: flex; align-items: center; justify-content: center; background: linear-gradient(135deg, #e6d9bd, #d6c6a1); color: var(--ink-muted); font-size: 34px; font-family: var(--display); letter-spacing: 0.1em; }
+.theme-jz .lm-card-body { padding: 12px 14px 14px; display: flex; flex-direction: column; gap: 5px; }
+.theme-jz .lm-card-t { font-size: 17px; font-weight: 600; line-height: 1.4; }
+.theme-jz .lm-card-m { font-size: 13px; color: var(--lac-deep); letter-spacing: 0.04em; }
+.theme-jz .lm-card-l { font-size: 13.5px; line-height: 1.75; color: var(--ink-muted); display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; }
+.theme-jz .lm-empty { color: var(--cream-muted); font-size: 15px; padding: 8px 0; }
+
+/* ---- 详页：图片 ---- */
+.theme-jz .lm-gal { display: flex; flex-direction: column; gap: 10px; }
+.theme-jz .lm-stage { position: relative; background: #1d130d; border-radius: 2px; overflow: hidden; box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4); display: flex; align-items: center; justify-content: center; min-height: 220px; max-height: 520px; }
+.theme-jz .lm-stage img { display: block; max-width: 100%; max-height: 520px; width: auto; height: auto; object-fit: contain; }
+.theme-jz .lm-thumbs { display: flex; gap: 8px; flex-wrap: wrap; }
+.theme-jz .lm-thumb { width: 74px; height: 56px; padding: 0; border: 2px solid transparent; background: #1d130d; cursor: pointer; opacity: 0.72; border-radius: 2px; overflow: hidden; }
+.theme-jz .lm-thumb img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.theme-jz .lm-thumb[aria-current="true"] { border-color: var(--lac-soft); opacity: 1; }
+.theme-jz .lm-thumb:hover { opacity: 1; }
+.theme-jz .lm-cap { font-size: 14px; line-height: 1.8; color: var(--cream); }
+.theme-jz .lm-credit { font-size: 12.5px; line-height: 1.8; color: var(--cream-muted); }
+.theme-jz .lm-credit a { color: var(--cream); text-decoration: underline; text-underline-offset: 2px; }
+.theme-jz .lm-noimg { font-size: 13.5px; color: var(--cream-muted); padding: 10px 14px; border: 1px dashed rgba(234, 223, 198, 0.35); }
+
+/* ---- 详页：基本信息 ---- */
+.theme-jz .lm-facts { margin: 0; padding: 6px 22px; display: flex; flex-direction: column; }
+.theme-jz .lm-facts-row { display: grid; grid-template-columns: 8em minmax(0, 1fr); gap: 4px 16px; padding: 12px 0; border-bottom: 1px dashed var(--ivory-line); }
+.theme-jz .lm-facts-row:last-child { border-bottom: 0; }
+.theme-jz .lm-facts dt { font-size: 14px; letter-spacing: 0.08em; color: var(--lac-deep); font-weight: 600; }
+.theme-jz .lm-facts dd { margin: 0; font-size: 15px; line-height: 1.9; }
+.theme-jz .lm-pills { display: flex; flex-wrap: wrap; gap: 8px; }
+.theme-jz .lm-pill { display: inline-block; padding: 3px 12px; border: 1px solid rgba(234, 223, 198, 0.4); font-size: 13.5px; color: var(--cream); border-radius: 999px; letter-spacing: 0.04em; }
+.theme-jz .lm-pill.is-warn { border-color: var(--lac-soft); color: var(--lac-soft); }
+
+/* ---- 详页：各节 ---- */
+.theme-jz .lm-sec { padding: 0; }
+.theme-jz .lm-sec > summary { min-height: 52px; display: flex; align-items: center; gap: 10px; padding: 8px 22px; cursor: pointer; list-style: none; font-size: 17px; font-weight: 600; }
+.theme-jz .lm-sec > summary::-webkit-details-marker { display: none; }
+.theme-jz .lm-sec > summary::after { content: '＋'; margin-left: auto; color: var(--lac); font-size: 18px; font-weight: 400; }
+.theme-jz .lm-sec[open] > summary::after { content: '－'; }
+.theme-jz .lm-sec-n { font-size: 13px; font-weight: 400; color: var(--ink-muted); }
+.theme-jz .lm-sec-body { padding: 14px 24px 20px; border-top: 1px dashed var(--ivory-line); }
+.theme-jz .lm-chips { display: flex; flex-wrap: wrap; gap: 8px; margin: 2px 0 12px; }
+.theme-jz .lm-chip { display: inline-block; padding: 4px 12px; border: 1px solid var(--lac); border-radius: 999px; font-size: 13.5px; text-decoration: none; }
+.theme-jz .lm-chip:hover { background: var(--lac); color: #fff6e6; }
+
+/* ---- 上一座 / 下一座 ---- */
+.theme-jz .lm-pn { display: flex; justify-content: space-between; gap: 12px; }
+.theme-jz .lm-pn a { display: flex; flex-direction: column; gap: 2px; padding: 12px 16px; min-width: 0; max-width: 48%; border: 1px solid rgba(234, 223, 198, 0.3); text-decoration: none; color: var(--cream); font-size: 15px; }
+.theme-jz .lm-pn a small { font-size: 12px; letter-spacing: 0.2em; color: var(--cream-muted); }
+.theme-jz .lm-pn a.is-next { text-align: right; margin-left: auto; }
+.theme-jz .lm-pn a:hover { border-color: var(--lac-soft); color: #fff; }
+.theme-jz .lm-back { font-size: 14px; }
+
+@media (max-width: 640px) {
+  .theme-jz .lm-paper, .theme-jz .lm-blk-body, .theme-jz .lm-sec-body { padding-left: 16px; padding-right: 16px; }
+  .theme-jz .lm-blk > summary, .theme-jz .lm-sec > summary { padding-left: 16px; padding-right: 16px; font-size: 16px; }
+  .theme-jz .lm-facts { padding: 4px 16px; }
+  .theme-jz .lm-facts-row { grid-template-columns: minmax(0, 1fr); }
+  .theme-jz .lm-grid { grid-template-columns: minmax(0, 1fr); }
+  .theme-jz .lm-card { flex-direction: row; }
+  .theme-jz .lm-card-img, .theme-jz .lm-card-noimg { flex: 0 0 120px; aspect-ratio: auto; min-height: 112px; }
+  .theme-jz .lm-card-l { -webkit-line-clamp: 2; }
+  .theme-jz .lm-pn a { max-width: 100%; }
+  .theme-jz .lm-pn { flex-direction: column; }
+  .theme-jz .lm-pn a.is-next { text-align: left; margin-left: 0; }
+}
