@@ -172,3 +172,20 @@ body.theme-dj {
   .theme-dj .dj-pn { flex-direction: column; }
   .theme-dj .dj-pn a { max-width: none; }
 }
+
+
+/* 书页：文学专页链接、“与神灵的联系”一节（原古籍书架的内容） */
+.dj-wen-link { margin: 10px 0 18px; font-size: 14px; opacity: 0.9; }
+.dj-wen-link a { color: inherit; border-bottom: 1px solid currentColor; text-decoration: none; }
+.dj-shen-label { margin: 18px 0 8px; font-size: 13px; letter-spacing: 0.12em; opacity: 0.7; }
+.dj-shen-chips, .dj-shen-books { display: flex; flex-wrap: wrap; gap: 8px; }
+.dj-sh-chip {
+  display: inline-block; padding: 4px 12px; border-radius: 999px; font-size: 14px; text-decoration: none;
+  color: inherit; border: 1px solid rgba(217, 182, 106, 0.55);
+}
+a.dj-sh-chip:hover { background: rgba(217, 182, 106, 0.14); }
+.dj-sh-chip.is-soon, .dj-sh-chip.is-here { opacity: 0.6; border-style: dashed; }
+.dj-shen-tip { margin: 12px 0; padding: 10px 14px; border-left: 3px solid rgba(217, 182, 106, 0.7); font-size: 14px; line-height: 1.8; background: rgba(217, 182, 106, 0.08); }
+.dj-shen-purposes { list-style: none; margin: 0; padding: 0; }
+.dj-shen-purposes li { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 14px; padding: 8px 0; border-bottom: 1px dashed rgba(217, 182, 106, 0.3); }
+.dj-shen-want { font-size: 14px; min-width: 12em; }

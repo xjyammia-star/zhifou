@@ -27,7 +27,6 @@
       items: [
         { page: 'shen', label: '三界地图', href: 'shen.html' },
         { page: 'shenhua', label: '上古神话', href: 'shenhua.html' },
-        { page: 'guji', label: '古籍书架', href: 'guji.html' },
         { page: 'xingxiu', label: '二十八宿', href: 'xingxiu.html' },
         { page: 'shenling', label: '民间神灵', href: 'shenling.html' },
         { page: 'daojiao', label: '道教神谱', href: 'daojiao.html' },
