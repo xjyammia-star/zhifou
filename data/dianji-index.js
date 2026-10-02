@@ -3,7 +3,7 @@ window.ZF_DJ_INDEX = {
  "cats": [
   {
    "name": "四书五经",
-   "img": "jingdian",
+   "img": "sishuwujing",
    "blurb": "四书与五经：论语、孟子、大学、中庸，易、书、诗、礼、春秋",
    "open": true,
    "books": [

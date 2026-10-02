@@ -631,6 +631,7 @@ window.ZHIFOU_IMAGES = {
     'diji/dyn_suitang': { id: 'zhifou/diji/dyn_suitang', v: 1790953354, dw: 900, dh: 386, crop: 1, caption: '隋唐五代', source: '', ai: true },
     'diji/dyn_songyuan': { id: 'zhifou/diji/dyn_songyuan', v: 1790953358, dw: 900, dh: 386, crop: 1, caption: '宋辽金元', source: '', ai: true },
     'diji/dyn_mingqing': { id: 'zhifou/diji/dyn_mingqing', v: 1790953361, dw: 900, dh: 386, crop: 1, caption: '明清', source: '', ai: true },
+    'diji/sishuwujing': { id: 'zhifou/diji/sishuwujing', v: 1790955929, dw: 900, dh: 386, crop: 1, caption: '四书五经', source: '', ai: true },
     'sifaming/zhizhi_baopi': { id: 'zhifou/sifaming/zhizhi_baopi', v: 1790924542, dw: 900, dh: 675, crop: 1, caption: '造纸：剥皮取料（示意图）', source: '', ai: true },
     'sifaming/zhizhi_zhengzhu': { id: 'zhifou/sifaming/zhizhi_zhengzhu', v: 1790924543, dw: 900, dh: 675, crop: 1, caption: '造纸：蒸煮捣浆（示意图）', source: '', ai: true },
     'sifaming/zhizhi_chaozhi': { id: 'zhifou/sifaming/zhizhi_chaozhi', v: 1790924545, dw: 900, dh: 675, crop: 1, caption: '造纸：抄纸成形（示意图）', source: '', ai: true },
