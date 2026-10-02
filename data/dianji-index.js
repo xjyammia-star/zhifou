@@ -75,7 +75,7 @@ window.ZF_DJ_INDEX = {
   {
    "name": "经典与思想",
    "img": "jingdian",
-   "blurb": "五经、四书、诸子与心学",
+   "blurb": "诸子、礼学、理学与心学（四书五经已单列一类）",
    "open": true,
    "books": [
     {
