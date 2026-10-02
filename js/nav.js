@@ -106,6 +106,13 @@
         { page: 'yuanqu', label: '元曲', href: 'yuanqu.html' },
         { page: 'mingqing', label: '名著', href: 'mingqing.html' }
       ]
+    },
+    {
+      /* “典籍”板块：先上架“经典与思想”一类，其余类陆续上架；每本书一页（dianji-book.html），算作“典籍书架”这一项 */
+      key: 'dianji', label: '典籍', home: 'dianji.html',
+      items: [
+        { page: 'dianji', label: '典籍书架', href: 'dianji.html' }
+      ]
     }
   ];
 
@@ -119,7 +126,9 @@
     'zaozhi': 'faming',
     'yinshua': 'faming',
     'huoyao': 'faming',
-    'zhinanzhen': 'faming'
+    'zhinanzhen': 'faming',
+    /* 典籍：每本书的页面都算作“典籍书架” */
+    'dianji-book': 'dianji'
   };
 
   var page = document.body.getAttribute('data-page') || '';
