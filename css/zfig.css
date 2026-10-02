@@ -1,0 +1,27 @@
+/* 知否知否 · 页头图 / 插图画廊样式（配合 js/zhead.js）
+   颜色全部用继承色和半透明，所以在各个板块的主题下都能用。 */
+.zf { margin: 14px 0; padding: 0; }
+.zf-img { display: block; width: 100%; height: auto; border-radius: 6px; background: rgba(128, 128, 128, 0.12); }
+.zf-cap { display: flex; flex-wrap: wrap; gap: 4px 10px; align-items: baseline; margin-top: 6px; font-size: 12px; line-height: 1.6; opacity: 0.78; }
+.zf-ai { font-size: 11px; opacity: 0.85; border: 1px solid currentColor; border-radius: 3px; padding: 0 5px; line-height: 1.5; }
+
+.zf-banner { max-width: 900px; margin: 16px auto; }
+
+.zf-sec { margin: 20px 0; }
+.zf-sec-title { font-size: 18px; margin: 0 0 6px; }
+.zf-sec-note { font-size: 13px; opacity: 0.75; margin: 0 0 10px; line-height: 1.7; }
+.zf-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }
+.zf-grid .zf { margin: 0; }
+
+.zf-book { display: flex; gap: 14px; align-items: flex-start; margin: 12px 0 18px; }
+.zf-cover { flex: 0 0 200px; margin: 0; }
+.zf-scenes { flex: 1 1 0; min-width: 0; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; }
+.zf-scenes .zf { margin: 0; }
+.zf-scenes .zf:first-child { grid-column: 1 / -1; }
+
+@media (max-width: 720px) {
+  .zf-grid { grid-template-columns: 1fr; }
+  .zf-book { flex-direction: column; align-items: center; }
+  .zf-cover { flex: none; width: 60%; max-width: 240px; }
+  .zf-scenes { width: 100%; grid-template-columns: 1fr; }
+}
