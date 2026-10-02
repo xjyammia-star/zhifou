@@ -94,6 +94,7 @@ body.theme-dj {
 .theme-dj .dj-cat-sub { font-size: 14px; color: var(--zy-muted); letter-spacing: 0.04em; }
 .theme-dj .dj-cat-img { margin: 0; }
 .theme-dj .dj-cat-img img { display: block; width: 100%; height: auto; aspect-ratio: 21 / 9; object-fit: cover; border-radius: 6px; background: rgba(128, 128, 128, 0.12); }
+.theme-dj .dj-dyn-banner { margin: 0 0 24px; }
 .theme-dj .dj-cat-img figcaption { margin-top: 4px; font-size: 11px; opacity: 0.75; }
 .theme-dj .dj-cat-name { margin: 0; font-family: var(--display, serif); font-size: 34px; font-weight: 400; color: var(--zy-gold-d); letter-spacing: 0.08em; }
 .theme-dj .dj-cat-blurb { margin: 0 0 4px; font-size: 15px; color: var(--zy-soft); }

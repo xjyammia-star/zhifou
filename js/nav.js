@@ -108,10 +108,16 @@
       ]
     },
     {
-      /* “典籍”板块：先上架“经典与思想”一类，其余类陆续上架；每本书一页（dianji-book.html），算作“典籍书架”这一项 */
+      /* “典籍”板块：总书架 + 六个朝代页，每页都能按类型筛选；每本书一页（dianji-book.html），算作“典籍书架”这一项 */
       key: 'dianji', label: '典籍', home: 'dianji.html',
       items: [
-        { page: 'dianji', label: '典籍书架', href: 'dianji.html' }
+        { page: 'dianji', label: '典籍书架', href: 'dianji.html' },
+        { page: 'dianji-xianqin', label: '先秦', href: 'dianji-xianqin.html' },
+        { page: 'dianji-qinhan', label: '秦汉', href: 'dianji-qinhan.html' },
+        { page: 'dianji-weijin', label: '魏晋南北朝', href: 'dianji-weijin.html' },
+        { page: 'dianji-suitang', label: '隋唐五代', href: 'dianji-suitang.html' },
+        { page: 'dianji-songyuan', label: '宋辽金元', href: 'dianji-songyuan.html' },
+        { page: 'dianji-mingqing', label: '明清', href: 'dianji-mingqing.html' }
       ]
     }
   ];
