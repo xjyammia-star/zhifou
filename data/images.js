@@ -639,6 +639,7 @@ window.ZHIFOU_IMAGES = {
     'sifaming/huoyao_yanhua': { id: 'zhifou/sifaming/huoyao_yanhua', v: 1790924558, dw: 900, dh: 675, crop: 1, caption: '火药：烟花（示意图）', source: '', ai: true },
     'sifaming/zhinanzhen_sinan': { id: 'zhifou/sifaming/zhinanzhen_sinan', v: 1790924559, dw: 900, dh: 675, crop: 1, caption: '指南针：司南（示意图）', source: '', ai: true },
     'sifaming/zhinanzhen_fushui': { id: 'zhifou/sifaming/zhinanzhen_fushui', v: 1790924561, dw: 900, dh: 675, crop: 1, caption: '指南针：浮水针（示意图）', source: '', ai: true },
+    'sifaming/zhinanzhen_luopan': { id: 'zhifou/sifaming/zhinanzhen_luopan', v: 1790925660, dw: 900, dh: 675, crop: 1, caption: '指南针：罗盘（示意图）', source: '', ai: true },
     'sifaming/zhinanzhen_hanghai': { id: 'zhifou/sifaming/zhinanzhen_hanghai', v: 1790924562, dw: 900, dh: 675, crop: 1, caption: '指南针：航海（示意图）', source: '', ai: true },
     'sanjie/sanjie_header': { id: 'zhifou/sanjie/sanjie_header', v: 1790924563, dw: 900, dh: 386, crop: 1, caption: '三界', source: '', ai: true },
     'wenxue/wenxue_entry': { id: 'zhifou/wenxue/wenxue_entry', v: 1790924565, dw: 900, dh: 386, crop: 1, caption: '文学', source: '', ai: true },
