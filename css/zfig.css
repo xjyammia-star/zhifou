@@ -13,15 +13,14 @@
 .zf-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }
 .zf-grid .zf { margin: 0; }
 
-.zf-book { display: flex; gap: 14px; align-items: flex-start; margin: 12px 0 18px; }
-.zf-cover { flex: 0 0 200px; margin: 0; }
-.zf-scenes { flex: 1 1 0; min-width: 0; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; }
+/* 名著：最上面一张大图（.zf-hero），下面 2×2 四张小图（.zf-scenes）；手机上也是同样排法 */
+.zf-book { display: block; margin: 12px 0 18px; }
+.zf-hero { margin: 0 0 10px; }
+.zf-scenes { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; }
 .zf-scenes .zf { margin: 0; }
-.zf-scenes .zf:first-child { grid-column: 1 / -1; }
 
 @media (max-width: 720px) {
   .zf-grid { grid-template-columns: 1fr; }
-  .zf-book { flex-direction: column; align-items: center; }
-  .zf-cover { flex: none; width: 60%; max-width: 240px; }
-  .zf-scenes { width: 100%; grid-template-columns: 1fr; }
+  .zf-scenes { gap: 8px; }
+  .zf-scenes .zf-cap { font-size: 11px; }
 }

@@ -50,7 +50,7 @@
   var BANNERS = {
     shen: ['sanjie', 'sanjie_header'],
     wen: ['wenxue', 'wenxue_entry'],
-    shijing: ['wenxue', 'shijing_zong'],
+    hanweishi: ['wenxue', 'shijing_zong'],
     shijingpian: ['wenxue', 'shijing'],
     chuci: ['wenxue', 'chuci'],
     tangshi: ['wenxue', 'tangshi'],
@@ -68,12 +68,14 @@
 
   /* 名著：章节 key -> 图名前缀（登记类别 mingzhu） */
   var BOOKS = { sanguo: 'sanguo', xiyouji: 'xiyou', shuihu: 'shuihu', honglou: 'honglou', fengshen: 'fengshen' };
+  /* 每本书的图：hero 是放在最上面的那张大图，rest 是下面 2×2 的四张小图（都是横版 21:9 左右）。
+     以前的竖版封面已取消；想换大图，只要改这里的 hero 即可。 */
   var SCENES = {
-    sanguo: ['taoyuan', 'sangu', 'chibi', 'guanyu', 'caocao'],
-    xiyou: ['shixia', 'naotiangong', 'shitu', 'huoyan', 'baigujing'],
-    shuihu: ['wusong', 'luzhishen', 'linchong', 'juyi', 'shengchen'],
-    honglou: ['daguanyuan', 'daiyu', 'baochai', 'xiangyun', 'shengqin'],
-    fengshen: ['jiangziya', 'nezha', 'mushi', 'yangjian', 'fengshentai']
+    sanguo: { hero: 'taoyuan', rest: ['sangu', 'chibi', 'guanyu', 'caocao'] },
+    xiyou: { hero: 'shitu', rest: ['shixia', 'naotiangong', 'huoyan', 'baigujing'] },
+    shuihu: { hero: 'juyi', rest: ['wusong', 'luzhishen', 'linchong', 'shengchen'] },
+    honglou: { hero: 'daguanyuan', rest: ['daiyu', 'baochai', 'xiangyun', 'shengqin'] },
+    fengshen: { hero: 'fengshentai', rest: ['jiangziya', 'nezha', 'mushi', 'yangjian'] }
   };
 
   if (BANNERS[page]) {
@@ -105,9 +107,10 @@
       var title = art && art.querySelector('.wr-title');
       if (!title) return;
       var pre = BOOKS[key];
-      var cover = fig('mingzhu', pre + '_cover', 'zf-cover', '(max-width: 640px) 60vw, 220px');
-      var scenes = (SCENES[pre] || []).map(function (s) {
-        return fig('mingzhu', pre + '_' + s, 'zf-scene', '(max-width: 640px) 94vw, 460px');
+      var sc = SCENES[pre] || { hero: '', rest: [] };
+      var cover = fig('mingzhu', pre + '_' + sc.hero, 'zf-hero', '(max-width: 760px) 94vw, 900px');
+      var scenes = sc.rest.map(function (s) {
+        return fig('mingzhu', pre + '_' + s, 'zf-scene', '(max-width: 760px) 47vw, 440px');
       }).filter(Boolean);
       if (!cover && !scenes.length) return;
       var g = mk('div', 'zf-book');

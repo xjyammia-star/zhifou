@@ -99,7 +99,7 @@
     show(0, true);
 
     return el('div', { 'class': 'wen-book' }, [
-      el('nav', { 'class': 'wen-toc', 'aria-label': '五段文脉目录' }, [toc]),
+      el('nav', { 'class': 'wen-toc', 'aria-label': '七段文脉目录' }, [toc]),
       el('div', { 'class': 'wen-book-spine', 'aria-hidden': 'true' }),
       pageWrap
     ]);
@@ -107,7 +107,7 @@
 
   Z.mount(root, [
     Z.head(D, '文学'),
-    Z.section('五段文脉', [bookBlock()])
+    Z.section('七段文脉', [bookBlock()])
   ].concat(Z.tipNotes(D)));
   document.title = '文学 · 知否知否';
 })();

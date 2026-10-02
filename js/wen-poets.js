@@ -18,6 +18,8 @@
   var registry = [];
   var currentEraLabel = '';
   var unit = '首', textTag = '诗句', poetTag = '诗人', searchPh = '搜索诗人、作品名或诗句关键词，如：李白、静夜思、明月';   /* 作品的量词：唐诗"首"，元曲"篇"（mount 时可以改） */
+  var emptyNote = '曲文暂未收录，先看上面的简介。';   /* 一组只有简介、没有作品时的提示（mount 时可改） */
+  var introOnlyLabel = '';   /* 卡片里一篇作品都没有时，右侧显示的字样；留空则仍显示"收录 0 …"（mount 时可改） */
   var glossLabel = '注解';   /* 注解区块的标题：唐诗/元曲叫"注解"，宋词叫"词句解读"（mount 时可以改） */
 
   /* ---------- 弹窗里各个区块的填充（原文 / 讲解 / 注解 / 出处） ----------
@@ -177,7 +179,9 @@
       })) : null,
       works.length
         ? el('div', { 'class': 'tp-works' }, works.map(function (w) { return workBtn(w, onPick); }))
-        : (group.intro ? el('div', { 'class': 'tp-group-empty', text: '曲文暂未收录，先看上面的简介。' }) : null)
+        : (group.intro && (group.emptyNote !== undefined ? group.emptyNote : emptyNote)
+            ? el('div', { 'class': 'tp-group-empty', text: group.emptyNote !== undefined ? group.emptyNote : emptyNote })
+            : null)
     ]);
   }
 
@@ -190,7 +194,7 @@
     d.appendChild(el('summary', { 'class': 'tp-poet-summary' }, [
       el('span', { 'class': 'tp-poet-name', text: poet.name }),
       el('span', { 'class': 'tp-poet-hint', text: lifeFirst + '。' }),
-      el('span', { 'class': 'tp-poet-count', text: '收录 ' + worksCount + ' ' + unit })
+      el('span', { 'class': 'tp-poet-count', text: (!worksCount && introOnlyLabel) ? introOnlyLabel : '收录 ' + worksCount + ' ' + unit })
     ]));
     var body = el('div', { 'class': 'tp-poet-body' }, [
       el('p', { 'class': 'tp-poet-life', text: poet.life }),
@@ -464,6 +468,8 @@
     unit = opts.unit || '首';
     textTag = opts.textTag || '诗句'; poetTag = opts.poetTag || '诗人';
     glossLabel = opts.glossLabel || '注解';
+    emptyNote = opts.emptyNote || '曲文暂未收录，先看上面的简介。';
+    introOnlyLabel = opts.introOnlyLabel || '';
     if (opts.searchPlaceholder) searchPh = opts.searchPlaceholder;
     var root = document.getElementById(rootId);
     if (!Z || !root || !D || !D.eras || !D.eras.length) return;

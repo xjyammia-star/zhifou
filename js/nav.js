@@ -98,9 +98,9 @@
       key: 'wen', label: '文学', home: 'wen.html',
       items: [
         { page: 'wen', label: '文学入口', href: 'wen.html' },
-        { page: 'shijing', label: '诗经到魏晋', href: 'shijing.html' },
         { page: 'shijingpian', label: '诗经', href: 'shijingpian.html' },
         { page: 'chuci', label: '楚辞', href: 'chuci.html' },
+        { page: 'hanweishi', label: '汉乐府与魏晋诗', href: 'hanweishi.html' },
         { page: 'tangshi', label: '唐诗', href: 'tangshi.html' },
         { page: 'songci', label: '宋词', href: 'songci.html' },
         { page: 'yuanqu', label: '元曲', href: 'yuanqu.html' },

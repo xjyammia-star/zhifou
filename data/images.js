@@ -643,7 +643,7 @@ window.ZHIFOU_IMAGES = {
     'sifaming/zhinanzhen_hanghai': { id: 'zhifou/sifaming/zhinanzhen_hanghai', v: 1790924562, dw: 900, dh: 675, crop: 1, caption: '指南针：航海（示意图）', source: '', ai: true },
     'sanjie/sanjie_header': { id: 'zhifou/sanjie/sanjie_header', v: 1790924563, dw: 900, dh: 386, crop: 1, caption: '三界', source: '', ai: true },
     'wenxue/wenxue_entry': { id: 'zhifou/wenxue/wenxue_entry', v: 1790924565, dw: 900, dh: 386, crop: 1, caption: '文学', source: '', ai: true },
-    'wenxue/shijing_zong': { id: 'zhifou/wenxue/shijing_zong', v: 1790924566, dw: 900, dh: 386, crop: 1, caption: '诗经到魏晋', source: '', ai: true },
+    'wenxue/shijing_zong': { id: 'zhifou/wenxue/shijing_zong', v: 1790924566, dw: 900, dh: 386, crop: 1, caption: '汉乐府与魏晋诗', source: '', ai: true },
     'wenxue/shijing': { id: 'zhifou/wenxue/shijing', v: 1790924568, dw: 900, dh: 386, crop: 1, caption: '诗经', source: '', ai: true },
     'wenxue/chuci': { id: 'zhifou/wenxue/chuci', v: 1790924569, dw: 900, dh: 386, crop: 1, caption: '楚辞', source: '', ai: true },
     'wenxue/tangshi': { id: 'zhifou/wenxue/tangshi', v: 1790924570, dw: 900, dh: 386, crop: 1, caption: '唐诗', source: '', ai: true },
