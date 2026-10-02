@@ -113,3 +113,17 @@ body.theme-jz .lm-page { max-width: 1100px; }
   .theme-jz .lm-pn { flex-direction: column; }
   .theme-jz .lm-pn a.is-next { text-align: left; margin-left: 0; }
 }
+
+/* ---- 首页：时期筛选、总表 ---- */
+.theme-jz .lm-erachips { margin: 0; }
+.theme-jz .lm-erachip { min-height: 38px; padding: 0 14px; border: 1px solid rgba(234, 223, 198, 0.4); background: transparent; color: var(--cream); font: inherit; font-size: 14px; letter-spacing: 0.06em; cursor: pointer; border-radius: 999px; }
+.theme-jz .lm-erachip:hover { border-color: var(--lac-soft); }
+.theme-jz .lm-erachip[aria-pressed="true"] { background: var(--lac); border-color: var(--lac); color: #fff6e6; }
+.theme-jz .lm-tablewrap { padding: 14px 16px 6px; }
+.theme-jz .lm-tablecap { font-size: 13px; color: var(--ink-muted); margin: 0 0 8px; letter-spacing: 0.04em; }
+.theme-jz .lm-tablescroll { overflow-x: auto; -webkit-overflow-scrolling: touch; }
+.theme-jz .lm-table { width: 100%; min-width: 640px; border-collapse: collapse; font-size: 14px; line-height: 1.75; }
+.theme-jz .lm-table th, .theme-jz .lm-table td { text-align: left; vertical-align: top; padding: 9px 10px; border-bottom: 1px dashed var(--ivory-line); }
+.theme-jz .lm-table thead th { font-size: 13px; letter-spacing: 0.12em; color: var(--lac-deep); border-bottom: 1px solid var(--lac-soft); white-space: nowrap; }
+.theme-jz .lm-table tbody th { font-weight: 600; white-space: nowrap; color: var(--ink-w); }
+.theme-jz .lm-table tbody tr:last-child th, .theme-jz .lm-table tbody tr:last-child td { border-bottom: 0; }

@@ -125,6 +125,22 @@
     }
 
     var secs = d.secs.map(function (s) { return section(s, d); });
+    /* 与本站其他页面的联系（手写在 data/lingmu-links.js；没写的墓，只连“丧礼”） */
+    var LK = window.ZF_LM_LINKS;
+    var lks = LK ? (LK.tombs[id] || (d.grp === 'F' ? [] : LK.fallback)) : [];
+    if (lks && lks.length) {
+      var lkSec = el('details', { 'class': 'wx-paper lm-sec' }, [
+        el('summary', {}, ['与本站其他内容的联系', el('span', { 'class': 'lm-sec-n', text: lks.length + ' 条' })]),
+        el('div', { 'class': 'lm-sec-body' }, [el('ul', { 'class': 'lm-ul' }, lks.map(function (k) {
+          return el('li', { 'class': 'lm-li' }, [el('a', { 'class': 'lm-xref', href: k.h, text: k.t }), document.createTextNode('：' + k.n)]);
+        }))])
+      ]);
+      lkSec.open = true;
+      /* 放在“资料来源”“存疑之处”前面 */
+      var at = secs.length;
+      secs.forEach(function (s, i) { if (at === secs.length && /资料来源|存疑之处/.test(s.firstChild.textContent) && i < at) at = i; });
+      secs.splice(at, 0, lkSec);
+    }
     if (secs.length) kids.push(el('section', { 'class': 'wx-section', 'aria-label': '详细介绍' }, [el('div', { 'class': 'wx-sec-title', text: '详细介绍' })].concat(secs)));
 
     var prev = pos > 0 ? grp.tombs[pos - 1] : null, next = pos < grp.tombs.length - 1 ? grp.tombs[pos + 1] : null;
