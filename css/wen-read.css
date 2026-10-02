@@ -219,3 +219,14 @@
 .theme-wen .wr-more[open] > summary .wr-more-open { display: none; }
 .theme-wen .wr-more[open] > summary .wr-more-close { display: inline; }
 .theme-wen .wr-more-body { margin-top: 18px; }
+
+
+/* 页面底部“回到典籍，看原书”：指向典籍书页的一排链接 */
+.wr-dj-lead { margin: 0 0 12px; font-size: 14px; line-height: 1.8; opacity: 0.85; }
+.wr-dj-links { display: flex; flex-wrap: wrap; gap: 10px; }
+.wr-dj-link {
+  display: inline-block; padding: 8px 16px; border-radius: 999px; font-size: 15px; letter-spacing: 0.04em;
+  text-decoration: none; color: inherit; border: 1px solid currentColor; opacity: 0.9;
+}
+.wr-dj-link:hover { opacity: 1; background: rgba(255, 255, 255, 0.08); }
+.wr-dj-link.is-all { border-style: dashed; }

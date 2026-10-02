@@ -16,8 +16,9 @@
   /* 其他页面的地址（"另见"链接用） */
   var PAGE_LINKS = { '山海经': 'shanhai.html', '民间神灵': 'shenling.html', '楚辞': 'chuci.html' };
 
-  /* 古籍书架里有的书。人物的"主要出处"里提到这些书，详情里就给一个跳到书架的小链接 */
-  var GUJI_BOOKS = ['山海经', '楚辞', '淮南子', '列子', '诗经', '尚书', '左传', '国语', '逸周书', '史记', '论衡', '博物志', '搜神记', '神异经', '穆天子传', '列仙传'];
+  /* “典籍”板块里有书页的神话相关古籍（书名 → 书页代号）。人物的"主要出处"里提到这些书，详情里就给一个跳到那本书的小链接 */
+  var GUJI_SLUG = { '山海经': 'shanhaijing', '楚辞': 'chuci', '淮南子': 'huainanzi', '列子': 'liezi', '诗经': 'shijing', '尚书': 'shangshu', '左传': 'zuozhuan', '国语': 'guoyu', '逸周书': 'yizhoushu', '史记': 'shiji', '论衡': 'lunheng', '博物志': 'bowuzhi', '搜神记': 'soushenji', '神异经': 'shenyijing', '穆天子传': 'mutianzizhuan', '列仙传': 'liexianzhuan' };
+  var GUJI_BOOKS = Object.keys(GUJI_SLUG);
 
   var GROUP_COLOR = {
     '创世与文明': '#c9a961', '部族与战争': '#d9826b', '帝王谱系': '#7fb8a4',
@@ -306,8 +307,8 @@
 
     var books = GUJI_BOOKS.filter(function (b) { return (p.source || '').indexOf('《' + b) >= 0; });
     if (books.length) {
-      var brow = el('div', { 'class': 'sl-origin' }, [el('span', { 'class': 'sl-origin-label', text: '翻到书架' })]);
-      books.forEach(function (b) { brow.appendChild(el('a', { 'class': 'sl-syslink', href: 'guji.html?id=' + encodeURIComponent(b), text: '《' + b + '》 →' })); });
+      var brow = el('div', { 'class': 'sl-origin' }, [el('span', { 'class': 'sl-origin-label', text: '翻到典籍' })]);
+      books.forEach(function (b) { brow.appendChild(el('a', { 'class': 'sl-syslink', href: 'dianji-book.html?id=' + GUJI_SLUG[b] + '#shen', text: '《' + b + '》 →' })); });
       inner.appendChild(brow);
     }
 
