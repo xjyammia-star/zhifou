@@ -502,11 +502,13 @@
       ]);
     }
 
+    var shenBlock = (pageKey === 'chuci' && window.ZF_CHUCI_SHEN) ? buildShenBlock(window.ZF_CHUCI_SHEN) : null;
     Z.mount(root, [
       Z.head(D, opts.eyebrow || '文学'),
       searchBar,
       Z.section(opts.sectionTitle || '按作者浏览', [eras]),
-      djBlock
+      djBlock,
+      shenBlock
     ].concat(Z.tipNotes(statD)));
 
     buildToTop();
@@ -514,6 +516,48 @@
 
     /* 页面搭好之后，再看网址里有没有 ?id=，有就展开对应诗人、弹出对应作品 */
     if (Z.openFromQuery) Z.openFromQuery();
+    if (location.hash === '#shen') { var se = document.getElementById('shen'); if (se && se.scrollIntoView) se.scrollIntoView(); }
+  }
+
+  /* 楚辞页底部：“与神灵的联系”（原古籍书架里《楚辞》的内容，数据在 data/chuci-shen.js） */
+  function buildShenBlock(D) {
+    var sh = D.book, meta = D._meta, kids = [];
+    kids.push(el('p', { 'class': 'dj-note', text: meta.answer }));
+    var facts = [['神话书架的分类', sh.cat + (meta.catLine ? '：' + meta.catLine : '')]];
+    if (sh.core) facts.push(['核心五部之一', sh.core]);
+    facts.push(['成书年代', sh.year]);
+    facts.push(['作者、编者或署名', sh.author]);
+    facts.push(['代表篇目', sh.chapters]);
+    if (sh.common) facts.push(['常见内容', sh.common]);
+    kids.push(el('dl', { 'class': 'dj-facts' }, facts.map(function (r) {
+      return el('div', { 'class': 'dj-facts-row' }, [el('dt', { text: r[0] }), el('dd', { text: r[1] })]);
+    })));
+    kids.push(el('p', { 'class': 'dj-p', text: sh.intro }));
+    if (sh.tip) kids.push(el('div', { 'class': 'dj-shen-tip' }, [el('b', { text: '读的时候注意　' }), document.createTextNode(sh.tip)]));
+    if (sh.people && sh.people.length) {
+      kids.push(el('p', { 'class': 'dj-shen-label', text: '在上古神话里，这些人物的故事见于这本书' }));
+      kids.push(el('div', { 'class': 'dj-shen-chips' }, sh.people.map(function (n) {
+        return el('a', { 'class': 'dj-sh-chip', href: 'shenhua.html?id=' + encodeURIComponent(n), text: n });
+      })));
+    }
+    if (sh.purposes && sh.purposes.length) {
+      kids.push(el('p', { 'class': 'dj-shen-label', text: '想读什么，先翻哪本' }));
+      kids.push(el('ul', { 'class': 'dj-shen-purposes' }, sh.purposes.map(function (pp) {
+        return el('li', {}, [
+          el('span', { 'class': 'dj-shen-want', text: pp.want }),
+          el('span', { 'class': 'dj-shen-books' }, pp.books.map(function (b) {
+            return b.id ? el('a', { 'class': 'dj-sh-chip', href: 'dianji-book.html?id=' + encodeURIComponent(b.id), text: '《' + b.name + '》' })
+                        : el('span', { 'class': 'dj-sh-chip is-here', text: '《' + b.name + '》' });
+          }))
+        ]);
+      })));
+    }
+    kids.push(el('p', { 'class': 'dj-note', text: meta.eraNote }));
+    kids.push(el('p', { 'class': 'dj-note', text: meta.tip }));
+    kids.push(el('p', { 'class': 'dj-note' }, [el('a', { href: 'shenhua.html', text: '去看“上古神话”人物图谱 →' })]));
+    var sec = Z.section('与神灵的联系 · 在上古神话书架中', kids);
+    if (sec && sec.setAttribute) sec.setAttribute('id', 'shen');
+    return sec;
   }
 
   window.ZHIFOU_WENPOETS = { mount: mount };
