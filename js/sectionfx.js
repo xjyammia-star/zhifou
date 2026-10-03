@@ -1,6 +1,6 @@
 /* 知否知否 · 板块切换动画
    ----------------------------------------------------------
-   进入某个板块首页时，在页面上方播放一小段动画，然后淡出，露出内容。八个板块各有一段：
+   进入某个板块首页时，在页面上方播放一小段动画，然后淡出，露出内容。九个板块各有一段：
      shi（时令）    ：按当前季节飘落——春花瓣、夏萤火、秋落叶、冬细雪；
      shen（神灵）   ：仙气云雾从下方升起、飘散，夹着金色光点；
      jianzhu（建筑）：台基、立柱、斗拱、屋顶的线条一笔一笔“画”出来；
@@ -8,7 +8,8 @@
      ziyu（字语）   ：竹叶飘落，墨色在中间晕开，浮现板块名；
      lisi（礼思）   ：一卷竹简从中间向两边展开；
      yi（艺术）     ：一笔带飞白的水墨横扫过画面，最后落下一枚朱红印章；
-     wen（文学）    ：诗句里的字一个个闪现，最后停在“文学”两个字上。
+     wen（文学）    ：诗句里的字一个个闪现，最后停在“文学”两个字上；
+     dianji（典籍） ：书架上的线装书一本本从下面立起来，书签上是“经史子集”这样的字，最后停在“典籍”两个字上。
    触发规则写在 js/nav.js 里（只在点一级导航切换板块时播放，同一次访问每个板块只播一次）。
    想马上看效果：在这个板块首页的网址后面加 ?fx=1 再打开。
    动画期间点一下、按键或滚动，会立刻淡出结束；系统开了“减少动态效果”则不播放。
@@ -79,6 +80,17 @@
     'display:flex;align-items:center;justify-content:center;font-family:"Ma Shan Zheng","Noto Serif SC",serif;font-size:clamp(28px,4.6vw,50px);line-height:1;',
     'border-radius:3px;opacity:0;animation:zfxStamp .5s cubic-bezier(.2,.9,.3,1) 1.25s both}',
     '@keyframes zfxStamp{0%{opacity:0;transform:scale(1.8) rotate(-6deg)}60%{opacity:.95;transform:scale(.96) rotate(-3deg)}100%{opacity:.95;transform:scale(1) rotate(-3deg)}}',
+    /* 典籍 */
+    '.zfx-dianji{background:rgba(18,13,9,.95);animation:zfxWenBox 2.6s ease-in-out both}',
+    '.zfx-shelf{position:absolute;left:5%;right:5%;bottom:9%;height:46vh;display:flex;align-items:flex-end;justify-content:center;gap:3px;border-bottom:3px solid #8a6a3c}',
+    '.zfx-bk{position:relative;flex:0 0 auto;border-radius:2px 2px 0 0;box-shadow:inset -3px 0 0 rgba(0,0,0,.3),inset 3px 0 0 rgba(255,255,255,.06);',
+    'transform:translateY(112%);animation:zfxBook .75s cubic-bezier(.2,.8,.25,1) var(--d,0s) both}',
+    '.zfx-bk::before,.zfx-bk::after{content:"";position:absolute;left:50%;width:5px;height:5px;border-radius:50%;background:rgba(240,220,170,.55);transform:translateX(-50%)}',
+    '.zfx-bk::before{bottom:5%}.zfx-bk::after{bottom:16%}',
+    '.zfx-bk i{position:absolute;left:50%;top:8%;transform:translateX(-50%);width:62%;padding:7px 0;background:#f1e6c8;color:#5a2a16;font-style:normal;font-weight:600;',
+    'font-family:"Ma Shan Zheng","Noto Serif SC",serif;font-size:clamp(14px,2vw,22px);line-height:1;text-align:center;box-shadow:0 0 0 1px rgba(90,42,22,.4)}',
+    '@keyframes zfxBook{from{transform:translateY(112%)}to{transform:none}}',
+    '.zfx-dianji .zfx-title{top:30%;color:#f0dcaa;text-shadow:0 0 20px rgba(230,200,140,.5);animation:zfxTitle 1.5s ease-out .95s both}',
     /* 动画播放时，页面内容稍后从下方浮出 */
     '.zf-fx-shen #app{animation:zfxRise 1.2s ease-out .55s both}',
     '.zf-fx-wen #app{animation:zfxRise 1s ease-out .9s both}',
@@ -87,7 +99,8 @@
     '.zf-fx-wu #app{animation:zfxRise 1s ease-out 1.2s both}',
     '.zf-fx-ziyu #app{animation:zfxRise 1s ease-out 1s both}',
     '.zf-fx-lisi #app{animation:zfxRise 1s ease-out 1.7s both}',
-    '.zf-fx-yi #app{animation:zfxRise 1s ease-out 1.6s both}'
+    '.zf-fx-yi #app{animation:zfxRise 1s ease-out 1.6s both}',
+    '.zf-fx-dianji #app{animation:zfxRise 1s ease-out 1.6s both}'
   ].join('');
 
   function rnd(a, b) { return a + Math.random() * (b - a); }
@@ -501,6 +514,31 @@
     });
   }
 
+  /* ---------- 典籍：书架上的线装书一本本立起来 ---------- */
+  var BK_POOL = '经史子集易书诗礼乐春秋论孟老庄墨韩兵医算农天地文道法';
+  var BK_COLS = ['#2d4a63', '#375672', '#4c3b2c', '#25414f', '#5d4733', '#33425a', '#3f3a2e'];
+  function dianji(layer, ctl) {
+    var shelf = document.createElement('div');
+    shelf.className = 'zfx-shelf';
+    var n = Math.max(8, Math.min(26, Math.floor(window.innerWidth * 0.9 / 42))), i, bk, lab;
+    /* 书签上的字：把字池打乱后依次取，尽量不重复 */
+    var chars = BK_POOL.split('').sort(function () { return Math.random() - 0.5; });
+    for (i = 0; i < n; i++) {
+      bk = document.createElement('div');
+      bk.className = 'zfx-bk';
+      bk.style.height = Math.round(rnd(62, 100)) + '%';
+      bk.style.width = Math.round(rnd(30, 48)) + 'px';
+      bk.style.background = BK_COLS[i % BK_COLS.length];
+      bk.style.setProperty('--d', (i / n * 0.6 + rnd(0, 0.15)).toFixed(2) + 's');
+      lab = document.createElement('i');
+      lab.textContent = chars[i % chars.length];
+      bk.appendChild(lab);
+      shelf.appendChild(bk);
+    }
+    layer.insertBefore(shelf, layer.firstChild);
+    after(ctl, 2600);
+  }
+
   var EFFECTS = {
     shi: { title: '时令', run: shi },
     shen: { title: '神灵', run: shen },
@@ -509,7 +547,8 @@
     ziyu: { title: '字语', run: ziyu },
     lisi: { title: '礼思', run: lisi },
     yi: { title: '艺术', run: yi },
-    wen: { title: '文学', run: wen }
+    wen: { title: '文学', run: wen },
+    dianji: { title: '典籍', run: dianji }
   };
 
   var playing = false;
