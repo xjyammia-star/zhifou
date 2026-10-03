@@ -681,6 +681,20 @@ window.ZHIFOU_IMAGES = {
     'qiwu/entry': { id: 'zhifou/qiwu/entry', v: 1791038409, dw: 900, dh: 386, crop: 1, caption: '器物', source: '', ai: true },
     'qiwu/fushi': { id: 'zhifou/qiwu/fushi', v: 1791038411, dw: 900, dh: 386, crop: 1, caption: '服饰', source: '', ai: true },
     'qiwu/wenfang': { id: 'zhifou/qiwu/wenfang', v: 1791038412, dw: 900, dh: 386, crop: 1, caption: '文房四宝', source: '', ai: true },
-    'yi/entry': { id: 'zhifou/yi/entry', v: 1791038414, dw: 900, dh: 386, crop: 1, caption: '艺 · 琴棋书画', source: '', ai: true }
+    'yi/entry': { id: 'zhifou/yi/entry', v: 1791038414, dw: 900, dh: 386, crop: 1, caption: '艺 · 琴棋书画', source: '', ai: true },
+    'fushi/zhou_mianfu': { id: 'zhifou/fushi/zhou_mianfu', v: 1791047369, dw: 900, dh: 675, crop: 1, caption: '周代 · 冕服（示意图）', source: '', ai: true },
+    'fushi/han_qujv': { id: 'zhifou/fushi/han_qujv', v: 1791047371, dw: 900, dh: 675, crop: 1, caption: '汉代 · 女子曲裾深衣（示意图）', source: '', ai: true },
+    'fushi/han_guanyuan': { id: 'zhifou/fushi/han_guanyuan', v: 1791047372, dw: 900, dh: 675, crop: 1, caption: '汉代 · 官员朝服与进贤冠（示意图）', source: '', ai: true },
+    'fushi/weijin_shiren': { id: 'zhifou/fushi/weijin_shiren', v: 1791047374, dw: 900, dh: 675, crop: 1, caption: '魏晋 · 士人大袖衫与幅巾（示意图）', source: '', ai: true },
+    'fushi/tang_guanyuan': { id: 'zhifou/fushi/tang_guanyuan', v: 1791047377, dw: 900, dh: 675, crop: 1, caption: '唐代 · 官员圆领袍与软脚幞头（示意图）', source: '', ai: true },
+    'fushi/tang_nvzi': { id: 'zhifou/fushi/tang_nvzi', v: 1791047378, dw: 900, dh: 675, crop: 1, caption: '唐代 · 女子襦裙与披帛（示意图）', source: '', ai: true },
+    'fushi/song_guanyuan': { id: 'zhifou/fushi/song_guanyuan', v: 1791047380, dw: 900, dh: 675, crop: 1, caption: '宋代 · 官员公服与直脚幞头（示意图）', source: '', ai: true },
+    'fushi/song_shiren': { id: 'zhifou/fushi/song_shiren', v: 1791047382, dw: 900, dh: 675, crop: 1, caption: '宋代 · 士人襕衫与东坡巾（示意图）', source: '', ai: true },
+    'fushi/song_nvzi': { id: 'zhifou/fushi/song_nvzi', v: 1791047384, dw: 900, dh: 675, crop: 1, caption: '宋代 · 女子褙子与褶裙（示意图）', source: '', ai: true },
+    'fushi/yuan_nan': { id: 'zhifou/fushi/yuan_nan', v: 1791047386, dw: 900, dh: 675, crop: 1, caption: '元代 · 蒙古贵族辫线袄与钹笠帽（示意图）', source: '', ai: true },
+    'fushi/ming_wenguan': { id: 'zhifou/fushi/ming_wenguan', v: 1791047388, dw: 900, dh: 675, crop: 1, caption: '明代 · 一品文官常服与补子（示意图）', source: '', ai: true },
+    'fushi/ming_nvzi': { id: 'zhifou/fushi/ming_nvzi', v: 1791047390, dw: 900, dh: 675, crop: 1, caption: '明代 · 女子袄裙（示意图）', source: '', ai: true },
+    'fushi/qing_wenguan': { id: 'zhifou/fushi/qing_wenguan', v: 1791047392, dw: 900, dh: 675, crop: 1, caption: '清代 · 一品文官补服与朝珠（示意图）', source: '', ai: true },
+    'fushi/qing_manv': { id: 'zhifou/fushi/qing_manv', v: 1791047394, dw: 900, dh: 675, crop: 1, caption: '清代 · 满族贵妇旗装与旗头（示意图）', source: '', ai: true }
   }
 };

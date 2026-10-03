@@ -19,6 +19,12 @@
 .zf-scenes { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; }
 .zf-scenes .zf { margin: 0; }
 
+/* 服饰图鉴：图下面先是“朝代 · 名称”，再是看点，最后是“AI 生成插画”标记 */
+.zf-fushi .zf-cap { flex-direction: column; align-items: flex-start; gap: 2px; opacity: 1; }
+.zf-fushi .zf-cap strong { font-size: 14px; }
+.zf-fushi .zf-cap .zf-txt { opacity: 0.82; }
+.zf-fushi .zf-cap .zf-ai { margin-top: 2px; }
+
 @media (max-width: 720px) {
   .zf-grid { grid-template-columns: 1fr; }
   .zf-scenes { gap: 8px; }
