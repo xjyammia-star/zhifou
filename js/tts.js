@@ -11,7 +11,7 @@
   'use strict';
 
   var PAGE = document.body.getAttribute('data-page') || '';
-  var PAGES = { jieqi: scanJieqi, shenhua: scanShenhua };
+  var PAGES = { jieqi: scanJieqi, shenhua: scanShenhua, tangshi: scanWenModal };
   if (!PAGES[PAGE]) return;
   var synth = window.speechSynthesis;
   if (!synth || !window.SpeechSynthesisUtterance) return;
@@ -86,7 +86,7 @@
   function setBtn(b, on) {
     b.classList.toggle('is-on', on);
     b.setAttribute('aria-pressed', on ? 'true' : 'false');
-    b.innerHTML = (on ? ICON_STOP : ICON_PLAY) + '<span class="zf-tts-t">' + (on ? '停' : '听') + '</span>';
+    b.innerHTML = (on ? ICON_STOP : ICON_PLAY) + '<span class="zf-tts-t">' + (on ? '停' : (b._txt || '听')) + '</span>';
   }
   function stop() {
     token++;
@@ -129,12 +129,13 @@
     Array.prototype.forEach.call(c.querySelectorAll('.zf-tts, .zf-tts-row'), function (x) { x.parentNode.removeChild(x); });
     return (c.textContent || '').replace(/\s+/g, ' ').trim();
   }
-  function mk(getText, label) {
+  function mk(getText, label, txt) {
     var b = document.createElement('button');
     b.type = 'button';
     b.className = 'zf-tts';
+    b._txt = txt || '听';
     b.setAttribute('aria-label', '朗读：' + (label || '这一段'));
-    b.title = '朗读这一段';
+    b.title = '朗读：' + (label || '这一段');
     setBtn(b, false);
     b.addEventListener('click', function (e) { e.preventDefault(); e.stopPropagation(); play(b, getText()); });
     return b;
@@ -213,6 +214,37 @@
     });
   }
 
+  /* ---------- 唐诗等“卡片墙”页：点开一首作品的弹窗（整页只有一个弹窗，内容每次替换） ----------
+     弹窗里放一排固定的按钮：听原文、听译文（没有译文就隐藏）、听讲解（没有讲解就隐藏）。注解和逐句解读不读。 */
+  function poemText(card) {
+    var title = tx(card.querySelector('.wr-char-modal-title'));
+    var lines = Array.prototype.map.call(card.querySelectorAll('.tp-modal-poem p'), function (p) {
+      var t = tx(p);
+      return /[。！？；，、：]$/.test(t) ? t : t + '，';      /* 每句末尾补个标点，读的时候才有停顿 */
+    });
+    return (title ? title + '。' : '') + lines.join(' ');
+  }
+  function scanWenModal() {
+    var card = document.querySelector('.tp-modal-card');
+    if (!card) return;
+    var row = null;
+    for (var i = 0; i < card.children.length; i++) if (card.children[i].classList.contains('zf-tts-row')) row = card.children[i];
+    if (!row) {
+      row = document.createElement('div');
+      row.className = 'zf-tts-row';
+      row._b = {
+        poem: mk(function () { return poemText(card); }, '原文', '听原文'),
+        trans: mk(function () { return tx(card.querySelector('.tp-trans-body')); }, '白话译文', '听译文'),
+        note: mk(function () { return tx(card.querySelector('.tp-modal-note')); }, '讲解', '听讲解')
+      };
+      row.appendChild(row._b.poem); row.appendChild(row._b.trans); row.appendChild(row._b.note);
+      var poem = card.querySelector('.tp-modal-poem');
+      card.insertBefore(row, poem || null);
+    }
+    row._b.trans.hidden = !tx(card.querySelector('.tp-trans-body'));
+    row._b.note.hidden = !tx(card.querySelector('.tp-modal-note'));
+  }
+
   /* ---------- 样式 ---------- */
   var css =
     '.zf-tts{display:inline-flex;align-items:center;gap:4px;margin-left:.8em;padding:2px 11px 2px 8px;min-height:28px;vertical-align:middle;' +
@@ -222,13 +254,14 @@
     '.zf-tts:hover,.zf-tts:focus-visible{opacity:1;background:rgba(128,128,128,.16)}' +
     '.zf-tts.is-on{opacity:1;background:rgba(194,161,90,.24);border-color:var(--zy-gold,#c2a15a)}' +
     'dt .zf-tts{display:flex;width:max-content;margin:6px 0 0 0}' +
-    '.zf-tts-row{margin:0 0 6px}.zf-tts-row .zf-tts{margin-left:0}' +
+    '.zf-tts[hidden]{display:none}' +
+    '.zf-tts-row{margin:0 0 8px;display:flex;flex-wrap:wrap;gap:8px}.zf-tts-row .zf-tts{margin-left:0}' +
     '.zf-tts-fab{position:fixed;right:18px;bottom:calc(22px + env(safe-area-inset-bottom,0px));z-index:41;width:46px;height:46px;padding:0;border-radius:50%;' +
     'cursor:pointer;display:flex;align-items:center;justify-content:center;color:#f6ecd8;background:rgba(43,38,34,.9);border:1px solid var(--zy-gold,#c2a15a);' +
     'box-shadow:0 4px 16px rgba(0,0,0,.4);-webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px)}' +
     '.zf-tts-fab svg{width:22px;height:22px;display:block}' +
     '.zf-tts-fab:hover,.zf-tts-fab:focus-visible,.zf-tts-fab[aria-expanded="true"]{background:rgba(70,58,48,.96)}' +
-    'body.zf-has-tts .zf-totop{bottom:calc(76px + env(safe-area-inset-bottom,0px))}' +
+    'body.zf-has-tts .zf-totop, body.zf-has-tts .tp-totop{bottom:calc(76px + env(safe-area-inset-bottom,0px))}' +
     '.zf-tts-panel{position:fixed;right:18px;bottom:calc(78px + env(safe-area-inset-bottom,0px));z-index:42;width:292px;max-width:calc(100vw - 24px);box-sizing:border-box;' +
     'padding:14px 16px 12px;color:#f3e9d6;background:rgba(36,31,27,.97);border:1px solid var(--zy-gold,#c2a15a);border-radius:10px;box-shadow:0 10px 30px rgba(0,0,0,.5);' +
     'font-size:14px;line-height:1.7}' +
@@ -243,7 +276,9 @@
     '.zf-tts-try:hover{background:rgba(194,161,90,.22)}' +
     '.zf-tts-tip{margin:10px 0 0;font-size:12px;line-height:1.7;color:#b9ad97}' +
     '@media (max-width:600px){.zf-tts-fab{right:12px;bottom:calc(16px + env(safe-area-inset-bottom,0px));width:42px;height:42px}' +
-    'body.zf-has-tts .zf-totop{bottom:calc(66px + env(safe-area-inset-bottom,0px))}.zf-tts-panel{right:12px;bottom:calc(66px + env(safe-area-inset-bottom,0px))}}';
+    'body.zf-has-tts .zf-totop, body.zf-has-tts .tp-totop{bottom:calc(66px + env(safe-area-inset-bottom,0px))}.zf-tts-panel{right:12px;bottom:calc(66px + env(safe-area-inset-bottom,0px))}}' +
+    /* 电脑宽度下，设置钮和面板盖在作品弹窗（层级 60）之上，边听边调语速；手机上弹窗占满屏，不盖 */
+    '@media (min-width:900px){.zf-tts-fab{z-index:61}.zf-tts-panel{z-index:62}}';
 
   /* ---------- 设置面板 ---------- */
   function buildPanel() {
@@ -309,7 +344,17 @@
   /* ---------- 启动：等中文语音出现；一直没有就什么都不显示 ---------- */
   var started = false, scanTimer = null;
   function scan() { try { PAGES[PAGE](); } catch (e) { /* 页面结构变了也不能影响页面 */ } }
-  function schedule() { if (scanTimer) return; scanTimer = setTimeout(function () { scanTimer = null; scan(); if (current && !document.body.contains(current)) stop(); }, 60); }
+  function schedule() {
+    if (scanTimer) return;
+    scanTimer = setTimeout(function () {
+      scanTimer = null;
+      scan();
+      if (!current) return;
+      /* 正在读的那一块已经不在页面上了（换页、重画），或所在的弹窗已经关上，就停 */
+      var ov = current.closest ? current.closest('.wr-char-modal-overlay') : null;
+      if (!document.body.contains(current) || (ov && !ov.classList.contains('is-open'))) stop();
+    }, 60);
+  }
   function start() {
     if (started) return;
     if (!pickVoices()) return;
@@ -317,7 +362,7 @@
     chooseVoice();
     buildPanel();
     scan();
-    try { new MutationObserver(schedule).observe(document.body, { childList: true, subtree: true }); } catch (e) { /* 忽略 */ }
+    try { new MutationObserver(schedule).observe(document.body, { childList: true, subtree: true, attributes: true, attributeFilter: ['aria-hidden'] }); } catch (e) { /* 忽略 */ }
     window.addEventListener('pagehide', stop);
     document.addEventListener('visibilitychange', function () { if (document.hidden) stop(); });
   }
