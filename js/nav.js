@@ -300,3 +300,60 @@
   }
   if (document.body) start(); else document.addEventListener('DOMContentLoaded', start);
 })();
+
+/* 页脚“数据统计”按钮：放在“知否知否 · 中国传统文化百科”旁边。
+   点击时才加载 data/site-stats.js 和 js/stats.js（数字由 工具脚本\生成站点统计.js 自动生成），平时不增加页面负担。 */
+(function () {
+  'use strict';
+  if (window.__zfStatsBtn) return;
+  window.__zfStatsBtn = 1;
+
+  var st = document.createElement('style');
+  st.textContent =
+    '.zf-foot-left{display:inline-flex;align-items:center;flex-wrap:wrap;gap:6px 14px}' +
+    '.zf-stats-btn{display:inline-flex;align-items:center;min-height:26px;padding:2px 12px;font:inherit;font-size:12px;letter-spacing:.14em;line-height:1.5;' +
+    'color:inherit;background:transparent;border:1px solid currentColor;border-radius:999px;opacity:.78;cursor:pointer}' +
+    '.zf-stats-btn:hover,.zf-stats-btn:focus-visible{opacity:1;background:rgba(128,128,128,.16)}' +
+    '.zf-stats-btn[disabled]{opacity:.5;cursor:wait}';
+  document.head.appendChild(st);
+
+  function loadScript(src, cb) {
+    var s = document.createElement('script');
+    s.src = src;
+    s.onload = function () { cb(true); };
+    s.onerror = function () { cb(false); };
+    document.head.appendChild(s);
+  }
+  function openStats(btn) {
+    if (window.ZFStats && window.ZF_STATS) { window.ZFStats.open(); return; }
+    btn.disabled = true;
+    loadScript('data/site-stats.js', function (ok1) {
+      if (!ok1) { btn.disabled = false; return; }
+      loadScript('js/stats.js', function (ok2) {
+        btn.disabled = false;
+        if (ok2 && window.ZFStats) window.ZFStats.open();
+      });
+    });
+  }
+  function mount() {
+    var inner = document.querySelector('.site-footer .footer-inner');
+    if (!inner || inner.querySelector('.zf-stats-btn')) return;
+    var first = inner.firstElementChild;
+    var btn = document.createElement('button');
+    btn.type = 'button';
+    btn.className = 'zf-stats-btn';
+    btn.textContent = '数据统计';
+    btn.setAttribute('aria-haspopup', 'dialog');
+    btn.addEventListener('click', function () { openStats(btn); });
+    if (first) {
+      var wrap = document.createElement('span');
+      wrap.className = 'zf-foot-left';
+      inner.insertBefore(wrap, first);
+      wrap.appendChild(first);
+      wrap.appendChild(btn);
+    } else {
+      inner.appendChild(btn);
+    }
+  }
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', mount); else mount();
+})();
