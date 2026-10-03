@@ -665,6 +665,22 @@ window.ZHIFOU_IMAGES = {
     'wenxue/chuci': { id: 'zhifou/wenxue/chuci', v: 1790924569, dw: 900, dh: 386, crop: 1, caption: '楚辞', source: '', ai: true },
     'wenxue/tangshi': { id: 'zhifou/wenxue/tangshi', v: 1790924570, dw: 900, dh: 386, crop: 1, caption: '唐诗', source: '', ai: true },
     'wenxue/songci': { id: 'zhifou/wenxue/songci', v: 1790924572, dw: 900, dh: 386, crop: 1, caption: '宋词', source: '', ai: true },
-    'wenxue/yuanqu': { id: 'zhifou/wenxue/yuanqu', v: 1790924575, dw: 900, dh: 386, crop: 1, caption: '元曲', source: '', ai: true }
+    'wenxue/yuanqu': { id: 'zhifou/wenxue/yuanqu', v: 1790924575, dw: 900, dh: 386, crop: 1, caption: '元曲', source: '', ai: true },
+    'ziyu/entry': { id: 'zhifou/ziyu/entry', v: 1791038391, dw: 900, dh: 386, crop: 1, caption: '字语', source: '', ai: true },
+    'ziyu/hanzi': { id: 'zhifou/ziyu/hanzi', v: 1791038393, dw: 900, dh: 386, crop: 1, caption: '汉字', source: '', ai: true },
+    'ziyu/ciyu': { id: 'zhifou/ziyu/ciyu', v: 1791038394, dw: 900, dh: 386, crop: 1, caption: '词语的古今', source: '', ai: true },
+    'ziyu/chengwei': { id: 'zhifou/ziyu/chengwei', v: 1791038396, dw: 900, dh: 386, crop: 1, caption: '称谓与名字', source: '', ai: true },
+    'ziyu/wanwu': { id: 'zhifou/ziyu/wanwu', v: 1791038397, dw: 900, dh: 386, crop: 1, caption: '天地万物的名字', source: '', ai: true },
+    'ziyu/yanse': { id: 'zhifou/ziyu/yanse', v: 1791038398, dw: 900, dh: 386, crop: 1, caption: '传统颜色', source: '', ai: true },
+    'lisi/entry': { id: 'zhifou/lisi/entry', v: 1791038400, dw: 900, dh: 386, crop: 1, caption: '礼思', source: '', ai: true },
+    'lisi/liyi': { id: 'zhifou/lisi/liyi', v: 1791038401, dw: 900, dh: 386, crop: 1, caption: '礼仪', source: '', ai: true },
+    'lisi/jiaoyu': { id: 'zhifou/lisi/jiaoyu', v: 1791038403, dw: 900, dh: 386, crop: 1, caption: '教育与蒙学', source: '', ai: true },
+    'lisi/keju': { id: 'zhifou/lisi/keju', v: 1791038404, dw: 900, dh: 386, crop: 1, caption: '科举与官职', source: '', ai: true },
+    'lisi/sixiang': { id: 'zhifou/lisi/sixiang', v: 1791038405, dw: 900, dh: 386, crop: 1, caption: '诸子与思想', source: '', ai: true },
+    'lisi/yinyang': { id: 'zhifou/lisi/yinyang', v: 1791038407, dw: 900, dh: 386, crop: 1, caption: '阴阳五行与八卦', source: '', ai: true },
+    'qiwu/entry': { id: 'zhifou/qiwu/entry', v: 1791038409, dw: 900, dh: 386, crop: 1, caption: '器物', source: '', ai: true },
+    'qiwu/fushi': { id: 'zhifou/qiwu/fushi', v: 1791038411, dw: 900, dh: 386, crop: 1, caption: '服饰', source: '', ai: true },
+    'qiwu/wenfang': { id: 'zhifou/qiwu/wenfang', v: 1791038412, dw: 900, dh: 386, crop: 1, caption: '文房四宝', source: '', ai: true },
+    'yi/entry': { id: 'zhifou/yi/entry', v: 1791038414, dw: 900, dh: 386, crop: 1, caption: '艺 · 琴棋书画', source: '', ai: true }
   }
 };

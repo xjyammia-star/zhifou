@@ -55,7 +55,23 @@
     chuci: ['wenxue', 'chuci'],
     tangshi: ['wenxue', 'tangshi'],
     songci: ['wenxue', 'songci'],
-    yuanqu: ['wenxue', 'yuanqu']
+    yuanqu: ['wenxue', 'yuanqu'],
+    ziyu: ['ziyu', 'entry'],
+    hanzi: ['ziyu', 'hanzi'],
+    ciyu: ['ziyu', 'ciyu'],
+    chengwei: ['ziyu', 'chengwei'],
+    wanwu: ['ziyu', 'wanwu'],
+    yanse: ['ziyu', 'yanse'],
+    lisi: ['lisi', 'entry'],
+    liyi: ['lisi', 'liyi'],
+    jiaoyu: ['lisi', 'jiaoyu'],
+    keju: ['lisi', 'keju'],
+    sixiang: ['lisi', 'sixiang'],
+    yinyang: ['lisi', 'yinyang'],
+    wu: ['qiwu', 'entry'],
+    fushi: ['qiwu', 'fushi'],
+    wenfang: ['qiwu', 'wenfang'],
+    yi: ['yi', 'entry']
   };
 
   /* 四大发明工艺图示：页面 -> 图名（登记类别 sifaming）。指南针目前只有 3 张，罗盘图重画后再补。 */
