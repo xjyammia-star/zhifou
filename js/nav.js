@@ -357,3 +357,22 @@
   }
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', mount); else mount();
 })();
+
+/* 知否知否 · 规范网址（canonical）：告诉搜索引擎“这一页的正本在 culture.ischoolthai.cn”，
+   旧的 vercel 地址也能打开时，不会被当成两个重复的网站。
+   只保留 id 参数（节气、典籍、陵墓等内容页靠它区分），其他参数一律不算。
+   要换域名，只改下面的 CANON_SITE。 */
+(function () {
+  'use strict';
+  var CANON_SITE = 'https://culture.ischoolthai.cn';
+  try {
+    if (document.querySelector('link[rel="canonical"]')) return;
+    var path = location.pathname.replace(/index\.html$/, '');
+    if (path.charAt(0) !== '/') path = '/' + path;
+    var id = new URLSearchParams(location.search).get('id');
+    var href = CANON_SITE + path + (id ? '?id=' + encodeURIComponent(id) : '');
+    var link = document.createElement('link');
+    link.rel = 'canonical'; link.href = href;
+    document.head.appendChild(link);
+  } catch (e) { /* 忽略 */ }
+})();

@@ -1,0 +1,6 @@
+# 知否知否 · 给搜索引擎和 AI 抓取程序看的说明
+# 允许抓取全站；各页是否收录，由页面自己的 robots 标记决定
+User-agent: *
+Allow: /
+
+Sitemap: https://culture.ischoolthai.cn/sitemap.xml
