@@ -116,7 +116,7 @@
           var bx = XS[STOP] + 40, by2 = sy(XS[STOP]) - 132;
           ctx.fillStyle = '#fff5dc'; ctx.strokeStyle = INK; ctx.lineWidth = 2.5;
           ctx.beginPath(); ctx.ellipse(bx, by2, 26, 20, 0, 0, Math.PI * 2); ctx.fill(); ctx.stroke();
-          ctx.fillStyle = INK; ctx.font = '22px KaiTi, STKaiti, serif'; ctx.textAlign = 'center'; ctx.fillText('诗', bx, by2 + 8); ctx.textAlign = 'left';
+          ctx.fillStyle = INK; ctx.font = '22px "Ma Shan Zheng", "Noto Serif SC", serif'; ctx.textAlign = 'center'; ctx.fillText('诗', bx, by2 + 8); ctx.textAlign = 'left';
         }
       }
     });
@@ -378,7 +378,7 @@
         line(ctx, gxp + 20, 250, gxp + 20, 150, 8, INK); line(ctx, gxp + 20, 250, gxp + 20, 150, 4, '#c9302c');
         line(ctx, gxp - 20, 152, gxp + 20, 152, 6, INK);
         ctx.fillStyle = '#f7f0de'; ctx.strokeStyle = INK; ctx.lineWidth = 2.5; ctx.beginPath(); ctx.arc(bx, by, 7, 0, Math.PI * 2); ctx.fill(); ctx.stroke();
-        if (t > 9.2) { ctx.fillStyle = '#c9302c'; ctx.font = '18px KaiTi, STKaiti, serif'; ctx.fillText('入门', gxp - 18, 138); }
+        if (t > 9.2) { ctx.fillStyle = '#c9302c'; ctx.font = '18px "Ma Shan Zheng", "Noto Serif SC", serif'; ctx.fillText('入门', gxp - 18, 138); }
       }
     });
   };
