@@ -67,7 +67,7 @@
   };
 
   /* 名著：章节 key -> 图名前缀（登记类别 mingzhu） */
-  var BOOKS = { sanguo: 'sanguo', xiyouji: 'xiyou', shuihu: 'shuihu', honglou: 'honglou', fengshen: 'fengshen' };
+  var BOOKS = { sanguo: 'sanguo', xiyouji: 'xiyou', shuihu: 'shuihu', honglou: 'honglou', fengshen: 'fengshen', liaozhai: 'liaozhai', jinpingmei: 'jinpingmei' };
   /* 每本书的图：hero 是放在最上面的那张大图，rest 是下面 2×2 的四张小图（都是横版 21:9 左右）。
      以前的竖版封面已取消；想换大图，只要改这里的 hero 即可。 */
   var SCENES = {
@@ -75,7 +75,9 @@
     xiyou: { hero: 'shitu', rest: ['shixia', 'naotiangong', 'huoyan', 'baigujing'] },
     shuihu: { hero: 'juyi', rest: ['wusong', 'luzhishen', 'linchong', 'shengchen'] },
     honglou: { hero: 'daguanyuan', rest: ['daiyu', 'baochai', 'xiangyun', 'shengqin'] },
-    fengshen: { hero: 'fengshentai', rest: ['jiangziya', 'nezha', 'mushi', 'yangjian'] }
+    fengshen: { hero: 'fengshentai', rest: ['jiangziya', 'nezha', 'mushi', 'yangjian'] },
+    liaozhai: { hero: 'xiaoqian', rest: ['yingning', 'huapi', 'cuzhi', 'xifangping'] },
+    jinpingmei: { hero: 'qinghe', rest: ['yuanxiao', 'zhangfang', 'jinlian', 'shuaiqiu'] }
   };
 
   if (BANNERS[page]) {
