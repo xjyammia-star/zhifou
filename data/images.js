@@ -695,6 +695,18 @@ window.ZHIFOU_IMAGES = {
     'fushi/ming_wenguan': { id: 'zhifou/fushi/ming_wenguan', v: 1791047388, dw: 900, dh: 675, crop: 1, caption: '明代 · 一品文官常服与补子（示意图）', source: '', ai: true },
     'fushi/ming_nvzi': { id: 'zhifou/fushi/ming_nvzi', v: 1791047390, dw: 900, dh: 675, crop: 1, caption: '明代 · 女子袄裙（示意图）', source: '', ai: true },
     'fushi/qing_wenguan': { id: 'zhifou/fushi/qing_wenguan', v: 1791047392, dw: 900, dh: 675, crop: 1, caption: '清代 · 一品文官补服与朝珠（示意图）', source: '', ai: true },
-    'fushi/qing_manv': { id: 'zhifou/fushi/qing_manv', v: 1791047394, dw: 900, dh: 675, crop: 1, caption: '清代 · 满族贵妇旗装与旗头（示意图）', source: '', ai: true }
+    'fushi/qing_manv': { id: 'zhifou/fushi/qing_manv', v: 1791047394, dw: 900, dh: 675, crop: 1, caption: '清代 · 满族贵妇旗装与旗头（示意图）', source: '', ai: true },
+    'fushi/han_pingmin': { id: 'zhifou/fushi/han_pingmin', v: 1791049783, dw: 900, dh: 675, crop: 1, caption: '秦汉 · 平民男子短褐（示意图）', source: '', ai: true },
+    'fushi/beichao_hufu': { id: 'zhifou/fushi/beichao_hufu', v: 1791049787, dw: 900, dh: 675, crop: 1, caption: '北朝 · 鲜卑男子裤褶服（示意图）', source: '', ai: true },
+    'fushi/song_pingmin_nv': { id: 'zhifou/fushi/song_pingmin_nv', v: 1791049784, dw: 900, dh: 675, crop: 1, caption: '宋代 · 平民女子短襦布裙（示意图）', source: '', ai: true },
+    'fushi/yuan_nvzi': { id: 'zhifou/fushi/yuan_nvzi', v: 1791049788, dw: 900, dh: 675, crop: 1, caption: '元代 · 蒙古贵族女子袍服（示意图）', source: '', ai: true },
+    'fushi/ming_huangdi': { id: 'zhifou/fushi/ming_huangdi', v: 1791049775, dw: 900, dh: 675, crop: 1, caption: '明代 · 皇帝常服与翼善冠（示意图）', source: '', ai: true },
+    'fushi/ming_mingfu': { id: 'zhifou/fushi/ming_mingfu', v: 1791049777, dw: 900, dh: 675, crop: 1, caption: '明代 · 命妇凤冠霞帔（示意图）', source: '', ai: true },
+    'fushi/ming_wuguan': { id: 'zhifou/fushi/ming_wuguan', v: 1791049780, dw: 900, dh: 675, crop: 1, caption: '明代 · 一品武官常服与补子（示意图）', source: '', ai: true },
+    'fushi/qing_huangdi': { id: 'zhifou/fushi/qing_huangdi', v: 1791049778, dw: 900, dh: 675, crop: 1, caption: '清代 · 皇帝龙袍（示意图）', source: '', ai: true },
+    'fushi/qing_wuguan': { id: 'zhifou/fushi/qing_wuguan', v: 1791049781, dw: 900, dh: 675, crop: 1, caption: '清代 · 一品武官补服与朝珠（示意图）', source: '', ai: true },
+    'fushi/qing_pingmin_nan': { id: 'zhifou/fushi/qing_pingmin_nan', v: 1791049785, dw: 900, dh: 675, crop: 1, caption: '清代 · 男子长袍马甲与瓜皮帽（示意图）', source: '', ai: true },
+    'fushi/minguo_qipao': { id: 'zhifou/fushi/minguo_qipao', v: 1791049790, dw: 900, dh: 675, crop: 1, caption: '民国 · 旗袍（示意图）', source: '', ai: true },
+    'fushi/zhongshan_zhuang': { id: 'zhifou/fushi/zhongshan_zhuang', v: 1791049791, dw: 900, dh: 675, crop: 1, caption: '近现代 · 中山装（示意图）', source: '', ai: true }
   }
 };
