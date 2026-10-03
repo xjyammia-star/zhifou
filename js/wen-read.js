@@ -250,6 +250,18 @@
 
     document.title = (D.hook || '') + ' · 知否知否';
 
+    /* 从首页抽卡等地方带着 #wr-书名 过来时，直接滚到那一本（页面内容是脚本生成的，浏览器自己不会跳） */
+    (function () {
+      var m = /^#wr-([\w-]+)$/.exec(location.hash || '');
+      if (!m) return;
+      var go = function () {
+        var t = document.getElementById('wr-' + m[1]);
+        if (t && t.scrollIntoView) t.scrollIntoView({ block: 'start' });
+      };
+      setTimeout(go, 50);
+      window.addEventListener('load', function () { setTimeout(go, 150); });
+    })();
+
     /* 有 relations 数据的段落（目前只有"三国演义"），把人物名字高亮成可点击标签，
        点了以后弹出居中卡片显示这个人物的关系网 */
     var allRelations = {};
