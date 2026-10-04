@@ -719,6 +719,27 @@ window.ZHIFOU_IMAGES = {
     'fushi/qing_hanzu_nv': { id: 'zhifou/fushi/qing_hanzu_nv', v: 1791086241, dw: 900, dh: 675, crop: 1, caption: '清代 · 汉族女子袄裙（示意图）', source: '', ai: true },
     'fushi/qing_huanghou': { id: 'zhifou/fushi/qing_huanghou', v: 1791086242, dw: 900, dh: 675, crop: 1, caption: '清代 · 皇后朝服与朝冠（示意图）', source: '', ai: true },
     'fushi/minguo_nan': { id: 'zhifou/fushi/minguo_nan', v: 1791086244, dw: 900, dh: 675, crop: 1, caption: '民国 · 男子长衫与礼帽（示意图）', source: '', ai: true },
-    'fushi/minguo_nvxuesheng': { id: 'zhifou/fushi/minguo_nvxuesheng', v: 1791086245, dw: 900, dh: 675, crop: 1, caption: '民国 · 女学生装（示意图）', source: '', ai: true }
+    'fushi/minguo_nvxuesheng': { id: 'zhifou/fushi/minguo_nvxuesheng', v: 1791086245, dw: 900, dh: 675, crop: 1, caption: '民国 · 女学生装（示意图）', source: '', ai: true },
+    'wenyang/zhang_ri': { id: 'zhifou/wenyang/zhang_ri', v: 1791090252, dw: 900, dh: 900, crop: 1, caption: '十二章纹 · 日（示意图）', source: '', ai: true },
+    'wenyang/zhang_yue': { id: 'zhifou/wenyang/zhang_yue', v: 1791090253, dw: 900, dh: 900, crop: 1, caption: '十二章纹 · 月（示意图）', source: '', ai: true },
+    'wenyang/zhang_xingchen': { id: 'zhifou/wenyang/zhang_xingchen', v: 1791090255, dw: 900, dh: 900, crop: 1, caption: '十二章纹 · 星辰（示意图）', source: '', ai: true },
+    'wenyang/zhang_shan': { id: 'zhifou/wenyang/zhang_shan', v: 1791090256, dw: 900, dh: 900, crop: 1, caption: '十二章纹 · 山（示意图）', source: '', ai: true },
+    'wenyang/zhang_long': { id: 'zhifou/wenyang/zhang_long', v: 1791090258, dw: 900, dh: 900, crop: 1, caption: '十二章纹 · 龙（示意图）', source: '', ai: true },
+    'wenyang/zhang_huachong': { id: 'zhifou/wenyang/zhang_huachong', v: 1791090259, dw: 900, dh: 900, crop: 1, caption: '十二章纹 · 华虫（示意图）', source: '', ai: true },
+    'wenyang/zhang_zongyi': { id: 'zhifou/wenyang/zhang_zongyi', v: 1791090260, dw: 900, dh: 900, crop: 1, caption: '十二章纹 · 宗彝（示意图）', source: '', ai: true },
+    'wenyang/zhang_zao': { id: 'zhifou/wenyang/zhang_zao', v: 1791090262, dw: 900, dh: 900, crop: 1, caption: '十二章纹 · 藻（示意图）', source: '', ai: true },
+    'wenyang/zhang_huo': { id: 'zhifou/wenyang/zhang_huo', v: 1791090263, dw: 900, dh: 900, crop: 1, caption: '十二章纹 · 火（示意图）', source: '', ai: true },
+    'wenyang/zhang_fenmi': { id: 'zhifou/wenyang/zhang_fenmi', v: 1791090264, dw: 900, dh: 900, crop: 1, caption: '十二章纹 · 粉米（示意图）', source: '', ai: true },
+    'wenyang/wen_long': { id: 'zhifou/wenyang/wen_long', v: 1791090266, dw: 900, dh: 900, crop: 1, caption: '传统纹样 · 龙纹（示意图）', source: '', ai: true },
+    'wenyang/wen_feng': { id: 'zhifou/wenyang/wen_feng', v: 1791090267, dw: 900, dh: 900, crop: 1, caption: '传统纹样 · 凤鸟纹（示意图）', source: '', ai: true },
+    'wenyang/wen_qilin': { id: 'zhifou/wenyang/wen_qilin', v: 1791090268, dw: 900, dh: 900, crop: 1, caption: '传统纹样 · 麒麟（示意图）', source: '', ai: true },
+    'wenyang/wen_xianhe': { id: 'zhifou/wenyang/wen_xianhe', v: 1791090270, dw: 900, dh: 900, crop: 1, caption: '传统纹样 · 仙鹤（示意图）', source: '', ai: true },
+    'wenyang/wen_bianfu': { id: 'zhifou/wenyang/wen_bianfu', v: 1791090272, dw: 900, dh: 900, crop: 1, caption: '传统纹样 · 蝙蝠（示意图）', source: '', ai: true },
+    'wenyang/wen_mudan': { id: 'zhifou/wenyang/wen_mudan', v: 1791090273, dw: 900, dh: 900, crop: 1, caption: '传统纹样 · 牡丹（示意图）', source: '', ai: true },
+    'wenyang/wen_lianhua': { id: 'zhifou/wenyang/wen_lianhua', v: 1791090274, dw: 900, dh: 900, crop: 1, caption: '传统纹样 · 莲花（示意图）', source: '', ai: true },
+    'wenyang/wen_sijunzi': { id: 'zhifou/wenyang/wen_sijunzi', v: 1791090276, dw: 900, dh: 900, crop: 1, caption: '传统纹样 · 梅兰竹菊（示意图）', source: '', ai: true },
+    'wenyang/wen_yunwen': { id: 'zhifou/wenyang/wen_yunwen', v: 1791090277, dw: 900, dh: 900, crop: 1, caption: '传统纹样 · 云纹（示意图）', source: '', ai: true },
+    'wenyang/wen_tuanhua': { id: 'zhifou/wenyang/wen_tuanhua', v: 1791090278, dw: 900, dh: 900, crop: 1, caption: '传统纹样 · 团花（示意图）', source: '', ai: true },
+    'wenyang/wen_haishui': { id: 'zhifou/wenyang/wen_haishui', v: 1791090280, dw: 900, dh: 900, crop: 1, caption: '传统纹样 · 海水江崖纹（示意图）', source: '', ai: true }
   }
 };

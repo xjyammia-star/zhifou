@@ -95,6 +95,51 @@
     return Z.section('历代服饰图鉴', kids);
   }
 
+  /* 纹样图示：十二章纹 10 张、传统纹样 11 张，图在 data/images.js 的 wenyang 类别；说明文字沿用上方正文里的“一句话”，不另写 */
+  var ZHANG = [
+    ['zhang_ri', '日', '日、月、星辰一组：光明，照临，天地的秩序。'],
+    ['zhang_yue', '月', '日、月、星辰一组：光明，照临，天地的秩序。'],
+    ['zhang_xingchen', '星辰', '日、月、星辰一组：光明，照临，天地的秩序。'],
+    ['zhang_shan', '山', '稳重、承载和镇定。'],
+    ['zhang_long', '龙', '变化、应时和帝王权力。'],
+    ['zhang_huachong', '华虫', '文采和礼仪。'],
+    ['zhang_zongyi', '宗彝', '宗庙、孝敬和祭祀秩序。'],
+    ['zhang_zao', '藻', '洁净、文采，或水草意象。'],
+    ['zhang_huo', '火', '光明，向上。'],
+    ['zhang_fenmi', '粉米', '滋养、民食和农政。']
+  ];
+  var WEN = [
+    ['wen_long', '龙纹', '象征权力、变化、降雨和祥瑞；不同朝代的龙爪、角、鳞、姿态和使用等级不同。'],
+    ['wen_feng', '凤鸟纹', '常与婚礼、女性、祥瑞和礼仪相关；早期的凤鸟形象，与后世固定的“凤凰”图像不能完全等同。'],
+    ['wen_qilin', '麒麟', '与祥瑞相关；明清的武官补子上也用走兽，一品武官的补子是狮子（明）或麒麟（清）。'],
+    ['wen_xianhe', '仙鹤', '与长寿、品格相关；明清一品文官的补子用仙鹤。'],
+    ['wen_bianfu', '蝙蝠', '借“蝠”与“福”谐音，形成吉祥联想。'],
+    ['wen_mudan', '牡丹', '富贵、繁盛和华丽。'],
+    ['wen_lianhua', '莲花', '清净，出淤泥而不染，也和佛教相关。'],
+    ['wen_sijunzi', '梅、兰、竹、菊', '后世合称“四君子”，与文人品格相关；具体的服装纹样，并不都有严格的道德寓意。'],
+    ['wen_yunwen', '云纹', '常作连续的边饰或填充纹样。'],
+    ['wen_tuanhua', '团花', '适合织锦、刺绣和宫廷服饰。'],
+    ['wen_haishui', '海水江崖纹', '常见于宫廷礼服的下摆，常被解释为山河与江山秩序。']
+  ];
+
+  function wyFigure(g) {
+    var info = window.ZIMG && window.ZIMG.get('wenyang', g[0]);
+    if (!info) return null;
+    var img = el('img', { 'class': 'zf-img', src: info.src, srcset: info.srcset, sizes: '(max-width: 720px) 94vw, 440px', alt: g[1] + '纹样示意图', loading: 'lazy', decoding: 'async' });
+    if (info.width && info.height) { img.width = info.width; img.height = info.height; }
+    return el('figure', { 'class': 'zf zf-fushi' }, [img, el('figcaption', { 'class': 'zf-cap' }, [
+      el('strong', { text: g[1] }),
+      el('span', { 'class': 'zf-txt', text: g[2] }),
+      el('span', { 'class': 'zf-ai', text: info.aiLabel })
+    ])]);
+  }
+
+  function wyGallery(title, noteText, list) {
+    var figs = list.map(wyFigure).filter(Boolean);
+    if (!figs.length) return document.createDocumentFragment();
+    return Z.section(title, [Z.note(noteText), el('div', { 'class': 'zf-grid zf-fushi-grid' }, figs)]);
+  }
+
   LS.mkPage({
     D: D,
     eyebrow: '器物 · 服饰',
@@ -110,11 +155,13 @@
       { key: 'guan', label: '官服与礼仪', blocks: [
         { sec: '官服与礼服制度', grid: 'is-3' },
         { sec: '十二章纹' },
+        { custom: function () { return wyGallery('十二章纹图示', '下面是十二章中的十章示意图，黼、黻两章是几何形纹样，图示另行补充。图是 AI 绘制的，只表现每一章常见的图案构成，具体样式随朝代和制度而变。', ZHANG); } },
         { sec: '不同场合的服装' }
       ] },
       { key: 'se', label: '色彩纹样与织造', blocks: [
         { sec: '服饰色彩', grid: 'is-3' },
         { sec: '传统纹样' },
+        { custom: function () { return wyGallery('传统纹样图示', '下面是常见传统纹样的示意图。图是 AI 绘制的，只是典型构图的示意，不对应某一件具体的文物；同一种纹样在不同时代、不同器物上的画法差别很大，寓意也会随场合变化。', WEN); } },
         { sec: '织造与染色', grid: 'is-3' }
       ] },
       { key: 'shi', label: '朝代演变', blocks: [
