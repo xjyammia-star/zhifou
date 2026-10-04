@@ -741,6 +741,19 @@ window.ZHIFOU_IMAGES = {
     'wenyang/wen_sijunzi': { id: 'zhifou/wenyang/wen_sijunzi', v: 1791090276, dw: 900, dh: 900, crop: 1, caption: '传统纹样 · 梅兰竹菊（示意图）', source: '', ai: true },
     'wenyang/wen_yunwen': { id: 'zhifou/wenyang/wen_yunwen', v: 1791090277, dw: 900, dh: 900, crop: 1, caption: '传统纹样 · 云纹（示意图）', source: '', ai: true },
     'wenyang/wen_tuanhua': { id: 'zhifou/wenyang/wen_tuanhua', v: 1791090278, dw: 900, dh: 900, crop: 1, caption: '传统纹样 · 团花（示意图）', source: '', ai: true },
-    'wenyang/wen_haishui': { id: 'zhifou/wenyang/wen_haishui', v: 1791090280, dw: 900, dh: 900, crop: 1, caption: '传统纹样 · 海水江崖纹（示意图）', source: '', ai: true }
+    'wenyang/wen_haishui': { id: 'zhifou/wenyang/wen_haishui', v: 1791090280, dw: 900, dh: 900, crop: 1, caption: '传统纹样 · 海水江崖纹（示意图）', source: '', ai: true },
+    'wenyang/zhang_fu_axe': { id: 'zhifou/wenyang/zhang_fu_axe', v: 1791092269, dw: 900, dh: 900, crop: 1, caption: '十二章纹 · 黼（示意图）', source: '', ai: true },
+    'wenyang/zhang_fu_ji': { id: 'zhifou/wenyang/zhang_fu_ji', v: 1791092270, dw: 900, dh: 900, crop: 1, caption: '十二章纹 · 黻（示意图）', source: '', ai: true },
+    'wenyang/wen_huiwen': { id: 'zhifou/wenyang/wen_huiwen', v: 1791092271, dw: 900, dh: 900, crop: 1, caption: '传统纹样 · 回纹（示意图）', source: '', ai: true },
+    'wenyang/wen_leiwen': { id: 'zhifou/wenyang/wen_leiwen', v: 1791092273, dw: 900, dh: 900, crop: 1, caption: '传统纹样 · 云雷纹（示意图）', source: '', ai: true },
+    'wenyang/guan_mian': { id: 'zhifou/wenyang/guan_mian', v: 1791092274, dw: 900, dh: 900, crop: 1, caption: '冠帽 · 冕冠（示意图）', source: '', ai: true },
+    'wenyang/guan_jinxian': { id: 'zhifou/wenyang/guan_jinxian', v: 1791092274, dw: 900, dh: 900, crop: 1, caption: '冠帽 · 进贤冠（示意图）', source: '', ai: true },
+    'wenyang/guan_pibian': { id: 'zhifou/wenyang/guan_pibian', v: 1791092275, dw: 900, dh: 900, crop: 1, caption: '冠帽 · 皮弁（示意图）', source: '', ai: true },
+    'wenyang/guan_zhang': { id: 'zhifou/wenyang/guan_zhang', v: 1791092276, dw: 900, dh: 900, crop: 1, caption: '冠帽 · 平巾帻（示意图）', source: '', ai: true },
+    'wenyang/guan_futou': { id: 'zhifou/wenyang/guan_futou', v: 1791092277, dw: 900, dh: 900, crop: 1, caption: '冠帽 · 软脚幞头（示意图）', source: '', ai: true },
+    'wenyang/guan_wusha': { id: 'zhifou/wenyang/guan_wusha', v: 1791092277, dw: 900, dh: 900, crop: 1, caption: '冠帽 · 乌纱帽（示意图）', source: '', ai: true },
+    'wenyang/guan_dongpo': { id: 'zhifou/wenyang/guan_dongpo', v: 1791092278, dw: 900, dh: 900, crop: 1, caption: '冠帽 · 东坡巾（示意图）', source: '', ai: true },
+    'wenyang/guan_fengguan': { id: 'zhifou/wenyang/guan_fengguan', v: 1791092279, dw: 900, dh: 900, crop: 1, caption: '冠帽 · 凤冠（示意图）', source: '', ai: true },
+    'wenyang/guan_boli': { id: 'zhifou/wenyang/guan_boli', v: 1791092280, dw: 900, dh: 900, crop: 1, caption: '冠帽 · 钹笠帽（示意图）', source: '', ai: true }
   }
 };

@@ -106,7 +106,20 @@
     ['zhang_zongyi', '宗彝', '宗庙、孝敬和祭祀秩序。'],
     ['zhang_zao', '藻', '洁净、文采，或水草意象。'],
     ['zhang_huo', '火', '光明，向上。'],
-    ['zhang_fenmi', '粉米', '滋养、民食和农政。']
+    ['zhang_fenmi', '粉米', '滋养、民食和农政。'],
+    ['zhang_fu_axe', '黼', '斧形，取决断之意。'],
+    ['zhang_fu_ji', '黻', '两个“己”字相背或相向，常解释为辨别。']
+  ];
+  var GUAN = [
+    ['guan_mian', '冕冠', '冕板前后垂旒，配冕服，用于祭祀等重大礼仪。'],
+    ['guan_jinxian', '进贤冠', '汉代官员常见的冠式，前低后高，有梁。'],
+    ['guan_pibian', '皮弁', '以皮革缝合的尖顶冠，缝处缀玉，用于礼仪场合。'],
+    ['guan_zhang', '平巾帻', '裹头的巾帻，汉代常见，后部隆起。'],
+    ['guan_futou', '软脚幞头', '唐代常见，软布制成，后面垂两条软脚。'],
+    ['guan_wusha', '乌纱帽', '明代官员常服所戴，圆顶，后面左右各一翅。'],
+    ['guan_dongpo', '东坡巾', '宋代士人所戴的高筒软巾，相传因苏轼常戴而得名。'],
+    ['guan_fengguan', '凤冠', '明代命妇礼服所配，冠上缀凤和珠花，两侧垂珠串。'],
+    ['guan_boli', '钹笠帽', '元代蒙古人常戴的圆顶宽檐帽，形如倒扣的钹。']
   ];
   var WEN = [
     ['wen_long', '龙纹', '象征权力、变化、降雨和祥瑞；不同朝代的龙爪、角、鳞、姿态和使用等级不同。'],
@@ -118,6 +131,8 @@
     ['wen_lianhua', '莲花', '清净，出淤泥而不染，也和佛教相关。'],
     ['wen_sijunzi', '梅、兰、竹、菊', '后世合称“四君子”，与文人品格相关；具体的服装纹样，并不都有严格的道德寓意。'],
     ['wen_yunwen', '云纹', '常作连续的边饰或填充纹样。'],
+    ['wen_huiwen', '回纹', '方折回旋的连续纹样，常作边饰。'],
+    ['wen_leiwen', '雷纹（云雷纹）', '螺旋形的连续纹样，常见于青铜器，也用作织物边饰；图中为云雷纹式样。'],
     ['wen_tuanhua', '团花', '适合织锦、刺绣和宫廷服饰。'],
     ['wen_haishui', '海水江崖纹', '常见于宫廷礼服的下摆，常被解释为山河与江山秩序。']
   ];
@@ -125,7 +140,7 @@
   function wyFigure(g) {
     var info = window.ZIMG && window.ZIMG.get('wenyang', g[0]);
     if (!info) return null;
-    var img = el('img', { 'class': 'zf-img', src: info.src, srcset: info.srcset, sizes: '(max-width: 720px) 94vw, 440px', alt: g[1] + '纹样示意图', loading: 'lazy', decoding: 'async' });
+    var img = el('img', { 'class': 'zf-img', src: info.src, srcset: info.srcset, sizes: '(max-width: 720px) 94vw, 440px', alt: g[1] + '示意图', loading: 'lazy', decoding: 'async' });
     if (info.width && info.height) { img.width = info.width; img.height = info.height; }
     return el('figure', { 'class': 'zf zf-fushi' }, [img, el('figcaption', { 'class': 'zf-cap' }, [
       el('strong', { text: g[1] }),
@@ -150,12 +165,13 @@
         { sec: '看服饰的六个方面' },
         { sec: '“汉服”的三个层面', grid: 'is-3' },
         { sec: '基本服装形制' },
-        { sec: '冠服' }
+        { sec: '冠服' },
+        { custom: function () { return wyGallery('冠帽图示', '下面是九种常见冠帽的示意图，大致按时代排列；直脚幞头、方巾、清代暖帽的图示另行补充。图是 AI 绘制的，参照文献和传世图像画出大致形制，帽子等小件在细节上只是示意，不对应某一件具体的文物。', GUAN); } }
       ] },
       { key: 'guan', label: '官服与礼仪', blocks: [
         { sec: '官服与礼服制度', grid: 'is-3' },
         { sec: '十二章纹' },
-        { custom: function () { return wyGallery('十二章纹图示', '下面是十二章中的十章示意图，黼、黻两章是几何形纹样，图示另行补充。图是 AI 绘制的，只表现每一章常见的图案构成，具体样式随朝代和制度而变。', ZHANG); } },
+        { custom: function () { return wyGallery('十二章纹图示', '下面是十二章的示意图。图是 AI 绘制的，只表现每一章常见的图案构成，具体样式随朝代和制度而变。', ZHANG); } },
         { sec: '不同场合的服装' }
       ] },
       { key: 'se', label: '色彩纹样与织造', blocks: [
