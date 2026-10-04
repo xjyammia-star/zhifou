@@ -104,6 +104,7 @@
         { page: 'tangshi', label: '唐诗', href: 'tangshi.html' },
         { page: 'songci', label: '宋词', href: 'songci.html' },
         { page: 'yuanqu', label: '元曲', href: 'yuanqu.html' },
+        { page: 'qingci', label: '清词', href: 'qingci.html' },
         { page: 'mingqing', label: '名著', href: 'mingqing.html' }
       ]
     },

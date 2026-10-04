@@ -56,6 +56,7 @@
     tangshi: ['wenxue', 'tangshi'],
     songci: ['wenxue', 'songci'],
     yuanqu: ['wenxue', 'yuanqu'],
+    qingci: ['wenxue', 'songci'],
     ziyu: ['ziyu', 'entry'],
     hanzi: ['ziyu', 'hanzi'],
     ciyu: ['ziyu', 'ciyu'],
