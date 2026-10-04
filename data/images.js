@@ -666,6 +666,7 @@ window.ZHIFOU_IMAGES = {
     'wenxue/tangshi': { id: 'zhifou/wenxue/tangshi', v: 1790924570, dw: 900, dh: 386, crop: 1, caption: '唐诗', source: '', ai: true },
     'wenxue/songci': { id: 'zhifou/wenxue/songci', v: 1790924572, dw: 900, dh: 386, crop: 1, caption: '宋词', source: '', ai: true },
     'wenxue/yuanqu': { id: 'zhifou/wenxue/yuanqu', v: 1790924575, dw: 900, dh: 386, crop: 1, caption: '元曲', source: '', ai: true },
+    'wenxue/qingci': { id: 'zhifou/wenxue/qingci', v: 1791090998, dw: 900, dh: 386, crop: 1, caption: '清词', source: '', ai: true },
     'ziyu/entry': { id: 'zhifou/ziyu/entry', v: 1791038391, dw: 900, dh: 386, crop: 1, caption: '字语', source: '', ai: true },
     'ziyu/hanzi': { id: 'zhifou/ziyu/hanzi', v: 1791038393, dw: 900, dh: 386, crop: 1, caption: '汉字', source: '', ai: true },
     'ziyu/ciyu': { id: 'zhifou/ziyu/ciyu', v: 1791038394, dw: 900, dh: 386, crop: 1, caption: '词语的古今', source: '', ai: true },
