@@ -32,6 +32,23 @@
   function stripHuida(v) { return v.replace(/的回答$/, ''); }
   function stripHoulai(v) { return v.replace(/后来$/, ''); }
 
+  /* 插图：从 data/images.js 里按名字取图（登记键 sixiang/名字）；没登记就不显示，页面照常 */
+  function figBlock(name) {
+    return function () {
+      var info = window.ZIMG && window.ZIMG.get('sixiang', name);
+      if (!info) return el('div', { style: 'display:none' });
+      var kids = [];
+      var img = el('img', { 'class': 'zf-img', src: info.src, srcset: info.srcset, sizes: '(max-width: 760px) 94vw, 900px', alt: info.caption || '', loading: 'lazy', decoding: 'async' });
+      if (info.width && info.height) { img.width = info.width; img.height = info.height; }
+      kids.push(img);
+      var cap = [];
+      if (info.caption) cap.push(el('span', { 'class': 'zf-txt', text: info.caption }));
+      if (info.ai) cap.push(el('span', { 'class': 'zf-ai', text: info.aiLabel }));
+      kids.push(el('figcaption', { 'class': 'zf-cap' }, cap));
+      return el('figure', { 'class': 'zf zf-banner' }, kids);
+    };
+  }
+
   LS.mkPage({
     D: D,
     eyebrow: '礼思 · 诸子与思想',
@@ -39,6 +56,7 @@
     tabs: [
       { key: 'zhuzi', label: '诸子百家', blocks: [
         { sec: '为什么会有诸子百家', grid: 'is-wide' },
+        { custom: figBlock('sixiang-guanxi') },
         { sec: '诸子在争什么', kind: 'table', wide: true, cols: [['学派', '@name', stripHuida], ['人性', '人性'], ['治国', '治国'], ['战争', '战争'], ['天命鬼神', '天命鬼神'], ['礼乐', '礼乐']] },
         { sec: '诸子十家', grid: 'is-wide' },
         { sec: '十家、九流与兵家', grid: 'is-wide' }
@@ -64,6 +82,7 @@
         { sec: '道家与道教的区别', grid: 'is-wide' }
       ] },
       { key: 'zhuxian', label: '思想史主线', blocks: [
+        { custom: figBlock('sixiang-timeline') },
         { sec: '思想史主线', grid: 'is-wide' },
         { sec: '诸子后来去了哪里', kind: 'table', cols: [['先秦学派', '@name', stripHoulai], ['后来的主要变化', '主要变化']] },
         { sec: '董仲舒与“罢黜百家”', grid: 'is-wide' },
@@ -78,6 +97,7 @@
       { key: 'jingdian', label: '经典', blocks: [
         { sec: '四书', grid: 'is-wide' },
         { sec: '四书怎么读', grid: 'is-wide' },
+        { custom: figBlock('daxue-batiaomu') },
         { sec: '《大学》的八条目', kind: 'steps', grid: 'is-wide' },
         { sec: '四书里的常用典故', grid: 'is-wide' },
         { sec: '五经', grid: 'is-wide' },

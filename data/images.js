@@ -754,6 +754,9 @@ window.ZHIFOU_IMAGES = {
     'wenyang/guan_wusha': { id: 'zhifou/wenyang/guan_wusha', v: 1791092277, dw: 900, dh: 900, crop: 1, caption: '冠帽 · 乌纱帽（示意图）', source: '', ai: true },
     'wenyang/guan_dongpo': { id: 'zhifou/wenyang/guan_dongpo', v: 1791092278, dw: 900, dh: 900, crop: 1, caption: '冠帽 · 东坡巾（示意图）', source: '', ai: true },
     'wenyang/guan_fengguan': { id: 'zhifou/wenyang/guan_fengguan', v: 1791092279, dw: 900, dh: 900, crop: 1, caption: '冠帽 · 凤冠（示意图）', source: '', ai: true },
-    'wenyang/guan_boli': { id: 'zhifou/wenyang/guan_boli', v: 1791092280, dw: 900, dh: 900, crop: 1, caption: '冠帽 · 钹笠帽（示意图）', source: '', ai: true }
+    'wenyang/guan_boli': { id: 'zhifou/wenyang/guan_boli', v: 1791092280, dw: 900, dh: 900, crop: 1, caption: '冠帽 · 钹笠帽（示意图）', source: '', ai: true },
+    'sixiang/sixiang-timeline': { id: 'zhifou/sixiang/sixiang-timeline', v: 1791120303, dw: 900, dh: 506, crop: 1, caption: '思想史长卷（示意图）：竹简与杏坛、书卷、竹林与酒杯、佛塔、书院与书斋，象征从先秦到清代的思想流变', source: '', ai: true },
+    'sixiang/sixiang-guanxi': { id: 'zhifou/sixiang/sixiang-guanxi', v: 1791120302, dw: 900, dh: 506, crop: 1, caption: '诸子百家之树（示意图）：竹简与亭子（儒家）、仙鹤与流水（道家）、弓与城楼（墨家）、天平与铜鼎（法家）', source: '', ai: true },
+    'sixiang/daxue-batiaomu': { id: 'zhifou/sixiang/daxue-batiaomu', v: 1791120300, dw: 900, dh: 506, crop: 1, caption: '《大学》八条目的意象（示意图）：沿石阶由近及远，一级一级向上', source: '', ai: true }
   }
 };
