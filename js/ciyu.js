@@ -93,9 +93,15 @@
     return out;
   }
 
+  /* ---------- 标签三：补充条目 ---------- */
+  function buildBu() {
+    return [Z.section('补充条目', Z.suppl(D, ['古今异义词', '成语典故', '佛教传入的词', '外来词古例', '方位与时间词'], { before: function () { tabsApi.show('bu'); } }))];
+  }
+
   tabsApi = Z.tabs([
     { key: 'ci', label: '词源', build: buildCi },
-    { key: 'shu', label: '数字成语', build: buildShu }
+    { key: 'shu', label: '数字成语', build: buildShu },
+    { key: 'bu', label: '补充条目', build: buildBu }
   ]);
 
   Z.mount(root, [Z.head(D, '字语 · 词语的古今'), tabsApi.node, Z.see(D)].concat(Z.tipNotes(D)));

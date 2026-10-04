@@ -89,6 +89,7 @@
       Z.note(nx.bold['说明']),
       el('div', { 'class': 'zy-grid is-3' }, nx.items.map(function (it) { return Z.card({ name: it.name, isStatic: true, body: [Z.kv(it.f)] }); }))
     ]),
+    Z.section('补充条目', Z.suppl(D, ['天体与天气', '山水地形', '动物名称', '天下与中国'])),
     Z.see(D)
   ].concat(Z.tipNotes(D)));
   document.title = '天地万物的名字 · 字语 · 知否知否';

@@ -106,6 +106,7 @@
     Z.section('容易混淆的词', [el('div', { 'class': 'zy-grid is-wide' }, hx.items.map(function (it) { return Z.card({ name: it.name, sub: Z.fmap(it.f)['区别'], isStatic: true, body: [] }); }))]),
     Z.section('整理原则', [Z.note(zl.bold['说明']), el('div', { 'class': 'zy-detail zy-paper' }, [Z.kv([['五条原则', zlList]])])]),
     Z.section('出处', [el('div', { 'class': 'zy-grid is-3' }, src.items.map(function (it) { return Z.card({ name: it.name, isStatic: true, body: [Z.kv(it.f)] }); }))]),
+    Z.section('补充条目', Z.suppl(D, ['颜料与染料', '朝代尚色', '五色与间色', '瓷器色名'])),
     Z.see(D)
   ].concat(Z.tipNotes(D)));
   document.title = '传统颜色 · 字语 · 知否知否';

@@ -128,11 +128,17 @@
     return out;
   }
 
+  /* ---------- 标签五：补充条目 ---------- */
+  function buildBu() {
+    return [Z.section('补充条目', Z.suppl(D, ['年龄称谓', '谦称与敬称', '帝王自称与他称', '夫妻称谓', '师生与同门', '姓氏补充'], { before: function () { tabsApi.show('bu'); } }))];
+  }
+
   tabsApi = Z.tabs([
     { key: 'xing', label: '姓与氏', build: buildXing },
     { key: 'ming', label: '名字号', build: buildMing },
     { key: 'qin', label: '亲属', build: buildQin },
-    { key: 'gu', label: '称呼的古今', build: buildGu }
+    { key: 'gu', label: '称呼的古今', build: buildGu },
+    { key: 'bu', label: '补充条目', build: buildBu }
   ]);
 
   var yz = S('使用与查证原则');

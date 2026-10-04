@@ -145,10 +145,16 @@
     return out;
   }
 
+  /* ---------- 标签四：补充条目 ---------- */
+  function buildBu() {
+    return [Z.section('补充条目', Z.suppl(D, ['部首与偏旁', '简化与繁体', '避讳与改字', '异体字与通假', '古今读音与字典'], { before: function () { tabsApi.show('bu'); } }))];
+  }
+
   tabsApi = Z.tabs([
     { key: 'evo', label: '演变', build: buildEvo },
     { key: 'liu', label: '六书', build: buildLiu },
-    { key: 'look', label: '观察一个字', build: buildLook }
+    { key: 'look', label: '观察一个字', build: buildLook },
+    { key: 'bu', label: '补充条目', build: buildBu }
   ]);
 
   var mem = S('最简记忆版').bold;

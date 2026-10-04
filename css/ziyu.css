@@ -254,3 +254,8 @@ body.theme-zy {
   .zy-book { transition: none; }
   .zy-book:hover { transform: none; }
 }
+
+/* 补充条目：核对标记 */
+.zy-card-tag.is-check {align-self:flex-start; width:fit-content; justify-self:start; display: inline-block; padding: 0 7px; border-radius: 3px; background: #b23a30; color: #fff; letter-spacing: 0.1em; line-height: 1.7; }
+.zy-card-tag.is-check.is-part { background: #c07a1f; }
+.zy-suppl-box { margin-top: 12px; }

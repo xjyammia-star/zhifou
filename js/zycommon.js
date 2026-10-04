@@ -167,7 +167,7 @@
     if (fig) d.classList.add('has-fig');
     d.appendChild(el('summary', {}, [
       fig ? fig.frame : null,
-      o.tag ? el('span', { 'class': 'zy-card-tag', text: o.tag }) : null,
+      o.tag ? el('span', { 'class': 'zy-card-tag' + (o.tagClass ? ' ' + o.tagClass : ''), text: o.tag, title: o.tagClass ? '这一条还没有对照原典逐字核对' : null }) : null,
       el('span', { 'class': 'zy-card-name', text: o.name }),
       o.sub ? el('span', { 'class': 'zy-card-sub', text: o.sub }) : null,
       fig ? fig.cap : null
@@ -203,6 +203,39 @@
     var next = el('button', { 'class': 'zy-btn', type: 'button', text: cur < n - 1 ? names[cur + 1] + ' →' : '回到第一个' });
     next.addEventListener('click', function () { go(cur < n - 1 ? cur + 1 : 0); });
     return el('div', { 'class': 'zy-btnrow' }, [prev, next]);
+  }
+
+  /* ---------- 补充条目：按“分组”切换，卡片字段统一；“待核”显示成红色小标记 ---------- */
+  function supplCard(it) {
+    var m = fmap(it.f), g = m['把握程度'] || '';
+    var tag = null, cls = null;
+    if (g === '待核') { tag = '待核'; cls = 'is-check'; }
+    else if (g.indexOf('部分待核') >= 0) { tag = '部分待核'; cls = 'is-check is-part'; }
+    var cites = m['出处'] ? m['出处'].split('◆') : null;
+    var pairs = [['出处', cites && cites.length > 1 ? cites : m['出处']], ['常见误解', m['常见误解']], ['提醒', m['提醒']]]
+      .filter(function (p) { return p[1]; });
+    return card({ name: it.name, tag: tag, tagClass: cls, sub: m['一句话解释'], body: pairs.length ? [kv(pairs, { quote: ['出处'] })] : [] });
+  }
+  function suppl(D, groups, o) {
+    o = o || {};
+    var secs = groups.map(function (t) { return sec(D, t); }).filter(function (s) { return s.items.length; });
+    if (!secs.length) return [];
+    var box = el('div', { 'class': 'zy-suppl-box' });
+    var cards = secs.map(function (s) { return s.items.map(supplCard); });
+    var api = null;
+    function show(i) {
+      box.textContent = '';
+      if (secs[i].bold['说明']) box.appendChild(note(secs[i].bold['说明']));
+      box.appendChild(el('div', { 'class': 'zy-grid is-wide' }, cards[i]));
+    }
+    api = chips(secs.map(function (s) { return s.title + '（' + s.items.length + '）'; }), show, { scroll: true, aria: '补充条目分组' });
+    secs.forEach(function (s, i) {
+      s.items.forEach(function (it, j) {
+        onOpen(it.name, function () { if (o.before) o.before(); api.pick(i); return cards[i][j]; });
+      });
+    });
+    api.pick(0);
+    return [note(o.note || '这一部分是逐条核对出处后补充的。标有红色“待核”的条目，表示还没有对照原典逐字核对，只作参考；“部分待核”表示其中一部分还没核。'), api.node, box];
   }
 
   /* ---------- 页面末尾的几块 ---------- */
@@ -260,6 +293,6 @@
     el: el, sec: sec, fmap: fmap, parts: parts, links: links, qs: qs,
     head: head, section: section, note: note, remind: remind, callout: callout, mount: mount,
     tabs: tabs, chips: chips, kv: kv, card: card, chars: chars, words: words, prevNext: prevNext,
-    myths: myths, memory: memory, see: see, tipNotes: tipNotes, onOpen: onOpen, openFromQuery: openFromQuery
+    myths: myths, memory: memory, see: see, tipNotes: tipNotes, onOpen: onOpen, openFromQuery: openFromQuery, suppl: suppl
   };
 })();
