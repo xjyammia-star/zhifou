@@ -63,6 +63,7 @@
     chengwei: ['ziyu', 'chengwei'],
     wanwu: ['ziyu', 'wanwu'],
     yanse: ['ziyu', 'yanse'],
+    shuzi: ['ziyu', 'shuzi'],
     lisi: ['lisi', 'entry'],
     liyi: ['lisi', 'liyi'],
     jiaoyu: ['lisi', 'jiaoyu'],

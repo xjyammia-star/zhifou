@@ -68,7 +68,8 @@
         { page: 'ciyu', label: '词语的古今', href: 'ciyu.html' },
         { page: 'chengwei', label: '称谓与名字', href: 'chengwei.html' },
         { page: 'wanwu', label: '天地万物的名字', href: 'wanwu.html' },
-        { page: 'yanse', label: '传统颜色', href: 'yanse.html' }
+        { page: 'yanse', label: '传统颜色', href: 'yanse.html' },
+        { page: 'shuzi', label: '数字文化', href: 'shuzi.html' }
       ]
     },
     {

@@ -205,6 +205,8 @@
     return el('div', { 'class': 'zy-btnrow' }, [prev, next]);
   }
 
+  var LEGEND = '标有红色“待核”的条目，表示还没有对照原典逐字核对，只作参考；“部分待核”表示其中一部分还没核。';
+
   /* ---------- 补充条目：按“分组”切换，卡片字段统一；“待核”显示成红色小标记 ---------- */
   function supplCard(it) {
     var m = fmap(it.f), g = m['把握程度'] || '';
@@ -235,7 +237,75 @@
       });
     });
     api.pick(0);
-    return [note(o.note || '这一部分是逐条核对出处后补充的。标有红色“待核”的条目，表示还没有对照原典逐字核对，只作参考；“部分待核”表示其中一部分还没核。'), api.node, box];
+    return [o.note === false ? null : note(o.note || LEGEND), api.node, box];
+  }
+
+
+  /* ---------- 通用卡片、按分组筛选、一整类卡片（词语页、数字页、万物页共用） ---------- */
+  function short(s, n) { s = s || ''; return s.length > n ? s.slice(0, n) + '…' : s; }
+  /* 由“把握程度”得到红色小标记：待核 → 红；部分待核 → 琥珀 */
+  function gradeTag(g) {
+    g = g || '';
+    if (g === '待核') return { tag: '待核', cls: 'is-check' };
+    if (g.indexOf('部分待核') >= 0) return { tag: '部分待核', cls: 'is-check is-part' };
+    return { tag: null, cls: null };
+  }
+  /* 通用卡片：o = { sub: 放在卡片标题下一行的字段名, subMax: 这一行最多几个字, order: 展开后依次显示的字段, tag: 自定义小标签 } */
+  function gcard(it, o) {
+    o = o || {};
+    var m = fmap(it.f), gt = gradeTag(m['把握程度']);
+    var pairs = (o.order || []).map(function (k) {
+      var v = m[k];
+      if (v && k === '出处' && v.indexOf('◆') >= 0) v = v.split('◆');
+      return [k, v];
+    }).filter(function (p) { return p[1]; });
+    var sub = o.sub ? m[o.sub] : null;
+    if (sub && o.subMax) sub = short(sub, o.subMax);
+    return card({
+      name: it.name, tag: gt.tag || o.tag || null, tagClass: gt.tag ? gt.cls : null, sub: sub,
+      body: pairs.length ? [kv(pairs, { quote: ['出处'] })] : []
+    });
+  }
+  /* 一整个分区的卡片（不分组）：说明 + 一行“共几张” + 卡片网格；点“?id=名称”会先执行 o.before 再定位到卡片 */
+  function cardList(D, name, o) {
+    o = o || {};
+    var s = sec(D, name);
+    if (!s.items.length) return [];
+    var make = o.make || supplCard;
+    var cards = s.items.map(function (it) { return make(it, fmap(it.f)); });
+    s.items.forEach(function (it, j) { onOpen(it.name, function () { if (o.before) o.before(); return cards[j]; }); });
+    return [
+      note(s.bold['说明']),
+      note('共 ' + s.items.length + ' 张。点开一张看详情。'),
+      el('div', { 'class': 'zy-grid ' + (o.grid || 'is-wide') }, cards)
+    ];
+  }
+  /* 一排“分组”选项 + 一片卡：选哪组就只显示哪组的卡（卡片按字段“分组”归类）。
+     o = { labels: 选项上显示的短名（和 groups 一一对应）, aria, before, grid } */
+  function filtered(items, groups, make, o) {
+    o = o || {};
+    var labels = o.labels || groups;
+    var grid = el('div', { 'class': 'zy-grid' + (o.grid ? ' ' + o.grid : '') });
+    var cards = [];
+    items.forEach(function (it) {
+      var m = fmap(it.f);
+      var c = make(it, m);
+      c.setAttribute('data-group', m['分组'] || '');
+      cards.push(c);
+      grid.appendChild(c);
+    });
+    var count = function (g) { return items.filter(function (it) { return fmap(it.f)['分组'] === g; }).length; };
+    var hint = el('p', { 'class': 'zy-note', 'aria-live': 'polite' });
+    var ch = chips(['全部（' + items.length + '）'].concat(groups.map(function (g, i) { return labels[i] + '（' + count(g) + '）'; })), function (i) {
+      cards.forEach(function (c) { c.hidden = i > 0 && c.getAttribute('data-group') !== groups[i - 1]; });
+      var n = cards.filter(function (c) { return !c.hidden; }).length;
+      hint.textContent = '当前显示：' + (i === 0 ? '全部' : labels[i - 1]) + '，共 ' + n + ' 张。点开一张看详情。';
+    }, { aria: o.aria || '分组', scroll: true });
+    ch.pick(0);
+    items.forEach(function (it, i) {
+      onOpen(it.name, function () { if (o.before) o.before(); ch.pick(0); return cards[i]; });
+    });
+    return [ch.node, hint, grid];
   }
 
   /* ---------- 页面末尾的几块 ---------- */
@@ -293,6 +363,7 @@
     el: el, sec: sec, fmap: fmap, parts: parts, links: links, qs: qs,
     head: head, section: section, note: note, remind: remind, callout: callout, mount: mount,
     tabs: tabs, chips: chips, kv: kv, card: card, chars: chars, words: words, prevNext: prevNext,
-    myths: myths, memory: memory, see: see, tipNotes: tipNotes, onOpen: onOpen, openFromQuery: openFromQuery, suppl: suppl
+    myths: myths, memory: memory, see: see, tipNotes: tipNotes, onOpen: onOpen, openFromQuery: openFromQuery, suppl: suppl,
+    supplCard: supplCard, short: short, gradeTag: gradeTag, gcard: gcard, cardList: cardList, filtered: filtered, LEGEND: LEGEND
   };
 })();

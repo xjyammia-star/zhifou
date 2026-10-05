@@ -204,7 +204,7 @@ body.theme-zy {
 .zy-memory span { font-family: var(--display); font-size: 18px; line-height: 1.8; color: #24452f; }
 
 /* ---------- 入口：字典架 ---------- */
-.zy-shelf { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 12px; padding: 22px 16px 26px; background: rgba(18, 30, 23, 0.4); border-bottom: 10px solid #6b5230; border-radius: 4px 4px 0 0; }
+.zy-shelf { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; padding: 22px 16px 26px; background: rgba(18, 30, 23, 0.4); border-bottom: 10px solid #6b5230; border-radius: 4px 4px 0 0; }
 .zy-book {
   display: flex; flex-direction: column; gap: 10px; min-height: 340px; padding: 16px 14px 14px; text-decoration: none; color: #f6f1d8; position: relative;
   border-radius: 4px 4px 0 0; box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.12), 0 6px 14px rgba(0, 0, 0, 0.3); transition: transform 0.2s ease;
@@ -220,6 +220,7 @@ body.theme-zy {
 .zy-book:nth-child(3) { background: #3a5f5a; }
 .zy-book:nth-child(4) { background: #4a6a3a; }
 .zy-book:nth-child(5) { background: #5a6b4a; }
+.zy-book:nth-child(6) { background: #6a6240; }
 .zy-route { display: flex; flex-direction: column; gap: 12px; }
 .zy-route-item { padding: 14px 18px; display: flex; flex-direction: column; gap: 6px; }
 .zy-route-title { font-family: var(--display); font-size: 24px; color: #24452f; }
