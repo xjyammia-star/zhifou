@@ -378,3 +378,14 @@
     document.head.appendChild(link);
   } catch (e) { /* 忽略 */ }
 })();
+
+/* 知否知否 · 页面底部的访问次数：每个页面自动加载 js/visits.js（今日访问、累计访问） */
+(function () {
+  'use strict';
+  try {
+    var s = document.createElement('script');
+    s.src = 'js/visits.js';
+    s.defer = true;
+    document.head.appendChild(s);
+  } catch (e) { /* 忽略 */ }
+})();
