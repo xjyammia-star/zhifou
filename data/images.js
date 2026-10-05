@@ -673,6 +673,7 @@ window.ZHIFOU_IMAGES = {
     'ziyu/chengwei': { id: 'zhifou/ziyu/chengwei', v: 1791038396, dw: 900, dh: 386, crop: 1, caption: '称谓与名字', source: '', ai: true },
     'ziyu/wanwu': { id: 'zhifou/ziyu/wanwu', v: 1791038397, dw: 900, dh: 386, crop: 1, caption: '天地万物的名字', source: '', ai: true },
     'ziyu/yanse': { id: 'zhifou/ziyu/yanse', v: 1791038398, dw: 900, dh: 386, crop: 1, caption: '传统颜色', source: '', ai: true },
+    'ziyu/shuzi': { id: 'zhifou/ziyu/shuzi', v: 1791172679, dw: 900, dh: 386, crop: 1, caption: '数字文化', source: '', ai: true },
     'lisi/entry': { id: 'zhifou/lisi/entry', v: 1791038400, dw: 900, dh: 386, crop: 1, caption: '礼思', source: '', ai: true },
     'lisi/liyi': { id: 'zhifou/lisi/liyi', v: 1791038401, dw: 900, dh: 386, crop: 1, caption: '礼仪', source: '', ai: true },
     'lisi/jiaoyu': { id: 'zhifou/lisi/jiaoyu', v: 1791038403, dw: 900, dh: 386, crop: 1, caption: '教育与蒙学', source: '', ai: true },
