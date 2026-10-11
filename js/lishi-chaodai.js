@@ -192,6 +192,7 @@
 
     var pairs = [], srcPair = null;
     c.f.forEach(function (f) {
+      ctx = newCtx(D.key, selfNames);   /* 每个栏目各算各的：同一个人在不同栏目里都能点 */
       if (f.k === '出处') {
         if (f.list && f.list.length) srcPair = ['出处', el('p', { 'class': 'ss-srcs', text: f.list.join('　◆　') + (f.v ? '　' + f.v : '') })];
         return;
