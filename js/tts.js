@@ -129,7 +129,7 @@
      不读的东西（出处、署名、图片说明、另见链接、导航、按钮、表格、示意图……）统一在 NOISE 里列出来，
      取文字时先把它们从副本里去掉。每个块（段落、列表项、标题……）末尾没有标点的，补一个句号，读起来才有停顿。 */
   var NOISE = [
-    '.zf-tts', '.zf-tts-row', 'button', 'svg', 'canvas', 'select', 'input', 'textarea', 'script', 'style', 'figure', 'figcaption', 'table', 'nav', 'iframe',
+    '.zf-tts', '.zf-tts-row', '.ss-check', 'button', 'svg', 'canvas', 'select', 'input', 'textarea', 'script', 'style', 'figure', 'figcaption', 'table', 'nav', 'iframe',
     '[aria-hidden="true"]', '[hidden]',
     '.zy-notes', '.wx-notes', '.notes', 'details.notes',
     '[class*="-src"]', '[class*="source"]', '[class*="credit"]', '[class*="caption"]',
@@ -386,7 +386,29 @@
     });
   }
 
-  var SCANNERS = [scanHeads, scanSections, scanCards, scanTips, scanTerm, scanSlDialog, scanWenModal, scanWr];
+  /* ---------- 9. 历史页的人物/帝王弹窗：窗口里放一个“听介绍”，读姓名和各栏介绍（出处不读） ---------- */
+  function scanLishiModal() {
+    var card = document.querySelector('.ss-modal-card');
+    if (!card) return;
+    var body = card.querySelector('.ss-modal-body');
+    if (!body || !body.firstChild || card.querySelector('.zf-tts-row')) return;
+    var row = document.createElement('div');
+    row.className = 'zf-tts-row';
+    row.appendChild(mk(function () {
+      var parts = [tx(card.querySelector('.ss-modal-title')).replace(/[。]$/, '') + '。'];
+      Array.prototype.forEach.call(body.querySelectorAll('.zy-kv > div'), function (f) {
+        var dt = f.querySelector('dt'), dd = f.querySelector('dd');
+        if (!dt || !dd) return;
+        var label = tx(dt).replace(/[：。]$/, '');
+        if (SKIP_FIELD.test(label)) return;
+        parts.push(label + '：' + tx(dd));
+      });
+      return parts.join(' ');
+    }, '这一位的介绍', '听介绍'));
+    card.insertBefore(row, body);
+  }
+
+  var SCANNERS = [scanHeads, scanSections, scanCards, scanTips, scanTerm, scanSlDialog, scanWenModal, scanWr, scanLishiModal];
 
   /* ---------- 样式 ---------- */
   var css =
@@ -497,7 +519,7 @@
       scan();
       if (!current) return;
       /* 正在读的那一块已经不在页面上了（换页、重画），或所在的弹窗已经关上，就停 */
-      var ov = current.closest ? current.closest('.wr-char-modal-overlay') : null;
+      var ov = current.closest ? (current.closest('.wr-char-modal-overlay') || current.closest('.ss-modal-overlay')) : null;
       if (!document.body.contains(current) || (ov && !ov.classList.contains('is-open'))) stop();
     }, 80);
   }

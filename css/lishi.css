@@ -160,7 +160,7 @@ a.ss-dyn:hover { border-color: #e2c27d; box-shadow: 0 0 0 2px rgba(226, 194, 125
 /* ---------- 弹窗（宽一些，内容分两栏，少往下翻） ---------- */
 body.ss-noscroll { overflow: hidden; }
 .ss-modal-overlay {
-  position: fixed; inset: 0; z-index: 80; display: none; align-items: center; justify-content: center; padding: 14px;
+  position: fixed; inset: 0; z-index: 60; display: none; align-items: center; justify-content: center; padding: 14px;
   background: rgba(0, 0, 0, 0.72);
 }
 .ss-modal-overlay.is-open { display: flex; }

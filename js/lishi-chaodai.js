@@ -208,6 +208,8 @@
     });
     if (srcPair) pairs.push(srcPair);
     modal.body.textContent = '';
+    var oldRow = modal.card.querySelector('.zf-tts-row');   /* 换了一位人物：去掉旧的“听介绍”按钮（朗读脚本会自动停下并重新放一个） */
+    if (oldRow && oldRow.parentNode) oldRow.parentNode.removeChild(oldRow);
     modal.body.appendChild(Z.kv(pairs, { quote: [] }));
     modal.back.hidden = !stack.length;
     modal.card.scrollTop = 0;
