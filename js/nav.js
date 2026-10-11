@@ -84,6 +84,14 @@
       ]
     },
     {
+      /* “历史”板块：总览 + 一个通用的朝代页（用 ?d=朝代代号 切换朝代）。之后加“年号”“庙号与谥号”等专题页，在这里加一行 */
+      key: 'lishi', label: '历史', home: 'lishi.html',
+      items: [
+        { page: 'lishi', label: '历史总览', href: 'lishi.html' },
+        { page: 'lishi-chaodai', label: '朝代', href: 'lishi-chaodai.html' }
+      ]
+    },
+    {
       key: 'yi', label: '艺术', home: 'yi.html',
       items: [
         { page: 'yi', label: '琴棋书画', href: 'yi.html' },

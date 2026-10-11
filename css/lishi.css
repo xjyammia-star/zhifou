@@ -1,0 +1,137 @@
+/* 知否知否 · "历史"板块样式（青绢石青）
+   只在 body.theme-ss 的页面生效，不影响其他板块和首页。
+   沿用“字·语”的排版部件（zy-*，见 ziyu.css 和 zycommon.js），这里换颜色，并补几样自己的：
+   朝代总览卡、朝代切换条、帝王名单表、大事记时间轴、红色“待核”小标记。
+   底色：青绢；纸面：象牙白；点缀：石青；小印：朱。请先加载 style.css、ziyu.css，再加载本文件。 */
+body.theme-ss {
+  --zy-bg: #cdd6c6;
+  --zy-bg-2: #bfcab8;
+  --zy-paper: #f6f4e6;
+  --zy-paper-2: #faf8ec;
+  --zy-ink: #1d261f;
+  --zy-ink-2: #34403a;
+  --zy-muted: #4d5a52;
+  --zy-line: #aebba5;
+  --zy-green: #2c5560;
+  --zy-green-2: #3b6b77;
+  --zy-gold: #2c5560;
+  --zy-gold-d: #1f3f48;
+  --zy-seal: #a83a2c;
+  --zy-cream: #1d261f;
+  --zy-soft: #34403a;
+  background: var(--zy-bg);
+  background-image: linear-gradient(180deg, #d6dfd0 0%, #c3cebb 100%);
+  color: var(--zy-ink);
+}
+.theme-ss [hidden] { display: none !important; }
+.theme-ss a { color: #2c5560; }
+.theme-ss a:hover { color: #a83a2c; }
+.theme-ss a:focus-visible, .theme-ss button:focus-visible, .theme-ss summary:focus-visible, .theme-ss input:focus-visible {
+  outline: 2px solid #2c5560; outline-offset: 3px;
+}
+
+/* 页头页脚 */
+.theme-ss .site-header { border-bottom-color: rgba(31, 63, 72, 0.35); }
+.theme-ss .brand, .theme-ss .brand:hover { color: #14211b; }
+.theme-ss .brand-tagline { color: #3d4b43; border-left-color: rgba(31, 63, 72, 0.5); }
+.theme-ss .site-nav a { color: #27342d; }
+.theme-ss .site-nav a:hover, .theme-ss .site-nav a[aria-current="page"] { color: #0f1a14; }
+.theme-ss .site-nav a[aria-current="page"] { box-shadow: inset 0 -1px 0 #a83a2c; }
+.theme-ss .sub-nav { border-bottom-color: rgba(31, 63, 72, 0.35); background: rgba(250, 248, 236, 0.4); }
+.theme-ss .sub-nav-mark { color: #a83a2c; border-right-color: rgba(31, 63, 72, 0.5); }
+.theme-ss .sub-nav a { color: #27342d; }
+.theme-ss .sub-nav a:hover, .theme-ss .sub-nav a[aria-current="page"] { color: #0f1a14; }
+.theme-ss .sub-nav a[aria-current="page"] { box-shadow: inset 0 -1px 0 #a83a2c; }
+.theme-ss .footer-inner { border-top-color: rgba(31, 63, 72, 0.35); color: #3d4b43; }
+.theme-ss .empty-note { color: #3d4b43; }
+
+/* 页面骨架 */
+.theme-ss .zy-eyebrow { color: var(--zy-gold); }
+.theme-ss .zy-hook { color: #14211b; }
+.theme-ss .zy-answer { color: #1f2b24; }
+.theme-ss .zy-lead { color: var(--zy-ink-2); }
+.theme-ss .zy-sec-title { color: var(--zy-gold); }
+.theme-ss .zy-sec-title::after { background: rgba(44, 85, 96, 0.4); }
+.theme-ss .zy-note { color: var(--zy-ink-2); }
+.theme-ss .zy-remind { color: #5a3410; border-left-color: var(--zy-gold); }
+.theme-ss .zy-tab, .theme-ss .zy-chip { color: #27342d; border-color: rgba(44, 85, 96, 0.55); }
+.theme-ss .zy-tab:hover, .theme-ss .zy-chip:hover { background: rgba(44, 85, 96, 0.12); }
+.theme-ss .zy-tab[aria-selected="true"], .theme-ss .zy-chip[aria-pressed="true"] { background: #2c5560; border-color: #2c5560; color: #f3f6ee; }
+.theme-ss .zy-card { border-color: var(--zy-line); }
+.theme-ss .zy-card-name { color: #1f3f48; }
+.theme-ss .zy-card.is-hit { box-shadow: 0 0 0 3px #a83a2c; }
+.theme-ss .zy-kv .is-quote dd { color: #1f3f48; }
+.theme-ss .zy-tip { border-color: rgba(44, 85, 96, 0.6); }
+.theme-ss .zy-tip p { color: #1f2b24; }
+.theme-ss .zy-notes { border-left-color: var(--zy-gold); }
+.theme-ss .zy-notes summary { color: #3d4b43; }
+.theme-ss .zy-notes-body p { color: var(--zy-ink-2); }
+.theme-ss .zy-btn { color: var(--zy-green); border-color: var(--zy-green-2); }
+.theme-ss .zy-btn:hover { background: var(--zy-green); color: var(--zy-paper); }
+
+/* 红色“待核”小标记 */
+.ss-check {
+  display: inline-block; margin: 0 0.25em; padding: 0 6px; font-style: normal; font-size: 11.5px; line-height: 18px;
+  letter-spacing: 0.1em; color: #7a2a20; border: 1px solid #a83a2c; border-radius: 2px; vertical-align: 1px; white-space: nowrap;
+}
+.ss-check.is-part { color: #7a5a14; border-color: #b8892a; }
+
+/* ---------- 总览页：朝代卡 ---------- */
+.ss-groups { display: flex; flex-direction: column; gap: 6px; }
+.ss-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(230px, 1fr)); gap: 12px; }
+.ss-dyn {
+  display: flex; flex-direction: column; gap: 5px; padding: 14px 16px 13px; text-decoration: none; color: inherit;
+  background: var(--zy-paper); border: 1px solid var(--zy-line); border-radius: 4px; min-width: 0;
+}
+a.ss-dyn:hover { border-color: #2c5560; box-shadow: 0 0 0 2px rgba(44, 85, 96, 0.25); }
+.ss-dyn.is-soon { background: rgba(246, 244, 230, 0.55); border-style: dashed; color: var(--zy-muted); }
+.ss-dyn-name { font-family: var(--display); font-size: 26px; line-height: 1.3; color: #1f3f48; }
+.ss-dyn.is-soon .ss-dyn-name { color: #5b6a60; }
+.ss-dyn-range { font-size: 13px; letter-spacing: 0.06em; color: var(--zy-muted); }
+.ss-dyn-line { font-size: 14px; line-height: 1.75; color: var(--zy-ink-2); }
+.ss-dyn-stat { margin-top: auto; padding-top: 6px; font-size: 12.5px; color: var(--zy-muted); }
+.ss-soon-tag { font-size: 12px; letter-spacing: 0.1em; color: #5b6a60; }
+
+/* ---------- 朝代页：切换条 ---------- */
+.ss-dynbar { display: flex; gap: 8px; overflow-x: auto; padding: 2px 0 10px; margin: 0 0 16px; -webkit-overflow-scrolling: touch; }
+.ss-dynbar a, .ss-dynbar span {
+  flex: 0 0 auto; padding: 5px 13px; font-size: 14px; border: 1px solid rgba(44, 85, 96, 0.55); border-radius: 999px; text-decoration: none; white-space: nowrap;
+}
+.ss-dynbar a { color: #27342d; }
+.ss-dynbar a:hover { background: rgba(44, 85, 96, 0.12); }
+.ss-dynbar a[aria-current="page"] { background: #2c5560; border-color: #2c5560; color: #f3f6ee; }
+.ss-dynbar span.is-soon { color: #6b7a70; border-style: dashed; border-color: rgba(44, 85, 96, 0.35); }
+
+/* ---------- 表格：帝王名单 ---------- */
+.ss-tablewrap { overflow-x: auto; padding: 4px 8px; background: var(--zy-paper); border: 1px solid var(--zy-line); border-radius: 4px; }
+.ss-table { width: 100%; border-collapse: collapse; font-size: 14.5px; line-height: 1.75; color: var(--zy-ink-2); }
+.ss-table th { text-align: left; font-weight: 400; font-size: 12px; letter-spacing: 0.2em; color: var(--zy-gold-d); padding: 10px 10px; border-bottom: 1px solid var(--zy-line); white-space: nowrap; }
+.ss-table td { padding: 9px 10px; border-bottom: 1px dashed var(--zy-line); vertical-align: top; }
+.ss-table tr:last-child td { border-bottom: 0; }
+.ss-table td.is-name { font-family: var(--display); font-size: 18px; line-height: 1.5; color: #1f3f48; white-space: nowrap; }
+.ss-table td.is-nowrap { white-space: nowrap; }
+.ss-table a.ss-jump { text-decoration: none; border-bottom: 1px dotted #2c5560; }
+.ss-star { display: inline-block; margin-left: 4px; font-size: 11px; color: #a83a2c; }
+
+/* ---------- 大事记 ---------- */
+.ss-search {
+  width: 100%; max-width: 420px; min-height: 42px; padding: 8px 14px; font-family: var(--body); font-size: 15px; color: var(--zy-ink);
+  background: var(--zy-paper-2); border: 1px solid var(--zy-green-2); border-radius: 3px; margin: 0 0 8px;
+}
+.ss-timeline { list-style: none; margin: 14px 0 0; padding: 0 0 0 4px; border-left: 2px solid rgba(44, 85, 96, 0.45); }
+.ss-tl-item { position: relative; display: grid; grid-template-columns: 92px 1fr; gap: 4px 14px; padding: 8px 0 10px 18px; }
+.ss-tl-item::before { content: ''; position: absolute; left: -8px; top: 16px; width: 10px; height: 10px; border-radius: 50%; background: #2c5560; border: 2px solid var(--zy-bg); }
+.ss-tl-y { font-family: var(--display); font-size: 19px; line-height: 1.5; color: #1f3f48; white-space: nowrap; }
+.ss-tl-t { font-size: 15px; line-height: 1.85; color: var(--zy-ink); }
+.ss-tl-s { display: block; margin-top: 2px; font-size: 12.5px; line-height: 1.7; color: var(--zy-muted); }
+@media (max-width: 560px) { .ss-tl-item { grid-template-columns: 1fr; } }
+
+/* ---------- 其他 ---------- */
+.ss-list { margin: 0; padding-left: 1.2em; font-size: 15px; line-height: 1.85; color: var(--zy-ink); }
+.ss-list li { margin: 2px 0; }
+.ss-list .ss-ly { color: #1f3f48; font-weight: 600; margin-right: 0.6em; }
+.ss-srcs { font-size: 13px; line-height: 1.8; color: var(--zy-muted); }
+.ss-sys { margin: 0 0 14px; }
+.ss-sys h3 { margin: 0 0 6px; font-size: 16px; font-weight: 600; color: #1f3f48; }
+.ss-checkitem { padding: 9px 0; border-bottom: 1px dashed var(--zy-line); font-size: 14.5px; line-height: 1.85; color: var(--zy-ink-2); }
+.ss-checkitem:last-child { border-bottom: 0; }
