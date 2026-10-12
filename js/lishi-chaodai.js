@@ -171,6 +171,9 @@
     return { overlay: overlay, card: card, back: back, tag: tag, title: title, facts: facts, body: body, closeBtn: closeBtn };
   }
 
+  /* 有人物像的卡片：朝代代号/卡片名 -> 登记名（lishiren/…） */
+  var PORTRAIT = { 'qin/秦始皇': '秦始皇', 'xihan/汉高祖': '刘邦', 'qin/项羽': '项羽' };
+
   function fillModal(D, hit) {
     var c = hit.card;
     var selfNames = [c.name];
@@ -207,6 +210,19 @@
       }
     });
     if (srcPair) pairs.push(srcPair);
+    /* 人物像：只有登记过的人物才显示（登记键 lishiren/人物名），查不到就不显示 */
+    var oldPic = modal.card.querySelector('.zf-portrait');
+    if (oldPic && oldPic.parentNode) oldPic.parentNode.removeChild(oldPic);
+    try {
+      var pi = window.ZIMG && window.ZIMG.get('lishiren', PORTRAIT[D.key + '/' + c.name] || '');
+      if (pi) {
+        var pic = el('figure', { 'class': 'zf zf-portrait' }, [
+          el('img', { 'class': 'zf-img', src: pi.src, srcset: pi.srcset, sizes: '(max-width: 760px) 70vw, 300px', alt: c.name + '（AI 想象像）', width: pi.width, height: pi.height, decoding: 'async' }),
+          el('figcaption', { 'class': 'zf-cap' }, [el('span', { 'class': 'zf-txt', text: pi.caption || '' }), pi.ai ? el('span', { 'class': 'zf-ai', text: pi.aiLabel }) : null])
+        ]);
+        modal.facts.parentNode.insertBefore(pic, modal.facts.nextSibling);
+      }
+    } catch (e) { /* 图片出问题不影响文字 */ }
     modal.body.textContent = '';
     var oldRow = modal.card.querySelector('.zf-tts-row');   /* 换了一位人物：去掉旧的“听介绍”按钮（朗读脚本会自动停下并重新放一个） */
     if (oldRow && oldRow.parentNode) oldRow.parentNode.removeChild(oldRow);

@@ -31,3 +31,7 @@
   .zf-scenes { gap: 8px; }
   .zf-scenes .zf-cap { font-size: 11px; }
 }
+
+/* 历史人物像（3:4 竖版，放在人物弹窗的标题下面） */
+.zf-portrait { max-width: 300px; margin: 12px auto 14px; }
+.zf-portrait .zf-cap { justify-content: center; text-align: center; }
