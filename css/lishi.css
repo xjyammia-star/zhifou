@@ -196,3 +196,26 @@ body.ss-noscroll { overflow: hidden; }
   .ss-modal-card { padding: 22px 16px 18px; max-height: 96vh; }
   .ss-modal-title { font-size: 28px; }
 }
+
+/* ===== 帝王名单：横条式排版 ===== */
+.ss-emps { background: var(--zy-paper); border: 1px solid var(--zy-line); border-radius: 4px; padding: 2px 16px; }
+.ss-emp { display: grid; grid-template-columns: minmax(150px, 200px) minmax(0, 1fr); gap: 6px 18px; padding: 13px 0; border-bottom: 1px dashed var(--zy-line); }
+.ss-emp:last-child { border-bottom: 0; }
+.ss-emp-name { font-family: var(--display); font-size: 20px; line-height: 1.5; color: #f0d48f; }
+.ss-emp-name a.ss-jump { color: #f0d48f; text-decoration: none; border-bottom: 1px dotted #e2c27d; }
+.ss-emp-real { font-size: 14px; line-height: 1.6; color: var(--zy-ink-2); }
+.ss-emp-reign { font-size: 13.5px; line-height: 1.6; color: var(--zy-muted); }
+.ss-emp-body { display: flex; flex-direction: column; gap: 3px; font-size: 14.5px; line-height: 1.75; color: var(--zy-ink-2); }
+.ss-emp-row { display: grid; grid-template-columns: 6.2em minmax(0, 1fr); gap: 0 10px; }
+.ss-emp-k { font-size: 12px; letter-spacing: 0.12em; color: var(--zy-gold); padding-top: 2px; white-space: nowrap; }
+.ss-emp-v { min-width: 0; overflow-wrap: anywhere; }
+.ss-emp-line .ss-emp-v { color: var(--zy-ink); }
+@media (max-width: 640px) {
+  .ss-emps { padding: 2px 12px; }
+  .ss-emp { grid-template-columns: minmax(0, 1fr); gap: 4px; padding: 12px 0; }
+  .ss-emp-id { display: flex; flex-wrap: wrap; align-items: baseline; gap: 2px 12px; }
+  .ss-emp-row { grid-template-columns: 5.4em minmax(0, 1fr); }
+}
+.ss-emp-grp { margin: 0; padding: 14px 0 6px; font-size: 15px; font-weight: 600; letter-spacing: 0.08em; color: #e2c27d; border-bottom: 1px solid var(--zy-line); }
+.ss-emp-grp small { margin-left: 10px; font-size: 12.5px; font-weight: 400; letter-spacing: 0; color: var(--zy-muted); }
+.ss-emp-grp:first-child { padding-top: 10px; }

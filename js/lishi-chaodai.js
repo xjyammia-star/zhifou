@@ -298,6 +298,7 @@
       var kids = [];
       var keyNames = {};
       D.keyEmperors.forEach(function (c) { keyNames[c.name] = c; });
+      /* 帝王名单：每位帝王一张横条——左边是通称、姓名、在位，右边是年号、庙号谥号和一句话，宽度不再被表格挤窄 */
       var rows = D.emperors.map(function (e) {
         var nameCell;
         if (keyNames[e.name]) {
@@ -305,19 +306,33 @@
           a.addEventListener('click', function (ev) { ev.preventDefault(); openEntity(D.key, e.name, false); });
           nameCell = [a, el('i', { 'class': 'ss-star', title: '点开看详细介绍', text: '★' })];
         } else nameCell = [e.name];
-        return el('tr', {}, [
-          el('td', { 'class': 'is-name' }, nameCell),
-          el('td', { 'class': 'is-nowrap', text: e.real }),
-          el('td', { 'class': 'is-nowrap', text: e.reign }),
-          el('td', { text: e.nh }),
-          el('td', { text: e.mh }),
-          el('td', {}, rich(e.line))
+        var bodyRows = [];
+        if (e.nh) bodyRows.push(el('div', { 'class': 'ss-emp-row' }, [el('span', { 'class': 'ss-emp-k', text: '年号' }), el('span', { 'class': 'ss-emp-v', text: e.nh })]));
+        if (e.mh) bodyRows.push(el('div', { 'class': 'ss-emp-row' }, [el('span', { 'class': 'ss-emp-k', text: '庙号／谥号' }), el('span', { 'class': 'ss-emp-v', text: e.mh })]));
+        if (e.line) bodyRows.push(el('div', { 'class': 'ss-emp-row ss-emp-line' }, [el('span', { 'class': 'ss-emp-k', text: '一句话' }), el('span', { 'class': 'ss-emp-v' }, rich(e.line))]));
+        return el('article', { 'class': 'ss-emp' }, [
+          el('div', { 'class': 'ss-emp-id' }, [
+            el('div', { 'class': 'ss-emp-name' }, nameCell),
+            el('div', { 'class': 'ss-emp-real', text: e.real }),
+            el('div', { 'class': 'ss-emp-reign', text: e.reign })
+          ]),
+          el('div', { 'class': 'ss-emp-body' }, bodyRows)
         ]);
       });
-      var table = el('div', { 'class': 'ss-tablewrap' }, [el('table', { 'class': 'ss-table' }, [
-        el('thead', {}, [el('tr', {}, ['通称', '姓名', '在位', '年号', '庙号／谥号', '一句话'].map(function (h) { return el('th', { text: h }); }))]),
-        el('tbody', {}, rows)
-      ])]);
+      /* 有分组（如“南朝宋”“北魏”）的朝代，在每组前插一条小标题；标题里“，”后面的是补充说明 */
+      var parts = [], lastG = null;
+      D.emperors.forEach(function (e, i) {
+        var g = e.grp || '';
+        if (g && g !== lastG) {
+          var cut = g.indexOf('，');
+          var ttl = cut > 0 ? g.slice(0, cut) : g;
+          var sub = cut > 0 ? g.slice(cut + 1) : '';
+          parts.push(el('h3', { 'class': 'ss-emp-grp' }, [ttl, sub ? el('small', { text: sub }) : null]));
+        }
+        lastG = g;
+        parts.push(rows[i]);
+      });
+      var table = el('div', { 'class': 'ss-emps' }, parts);
       kids.push(Z.section('帝王名单（' + D.emperors.length + '）', [Z.note('带 ★ 的帝王，点名字可以看详细介绍。'), table]));
       if (D.keyEmperors.length) {
         kids.push(Z.section('重点帝王（' + D.keyEmperors.length + '）', [
