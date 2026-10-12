@@ -172,7 +172,7 @@
   }
 
   /* 有人物像的卡片：朝代代号/卡片名 -> 登记名（lishiren/…） */
-  var PORTRAIT = { 'qin/秦始皇': '秦始皇', 'xihan/汉高祖': '刘邦', 'qin/项羽': '项羽', 'qin/陈胜': '陈胜', 'qin/徐福': '徐福', 'xihan/霍去病': '霍去病', 'xihan/张骞': '张骞', 'xihan/苏武': '苏武', 'donghan/班超': '班超', 'donghan/蔡伦': '蔡伦', 'donghan/张衡': '张衡', 'donghan/华佗': '华佗', 'donghan/董卓': '董卓', 'xihan/汉武帝': '汉武帝', 'xihan/司马迁': '司马迁' };
+  var PORTRAIT = { 'qin/秦始皇': '秦始皇', 'xihan/汉高祖': '刘邦', 'qin/项羽': '项羽', 'qin/陈胜': '陈胜', 'qin/徐福': '徐福', 'xihan/霍去病': '霍去病', 'xihan/张骞': '张骞', 'xihan/苏武': '苏武', 'donghan/班超': '班超', 'donghan/蔡伦': '蔡伦', 'donghan/张衡': '张衡', 'donghan/华佗': '华佗', 'donghan/董卓': '董卓', 'xihan/汉武帝': '汉武帝', 'xihan/司马迁': '司马迁', 'sanguo/蜀汉先主': '刘备', 'sanguo/周瑜': '周瑜', 'sanguo/吴大帝': '孙权', 'sanguo/诸葛亮': '诸葛亮', 'sanguo/关羽': '关羽', 'sanguo/司马懿': '司马懿', 'liangjin/王羲之': '王羲之', 'liangjin/陶渊明': '陶渊明', 'liangjin/谢安': '谢安', 'liangjin/祖逖': '祖逖', 'liangjin/刘裕': '刘裕', 'liangjin/顾恺之': '顾恺之' };
 
   function fillModal(D, hit) {
     var c = hit.card;
