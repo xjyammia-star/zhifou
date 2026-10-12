@@ -385,8 +385,36 @@
     }
 
     /* ----- 制度 ----- */
+    function buildTableGroup(g) {
+      var tb = g.table;
+      var hasSrc = tb.rows.some(function (r) { return r.s && r.s.length; });
+      var hasG = tb.rows.some(function (r) { return r.g === '待核' || r.g === '部分待核'; });
+      var headers = tb.head.slice();
+      if (hasSrc || hasG) headers.push('出处');
+      var rows = tb.rows.map(function (r) {
+        var tds = r.c.map(function (c, i) {
+          return el('td', { 'class': (g.title === '十六国简表' && i === 0) ? 'is-name' : null }, rich(c));
+        });
+        if (hasSrc || hasG) {
+          tds.push(el('td', {}, [
+            r.s && r.s.length ? el('span', { 'class': 'ss-tl-s', text: r.s.join('　◆　') }) : null,
+            r.g === '待核' || r.g === '部分待核' ? gradeEl(r.g) : null
+          ]));
+        }
+        return el('tr', {}, tds);
+      });
+      return el('div', { 'class': 'ss-sys' }, [
+        el('h3', { text: g.title }),
+        el('div', { 'class': 'ss-tablewrap' }, [el('table', { 'class': 'ss-table' }, [
+          el('thead', {}, [el('tr', {}, headers.map(function (h) { return el('th', { text: h }); }))]),
+          el('tbody', {}, rows)
+        ])])
+      ]);
+    }
+
     function buildSystems() {
       return D.systems.map(function (g) {
+        if (g.table) return buildTableGroup(g);
         return el('div', { 'class': 'ss-sys' }, [
           el('h3', { text: g.title }),
           ul(g.items.map(function (it) {
@@ -401,7 +429,9 @@
     /* ----- 待核 ----- */
     function buildChecks() {
       var n = D.checks.filter(function (c) { return c.red; }).length;
-      var kids = [Z.note('下面是整理时没有查实、或不同书记载有出入的地方（红色“待核”）。看史书时请把它们当作“有疑问”，不要当结论。共 ' + n + ' 条。')];
+      var kids = [Z.note(n > 0
+        ? '下面是整理时没有查实、或不同书记载有出入的地方（红色“待核”）。看史书时请把它们当作“有疑问”，不要当结论。共 ' + n + ' 条。'
+        : '下面是整理时遇到的、不同史书记载有出入或原典没有明说的地方，已经把几种说法并列写明。看史书时请留意这些差别。共 ' + D.checks.length + ' 条。')];
       D.checks.forEach(function (c) {
         kids.push(el('div', { 'class': 'ss-checkitem' }, [c.red ? el('em', { 'class': 'ss-check', text: '待核' }) : null].concat(rich(c.t)).concat([
           c.s && c.s.length ? el('span', { 'class': 'ss-tl-s', text: '出处：' + c.s.join('　◆　') }) : null
@@ -417,7 +447,7 @@
       { key: 'ev', label: '大事记（' + D.events.length + '）', build: buildEvents },
       { key: 'people', label: '人物（' + D.people.length + '）', build: buildPeople },
       { key: 'sys', label: '制度', build: buildSystems },
-      { key: 'check', label: '待核（' + nCheck + '）', build: buildChecks }
+      { key: 'check', label: nCheck > 0 ? '待核（' + nCheck + '）' : '史料说明（' + D.checks.length + '）', build: buildChecks }
     ];
     var t = Z.tabs(defs.map(function (d) {
       return { key: d.key, label: d.label, build: function () { return d.build(); } };
