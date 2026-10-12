@@ -1,6 +1,6 @@
 /* 知否知否 · 板块切换动画
    ----------------------------------------------------------
-   进入某个板块首页时，在页面上方播放一小段动画，然后淡出，露出内容。九个板块各有一段：
+   进入某个板块首页时，在页面上方播放一小段动画，然后淡出，露出内容。十个板块各有一段：
      shi（时令）    ：按当前季节飘落——春花瓣、夏萤火、秋落叶、冬细雪；
      shen（神灵）   ：仙气云雾从下方升起、飘散，夹着金色光点；
      jianzhu（建筑）：台基、立柱、斗拱、屋顶的线条一笔一笔“画”出来；
@@ -10,6 +10,7 @@
      yi（艺术）     ：一笔带飞白的水墨横扫过画面，最后落下一枚朱红印章；
      wen（文学）    ：诗句里的字一个个闪现，最后停在“文学”两个字上；
      dianji（典籍） ：书架上的线装书一本本从下面立起来，书签上是“经史子集”这样的字，最后停在“典籍”两个字上。
+     lishi（历史）  ：一条时间线从左画到右，秦汉晋隋唐宋元明清依次亮起，最后盖下一枚朱红的“史”字印。
    触发规则写在 js/nav.js 里（只在点一级导航切换板块时播放，同一次访问每个板块只播一次）。
    想马上看效果：在这个板块首页的网址后面加 ?fx=1 再打开。
    动画期间点一下、按键或滚动，会立刻淡出结束；系统开了“减少动态效果”则不播放。
@@ -91,6 +92,23 @@
     'font-family:"Ma Shan Zheng","Noto Serif SC",serif;font-size:clamp(14px,2vw,22px);line-height:1;text-align:center;box-shadow:0 0 0 1px rgba(90,42,22,.4)}',
     '@keyframes zfxBook{from{transform:translateY(112%)}to{transform:none}}',
     '.zfx-dianji .zfx-title{top:30%;color:#f0dcaa;text-shadow:0 0 20px rgba(230,200,140,.5);animation:zfxTitle 1.5s ease-out .95s both}',
+    /* 历史：一条时间线从左画到右，朝代名依次亮起，最后盖下朱红“史”字印 */
+    '.zfx-lishi{background:#0d1316;animation:zfxLishiBox 3s ease-in-out both}',
+    '@keyframes zfxLishiBox{0%{opacity:0}10%{opacity:1}78%{opacity:1}100%{opacity:0}}',
+    '.zfx-lishi .zfx-title{display:none}',
+    '.zfx-ls{position:absolute;left:8%;right:8%;top:56%;height:0}',
+    '.zfx-ls-line{position:absolute;left:0;right:0;top:-1px;height:2px;background:linear-gradient(90deg,#3f7f8c,#8fd0dd);',
+    'transform:scaleX(0);transform-origin:left center;animation:zfxLsLine 1.3s linear .25s both}',
+    '@keyframes zfxLsLine{to{transform:scaleX(1)}}',
+    '.zfx-ls-t{position:absolute;top:0;transform:translateX(-50%);display:flex;flex-direction:column;align-items:center;opacity:0;',
+    'animation:zfxLsTick .5s ease-out var(--d,0s) both}',
+    '.zfx-ls-t::before{content:"";display:block;width:2px;height:14px;margin-top:-7px;background:#8fd0dd}',
+    '.zfx-ls-t b{margin-top:12px;font-weight:400;font-family:"Ma Shan Zheng","Noto Serif SC",serif;font-size:clamp(16px,2.8vw,28px);line-height:1;color:#e9e2cf;text-shadow:0 0 12px rgba(143,208,221,.35)}',
+    '@keyframes zfxLsTick{from{opacity:0;transform:translate(-50%,8px)}to{opacity:1;transform:translate(-50%,0)}}',
+    '.zfx-lsseal{position:absolute;--s:clamp(66px,10vw,108px);width:var(--s);height:var(--s);left:calc(50% - var(--s) / 2);top:24%;',
+    'background:#c23a24;color:#f6ede0;display:flex;align-items:center;justify-content:center;border-radius:4px;',
+    'font-family:"Ma Shan Zheng","Noto Serif SC",serif;font-size:calc(var(--s) * .68);line-height:1;',
+    'box-shadow:inset 0 0 0 2px rgba(246,237,224,.5),0 0 26px rgba(194,58,36,.4);opacity:0;animation:zfxStamp .5s cubic-bezier(.2,.9,.3,1) 1.7s both}',
     /* 动画播放时，页面内容稍后从下方浮出 */
     '.zf-fx-shen #app{animation:zfxRise 1.2s ease-out .55s both}',
     '.zf-fx-wen #app{animation:zfxRise 1s ease-out .9s both}',
@@ -100,7 +118,8 @@
     '.zf-fx-ziyu #app{animation:zfxRise 1s ease-out 1s both}',
     '.zf-fx-lisi #app{animation:zfxRise 1s ease-out 1.7s both}',
     '.zf-fx-yi #app{animation:zfxRise 1s ease-out 1.6s both}',
-    '.zf-fx-dianji #app{animation:zfxRise 1s ease-out 1.6s both}'
+    '.zf-fx-dianji #app{animation:zfxRise 1s ease-out 1.6s both}',
+    '.zf-fx-lishi #app{animation:zfxRise 1s ease-out 2s both}'
   ].join('');
 
   function rnd(a, b) { return a + Math.random() * (b - a); }
@@ -539,6 +558,34 @@
     after(ctl, 2600);
   }
 
+  /* ---------- 历史：时间线 + 朝代名依次亮起 + 朱红“史”字印 ---------- */
+  var LS_DYN = ['秦', '汉', '晋', '隋', '唐', '宋', '元', '明', '清'];
+  function lishi(layer, ctl) {
+    var wrap = document.createElement('div');
+    wrap.className = 'zfx-ls';
+    var line = document.createElement('div');
+    line.className = 'zfx-ls-line';
+    wrap.appendChild(line);
+    var n = LS_DYN.length, i, t, b;
+    for (i = 0; i < n; i++) {
+      t = document.createElement('div');
+      t.className = 'zfx-ls-t';
+      t.style.left = (i / (n - 1) * 100) + '%';
+      /* 线条匀速画出（1.3 秒，延迟 0.25 秒），朝代名在线头经过时亮起 */
+      t.style.setProperty('--d', (0.25 + 1.3 * i / (n - 1)).toFixed(2) + 's');
+      b = document.createElement('b');
+      b.textContent = LS_DYN[i];
+      t.appendChild(b);
+      wrap.appendChild(t);
+    }
+    layer.appendChild(wrap);
+    var seal = document.createElement('div');
+    seal.className = 'zfx-lsseal';
+    seal.textContent = '史';
+    layer.appendChild(seal);
+    after(ctl, 3050);
+  }
+
   var EFFECTS = {
     shi: { title: '时令', run: shi },
     shen: { title: '神灵', run: shen },
@@ -548,7 +595,8 @@
     lisi: { title: '礼思', run: lisi },
     yi: { title: '艺术', run: yi },
     wen: { title: '文学', run: wen },
-    dianji: { title: '典籍', run: dianji }
+    dianji: { title: '典籍', run: dianji },
+    lishi: { title: '历史', run: lishi }
   };
 
   var playing = false;
