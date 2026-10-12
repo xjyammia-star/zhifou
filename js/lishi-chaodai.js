@@ -407,7 +407,18 @@
       return { key: d.key, label: d.label, build: function () { return d.build(); } };
     }));
 
-    Z.mount(root, [head, dynBar(), t.node, Z.note('每位帝王、每个人物的详细介绍里都列了出处；年份用公历，公元前写作“前221”。')]);
+    /* 朝代头图：登记键 lishi/<朝代代号>，没有登记的朝代不显示 */
+    var banner = null;
+    try {
+      var bi = window.ZIMG && window.ZIMG.get('lishi', meta.key);
+      if (bi) {
+        banner = el('figure', { 'class': 'zf zf-banner' }, [
+          el('img', { 'class': 'zf-img', src: bi.src, srcset: bi.srcset, sizes: '(max-width: 760px) 94vw, 900px', alt: bi.caption || '', width: bi.width, height: bi.height, decoding: 'async' }),
+          el('figcaption', { 'class': 'zf-cap' }, [el('span', { 'class': 'zf-txt', text: bi.caption || '' }), bi.ai ? el('span', { 'class': 'zf-ai', text: bi.aiLabel }) : null])
+        ]);
+      }
+    } catch (e) { banner = null; }
+    Z.mount(root, [head, banner, dynBar(), t.node, Z.note('每位帝王、每个人物的详细介绍里都列了出处；年份用公历，公元前写作“前221”。')]);
     document.title = D.name + ' · 历史 · 知否知否';
 
     /* 网址里带 ?id=名字：直接打开那一张 */
