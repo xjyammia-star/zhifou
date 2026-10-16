@@ -1255,6 +1255,13 @@ window.ZHIFOU_IMAGES = {
     'lishiren/赵襄子': { id: 'zhifou/lishiren/zhaoxiangzi', v: 1792164667, dw: 900, dh: 1200, crop: 1, caption: '据史书所记赵襄子的事迹想象绘制，并非真实画像', source: '', ai: true },
     'lishi/xiashangzhou': { id: 'zhifou/lishi/xiashangzhou', v: 1792164506, dw: 900, dh: 386, crop: 1, caption: '夏商西周：夯土高台上的宗庙、铜鼎与黄河平原（示意图）', source: '', ai: true },
     'lishi/chunqiu': { id: 'zhifou/lishi/chunqiu', v: 1792164507, dw: 900, dh: 386, crop: 1, caption: '春秋：夯土城邑、田野与河上木桥（示意图）', source: '', ai: true },
-    'lishi/zhanguo': { id: 'zhifou/lishi/zhanguo', v: 1792164509, dw: 900, dh: 386, crop: 1, caption: '战国：诸侯国都城、战车与田野（示意图）', source: '', ai: true }
+    'lishi/zhanguo': { id: 'zhifou/lishi/zhanguo', v: 1792164509, dw: 900, dh: 386, crop: 1, caption: '战国：诸侯国都城、战车与田野（示意图）', source: '', ai: true },
+    'lishiren/程普': { id: 'zhifou/lishiren/chengpu', v: 1792166724, dw: 900, dh: 1200, crop: 1, caption: '据《三国志·周瑜传》所记赤壁之战中与周瑜分任左右督的事迹想象绘制，并非真实画像', source: '', ai: true },
+    'lishiren/王平': { id: 'zhifou/lishiren/wangping', v: 1792166725, dw: 900, dh: 1200, crop: 1, caption: '据《三国志·王平传》所记街亭战败后鸣鼓自守、收拢散卒的事迹想象绘制，并非真实画像', source: '', ai: true },
+    'lishiren/唐僖宗': { id: 'zhifou/lishiren/tangxizong', v: 1792166726, dw: 900, dh: 1200, crop: 1, caption: '据史书所记黄巢军入长安后僖宗出奔四川的事迹想象绘制，并非真实画像', source: '', ai: true },
+    'lishiren/陈友谅': { id: 'zhifou/lishiren/chenyouliang', v: 1792166727, dw: 900, dh: 1200, crop: 1, caption: '据《明史·陈友谅传》所记鄱阳湖之战的事迹想象绘制，并非真实画像', source: '', ai: true },
+    'lishiren/丁汝昌': { id: 'zhifou/lishiren/dingruchang', v: 1792166728, dw: 900, dh: 1200, crop: 1, caption: '据《清史稿·丁汝昌传》所记其任北洋海军提督的事迹想象绘制，并非真实画像', source: '', ai: true },
+    'lishiren/邓世昌': { id: 'zhifou/lishiren/dengshichang', v: 1792166729, dw: 900, dh: 1200, crop: 1, caption: '据《清史稿》所记邓世昌管带致远舰参加黄海海战的事迹想象绘制，并非真实画像', source: '', ai: true },
+    'lishi/zhanyi': { id: 'zhifou/lishi/zhanyi', v: 1792166722, dw: 900, dh: 386, crop: 1, caption: '战役：古战场黄昏的旌旗、战鼓与烽烟（示意图）', source: '', ai: true }
   }
 };
