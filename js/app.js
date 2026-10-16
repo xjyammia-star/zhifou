@@ -256,10 +256,10 @@
 
   /* ---------- 首页：抽一张（真正点击抽取） ----------
      卡池在 data/cards.js（由“生成抽卡数据.js”从各板块资料整理而来）。
-     规则：先在九个板块里等概率选一个，再从这个板块里选一张；最近抽过的十几张不会立刻重复。
+     规则：先在十个板块里等概率选一个，再从这个板块里选一张；最近抽过的十几张不会立刻重复。
      每天第一次抽到的是“今日一签”，记在浏览器里，当天再打开还是它；之后可以随手再抽。 */
   var CARDS = window.ZHIFOU_CARDS || null;
-  var PLATE_KEYS = ['shi', 'shen', 'jianzhu', 'wu', 'ziyu', 'lisi', 'yi', 'wen', 'dianji'];
+  var PLATE_KEYS = ['shi', 'shen', 'jianzhu', 'wu', 'ziyu', 'lisi', 'lishi', 'yi', 'wen', 'dianji'];
   var drawCard = null;       /* 当前翻开的卡；null 表示这一次还没抽 */
   var drawBusy = false;      /* 翻牌动画进行中，避免每分钟的自动重画打断它 */
   var drawInit = false;
