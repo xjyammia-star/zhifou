@@ -1,0 +1,34 @@
+/* 知否知否 · 历史总览页“年表／帝王／人物”三个标签的补充样式
+   表格、搜索框、选项条沿用 lishi.css、ziyu.css（请先加载 style.css、ziyu.css、lishi.css）。 */
+
+/* 筛选条：朝代下拉框 + 搜索框 */
+.lt-bar { display: flex; flex-wrap: wrap; gap: 8px 10px; align-items: center; margin: 4px 0 10px; }
+.lt-bar .ss-search { flex: 1 1 220px; max-width: 360px; margin: 0; }
+.lt-sel { min-height: 42px; padding: 6px 12px; font-family: var(--body); font-size: 15px; color: var(--zy-ink); background: var(--zy-paper-2); border: 1px solid var(--zy-green-2); border-radius: 3px; }
+.lt-sel:focus-visible { outline: 2px solid #e2c27d; outline-offset: 1px; }
+.lt-pane .zy-chips { margin: 0 0 8px; }
+.lt-pane .zy-chip { min-height: 34px; padding: 4px 12px; font-size: 13.5px; letter-spacing: 0.06em; }
+
+/* 年表 */
+.lt-list { list-style: none; margin: 8px 0 0; padding: 0; background: var(--zy-paper); border: 1px solid var(--zy-line); border-radius: 4px; }
+.lt-row { display: grid; grid-template-columns: 6.2em 1fr auto; gap: 4px 14px; align-items: baseline; padding: 9px 14px; border-bottom: 1px dashed var(--zy-line); font-size: 15px; line-height: 1.8; color: var(--zy-ink); }
+.lt-row:last-child { border-bottom: 0; }
+.lt-row.is-battle { background: rgba(228, 112, 92, 0.06); }
+.lt-y { font-family: var(--display); font-size: 17px; color: #f0d48f; white-space: nowrap; }
+.lt-body b { font-weight: 600; color: #f0d48f; }
+.lt-tag { padding: 0 8px; font-size: 12px; line-height: 20px; letter-spacing: 0.06em; color: #d9c48c; text-decoration: none; border: 1px solid rgba(226, 194, 125, 0.45); border-radius: 10px; white-space: nowrap; }
+.lt-tag:hover { background: rgba(226, 194, 125, 0.14); }
+.lt-tag.is-battle { color: #ff9a88; border-color: #e4705c; background: rgba(228, 112, 92, 0.12); }
+.lt-morewrap { margin: 14px 0 4px; text-align: center; }
+.lt-morewrap:empty { display: none; }
+
+/* 帝王、人物表 */
+.lt-table td:nth-child(3), .lt-table td.lt-nh { min-width: 8em; }
+.lt-table td { font-size: 14px; }
+.lt-table td.is-name { font-size: 17px; }
+
+@media (max-width: 640px) {
+  .lt-row { grid-template-columns: 1fr; gap: 2px; padding: 9px 12px; }
+  .lt-tag { justify-self: start; margin-top: 2px; }
+  .lt-bar .ss-search { flex-basis: 100%; max-width: none; }
+}
