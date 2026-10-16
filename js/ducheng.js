@@ -220,27 +220,62 @@
       if (text) n.textContent = text;
       return n;
     }
-    var LON0 = 88, LON1 = 132, LAT0 = 22, LAT1 = 49, SC = 20;
-    var W = (LON1 - LON0) * SC, H = (LAT1 - LAT0) * SC;
-    function px(lon) { return (lon - LON0) * SC; }
+    var LON0 = 72, LON1 = 136, LAT0 = 18, LAT1 = 54, SC = 17, KX = 0.82;   /* KX：东西方向按纬度压窄一点，形状才不变形 */
+    var W = (LON1 - LON0) * SC * KX, H = (LAT1 - LAT0) * SC;
+    function px(lon) { return (lon - LON0) * SC * KX; }
     function py(lat) { return (LAT1 - lat) * SC; }
-    var svg = sv('svg', { viewBox: '-30 -6 ' + (W + 40) + ' ' + (H + 30), 'class': 'dc-map-svg', role: 'group', 'aria-label': '40座都城的大致位置示意图' });
-    var lon, lat;
-    for (lon = 90; lon <= 130; lon += 5) {
-      svg.appendChild(sv('line', { x1: px(lon), y1: 0, x2: px(lon), y2: H, 'class': 'dc-grid' }));
-      svg.appendChild(sv('text', { x: px(lon), y: H + 16, 'class': 'dc-axis', 'text-anchor': 'middle' }, lon + '°E'));
+    function path(pts, close) {
+      return pts.map(function (p, i) { return (i ? 'L' : 'M') + px(p[0]).toFixed(1) + ' ' + py(p[1]).toFixed(1); }).join('') + (close ? 'Z' : '');
     }
-    for (lat = 25; lat <= 45; lat += 5) {
-      svg.appendChild(sv('line', { x1: 0, y1: py(lat), x2: W, y2: py(lat), 'class': 'dc-grid' }));
-      svg.appendChild(sv('text', { x: -6, y: py(lat) + 4, 'class': 'dc-axis', 'text-anchor': 'end' }, lat + '°N'));
+    /* 国界与海岸线：手工简化的轮廓（约 100 个点），只求形状认得出来，不是精确边界；两条大河帮助定位 */
+    var CHINA = [[120.8,53.3],[123.5,53.5],[126.0,52.7],[127.5,49.8],[130.6,48.9],[134.7,48.3],[134.2,47.3],[133.0,45.5],[131.9,45.3],[131.1,44.9],[131.3,43.4],[130.6,42.4],[129.7,42.4],[128.0,41.4],[126.5,41.4],[124.3,39.9],[121.7,38.9],[122.2,40.4],[121.0,40.9],[119.5,39.6],[118.0,39.2],[117.8,38.9],[118.0,37.9],[119.0,37.2],[120.3,37.8],[122.5,37.4],[121.0,36.6],[120.2,36.0],[119.2,35.0],[119.6,34.4],[120.4,33.0],[121.0,32.0],[121.9,31.4],[121.9,30.0],[121.4,28.9],[120.6,27.5],[119.7,26.0],[119.0,25.2],[118.1,24.5],[116.8,23.4],[115.2,22.8],[113.8,22.4],[113.0,21.9],[111.5,21.4],[110.4,20.3],[109.6,21.6],[108.0,21.5],[106.7,22.0],[105.3,23.3],[104.0,22.8],[103.0,22.5],[102.2,22.4],[101.2,21.2],[100.1,21.7],[99.5,22.2],[98.9,23.2],[97.7,23.9],[97.9,24.8],[98.7,25.8],[98.6,27.5],[97.5,28.3],[96.0,29.4],[94.5,29.2],[92.5,27.8],[91.6,27.8],[90.4,28.1],[89.0,27.3],[88.0,27.9],[86.0,27.9],[84.2,28.8],[82.0,30.3],[81.0,30.2],[79.0,31.0],[78.7,32.5],[79.5,33.2],[78.0,35.5],[76.0,35.8],[75.0,37.0],[74.5,38.6],[73.8,39.5],[75.5,40.5],[76.7,41.0],[78.5,41.5],[80.2,42.1],[80.3,43.0],[80.0,44.8],[82.5,45.2],[83.0,47.2],[85.5,47.0],[87.3,49.1],[90.0,47.9],[91.0,46.8],[95.0,44.2],[96.4,42.7],[100.5,42.6],[105.0,41.6],[107.0,42.4],[110.4,42.7],[111.9,43.7],[111.4,44.3],[113.5,44.8],[116.0,45.7],[117.4,46.6],[119.7,46.7],[118.8,47.8],[116.7,49.8],[118.5,49.9],[120.5,52.6]];
+    var HAINAN = [[108.7,19.2],[110.0,20.1],[111.0,19.6],[110.0,18.3],[108.7,18.6]];
+    var TAIWAN = [[121.5,25.2],[122.0,25.0],[121.0,22.9],[120.1,23.0],[120.4,24.7]];
+    var HUANGHE = [[96.0,34.5],[100.5,34.3],[103.8,36.1],[105.0,37.5],[106.8,38.5],[107.5,40.8],[109.5,40.6],[111.0,40.3],[111.5,38.5],[110.5,36.5],[110.3,35.0],[112.0,34.8],[114.5,34.9],[116.5,35.5],[117.5,37.0],[118.9,37.7]];
+    var CHANGJIANG = [[91.0,33.5],[97.0,33.0],[99.0,30.0],[101.5,27.5],[104.6,28.8],[106.5,29.6],[108.5,30.8],[111.0,30.7],[112.2,30.3],[113.5,30.0],[114.3,30.6],[116.0,29.8],[117.5,30.5],[118.8,32.0],[120.5,31.9],[121.9,31.4]];
+    var svg = sv('svg', { viewBox: '-6 -6 ' + (W + 12) + ' ' + (H + 12), 'class': 'dc-map-svg', role: 'group', 'aria-label': '40座都城的大致位置示意图' });
+    svg.appendChild(sv('path', { d: path(CHINA, true), 'class': 'dc-land' }));
+    svg.appendChild(sv('path', { d: path(HAINAN, true), 'class': 'dc-land' }));
+    svg.appendChild(sv('path', { d: path(TAIWAN, true), 'class': 'dc-land' }));
+    svg.appendChild(sv('path', { d: path(HUANGHE, false), 'class': 'dc-river' }));
+    svg.appendChild(sv('path', { d: path(CHANGJIANG, false), 'class': 'dc-river' }));
+    svg.appendChild(sv('text', { x: px(104.5), y: py(36.4) - 4, 'class': 'dc-rname' }, '黄河'));
+    svg.appendChild(sv('text', { x: px(103.5), y: py(30.4), 'class': 'dc-rname' }, '长江'));
+    /* 先画圆点，再给每个点找一个不挤在一起的位置放城名；放不下的只留圆点（鼠标停在上面能看到名字） */
+    var placed = [];
+    D.cities.forEach(function (c) {
+      if (c.lat !== null && c.lat !== undefined) placed.push({ x0: px(c.lon) - 6, y0: py(c.lat) - 6, x1: px(c.lon) + 6, y1: py(c.lat) + 6 });
+    });
+    function hit(r) {
+      for (var i = 0; i < placed.length; i++) {
+        var q = placed[i];
+        if (r.x0 < q.x1 && r.x1 > q.x0 && r.y0 < q.y1 && r.y1 > q.y0) return true;
+      }
+      return r.x0 < -4 || r.x1 > W + 4 || r.y0 < -4 || r.y1 > H + 4;
     }
+    var labels = [];
+    D.cities.forEach(function (c) {
+      if (c.lat === null || c.lat === undefined) return;
+      var nm = c.name.split('（')[0].split('／')[0];
+      var w = nm.length * 11 + 2, h = 12, x = px(c.lon), y = py(c.lat);
+      var tries = [[8, 4, 'start', 8], [-8, 4, 'end', -8 - w], [-w / 2, -9, 'start', -w / 2], [-w / 2, 17, 'start', -w / 2], [8, -8, 'start', 8], [-8, -8, 'end', -8 - w]];
+      for (var i = 0; i < tries.length; i++) {
+        var tr = tries[i];
+        var rect = { x0: x + tr[3] - 1, y0: y + tr[1] - 10, x1: x + tr[3] + w, y1: y + tr[1] + 2 };
+        if (hit(rect)) continue;
+        placed.push(rect);
+        labels.push({ x: x + (tr[2] === 'start' ? tr[3] : tr[3] + w), y: y + tr[1], a: tr[2], t: nm });
+        break;
+      }
+    });
+    labels.forEach(function (l) { svg.appendChild(sv('text', { x: l.x, y: l.y, 'class': 'dc-lbl', 'text-anchor': l.a }, l.t)); });
     D.cities.forEach(function (c) {
       if (c.lat === null || c.lat === undefined) return;
       var col = COLORS[(groupIdx[c.group] || 0) % COLORS.length];
       var g = sv('g', { 'class': 'dc-dot', tabindex: '0', role: 'button', 'aria-label': '查看' + c.name + '的介绍' });
       g.appendChild(sv('title', {}, c.name + '（约' + c.lat.toFixed(1) + '°N，' + c.lon.toFixed(1) + '°E）'));
       g.appendChild(sv('circle', { cx: px(c.lon), cy: py(c.lat), r: 11, 'class': 'dc-hit' }));
-      g.appendChild(sv('circle', { cx: px(c.lon), cy: py(c.lat), r: 5, fill: col, 'class': 'dc-pt' }));
+      g.appendChild(sv('circle', { cx: px(c.lon), cy: py(c.lat), r: 4.5, fill: col, 'class': 'dc-pt' }));
       g.addEventListener('click', function () { openCity(c.name); });
       g.addEventListener('keydown', function (e) { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); openCity(c.name); } });
       svg.appendChild(g);
@@ -256,7 +291,7 @@
       return el('span', {}, [el('i', { style: 'background:' + COLORS[i % COLORS.length], 'aria-hidden': 'true' }), groupShort(g.title)]);
     }));
     kids.push(Z.section('位置示意', [
-      Z.note('点圆点看那座城的介绍。这是按大致经纬度画的示意图，没有海岸线和省界；古城的位置以城市卡里写的遗址范围为准。'),
+      Z.note('点圆点看那座城的介绍。轮廓是手工简化的示意（国界、海岸线和黄河、长江只求形状认得出来，不是精确地图）；古城的位置以城市卡里写的遗址范围为准。'),
       el('div', { 'class': 'dc-map' }, [svg]), tip, legend
     ]));
 

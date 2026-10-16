@@ -4,6 +4,10 @@
 /* 位置示意图 */
 .dc-map { background: var(--zy-paper); border: 1px solid var(--zy-line); border-radius: 4px; padding: 8px 8px 4px; }
 .dc-map-svg { display: block; width: 100%; height: auto; }
+.dc-land { fill: rgba(226, 194, 125, 0.07); stroke: rgba(226, 194, 125, 0.5); stroke-width: 1; stroke-linejoin: round; }
+.dc-river { fill: none; stroke: #5ea9b8; stroke-width: 1.4; opacity: 0.7; }
+.dc-rname { fill: #5ea9b8; font-size: 9px; opacity: 0.85; }
+.dc-lbl { fill: #d3dad0; font-size: 10px; pointer-events: none; paint-order: stroke; stroke: #11171a; stroke-width: 2.5px; stroke-linejoin: round; }
 .dc-grid { stroke: rgba(226, 194, 125, 0.16); stroke-width: 1; }
 .dc-axis { fill: #8d9d95; font-size: 11px; }
 .dc-dot { cursor: pointer; outline: none; }
