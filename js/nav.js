@@ -88,7 +88,8 @@
       key: 'lishi', label: '历史', home: 'lishi.html',
       items: [
         { page: 'lishi', label: '历史总览', href: 'lishi.html' },
-        { page: 'lishi-chaodai', label: '朝代', href: 'lishi-chaodai.html' }
+        { page: 'lishi-chaodai', label: '朝代', href: 'lishi-chaodai.html' },
+        { page: 'ducheng', label: '都城', href: 'ducheng.html' }
       ]
     },
     {

@@ -1,0 +1,40 @@
+/* 知否知否 · 历史 · 都城页的补充样式
+   只补“位置示意图”“制度折叠块”“时期列表”几样；其余沿用 lishi.css（请先加载 style.css、ziyu.css、lishi.css）。 */
+
+/* 位置示意图 */
+.dc-map { background: var(--zy-paper); border: 1px solid var(--zy-line); border-radius: 4px; padding: 8px 8px 4px; }
+.dc-map-svg { display: block; width: 100%; height: auto; }
+.dc-grid { stroke: rgba(226, 194, 125, 0.16); stroke-width: 1; }
+.dc-axis { fill: #8d9d95; font-size: 11px; }
+.dc-dot { cursor: pointer; outline: none; }
+.dc-hit { fill: transparent; }
+.dc-pt { stroke: #11171a; stroke-width: 1.5; }
+.dc-dot:hover .dc-pt, .dc-dot:focus .dc-pt { stroke: #fff3cf; stroke-width: 2.5; }
+.dc-dot:focus-visible .dc-hit { stroke: #e2c27d; stroke-width: 2; }
+.dc-maptip { min-height: 1.6em; margin: 6px 0 0; font-size: 13.5px; color: var(--zy-ink-2); }
+.dc-legend { display: flex; flex-wrap: wrap; gap: 6px 18px; margin: 4px 0 6px; font-size: 13px; color: var(--zy-muted); }
+.dc-legend i { display: inline-block; width: 10px; height: 10px; margin-right: 6px; border-radius: 50%; vertical-align: -1px; }
+
+/* 总表 */
+.dc-table td:nth-child(2) { min-width: 8em; }
+.dc-table td:nth-child(3) { min-width: 9em; }
+.dc-table td:nth-child(4) { min-width: 9em; }
+.dc-table td:nth-child(5) { min-width: 14em; }
+
+/* 概况、制度 */
+.dc-para { margin: 0 0 14px; font-size: 15.5px; line-height: 1.95; color: var(--zy-ink); }
+.dc-para p { margin: 0; }
+.dc-sys { margin: 0 0 10px; background: var(--zy-paper); border: 1px solid var(--zy-line); border-radius: 4px; }
+.dc-sys summary { padding: 11px 16px; cursor: pointer; font-size: 16px; font-weight: 600; color: #f0d48f; }
+.dc-sys[open] summary { border-bottom: 1px dashed var(--zy-line); }
+.dc-sys-body { padding: 10px 16px 12px; font-size: 15px; line-height: 1.9; color: var(--zy-ink); }
+.dc-sys-body p { margin: 0; }
+
+/* 城市卡弹窗里的几样 */
+.dc-seg { margin: 0 0 6px; }
+.dc-seg b { margin-right: 0.6em; font-weight: 400; font-size: 12px; letter-spacing: 0.12em; color: var(--zy-gold); }
+.dc-periods li { margin-bottom: 6px; }
+.dc-role { color: var(--zy-ink-2); }
+.dc-gn { color: var(--zy-muted); font-size: 13.5px; }
+.dc-modal-nav { display: flex; justify-content: space-between; gap: 10px; margin-top: 14px; padding-top: 12px; border-top: 1px solid var(--zy-line); }
+.dc-modal-nav:empty { display: none; }
