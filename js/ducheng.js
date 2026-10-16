@@ -181,12 +181,12 @@
     modal.nav.textContent = '';
     var prev = D.cities[idx - 1], next = D.cities[idx + 1];
     if (prev) {
-      var b1 = el('button', { 'class': 'zy-btn', type: 'button', text: '← ' + cut(prev.name, 8) });
+      var b1 = el('button', { 'class': 'zy-btn', type: 'button', text: '← ' + cut(prev.show || prev.name, 8) });
       b1.addEventListener('click', function () { openCity(prev.name); });
       modal.nav.appendChild(b1);
     }
     if (next) {
-      var b2 = el('button', { 'class': 'zy-btn', type: 'button', text: cut(next.name, 8) + ' →' });
+      var b2 = el('button', { 'class': 'zy-btn', type: 'button', text: cut(next.show || next.name, 8) + ' →' });
       b2.addEventListener('click', function () { openCity(next.name); });
       modal.nav.appendChild(b2);
     }
@@ -256,7 +256,7 @@
     var labels = [];
     D.cities.forEach(function (c) {
       if (c.lat === null || c.lat === undefined) return;
-      var nm = c.name.split('（')[0].split('／')[0];
+      var nm = (c.show || c.name).split('（')[0];
       var w = nm.length * 11 + 2, h = 12, x = px(c.lon), y = py(c.lat);
       var tries = [[8, 4, 'start', 8], [-8, 4, 'end', -8 - w], [-w / 2, -9, 'start', -w / 2], [-w / 2, 17, 'start', -w / 2], [8, -8, 'start', 8], [-8, -8, 'end', -8 - w]];
       for (var i = 0; i < tries.length; i++) {
@@ -272,8 +272,8 @@
     D.cities.forEach(function (c) {
       if (c.lat === null || c.lat === undefined) return;
       var col = COLORS[(groupIdx[c.group] || 0) % COLORS.length];
-      var g = sv('g', { 'class': 'dc-dot', tabindex: '0', role: 'button', 'aria-label': '查看' + c.name + '的介绍' });
-      g.appendChild(sv('title', {}, c.name + '（约' + c.lat.toFixed(1) + '°N，' + c.lon.toFixed(1) + '°E）'));
+      var g = sv('g', { 'class': 'dc-dot', tabindex: '0', role: 'button', 'aria-label': '查看' + (c.show || c.name) + '的介绍' });
+      g.appendChild(sv('title', {}, (c.show || c.name) + '（约' + c.lat.toFixed(1) + '°N，' + c.lon.toFixed(1) + '°E）'));
       g.appendChild(sv('circle', { cx: px(c.lon), cy: py(c.lat), r: 11, 'class': 'dc-hit' }));
       g.appendChild(sv('circle', { cx: px(c.lon), cy: py(c.lat), r: 4.5, fill: col, 'class': 'dc-pt' }));
       g.addEventListener('click', function () { openCity(c.name); });
@@ -302,13 +302,13 @@
     var groupNodes = D.groups.map(function (g) {
       var ts = g.cities.map(function (n) {
         var c = cityByName[n];
-        var b = el('button', { 'class': 'ss-tile', type: 'button', 'aria-label': '查看' + c.name + '的介绍' }, [
-          el('span', { 'class': 'ss-tile-name', text: c.name }),
+        var b = el('button', { 'class': 'ss-tile', type: 'button', 'aria-label': '查看' + (c.show || c.name) + '的介绍' }, [
+          el('span', { 'class': 'ss-tile-name', text: c.show || c.name }),
           el('span', { 'class': 'ss-tile-l1', text: cut(c.place, 26) }),
           el('span', { 'class': 'ss-tile-l2', text: c.who }),
-          c.g === '待核' || c.g === '部分待核' ? el('span', { 'class': 'ss-tile-flag' }, [gradeEl(c.g)]) : null
+          null
         ]);
-        b.setAttribute('data-q', c.name + c.place + c.who + c.span);
+        b.setAttribute('data-q', c.name + (c.show || '') + c.place + c.who + c.span);
         b.addEventListener('click', function () { openCity(c.name); });
         tiles.push(b);
         return b;
@@ -344,10 +344,10 @@
       var c = cityByName[r.name];
       var nameCell;
       if (c) {
-        var a = el('a', { 'class': 'ss-jump', href: '#', text: r.name });
+        var a = el('a', { 'class': 'ss-jump', href: '#', text: r.show || r.name });
         a.addEventListener('click', function (ev) { ev.preventDefault(); openCity(r.name); });
         nameCell = [a];
-      } else nameCell = [r.name];
+      } else nameCell = [r.show || r.name];
       return el('tr', {}, [
         el('td', { 'class': 'is-name' }, nameCell),
         el('td', {}, r.place),
@@ -396,7 +396,7 @@
     order.forEach(function (c) {
       var h;
       if (cityByName[c]) {
-        h = el('a', { 'class': 'ss-jump', href: '#', text: c });
+        h = el('a', { 'class': 'ss-jump', href: '#', text: cityByName[c].show || c });
         h.addEventListener('click', function (ev) { ev.preventDefault(); openCity(c); });
       } else h = c;
       kids.push(el('div', { 'class': 'ss-sys' }, [
