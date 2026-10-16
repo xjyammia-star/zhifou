@@ -176,6 +176,16 @@
     var oldRow = modal.card.querySelector('.zf-tts-row');   /* 换了一座城：去掉旧的“听介绍”按钮（朗读脚本会自动重新放一个） */
     if (oldRow && oldRow.parentNode) oldRow.parentNode.removeChild(oldRow);
     modal.body.appendChild(Z.kv(pairs, { quote: [] }));
+    /* 相关战役：从战役页的索引（data/zhanyi-index.js）里取，连到战役页 */
+    var zys = (window.ZHIFOU_ZY_BYCITY || {})[c.name];
+    if (zys && zys.length) {
+      var zk = [];
+      zys.forEach(function (z, i) {
+        if (i) zk.push('、');
+        zk.push(el('a', { 'class': 'ss-ref', href: 'zhanyi.html?id=' + encodeURIComponent(z.n), title: '到战役页看看' + z.n, text: z.n }));
+      });
+      modal.body.appendChild(Z.kv([['相关战役', el('span', {}, zk)]], { quote: [] }));
+    }
     /* 上一座、下一座（按页面上的顺序） */
     var idx = D.cities.indexOf(c);
     modal.nav.textContent = '';

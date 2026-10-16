@@ -74,7 +74,8 @@
     fushi: ['qiwu', 'fushi'],
     wenfang: ['qiwu', 'wenfang'],
     yi: ['yi', 'entry'],
-    lishi: ['lishi', 'entry']
+    lishi: ['lishi', 'entry'],
+    zhanyi: ['lishi', 'zhanyi']
   };
 
   /* 四大发明工艺图示：页面 -> 图名（登记类别 sifaming）。指南针目前只有 3 张，罗盘图重画后再补。 */

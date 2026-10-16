@@ -89,7 +89,8 @@
       items: [
         { page: 'lishi', label: '历史总览', href: 'lishi.html' },
         { page: 'lishi-chaodai', label: '朝代', href: 'lishi-chaodai.html' },
-        { page: 'ducheng', label: '都城', href: 'ducheng.html' }
+        { page: 'ducheng', label: '都城', href: 'ducheng.html' },
+        { page: 'zhanyi', label: '战役', href: 'zhanyi.html' }
       ]
     },
     {

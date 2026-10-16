@@ -1,0 +1,44 @@
+/* 知否知否 · 历史 · 战役页的补充样式
+   位置示意图、弹窗、总表、折叠块沿用 lishi.css 和 ducheng.css（请先加载 style.css、ziyu.css、lishi.css、ducheng.css）；这里只补战役页特有的几样。 */
+
+/* 筛选条 */
+.zy2-filter { margin: 4px 0 10px; }
+.zy2-filter .zy-chips { gap: 6px; }
+.zy2-filter .zy-chip { min-height: 36px; padding: 4px 12px; font-size: 13.5px; letter-spacing: 0.06em; }
+.zy2-filter .zy-chip i { font-style: normal; margin-left: 4px; font-size: 12px; opacity: 0.75; }
+
+/* 战役小卡：右上角“改朝换代”标记，名字下面是时间，再下面一句话 */
+.zy2-tile-name { padding-right: 4.2em; }
+.zy2-gc { position: absolute; top: 9px; right: 8px; padding: 0 6px; font-size: 11px; line-height: 18px; letter-spacing: 0.08em; color: #ff9a88; background: rgba(228, 112, 92, 0.12); border: 1px solid #e4705c; border-radius: 2px; white-space: nowrap; }
+.ss-tile.zy2-tile .ss-tile-l2 { -webkit-line-clamp: 3; }
+
+/* 标签 */
+.zy2-tags { display: inline-flex; flex-wrap: wrap; gap: 4px 6px; }
+.zy2-tag { display: inline-block; padding: 0 8px; font-size: 12px; line-height: 20px; letter-spacing: 0.06em; color: #d9c48c; border: 1px solid rgba(226, 194, 125, 0.45); border-radius: 10px; white-space: nowrap; }
+.zy2-tag.is-gc { color: #ff9a88; border-color: #e4705c; background: rgba(228, 112, 92, 0.12); }
+
+/* 弹窗里的“经过” */
+.zy2-steps { margin: 0; padding-left: 1.5em; }
+.zy2-steps li { margin: 0 0 8px; padding-left: 0.2em; line-height: 1.9; }
+.zy2-steps li::marker { color: var(--zy-gold); }
+.zy2-leader { margin: 0 0 6px; }
+.zy2-leader b { margin-right: 0.5em; font-weight: 400; font-size: 12.5px; letter-spacing: 0.1em; color: var(--zy-gold); }
+.zy2-gloss li { margin-bottom: 6px; }
+.zy2-links a { margin-right: 0.2em; }
+
+/* 总表 */
+.zy2-table td:nth-child(2) { min-width: 6em; }
+.zy2-table td:nth-child(3) { min-width: 8em; }
+.zy2-table td:nth-child(4) { min-width: 9em; }
+.zy2-table td:nth-child(5) { min-width: 8em; }
+.zy2-table td:nth-child(6) { min-width: 14em; }
+.zy2-table .zy2-tags { margin-top: 4px; }
+
+/* 改朝换代一览 */
+.zy2-gctable td:nth-child(2), .zy2-gctable td:nth-child(3) { min-width: 8em; }
+.zy2-gctable td:nth-child(5) { min-width: 14em; }
+.zy2-gcwrap { margin-top: 10px; }
+
+@media (max-width: 640px) {
+  .zy2-filter .zy-chip { padding: 4px 10px; font-size: 13px; }
+}
