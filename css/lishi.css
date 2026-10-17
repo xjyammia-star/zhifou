@@ -219,3 +219,19 @@ body.ss-noscroll { overflow: hidden; }
 .ss-emp-grp { margin: 0; padding: 14px 0 6px; font-size: 15px; font-weight: 600; letter-spacing: 0.08em; color: #e2c27d; border-bottom: 1px solid var(--zy-line); }
 .ss-emp-grp small { margin-left: 10px; font-size: 12.5px; font-weight: 400; letter-spacing: 0; color: var(--zy-muted); }
 .ss-emp-grp:first-child { padding-top: 10px; }
+
+/* 人物关系网（朝代页弹窗） */
+.ss-rel { width: 100%; max-width: 460px; height: auto; display: block; margin: 4px 0; }
+.ss-rel line { stroke: var(--zy-line); stroke-width: 1.4; }
+.ss-rel line.is-in { stroke-dasharray: 4 4; }
+.ss-rel a { cursor: pointer; }
+.ss-rel a rect { fill: var(--zy-paper-2); stroke: var(--zy-line); stroke-width: 1; }
+.ss-rel a text { fill: #8fd0dd; font-size: 13px; }
+.ss-rel a:hover rect { stroke: var(--zy-gold); }
+.ss-rel a:hover text { fill: #f0cf8a; }
+.ss-rel .c rect { fill: var(--zy-gold); }
+.ss-rel .c text { fill: #11171a; font-size: 15px; font-weight: 700; }
+.ss-rel-note { margin: 2px 0 0; font-size: 12.5px; color: var(--zy-muted); }
+.ss-lm { margin: 0 0 6px; }
+.ss-lmlink { color: #8fd0dd; text-decoration: underline dotted; text-underline-offset: 3px; white-space: nowrap; }
+.ss-lmlink:hover { color: #f0cf8a; }
