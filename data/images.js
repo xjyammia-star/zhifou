@@ -1330,7 +1330,7 @@ window.ZHIFOU_IMAGES = {
     'lishiren/石达开': { id: 'zhifou/lishiren/shidakai', v: 1792209620, dw: 900, dh: 1200, crop: 1, caption: '据史书所记太平天国运动的事迹想象绘制，并非真实画像', source: '', ai: true },
     'lishiren/张乐行': { id: 'zhifou/lishiren/zhanglexing', v: 1792209621, dw: 900, dh: 1200, crop: 1, caption: '据史书所记捻军起义的事迹想象绘制，并非真实画像', source: '', ai: true },
     'lishiren/田常': { id: 'zhifou/lishiren/tianchang', v: 1792209622, dw: 900, dh: 1200, crop: 1, caption: '据史书所记田常以大斗出贷、小斗收回收买民心的事迹想象绘制，并非真实画像', source: '', ai: true },
-    'lishiren/卢植': { id: 'zhifou/lishiren/luzhi', v: 1792209623, dw: 900, dh: 1200, crop: 1, caption: '据《后汉书》所记卢植讨伐黄巾的事迹想象绘制，并非真实画像', source: '', ai: true },
+    'lishiren/卢植': { id: 'zhifou/lishiren/luzhi', v: 1792241556, dw: 900, dh: 1200, crop: 1, caption: '据《后汉书》所记卢植讨伐黄巾的事迹想象绘制，并非真实画像', source: '', ai: true },
     'lishi/zhengbian': { id: 'zhifou/lishi/zhengbian', v: 1792209623, dw: 900, dh: 386, crop: 1, caption: '政变与起义：宫门、火把与聚义旌旗（示意图）', source: '', ai: true }
   }
 };
