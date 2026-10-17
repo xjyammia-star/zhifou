@@ -128,6 +128,18 @@
     /* 与本站其他页面的联系（手写在 data/lingmu-links.js；没写的墓，只连“丧礼”） */
     var LK = window.ZF_LM_LINKS;
     var lks = LK ? (LK.tombs[id] || (d.grp === 'F' ? [] : LK.fallback)) : [];
+    /* 反向：历史板块里葬在这里的帝王和人物（来自 data/lishi-lingmu.js） */
+    var LH = window.ZHIFOU_LISHI_LINGMU || {}, DYN = window.ZHIFOU_LISHI_INDEX ? window.ZHIFOU_LISHI_INDEX.dynasties : [], dn = {};
+    DYN.forEach(function (x) { dn[x.key] = x.name; });
+    var back = [];
+    Object.keys(LH).forEach(function (k) {
+      LH[k].forEach(function (m) {
+        if (m.id !== id) return;
+        var dk = k.split('/')[0], nm = k.slice(dk.length + 1);
+        back.push({ t: nm + '（' + (dn[dk] || dk) + '）', n: '历史板块里' + nm + '的介绍，有他身后陵墓的情况', h: 'lishi-chaodai.html?d=' + encodeURIComponent(dk) + '&id=' + encodeURIComponent(nm) });
+      });
+    });
+    if (back.length) lks = (lks || []).concat(back);
     if (lks && lks.length) {
       var lkSec = el('details', { 'class': 'wx-paper lm-sec' }, [
         el('summary', {}, ['与本站其他内容的联系', el('span', { 'class': 'lm-sec-n', text: lks.length + ' 条' })]),

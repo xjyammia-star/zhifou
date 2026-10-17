@@ -209,6 +209,13 @@
         pairs.push([f.k, span(f.v, ctx)]);
       }
     });
+    /* 身后陵墓：手写对照表 data/lishi-lingmu.js，连到陵墓详页 */
+    var LMS = (window.ZHIFOU_LISHI_LINGMU || {})[D.key + '/' + c.name];
+    if (LMS && LMS.length) {
+      pairs.push(['身后陵墓', el('div', {}, LMS.map(function (m) {
+        return el('p', { 'class': 'ss-lm' }, [m.x + ' ', el('a', { 'class': 'ss-ref', href: 'lingmu-detail.html?id=' + encodeURIComponent(m.id), title: '到陵墓与墓葬页看' + m.t, text: '看“' + m.t + '”详页 →' })]);
+      }))]);
+    }
     if (srcPair) pairs.push(srcPair);
     /* 人物像：只有登记过的人物才显示（登记键 lishiren/人物名），查不到就不显示 */
     var oldPic = modal.card.querySelector('.zf-portrait');
