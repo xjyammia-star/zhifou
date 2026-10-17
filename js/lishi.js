@@ -125,7 +125,7 @@
           body = el('span', { 'class': 'lt-body' }, richText(r.t).concat([gradeEl(r.g)]));
           tag = el('a', { 'class': 'lt-tag', href: 'lishi-chaodai.html?d=' + dd[0] + '&tab=ev', title: '到' + dd[1] + '页看大事记', text: dd[1] });
         }
-        list.appendChild(el('li', { 'class': 'lt-row' + (r.k === 'b' ? ' is-battle' : '') }, [el('span', { 'class': 'lt-y', text: r.y }), body, tag]));
+        list.appendChild(el('li', { 'class': 'lt-row' + (r.k === 'b' ? ' is-battle' : '') + (String(r.y).length > 6 ? ' is-long' : '') }, [el('span', { 'class': 'lt-y', text: r.y }), body, tag]));
       });
       count.textContent = '共 ' + f.length + ' 条' + (jump !== null ? '，从第 ' + (start + 1) + ' 条（' + (f[start] ? f[start].y : '末尾') + '）起显示' : '') + '；其中大事记 ' + f.filter(function (r) { return r.k === 'e'; }).length + ' 条，战役 ' + f.filter(function (r) { return r.k === 'b'; }).length + ' 场。';
       more.textContent = '';
@@ -139,41 +139,72 @@
     render();
   }
 
+  /* ---------- 帝王、人物共用：按朝代分组的可折叠块 ---------- */
+  function dynBlock(di, countText, tableNode, open, st) {
+    var d = el('details', { 'class': 'lt-dyn' });
+    var sm = el('summary', {}, [
+      el('span', { 'class': 'lt-dyn-name', text: ALL.dyn[di][1] }),
+      el('span', { 'class': 'lt-dyn-range', text: ALL.dyn[di][3] }),
+      el('span', { 'class': 'lt-dyn-count', text: countText })
+    ]);
+    d.appendChild(sm);
+    d.appendChild(el('div', { 'class': 'ss-tablewrap' }, [tableNode]));
+    if (open) d.open = true;
+    sm.addEventListener('click', function () { setTimeout(function () { st[di] = d.open; }, 0); });   /* 只记住读者自己展开、收起的 */
+    return d;
+  }
+  function toolButtons(host, st) {
+    function all(open) {
+      Array.prototype.forEach.call(host.querySelectorAll('details'), function (d) { d.open = open; st[d.getAttribute('data-di')] = open; });
+    }
+    var b1 = el('button', { 'class': 'zy-btn lt-tool', type: 'button', text: '全部展开' });
+    var b2 = el('button', { 'class': 'zy-btn lt-tool', type: 'button', text: '全部收起' });
+    b1.addEventListener('click', function () { all(true); });
+    b2.addEventListener('click', function () { all(false); });
+    return el('div', { 'class': 'lt-tools' }, [b1, b2]);
+  }
+
   /* ---------- 标签：帝王 ---------- */
   function fillEmperors(box) {
-    var dyn = '', q = '', keyOnly = false;
+    var dyn = '', q = '', keyOnly = false, st = {};
     var sel = dynSelect(function () { dyn = sel.value; render(); });
     var sbox = el('input', { 'class': 'ss-search lt-q', type: 'search', placeholder: '按称呼、姓名、年号、庙号或谥号搜索，如 贞观、太祖', 'aria-label': '搜索帝王' });
     var chips = Z.chips(['全部', '重点帝王（有专门介绍）'], function (i) { keyOnly = i === 1; render(); }, { aria: '范围' });
     var count = el('p', { 'class': 'zy-note', 'aria-live': 'polite' });
-    var tbody = el('tbody', {});
+    var host = el('div', { 'class': 'lt-groups' });
     sbox.addEventListener('input', function () { q = sbox.value.trim(); render(); });
     function render() {
-      var n = 0;
-      tbody.textContent = '';
-      ALL.emp.forEach(function (e) {
-        if (dyn !== '' && String(e[0]) !== dyn) return;
-        if (keyOnly && !e[7]) return;
-        if (q && (e[1] + e[2] + e[3] + e[4] + e[5] + e[6]).indexOf(q) < 0) return;
-        n++;
-        var dd = ALL.dyn[e[0]];
-        var nameCell = e[7]
-          ? el('a', { 'class': 'ss-jump', href: 'lishi-chaodai.html?d=' + dd[0] + '&id=' + encodeURIComponent(e[1]), title: '看' + e[1] + '的介绍', text: e[1] })
-          : el('a', { 'class': 'ss-jump', href: 'lishi-chaodai.html?d=' + dd[0] + '&tab=emp', title: '到' + dd[1] + '页看帝王名单', text: e[1] });
-        tbody.appendChild(el('tr', {}, [
-          el('td', { 'class': 'is-nowrap' }, dd[1]),
-          el('td', { 'class': 'is-name' }, [nameCell]),
-          el('td', {}, e[2]), el('td', { 'class': 'is-nowrap' }, e[3]), el('td', { 'class': 'lt-nh' }, e[4]), el('td', {}, e[5]), el('td', {}, e[6])
-        ]));
+      var total = 0, forced = q !== '' || dyn !== '';
+      host.textContent = '';
+      ALL.dyn.forEach(function (dd, di) {
+        if (dyn !== '' && String(di) !== dyn) return;
+        var tbody = el('tbody', {}), n = 0, nkey = 0;
+        ALL.emp.forEach(function (e) {
+          if (e[0] !== di) return;
+          if (keyOnly && !e[7]) return;
+          if (q && (e[1] + e[2] + e[3] + e[4] + e[5] + e[6]).indexOf(q) < 0) return;
+          n++; if (e[7]) nkey++;
+          var nameCell = e[7]
+            ? el('a', { 'class': 'ss-jump', href: 'lishi-chaodai.html?d=' + dd[0] + '&id=' + encodeURIComponent(e[1]), title: '看' + e[1] + '的介绍', text: e[1] })
+            : el('a', { 'class': 'ss-jump', href: 'lishi-chaodai.html?d=' + dd[0] + '&tab=emp', title: '到' + dd[1] + '页看帝王名单', text: e[1] });
+          tbody.appendChild(el('tr', {}, [
+            el('td', { 'class': 'is-name' }, [nameCell]),
+            el('td', {}, e[2]), el('td', { 'class': 'is-nowrap' }, e[3]), el('td', { 'class': 'lt-nh' }, e[4]), el('td', {}, e[5]), el('td', {}, e[6])
+          ]));
+        });
+        if (!n) return;
+        total += n;
+        var table = el('table', { 'class': 'ss-table lt-table' }, [
+          el('thead', {}, [el('tr', {}, ['称呼', '姓名', '在位', '年号', '庙号／谥号', '一句话'].map(function (h) { return el('th', { text: h }); }))]), tbody]);
+        var blk = dynBlock(di, n + ' 位' + (nkey ? '，重点 ' + nkey + ' 位' : ''), table, forced ? true : !!st[di], st);
+        blk.setAttribute('data-di', String(di));
+        host.appendChild(blk);
       });
-      count.textContent = '共 ' + n + ' 位。' + (keyOnly ? '' : '带“重点”的帝王，点称呼可以直接看专门介绍；其余的点称呼到朝代页看名单。');
+      count.textContent = total ? '共 ' + total + ' 位。点朝代名展开或收起；搜索或选了朝代时会自动展开。带下划线的称呼点开看介绍（重点帝王有专门介绍，其余到朝代页看名单）。' : '没有找到。';
     }
     box.textContent = '';
     [Z.note('435 位帝王的年号、庙号和谥号都能搜。年份用公历，公元前写作“前221”。'),
-      el('div', { 'class': 'lt-bar' }, [sel, sbox]), chips.node, count,
-      el('div', { 'class': 'ss-tablewrap' }, [el('table', { 'class': 'ss-table lt-table' }, [
-        el('thead', {}, [el('tr', {}, ['朝代', '称呼', '姓名', '在位', '年号', '庙号／谥号', '一句话'].map(function (h) { return el('th', { text: h }); }))]),
-        tbody])])].forEach(function (n) { box.appendChild(n); });
+      el('div', { 'class': 'lt-bar' }, [sel, sbox]), chips.node, toolButtons(host, st), count, host].forEach(function (n) { box.appendChild(n); });
     chips.pick(0);
     render();
   }
@@ -190,41 +221,43 @@
     ['后妃宗室', /皇后|太后|后妃|贵妃|公主|宗室|亲王|王子|郡王|太子|皇子|妃/]
   ];
   function fillPeople(box) {
-    var STEP = 200, limit = STEP, dyn = '', q = '', cat = null;
-    var sel = dynSelect(function () { dyn = sel.value; limit = STEP; render(); });
+    var dyn = '', q = '', cat = null, st = {};
+    var sel = dynSelect(function () { dyn = sel.value; render(); });
     var sbox = el('input', { 'class': 'ss-search lt-q', type: 'search', placeholder: '按姓名或身份搜索，如 宰相、史学家、将领', 'aria-label': '搜索人物' });
     var labels = ['全部'].concat(CATS.map(function (c) { return c[0]; }));
-    var chips = Z.chips(labels, function (i) { cat = i ? CATS[i - 1][1] : null; limit = STEP; render(); }, { aria: '按身份筛选' });
+    var chips = Z.chips(labels, function (i) { cat = i ? CATS[i - 1][1] : null; render(); }, { aria: '按身份筛选' });
     var count = el('p', { 'class': 'zy-note', 'aria-live': 'polite' });
-    var tbody = el('tbody', {});
-    var more = el('div', { 'class': 'lt-morewrap' });
-    sbox.addEventListener('input', function () { q = sbox.value.trim(); limit = STEP; render(); });
+    var host = el('div', { 'class': 'lt-groups' });
+    sbox.addEventListener('input', function () { q = sbox.value.trim(); render(); });
     function render() {
-      var f = ALL.ppl.filter(function (p) {
-        if (dyn !== '' && String(p[0]) !== dyn) return false;
-        if (cat && !cat.test(p[2])) return false;
-        if (q && (p[1] + p[2]).indexOf(q) < 0) return false;
-        return true;
+      var total = 0, forced = q !== '' || dyn !== '';
+      host.textContent = '';
+      ALL.dyn.forEach(function (dd, di) {
+        if (dyn !== '' && String(di) !== dyn) return;
+        var tbody = el('tbody', {}), n = 0;
+        ALL.ppl.forEach(function (p) {
+          if (p[0] !== di) return;
+          if (cat && !cat.test(p[2])) return;
+          if (q && (p[1] + p[2]).indexOf(q) < 0) return;
+          n++;
+          tbody.appendChild(el('tr', {}, [
+            el('td', { 'class': 'is-name' }, [el('a', { 'class': 'ss-jump', href: 'lishi-chaodai.html?d=' + dd[0] + '&id=' + encodeURIComponent(p[1]), title: '看' + p[1] + '的介绍', text: p[1] })]),
+            el('td', {}, p[2]), el('td', { 'class': 'is-nowrap' }, p[3])
+          ]));
+        });
+        if (!n) return;
+        total += n;
+        var table = el('table', { 'class': 'ss-table lt-table' }, [
+          el('thead', {}, [el('tr', {}, ['人物', '身份', '生卒'].map(function (h) { return el('th', { text: h }); }))]), tbody]);
+        var blk = dynBlock(di, n + ' 位', table, forced ? true : !!st[di], st);
+        blk.setAttribute('data-di', String(di));
+        host.appendChild(blk);
       });
-      tbody.textContent = '';
-      f.slice(0, limit).forEach(function (p) {
-        var dd = ALL.dyn[p[0]];
-        tbody.appendChild(el('tr', {}, [
-          el('td', { 'class': 'is-name' }, [el('a', { 'class': 'ss-jump', href: 'lishi-chaodai.html?d=' + dd[0] + '&id=' + encodeURIComponent(p[1]), title: '看' + p[1] + '的介绍', text: p[1] })]),
-          el('td', { 'class': 'is-nowrap' }, dd[1]), el('td', {}, p[2]), el('td', { 'class': 'is-nowrap' }, p[3])
-        ]));
-      });
-      count.textContent = '共 ' + f.length + ' 位。';
-      more.textContent = '';
-      var mb = moreButton(Math.min(limit, f.length), f.length, STEP, function () { limit += STEP; render(); });
-      if (mb) more.appendChild(mb);
+      count.textContent = total ? '共 ' + total + ' 位。点朝代名展开或收起；搜索或选了朝代时会自动展开。' : '没有找到。';
     }
     box.textContent = '';
     [Z.note('817 位重要人物，以政治、军事、外交、制度、科技、宗教、史学方面的人物为主。上面的分类是按“身份”文字里的关键词自动归的，只方便检索，不是严格的分类，一个人可以同时出现在几类里。'),
-      el('div', { 'class': 'lt-bar' }, [sel, sbox]), chips.node, count,
-      el('div', { 'class': 'ss-tablewrap' }, [el('table', { 'class': 'ss-table lt-table' }, [
-        el('thead', {}, [el('tr', {}, ['人物', '朝代', '身份', '生卒'].map(function (h) { return el('th', { text: h }); }))]),
-        tbody])]), more].forEach(function (n) { box.appendChild(n); });
+      el('div', { 'class': 'lt-bar' }, [sel, sbox]), chips.node, toolButtons(host, st), count, host].forEach(function (n) { box.appendChild(n); });
     chips.pick(0);
     render();
   }

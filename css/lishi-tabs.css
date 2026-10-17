@@ -27,6 +27,25 @@
 .lt-table td { font-size: 14px; }
 .lt-table td.is-name { font-size: 17px; }
 
+/* 年表：年份太长（如“约前2070–约前1600”）时单独占一行，避免和正文重叠 */
+.lt-row.is-long { grid-template-columns: 1fr auto; }
+.lt-row.is-long .lt-y { grid-column: 1 / -1; font-size: 15px; }
+.lt-y { font-size: 16px; }
+
+/* 帝王、人物：按朝代分组，可折叠 */
+.lt-tools { display: flex; gap: 8px; margin: 2px 0 10px; }
+.lt-tool { min-height: 36px; padding: 4px 14px; font-size: 13.5px; }
+.lt-dyn { margin: 8px 0; background: var(--zy-paper); border: 1px solid var(--zy-line); border-radius: 4px; }
+.lt-dyn > summary { display: flex; flex-wrap: wrap; align-items: baseline; gap: 2px 12px; min-height: 46px; padding: 10px 16px; cursor: pointer; list-style: none; }
+.lt-dyn > summary::-webkit-details-marker { display: none; }
+.lt-dyn > summary::before { content: '▸'; color: #e2c27d; margin-right: -4px; transition: transform 0.15s; }
+.lt-dyn[open] > summary::before { transform: rotate(90deg); }
+.lt-dyn > summary:focus-visible { outline: 2px solid #e2c27d; outline-offset: -2px; }
+.lt-dyn-name { font-family: var(--display); font-size: 18px; color: #f0d48f; }
+.lt-dyn-range { font-size: 13px; color: var(--zy-muted); }
+.lt-dyn-count { margin-left: auto; font-size: 13px; color: var(--zy-muted); }
+.lt-dyn .ss-tablewrap { margin: 0 12px 12px; }
+
 @media (max-width: 640px) {
   .lt-row { grid-template-columns: 1fr; gap: 2px; padding: 9px 12px; }
   .lt-tag { justify-self: start; margin-top: 2px; }
