@@ -256,7 +256,7 @@
       count.textContent = total ? '共 ' + total + ' 位。点朝代名展开或收起；搜索或选了朝代时会自动展开。' : '没有找到。';
     }
     box.textContent = '';
-    [Z.note('817 位重要人物，以政治、军事、外交、制度、科技、宗教、史学方面的人物为主。上面的分类是按“身份”文字里的关键词自动归的，只方便检索，不是严格的分类，一个人可以同时出现在几类里。'),
+    [Z.note(ALL.ppl.length + ' 位重要人物，以政治、军事、外交、制度、科技、宗教、史学方面的人物为主。上面的分类是按“身份”文字里的关键词自动归的，只方便检索，不是严格的分类，一个人可以同时出现在几类里。'),
       el('div', { 'class': 'lt-bar' }, [sel, sbox]), chips.node, toolButtons(host, st), count, host].forEach(function (n) { box.appendChild(n); });
     chips.pick(0);
     render();
