@@ -83,58 +83,93 @@
   }
 
   /* ---------- 标签：年表 ---------- */
+  /* 按朝代分成可折叠的块，点朝代名才展开那个朝代的大事记和战役，避免一次摆出一千多条。
+     战役没有朝代字段，按年份归到主线朝代（辽、西夏、金的战役归到同时期的宋）。 */
+  var BT_START = [['xiashangzhou', -2070], ['chunqiu', -770], ['zhanguo', -475], ['qin', -221], ['xihan', -206], ['xin', 9], ['donghan', 25],
+    ['sanguo', 220], ['liangjin', 266], ['nanbeichao', 420], ['sui', 581], ['tang', 618], ['wudai', 907], ['beisong', 960],
+    ['nansong', 1127], ['yuan', 1271], ['ming', 1368], ['qing', 1616]];
   function fillTimeline(box) {
     var rows = [];
     ALL.ev.forEach(function (e) { rows.push({ k: 'e', di: e[0], y: e[1], n: e[2], t: e[3], g: e[4] }); });
-    ALL.bt.forEach(function (b) { rows.push({ k: 'b', name: b[0], y: b[1], n: b[2], t: b[3], tags: b[4] }); });
+    ALL.bt.forEach(function (b) { rows.push({ k: 'b', di: 0, name: b[0], y: b[1], n: b[2], t: b[3], tags: b[4] }); });
+    var keyIdx = {};
+    ALL.dyn.forEach(function (d, i) { keyIdx[d[0]] = i; });
+    rows.forEach(function (r) {
+      if (r.k !== 'b' || r.n === null || r.n === undefined) return;
+      BT_START.forEach(function (s) { if (r.n >= s[1]) r.di = keyIdx[s[0]]; });
+    });
     rows = rows.map(function (r, i) { r.i = i; return r; }).sort(function (a, b) {
       var an = a.n === null || a.n === undefined ? 99999 : a.n, bn = b.n === null || b.n === undefined ? 99999 : b.n;
       return an - bn || (a.k === b.k ? 0 : (a.k === 'e' ? -1 : 1)) || a.i - b.i;
     });
-    var STEP = 150, limit = STEP, kind = '', dyn = '', q = '', jump = null;
-    var sel = dynSelect(function () { dyn = sel.value; limit = STEP; render(); });
+    var STEP = 150, lim = {}, kind = '', dyn = '', q = '', jump = null, st = {};
+    function reset() { lim = {}; render(); }
+    var sel = dynSelect(function () { dyn = sel.value; reset(); });
     var box1 = el('input', { 'class': 'ss-search lt-q', type: 'search', placeholder: '搜关键词，如 变法、赤壁、科举', 'aria-label': '搜索年表' });
     var jbox = el('input', { 'class': 'ss-search lt-year', type: 'search', placeholder: '从哪一年看起，如 1127 或 前221', 'aria-label': '跳到某一年' });
-    var chips = Z.chips(['全部', '大事记', '战役'], function (i) { kind = ['', 'e', 'b'][i]; limit = STEP; render(); }, { aria: '内容类型' });
+    var chips = Z.chips(['全部', '大事记', '战役'], function (i) { kind = ['', 'e', 'b'][i]; reset(); }, { aria: '内容类型' });
     var count = el('p', { 'class': 'zy-note', 'aria-live': 'polite' });
-    var list = el('ul', { 'class': 'lt-list' });
-    var more = el('div', { 'class': 'lt-morewrap' });
-    box1.addEventListener('input', function () { q = box1.value.trim(); limit = STEP; render(); });
-    jbox.addEventListener('input', function () { jump = parseYear(jbox.value); limit = STEP; render(); });
+    var host = el('div', { 'class': 'lt-groups' });
+    box1.addEventListener('input', function () { q = box1.value.trim(); reset(); });
+    jbox.addEventListener('input', function () { jump = parseYear(jbox.value); reset(); });
+    function makeRow(r) {
+      var body, tag;
+      if (r.k === 'b') {
+        body = el('span', { 'class': 'lt-body' }, [el('b', { text: r.name + '：' })].concat(richText(r.t)));
+        tag = el('a', { 'class': 'lt-tag is-battle', href: 'zhanyi.html?id=' + encodeURIComponent(r.name), title: '到战役页看看' + r.name, text: '战役' });
+      } else {
+        var dd = ALL.dyn[r.di];
+        body = el('span', { 'class': 'lt-body' }, richText(r.t).concat([gradeEl(r.g)]));
+        tag = el('a', { 'class': 'lt-tag', href: 'lishi-chaodai.html?d=' + dd[0] + '&tab=ev', title: '到' + dd[1] + '页看大事记', text: dd[1] });
+      }
+      return el('li', { 'class': 'lt-row' + (r.k === 'b' ? ' is-battle' : '') + (String(r.y).length > 6 ? ' is-long' : '') }, [el('span', { 'class': 'lt-y', text: r.y }), body, tag]);
+    }
+    function fillBlock(wrap, di, list) {
+      var n = lim[di] || STEP;
+      wrap.textContent = '';
+      var ul = el('ul', { 'class': 'lt-list' });
+      list.slice(0, n).forEach(function (r) { ul.appendChild(makeRow(r)); });
+      wrap.appendChild(ul);
+      var mb = moreButton(Math.min(n, list.length), list.length, STEP, function () { lim[di] = n + STEP; fillBlock(wrap, di, list); });
+      if (mb) wrap.appendChild(el('div', { 'class': 'lt-morewrap' }, [mb]));
+    }
     function render() {
       var f = rows.filter(function (r) {
         if (kind && r.k !== kind) return false;
-        if (dyn !== '' && (r.k !== 'e' || String(r.di) !== dyn)) return false;
+        if (dyn !== '' && String(r.di) !== dyn) return false;
         if (q && (r.y + r.t + (r.name || '')).indexOf(q) < 0) return false;
+        if (jump !== null && (r.n === null || r.n === undefined || r.n < jump)) return false;
         return true;
       });
-      var start = 0;
-      if (jump !== null) {
-        start = f.length;
-        for (var i = 0; i < f.length; i++) { var n = f[i].n; if (n !== null && n !== undefined && n >= jump) { start = i; break; } }
-      }
-      var view = f.slice(start, start + limit);
-      list.textContent = '';
-      view.forEach(function (r) {
-        var body, tag;
-        if (r.k === 'b') {
-          body = el('span', { 'class': 'lt-body' }, [el('b', { text: r.name + '：' })].concat(richText(r.t)));
-          tag = el('a', { 'class': 'lt-tag is-battle', href: 'zhanyi.html?id=' + encodeURIComponent(r.name), title: '到战役页看看' + r.name, text: '战役' });
-        } else {
-          var dd = ALL.dyn[r.di];
-          body = el('span', { 'class': 'lt-body' }, richText(r.t).concat([gradeEl(r.g)]));
-          tag = el('a', { 'class': 'lt-tag', href: 'lishi-chaodai.html?d=' + dd[0] + '&tab=ev', title: '到' + dd[1] + '页看大事记', text: dd[1] });
-        }
-        list.appendChild(el('li', { 'class': 'lt-row' + (r.k === 'b' ? ' is-battle' : '') + (String(r.y).length > 6 ? ' is-long' : '') }, [el('span', { 'class': 'lt-y', text: r.y }), body, tag]));
+      var by = {};
+      f.forEach(function (r) { (by[r.di] = by[r.di] || []).push(r); });
+      host.textContent = '';
+      var forced = q !== '' || dyn !== '', firstOpen = jump !== null && !forced;
+      ALL.dyn.forEach(function (dd, di) {
+        var list = by[di];
+        if (!list || !list.length) return;
+        var ne = list.filter(function (r) { return r.k === 'e'; }).length, nb = list.length - ne;
+        var d = el('details', { 'class': 'lt-dyn' });
+        d.setAttribute('data-di', String(di));
+        var sm = el('summary', {}, [
+          el('span', { 'class': 'lt-dyn-name', text: dd[1] }),
+          el('span', { 'class': 'lt-dyn-range', text: dd[3] }),
+          el('span', { 'class': 'lt-dyn-count', text: (ne ? '大事 ' + ne + ' 条' : '') + (ne && nb ? '，' : '') + (nb ? '战役 ' + nb + ' 场' : '') })
+        ]);
+        var wrap = el('div', { 'class': 'lt-evwrap' });
+        d.appendChild(sm); d.appendChild(wrap);
+        var built = false;
+        d.addEventListener('toggle', function () { if (d.open && !built) { built = true; fillBlock(wrap, di, list); } });
+        sm.addEventListener('click', function () { setTimeout(function () { st[di] = d.open; }, 0); });
+        if (forced || st[di] || firstOpen) { firstOpen = false; d.open = true; }
+        host.appendChild(d);
       });
-      count.textContent = '共 ' + f.length + ' 条' + (jump !== null ? '，从第 ' + (start + 1) + ' 条（' + (f[start] ? f[start].y : '末尾') + '）起显示' : '') + '；其中大事记 ' + f.filter(function (r) { return r.k === 'e'; }).length + ' 条，战役 ' + f.filter(function (r) { return r.k === 'b'; }).length + ' 场。';
-      more.textContent = '';
-      var mb = moreButton(view.length, f.length - start, STEP, function () { limit += STEP; render(); });
-      if (mb) more.appendChild(mb);
+      count.textContent = '共 ' + f.length + ' 条' + (jump !== null ? '（从 ' + jbox.value.trim() + ' 年起）' : '') + '；其中大事记 ' + f.filter(function (r) { return r.k === 'e'; }).length + ' 条，战役 ' + f.filter(function (r) { return r.k === 'b'; }).length + ' 场。点朝代名展开或收起；搜索或选了朝代时会自动展开。';
+      if (!f.length) count.textContent = '没有找到。';
     }
     box.textContent = '';
-    [Z.note('把 21 个朝代的大事记和 52 场战役按年份排在一起。公元前写作“前221”。点右边的朝代名，到那个朝代页看大事记；点“战役”，到战役页看这场战役。'),
-      el('div', { 'class': 'lt-bar' }, [sel, box1, jbox]), chips.node, count, list, more].forEach(function (n) { box.appendChild(n); });
+    [Z.note('把 21 个朝代的大事记和 52 场战役按朝代收起来，点朝代名才展开那个朝代。公元前写作“前221”。点右边的朝代名，到那个朝代页看大事记；点“战役”，到战役页看这场战役。辽、西夏、金的战役归在同时期的宋。'),
+      el('div', { 'class': 'lt-bar' }, [sel, box1, jbox]), chips.node, toolButtons(host, st), count, host].forEach(function (n) { box.appendChild(n); });
     chips.pick(0);
     render();
   }

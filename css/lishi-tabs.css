@@ -51,3 +51,8 @@
   .lt-tag { justify-self: start; margin-top: 2px; }
   .lt-bar .ss-search { flex-basis: 100%; max-width: none; }
 }
+
+/* 年表按朝代折叠：块内的列表去掉外框，和帝王、人物块对齐 */
+.lt-evwrap { padding: 0 12px 12px; }
+.lt-evwrap .lt-list { margin: 0; background: transparent; }
+.lt-evwrap .lt-morewrap { margin-top: 8px; }
