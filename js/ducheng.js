@@ -186,6 +186,16 @@
       });
       modal.body.appendChild(Z.kv([['相关战役', el('span', {}, zk)]], { quote: [] }));
     }
+    /* 相关事件：从政变与起义页的索引（data/zhengbian-index.js）里取，连到那一页 */
+    var zbs = ((window.ZHIFOU_ZB_INDEX || {}).byCity || {})[c.name];
+    if (zbs && zbs.length) {
+      var zb = [];
+      zbs.forEach(function (z, i) {
+        if (i) zb.push('、');
+        zb.push(el('a', { 'class': 'ss-ref', href: 'zhengbian.html?id=' + encodeURIComponent(z.n), title: '到政变与起义页看看' + z.n, text: z.n }));
+      });
+      modal.body.appendChild(Z.kv([['相关政变与起义', el('span', {}, zb)]], { quote: [] }));
+    }
     /* 上一座、下一座（按页面上的顺序） */
     var idx = D.cities.indexOf(c);
     modal.nav.textContent = '';

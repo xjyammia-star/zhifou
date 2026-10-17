@@ -162,6 +162,17 @@
     });
     return el('span', { 'class': 'zy2-links' }, kids);
   }
+  /* 相关事件：从政变与起义页的索引（data/zhengbian-index.js）里取，连到那一页 */
+  function eventsNode(b) {
+    var zs = ((window.ZHIFOU_ZB_INDEX || {}).byBattle || {})[b.name];
+    if (!zs || !zs.length) return null;
+    var kids = [];
+    zs.forEach(function (z, i) {
+      if (i) kids.push('、');
+      kids.push(el('a', { 'class': 'ss-ref', href: 'zhengbian.html?id=' + encodeURIComponent(z.n), title: '到政变与起义页看看' + z.n, text: z.n }));
+    });
+    return el('span', { 'class': 'zy2-links' }, kids);
+  }
   function peopleNode(b) {
     if (!b.people.length) return null;
     var kids = [];
@@ -196,6 +207,7 @@
       ['史实与演义', glossNode(b)],
       ['史料说明', textField(b, '史料说明')],
       ['关联都城', citiesNode(b)],
+      ['相关事件', eventsNode(b)],
       ['关联帝王和人物', peopleNode(b)],
       ['出处', b.src.length ? b.src.join('　◆　') : '']
     ];

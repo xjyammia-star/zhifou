@@ -1,0 +1,26 @@
+/* 知否知否 · 历史 · 政变与起义页的补充样式
+   大部分样式沿用 zhanyi.css（筛选条、标签、弹窗里的列表、总表）、ducheng.css 和 lishi.css；这里只补这一页特有的几样。 */
+
+/* 筛选条标签多（11 个），收紧一点 */
+.zb-filter .zy-chips { gap: 5px; }
+
+/* 事件小卡：沿用战役小卡的样式，名字下面是时间 */
+.zb-tile .ss-tile-l1 { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+
+/* 弹窗里的“主要人物”：每一方一行 */
+.zb-who { margin: 0 0 6px; }
+.zb-who b { margin-right: 0.5em; font-weight: 400; font-size: 12.5px; letter-spacing: 0.1em; color: var(--zy-gold); }
+
+/* 制度页里的两张对照表 */
+.zb-table-wrap { margin-top: 10px; }
+.zb-gc td:nth-child(2), .zb-gc td:nth-child(3) { min-width: 8em; }
+.zb-gc td:nth-child(5) { min-width: 14em; }
+.zb-bt td:nth-child(2) { min-width: 10em; }
+
+/* 总表 */
+.zb-main td:nth-child(2) { min-width: 6em; }
+.zb-main td:nth-child(3) { min-width: 8em; }
+.zb-main td:nth-child(4) { min-width: 10em; }
+.zb-main td:nth-child(5) { min-width: 9em; }
+.zb-main td:nth-child(6) { min-width: 14em; }
+.zb-main .zy2-tags { margin-top: 4px; }
