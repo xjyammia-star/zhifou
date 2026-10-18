@@ -408,7 +408,53 @@
     card.insertBefore(row, body);
   }
 
-  var SCANNERS = [scanHeads, scanSections, scanCards, scanTips, scanTerm, scanSlDialog, scanWenModal, scanWr, scanLishiModal];
+  /* ---------- 10. 历史朝代页：“大事记”时间线、“制度”各组（出处和“待核”标记不读） ---------- */
+  function tlText(root) {
+    var c = root.cloneNode(true);
+    Array.prototype.forEach.call(c.querySelectorAll('.ss-tl-s, .ss-check, .zf-tts, .zf-tts-row'), function (x) { x.parentNode.removeChild(x); });
+    var parts = [];
+    Array.prototype.forEach.call(c.querySelectorAll('.ss-tl-item'), function (it) {
+      var y = tx(it.querySelector('.ss-tl-y')).replace(/[。]$/, '');
+      var t = tx(it.querySelector('.ss-tl-t')) || tx(it);
+      parts.push((y ? y + '，' : '') + t);
+    });
+    return parts.join(' ');
+  }
+  function tableText(tb) {
+    var heads = Array.prototype.map.call(tb.querySelectorAll('thead th'), function (th) { return th.textContent.trim(); });
+    var out = [];
+    Array.prototype.forEach.call(tb.querySelectorAll('tbody tr'), function (tr) {
+      var cells = [];
+      Array.prototype.forEach.call(tr.children, function (td, i) {
+        if (heads[i] === '出处') return;
+        var t = td.textContent.replace(/\s+/g, ' ').replace(/〔[^〕]*〕/g, '').trim();
+        if (t) cells.push(t);
+      });
+      if (cells.length) out.push(cells.join('，') + '。');
+    });
+    return out.join(' ');
+  }
+  function scanLishiTabs() {
+    each('.ss-timeline', function (tl) {
+      if (hasRowBefore(tl) || !tl.querySelector('.ss-tl-item')) return;
+      var row = document.createElement('div');
+      row.className = 'zf-tts-row';
+      row.appendChild(mk(function () { return tlText(tl); }, '大事记', '听大事记'));
+      tl.parentNode.insertBefore(row, tl);
+    });
+    each('.ss-sys', function (g) {
+      var h = g.querySelector('h3');
+      if (!h || hasBtn(h)) return;
+      var name = tx(h).replace(/[。]$/, '');
+      addTo(h, function () {
+        var tb = g.querySelector('table');
+        var body = tb ? tableText(tb) : kidsText(g, [h], false);
+        return name + '。' + body;
+      }, name);
+    });
+  }
+
+  var SCANNERS = [scanHeads, scanSections, scanCards, scanTips, scanTerm, scanSlDialog, scanWenModal, scanWr, scanLishiModal, scanLishiTabs];
 
   /* ---------- 样式 ---------- */
   var css =
