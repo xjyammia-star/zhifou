@@ -216,6 +216,8 @@
       b2.addEventListener('click', function () { openEvent(next.name); });
       modal.nav.appendChild(b2);
     }
+    /* 分享卡片按钮（由 js/sharecard.js 提供；没加载或出错都不影响本页） */
+    try { if (window.ShareCard && window.ShareCard.hookEvent) window.ShareCard.hookEvent({ card: modal.card, kind: '政变与起义', group: b.group, b: b }); } catch (e) { /* 忽略 */ }
     modal.card.scrollTop = 0;
   }
 

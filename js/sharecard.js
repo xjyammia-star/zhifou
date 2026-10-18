@@ -394,7 +394,7 @@
         else if (s.kind === 'poem') blocks.push(blockPoem(M, th, s.items, s.size || 40, !!s.label));
         else s.items.forEach(function (t, i) { if (i) blocks.push(blockSpace(10)); blocks.push(blockPara(M, th, t, s.size || 30)); });
       });
-      if (trimmed) { blocks.push(blockSpace(22)); blocks.push(blockPara(M, th, '更多内容请扫码，在网站上查看。', 24, { color: th.note, lh: 1.5 })); }
+      if (trimmed && !spec.noMore) { blocks.push(blockSpace(22)); blocks.push(blockPara(M, th, '更多内容请扫码，在网站上查看。', 24, { color: th.note, lh: 1.5 })); }
       var h = 0; blocks.forEach(function (b) { h += b.h; });
       return { blocks: blocks, h: h };
     }
@@ -487,6 +487,37 @@
         if (rr_.length) other.push({ id: 'rows', label: '相关', kind: 'rows', items: rr_.map(function (s) { return s.items[0]; }), prio: 5, keepMin: 1 });
         return other;
       }
+    },
+
+    /* 战役、政变与起义：一句话 + 时间地点双方结果 + 起因 + 结果与影响；不放“经过”，经过请扫码 */
+    event: function (o) {
+      var b = o.b, F = {};
+      (b.f || []).forEach(function (x) { F[x.k] = x; });
+      function val(k) { return F[k] ? clean(F[k].v) : ''; }
+      var isBattle = o.kind === '战役';
+      var rows = [];
+      if (b.timeShort) rows.push(['时间', clean(b.timeShort)]);
+      if (b.placeShort) rows.push(['地点', clean(b.placeShort)]);
+      var who = isBattle ? clean(b.sides || '') : clean(b.peopleShort || '');
+      if (who) rows.push([isBattle ? '双方' : '人物', who]);
+      if (b.result) rows.push(['结果', clean(b.result)]);
+      var sections = [];
+      if (rows.length) sections.push({ id: 'facts', label: '', kind: 'rows', items: rows, prio: 1, keepMin: rows.length, drop: false });
+      var why = val('起因'), res = val('结果与影响'), force = val('兵力与伤亡') || val('规模与伤亡');
+      if (why) sections.push({ id: 'why', label: '起因', kind: 'paras', items: [why], prio: 3, keepMin: 1, drop: false, size: 31 });
+      if (res) sections.push({ id: 'res', label: '结果与影响', kind: 'paras', items: [res], prio: 2, keepMin: 1, drop: false, size: 31 });
+      if (force) sections.push({ id: 'force', label: isBattle ? '兵力' : '规模', kind: 'paras', items: [force], prio: 6, keepMin: 1, drop: true, size: 28 });
+      return {
+        theme: 'hist', kind: 'event', noMore: true, title: b.name, file: '知否知否-' + b.name,
+        sections: sections,
+        top: function (M, th) {
+          var len = Array.from(b.name).length, size = len <= 4 ? 140 : len <= 6 ? 120 : len <= 8 ? 100 : 80;
+          var arr = [blockHead(M, th, { tag: '历史', sub: o.kind + (o.group ? ' · ' + o.group : ''), right: shortYears(b.timeShort || '') }), blockSpace(46), blockTitle(M, th, b.name, size, CW), blockSpace(20)];
+          if (b.line) arr.push(blockPara(M, th, clean(b.line), 34, { color: th.strong, lh: 1.6 }));
+          return arr;
+        },
+        footer: { label: '详细经过', text: '起因、经过、结果的完整叙述，以及兵力记载、相关人物和出处，请扫码，在网站上查看。' }
+      };
     },
 
     /* 重点帝王（弹窗里有详细介绍的那些）：用站内已有的内容 */
@@ -780,6 +811,17 @@
         if (page !== 'tangshi' || !o.ctx || !o.ctx.poet) return;
         var row = mkRow(function () {
           open({ type: 'poem', needMingju: true, url: pageUrl({ id: o.ctx.poet.name + '｜' + o.work.title }), o: { work: o.work, ctx: o.ctx, pageName: '唐诗' } });
+        });
+        o.card.appendChild(row); o.card.classList.add('sc-has-share');
+      } catch (e) { try { console.warn('[sharecard]', e); } catch (x) { /* 忽略 */ } }
+    },
+    /* 战役 / 政变与起义弹窗：每次打开或翻到下一条都调用一次。o = { card, kind('战役'|'政变与起义'), group, b } */
+    hookEvent: function (o) {
+      try {
+        var old = o.card.querySelector('.sc-corner'); if (old && old.parentNode) old.parentNode.removeChild(old); o.card.classList.remove('sc-has-share');
+        if (!o.b || !o.b.name) return;
+        var row = mkRow(function () {
+          open({ type: 'event', needMingju: false, url: pageUrl({ id: o.b.name }), o: { b: o.b, kind: o.kind, group: o.group } });
         });
         o.card.appendChild(row); o.card.classList.add('sc-has-share');
       } catch (e) { try { console.warn('[sharecard]', e); } catch (x) { /* 忽略 */ } }
