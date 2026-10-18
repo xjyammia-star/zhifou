@@ -1,12 +1,24 @@
 /* 知否知否 · 分享卡片的按钮和预览窗口样式（配合 js/sharecard.js）
    颜色尽量用继承色和半透明，放进不同板块的主题里都能看。 */
-.sc-row { margin: 10px 0 14px; display: flex; justify-content: center; }
-.sc-btn {
-  font: inherit; font-size: 14px; line-height: 1; letter-spacing: 0.12em;
-  padding: 9px 20px; border-radius: 999px; cursor: pointer;
-  color: inherit; background: transparent; border: 1.5px solid currentColor; opacity: 0.85;
+/* 弹窗右上角的小号“分享”按钮：紧挨在关闭“×”的左边 */
+.sc-corner {
+  position: absolute; z-index: 2; display: inline-flex; align-items: center; gap: 4px;
+  font: inherit; font-size: 13px; line-height: 1; letter-spacing: 0.06em; white-space: nowrap;
+  padding: 0 11px; cursor: pointer; border-radius: 999px; background: transparent;
+  border: 1px solid currentColor; opacity: 0.78;
 }
-.sc-btn:hover, .sc-btn:focus-visible { opacity: 1; background: rgba(128, 128, 128, 0.12); }
+.sc-corner:hover, .sc-corner:focus-visible { opacity: 1; background: rgba(128, 128, 128, 0.16); }
+.sc-corner svg { flex: none; }
+/* 历史人物弹窗（深青底金字） */
+.ss-modal-card .sc-corner { top: 14px; right: 56px; height: 28px; color: #e2c27d; }
+.ss-modal-card.sc-has-share .ss-modal-title, .ss-modal-card.sc-has-share .ss-modal-tag { margin-right: 118px; }
+/* 诗词弹窗（紫色底） */
+.wr-char-modal-card .sc-corner { top: 15px; right: 52px; height: 28px; color: #f5e6f4; }
+.wr-char-modal-card.sc-has-share .wr-char-modal-title { margin-right: 110px; }
+@media (max-width: 480px) {
+  .ss-modal-card.sc-has-share .ss-modal-title, .ss-modal-card.sc-has-share .ss-modal-tag { margin-right: 108px; }
+  .wr-char-modal-card.sc-has-share .wr-char-modal-title { margin-right: 104px; }
+}
 
 .sc-noscroll { overflow: hidden; }
 .sc-overlay {

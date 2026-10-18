@@ -594,12 +594,14 @@
 
   /* ---------- 按钮 ---------- */
   function mkRow(onClick) {
-    var row = el('div', 'sc-row');
-    var b = el('button', 'sc-btn', '分享卡片'); b.type = 'button';
-    b.setAttribute('aria-label', '把这一条做成图片卡片，分享给朋友');
+    /* 小号“分享”按钮：放在弹窗右上角、关闭“×”的左边，不占正文位置 */
+    var b = el('button', 'sc-corner');
+    b.type = 'button';
+    b.setAttribute('aria-label', '分享卡片：把这一条做成图片，分享给朋友');
+    b.title = '分享卡片';
+    b.innerHTML = '<svg viewBox="0 0 24 24" width="15" height="15" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 15V3"/><path d="M7.5 7.5L12 3l4.5 4.5"/><path d="M5 12v7a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-7"/></svg><span>分享</span>';
     b.addEventListener('click', onClick);
-    row.appendChild(b);
-    return row;
+    return b;
   }
   function pageUrl(q) {
     var u = new URL(location.href); u.hash = '';
@@ -612,24 +614,24 @@
     /* 历史人物弹窗：每次换人都会调用一次。o = { card(弹窗元素), anchor(按钮插在它前面), D, hit, dynName, portrait } */
     hookPerson: function (o) {
       try {
-        var old = o.card.querySelector('.sc-row'); if (old && old.parentNode) old.parentNode.removeChild(old);
+        var old = o.card.querySelector('.sc-corner'); if (old && old.parentNode) old.parentNode.removeChild(old); o.card.classList.remove('sc-has-share');
         if (!o.hit || o.hit.kind !== '人物' || o.hit.card.g === '待核') return;
         var row = mkRow(function () {
           open({ type: 'person', needMingju: false, url: pageUrl({ d: o.D.key, id: o.hit.card.name }), o: o });
         });
-        o.anchor.parentNode.insertBefore(row, o.anchor);
+        o.card.appendChild(row); o.card.classList.add('sc-has-share');
       } catch (e) { try { console.warn('[sharecard]', e); } catch (x) { /* 忽略 */ } }
     },
     /* 诗词作品弹窗：每次打开一首诗调用一次。o = { card, after(按钮插在它后面), work, ctx:{poet, era} } */
     hookPoem: function (o) {
       try {
-        var old = o.card.querySelector('.sc-row'); if (old && old.parentNode) old.parentNode.removeChild(old);
+        var old = o.card.querySelector('.sc-corner'); if (old && old.parentNode) old.parentNode.removeChild(old); o.card.classList.remove('sc-has-share');
         var page = document.body.getAttribute('data-page');
         if (page !== 'tangshi' || !o.ctx || !o.ctx.poet) return;
         var row = mkRow(function () {
           open({ type: 'poem', needMingju: true, url: pageUrl({ id: o.ctx.poet.name + '｜' + o.work.title }), o: { work: o.work, ctx: o.ctx, pageName: '唐诗' } });
         });
-        o.after.parentNode.insertBefore(row, o.after.nextSibling);
+        o.card.appendChild(row); o.card.classList.add('sc-has-share');
       } catch (e) { try { console.warn('[sharecard]', e); } catch (x) { /* 忽略 */ } }
     },
     _render: render, _types: TYPES, _open: open
