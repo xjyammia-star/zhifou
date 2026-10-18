@@ -486,6 +486,8 @@
       ]),
       el('div', { 'class': 'seal', 'aria-hidden': 'true', text: entry.season })
     ]));
+    /* 分享卡片按钮（由 js/sharecard.js 提供；没加载或出错都不影响本页） */
+    try { if (window.ShareCard && window.ShareCard.hookSeason) window.ShareCard.hookSeason({ crumb: main.lastChild, kind: 'term', name: name, entry: entry }); } catch (e) { /* 忽略 */ }
     main.appendChild(el('h1', { 'class': 'hook', text: entry.hook }));
     main.appendChild(el('p', { 'class': 'answer', text: entry.answer }));
     main.appendChild(el('div', { 'class': 'ornament', 'aria-hidden': 'true' }));
@@ -586,6 +588,8 @@
       ]),
       el('div', { 'class': 'seal', 'aria-hidden': 'true', text: '节' })
     ]));
+    /* 分享卡片按钮（由 js/sharecard.js 提供；没加载或出错都不影响本页） */
+    try { if (window.ShareCard && window.ShareCard.hookSeason) window.ShareCard.hookSeason({ crumb: main.lastChild, kind: 'festival', name: name, entry: entry }); } catch (e) { /* 忽略 */ }
     var whenKids = [];
     if (later.length) {
       whenKids.push(el('div', { 'class': 'fest-when-main' }, [
@@ -719,6 +723,8 @@
       ]),
       el('div', { 'class': 'seal', 'aria-hidden': 'true', text: '时' })
     ]));
+    /* 分享卡片按钮（由 js/sharecard.js 提供；没加载或出错都不影响本页） */
+    try { if (window.ShareCard && window.ShareCard.hookSeason) window.ShareCard.hookSeason({ crumb: main.lastChild, kind: 'shichen', name: name, entry: entry }); } catch (e) { /* 忽略 */ }
     main.appendChild(el('h1', { 'class': 'hook', text: entry.hook }));
     main.appendChild(el('p', { 'class': 'answer', text: entry.answer }));
     main.appendChild(el('div', { 'class': 'ornament', 'aria-hidden': 'true' }));
@@ -785,6 +791,8 @@
       ]),
       el('div', { 'class': 'seal', 'aria-hidden': 'true', text: '干' })
     ]));
+    /* 分享卡片按钮（由 js/sharecard.js 提供；没加载或出错都不影响本页） */
+    try { if (window.ShareCard && window.ShareCard.hookSeason) window.ShareCard.hookSeason({ crumb: main.lastChild, kind: 'essay', entry: GZ, title: '干支与六十甲子', imgKind: 'ganzhi', imgName: 'main' }); } catch (e) { /* 忽略 */ }
     main.appendChild(el('h1', { 'class': 'hook', text: GZ.hook }));
     main.appendChild(el('p', { 'class': 'answer', text: GZ.answer }));
     main.appendChild(el('div', { 'class': 'ornament', 'aria-hidden': 'true' }));
@@ -870,6 +878,8 @@
       ]),
       el('div', { 'class': 'seal', 'aria-hidden': 'true', text: '肖' })
     ]));
+    /* 分享卡片按钮（由 js/sharecard.js 提供；没加载或出错都不影响本页） */
+    try { if (window.ShareCard && window.ShareCard.hookSeason) window.ShareCard.hookSeason({ crumb: main.lastChild, kind: 'shengxiao', name: name, entry: entry }); } catch (e) { /* 忽略 */ }
     main.appendChild(el('h1', { 'class': 'hook', text: entry.hook }));
     main.appendChild(el('p', { 'class': 'answer', text: entry.answer }));
     main.appendChild(el('div', { 'class': 'ornament', 'aria-hidden': 'true' }));
@@ -936,6 +946,8 @@
       ]),
       el('div', { 'class': 'seal', 'aria-hidden': 'true', text: '肖' })
     ]));
+    /* 分享卡片按钮（由 js/sharecard.js 提供；没加载或出错都不影响本页） */
+    try { if (window.ShareCard && window.ShareCard.hookSeason) window.ShareCard.hookSeason({ crumb: main.lastChild, kind: 'essay', entry: SXK, title: '十二生肖科普', imgKind: 'shengxiao-kepu', imgName: 'main' }); } catch (e) { /* 忽略 */ }
     main.appendChild(el('h1', { 'class': 'hook', text: SXK.hook }));
     main.appendChild(el('p', { 'class': 'answer', text: SXK.answer }));
     main.appendChild(el('div', { 'class': 'ornament', 'aria-hidden': 'true' }));
@@ -982,6 +994,8 @@
       el('span', { 'class': 'crumb-text', text: '月份与农历' }),
       el('div', { 'class': 'seal', 'aria-hidden': 'true', text: '月' })
     ]));
+    /* 分享卡片按钮（由 js/sharecard.js 提供；没加载或出错都不影响本页） */
+    try { if (window.ShareCard && window.ShareCard.hookSeason) window.ShareCard.hookSeason({ crumb: main.lastChild, kind: 'essay', entry: YF, title: '月份与农历', imgKind: 'yuefen', imgName: 'main' }); } catch (e) { /* 忽略 */ }
     main.appendChild(el('h1', { 'class': 'hook', text: YF.hook }));
     main.appendChild(el('p', { 'class': 'answer', text: YF.answer }));
     main.appendChild(el('div', { 'class': 'ornament', 'aria-hidden': 'true' }));
@@ -1027,6 +1041,8 @@
       el('span', { 'class': 'crumb-text', text: '数九三伏' }),
       el('div', { 'class': 'seal', 'aria-hidden': 'true', text: '寒' })
     ]));
+    /* 分享卡片按钮（由 js/sharecard.js 提供；没加载或出错都不影响本页） */
+    try { if (window.ShareCard && window.ShareCard.hookSeason) window.ShareCard.hookSeason({ crumb: main.lastChild, kind: 'essay', entry: SF, title: '数九三伏', imgKind: 'shujiusanfu', imgName: 'main' }); } catch (e) { /* 忽略 */ }
     main.appendChild(el('h1', { 'class': 'hook', text: SF.hook }));
     main.appendChild(el('p', { 'class': 'answer', text: SF.answer }));
     main.appendChild(el('div', { 'class': 'ornament', 'aria-hidden': 'true' }));

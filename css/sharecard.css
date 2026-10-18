@@ -9,6 +9,14 @@
 }
 .sc-corner:hover, .sc-corner:focus-visible { opacity: 1; background: rgba(128, 128, 128, 0.16); }
 .sc-corner svg { flex: none; }
+/* 时令页（节气、节日、时辰、生肖、科普）：面包屑一行的右边，印章左边 */
+.sc-crumb {
+  margin-left: auto; display: inline-flex; align-items: center; gap: 4px; flex: none;
+  font: inherit; font-size: 12.5px; line-height: 1.3; letter-spacing: 0.08em; white-space: nowrap;
+  padding: 4px 11px; color: var(--autumn-deep, #8a4324); background: transparent; border: 1px solid var(--autumn, #a8562f); border-radius: 999px; cursor: pointer; opacity: 0.85;
+}
+.sc-crumb:hover, .sc-crumb:focus-visible { opacity: 1; background: rgba(168, 86, 47, 0.1); }
+.sc-crumb svg { flex: none; width: 13px; height: 13px; }
 /* 神灵 / 异兽详情窗（深蓝底金字）：放在关闭“×”的左边 */
 .sl-dialog .sc-corner { top: 17px; right: 64px; height: 30px; color: var(--gold-soft, #e8dcc0); background: rgba(15, 20, 32, 0.85); border-color: var(--gold-dim, #7a6a3f); opacity: 1; }
 .sl-dialog .sc-corner:hover, .sl-dialog .sc-corner:focus-visible { border-color: var(--gold, #c9a961); background: rgba(15, 20, 32, 0.95); }

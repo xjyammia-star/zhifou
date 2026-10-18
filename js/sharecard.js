@@ -26,10 +26,13 @@
     hist: { bg: ['#141C1F', '#0F1518'], fg: '#E8E2D2', accent: '#D9B877', tagfg: '#11171A', sub: '#B9B2A0', muted: '#9AA5A3', body: '#DDD6C4',
             frame1: 'rgba(217,184,119,0.45)', frame2: 'rgba(217,184,119,0.22)', rule: 'rgba(217,184,119,0.30)', box: 'rgba(217,184,119,0.55)',
             qrbg: '#F1E9D4', qrfg: '#11171A', red: '#B3362E', redtxt: '#FBEFE6', strong: '#F1E9D4', note: '#8B9694', brand: '#D6493F', ph1: '#34484C', ph2: '#1D2A2E' },
+    sea:  { light: true, bg: ['#F3EDDF', '#E7DFCB'], fg: '#2B2B2B', accent: '#8A4324', tagfg: '#F6EDE0', sub: '#6E6450', muted: '#7A705A', body: '#3A352A',
+            frame1: 'rgba(138,67,36,0.40)', frame2: 'rgba(138,67,36,0.22)', rule: 'rgba(138,67,36,0.30)', box: 'rgba(138,67,36,0.45)',
+            qrbg: '#FBF7EE', qrfg: '#2B2B2B', red: '#B23A2E', redtxt: '#F6EDE0', strong: '#1F1F1F', note: '#8B806A', brand: '#B23A2E', ph1: '#D9CFB8', ph2: '#C9BEA3' },
     shen: { bg: ['#181714', '#100F0D'], fg: '#E8E2D2', accent: '#CFA85A', tagfg: '#14110D', sub: '#B8AE98', muted: '#9A927D', body: '#DDD6C4',
             frame1: 'rgba(207,168,90,0.45)', frame2: 'rgba(207,168,90,0.22)', rule: 'rgba(207,168,90,0.30)', box: 'rgba(207,168,90,0.55)',
             qrbg: '#F1E9D4', qrfg: '#14110D', red: '#B3362E', redtxt: '#FBEFE6', strong: '#F1E9D4', note: '#8B8473', brand: '#D6493F', ph1: '#34484C', ph2: '#1D2A2E' },
-    lit:  { bg: ['#F4ECF1', '#E9DDE7'], fg: '#2E2240', accent: '#5E3F6A', tagfg: '#F6EDF3', sub: '#6E5A7B', muted: '#6E5A7B', body: '#3A2E4A',
+    lit:  { light: true, bg: ['#F4ECF1', '#E9DDE7'], fg: '#2E2240', accent: '#5E3F6A', tagfg: '#F6EDF3', sub: '#6E5A7B', muted: '#6E5A7B', body: '#3A2E4A',
             frame1: 'rgba(94,63,106,0.40)', frame2: 'rgba(94,63,106,0.25)', rule: 'rgba(94,63,106,0.30)', box: 'rgba(94,63,106,0.40)',
             qrbg: '#FFFFFF', qrfg: '#1E1630', red: '#B3362E', redtxt: '#FBEFE6', strong: '#2E2240', note: '#8A7798', brand: '#B3362E', ph1: '#D9CBD6', ph2: '#C5B2C2' }
   };
@@ -211,7 +214,7 @@
       var cy = y;
       prepared.forEach(function (r) {
         setFont(c, 26, 400); c.strokeStyle = th.red; c.lineWidth = 2; rr(c, x + 1, cy + 6, 76, 52, 6); c.stroke();
-        c.fillStyle = th === THEMES.lit ? th.red : '#D9695F'; c.textBaseline = 'middle'; c.textAlign = 'center';
+        c.fillStyle = th.light ? th.red : '#D9695F'; c.textBaseline = 'middle'; c.textAlign = 'center';
         c.fillText(r.label.slice(0, 3), x + 39, cy + 33); c.textAlign = 'left';
         setFont(c, size, 400); c.fillStyle = th.body; c.textBaseline = 'alphabetic';
         r.lines.forEach(function (l, j) { c.fillText(l, x + 102, cy + (j + 1) * lh - Math.round((lh - size) / 2) - Math.round(size * 0.12)); });
@@ -366,6 +369,7 @@
   function buildFooter(M, th, f) {
     var leftH = 0, label = f && f.label, lines = [];
     if (f && f.text) {
+      f = { label: f.label, text: String(f.text).replace(/[；，、：\s]+$/, '').replace(/([^。！？”）…])$/, '$1。') };
       setFont(M, 30, 400);
       lines = wrap(M, f.text, FOOT_LEFT_W);
       leftH = 60 + 12 + lines.length * 52;
@@ -517,6 +521,77 @@
         if (rr_.length) other.push({ id: 'rows', label: '相关', kind: 'rows', items: rr_.map(function (s) { return s.items[0]; }), prio: 5, keepMin: 1 });
         return other;
       }
+    },
+
+    /* 节气 / 节日 / 十二时辰 / 十二生肖：同一种版式（米黄底，左边插画，右边名字和基本信息） */
+    season: function (o) {
+      var e = o.entry, k = o.kind, name = o.name;
+      var SEASON = { '春': '春季', '夏': '夏季', '秋': '秋季', '冬': '冬季' };
+      var tag, headSub, right = '', subtitle = '', facts = [];
+      if (k === 'term') { tag = '节气'; headSub = (SEASON[e.season] || '') + '第' + e.seasonNo + '个 · 全年第' + e.yearNo + '个'; right = e.approxDate; subtitle = e.nature; facts = [['时间', '大致' + e.approxDate], ['季节', SEASON[e.season] || e.season]]; }
+      else if (k === 'festival') { tag = '节日'; headSub = '第' + e.no + '个 · 共 15 个'; subtitle = e.theme; facts = [['日期', e.lunar]]; }
+      else if (k === 'shichen') { tag = '时辰'; headSub = '第' + e.no + '个 · 共 12 个'; right = e.time; subtitle = e.theme; facts = [['时间', e.time]]; }
+      else { tag = '生肖'; headSub = '第' + e.no + '个 · 共 12 个'; right = e.time; subtitle = e.theme; facts = [['时辰', e.time]]; }
+      var sections = [];
+      if (k === 'term' && e.hou && e.hou.length) {
+        var LB = ['初候', '二候', '三候'];
+        sections.push({ id: 'hou', label: '三候', kind: 'rows', items: e.hou.map(function (h, i) { return [LB[i] || '候', clean(h.name + '：' + h.plain)]; }), prio: 3, keepMin: 3, drop: false });
+      }
+      var body = (e.body || []).map(clean).filter(Boolean);
+      if (body.length) sections.push({ id: 'body', label: '', kind: 'paras', items: body, prio: 2, keepMin: 1, drop: false, size: 31 });
+      var cus = clean(e.customs);
+      if (cus) sections.push({ id: 'cus', label: '习俗', kind: 'paras', items: [cus], prio: 4, keepMin: 1, drop: false, size: 31 });
+      var story = (e.story || []).map(clean).filter(Boolean);
+      if (story.length) sections.push({ id: 'story', label: '典故', kind: 'paras', items: story, prio: 5, keepMin: 1, drop: true, size: 31 });
+      var pic = o.portrait && o.img ? o.img : null;
+      var tip = clean(e.tip);
+      return {
+        theme: 'sea', kind: 'season', title: name, file: '知否知否-' + name,
+        sections: sections,
+        top: function (M, th) {
+          var arr = [blockHead(M, th, { tag: tag, sub: headSub, right: right }), blockSpace(48)];
+          arr.push(blockPersonTop(M, th, {
+            name: name, subtitle: clean(subtitle), facts: facts.map(function (f) { return [f[0], clean(f[1])]; }),
+            portraitCaption: pic ? clean(o.portrait.caption) : '', portraitAi: pic && o.portrait.ai ? (o.portrait.aiLabel || 'AI 生成插画') : ''
+          }, pic));
+          arr.push(blockSpace(34));
+          arr.push(blockPara(M, th, clean(e.hook), 38, { color: th.strong, lh: 1.5, weight: 600 }));
+          arr.push(blockSpace(14));
+          arr.push(blockPara(M, th, clean(e.answer), 31, { color: th.body, lh: 1.75 }));
+          return arr;
+        },
+        footer: tip ? { label: '小提示', text: cutBySentence(tip, 110) } : null,
+        img: pic
+      };
+    },
+
+    /* 科普长文页（干支、月份与农历、数九三伏、十二生肖）：问题 + 简答 + 每一节的要点 */
+    essay: function (o) {
+      var d = o.data, sections = [];
+      var items = (d.sections || []).map(function (sec) {
+        var first = sentences(clean((sec.body || [])[0] || ''))[0] || '';
+        return clean(sec.title) + '：' + cutBySentence(first, 52);
+      });
+      if (items.length) sections.push({ id: 'secs', label: '这一篇讲了什么', kind: 'steps', items: items, prio: 3, keepMin: 3, drop: false });
+      var pic = o.portrait && o.img ? o.img : null, tip = clean(d.tip);
+      return {
+        theme: 'sea', kind: 'essay', title: o.title, file: '知否知否-' + o.title,
+        sections: sections,
+        top: function (M, th) {
+          var arr = [blockHead(M, th, { tag: '科普', sub: '时令 · ' + o.title }), blockSpace(48)];
+          arr.push(blockPersonTop(M, th, {
+            name: o.title, subtitle: cutBySentence(clean(d.theme), 60), facts: [],
+            portraitCaption: pic ? clean(o.portrait.caption) : '', portraitAi: pic && o.portrait.ai ? (o.portrait.aiLabel || 'AI 生成插画') : ''
+          }, pic));
+          arr.push(blockSpace(34));
+          arr.push(blockPara(M, th, clean(d.hook), 38, { color: th.strong, lh: 1.5, weight: 600 }));
+          arr.push(blockSpace(14));
+          arr.push(blockPara(M, th, clean(d.answer), 31, { color: th.body, lh: 1.75 }));
+          return arr;
+        },
+        footer: tip ? { label: '小提示', text: cutBySentence(tip, 110) } : null,
+        img: pic
+      };
     },
 
     /* 神灵 / 异兽：五个页面（上古神话、神灵、道教、佛教、山海经）共用一种版式 */
@@ -858,6 +933,13 @@
   }
 
   /* ---------- 按钮 ---------- */
+  /* 站内配图登记表（data/images.js）里的一张图：返回 900 宽的地址和图注 */
+  function imageInfo(kind, name) {
+    var I = window.ZHIFOU_IMAGES, info = I && I.items && I.items[kind + '/' + name];
+    if (!info) return null;
+    var c = (info.crop && info.crop < 1) ? 'c_crop,g_center,h_' + info.crop + ',w_' + info.crop + '/' : '';
+    return { src: I.base + c + 'c_limit,w_900/f_auto,q_auto/v' + info.v + '/' + info.id, caption: info.caption || '', ai: !!info.ai, aiLabel: I.aiLabel || 'AI 生成插画' };
+  }
   function mkRow(onClick, cls) {
     /* 小号“分享”按钮：放在弹窗右上角、关闭“×”的左边，不占正文位置 */
     var b = el('button', cls || 'sc-corner');
@@ -899,6 +981,22 @@
           open({ type: 'poem', needMingju: true, url: pageUrl({ id: o.ctx.poet.name + '｜' + o.work.title }), o: { work: o.work, ctx: o.ctx, pageName: '唐诗' } });
         });
         o.card.appendChild(row); o.card.classList.add('sc-has-share');
+      } catch (e) { try { console.warn('[sharecard]', e); } catch (x) { /* 忽略 */ } }
+    },
+    /* 时令页（节气、节日、时辰、生肖、科普长文）：按钮放在页面顶部“面包屑”一行的右边，印章的左边
+       o = { crumb, kind('term'|'festival'|'shichen'|'shengxiao'|'essay'), name, entry, title(科普页的短标题), imgKind, imgName } */
+    hookSeason: function (o) {
+      try {
+        var old = o.crumb.querySelector('.sc-crumb'); if (old && old.parentNode) old.parentNode.removeChild(old);
+        var isEssay = o.kind === 'essay';
+        var info = imageInfo(o.imgKind || o.kind, o.imgName || o.name);
+        var portrait = info ? { src: info.src, caption: info.caption, ai: info.ai, aiLabel: info.aiLabel } : null;
+        var btn = mkRow(function () {
+          open({ type: isEssay ? 'essay' : 'season', url: pageUrl(isEssay ? {} : { id: o.name }),
+                 o: isEssay ? { data: o.entry, title: o.title, portrait: portrait } : { kind: o.kind, name: o.name, entry: o.entry, portrait: portrait } });
+        }, 'sc-crumb');
+        var seal = o.crumb.querySelector('.seal');
+        if (seal) o.crumb.insertBefore(btn, seal); else o.crumb.appendChild(btn);
       } catch (e) { try { console.warn('[sharecard]', e); } catch (x) { /* 忽略 */ } }
     },
     /* 神灵 / 异兽详情窗：每次打开或翻到另一条都调用一次。o = { dialog, page('shenhua'|'shenling'|'daojiao'|'fojiao'|'shanhai'), c } */
