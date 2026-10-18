@@ -199,6 +199,8 @@
     inner.appendChild(el('div', { 'class': 'sl-stepper' }, [pb, nb]));
     dialogBody.appendChild(inner);
     dialog.setAttribute('aria-labelledby', 'sl-title');
+    /* 分享卡片按钮（由 js/sharecard.js 提供；没加载或出错都不影响本页） */
+    try { if (window.ShareCard && window.ShareCard.hookGod) window.ShareCard.hookGod({ dialog: dialog, page: 'shenling', c: c }); } catch (e) { /* 忽略 */ }
   }
 
   function setUrl(name) {

@@ -26,6 +26,9 @@
     hist: { bg: ['#141C1F', '#0F1518'], fg: '#E8E2D2', accent: '#D9B877', tagfg: '#11171A', sub: '#B9B2A0', muted: '#9AA5A3', body: '#DDD6C4',
             frame1: 'rgba(217,184,119,0.45)', frame2: 'rgba(217,184,119,0.22)', rule: 'rgba(217,184,119,0.30)', box: 'rgba(217,184,119,0.55)',
             qrbg: '#F1E9D4', qrfg: '#11171A', red: '#B3362E', redtxt: '#FBEFE6', strong: '#F1E9D4', note: '#8B9694', brand: '#D6493F', ph1: '#34484C', ph2: '#1D2A2E' },
+    shen: { bg: ['#181714', '#100F0D'], fg: '#E8E2D2', accent: '#CFA85A', tagfg: '#14110D', sub: '#B8AE98', muted: '#9A927D', body: '#DDD6C4',
+            frame1: 'rgba(207,168,90,0.45)', frame2: 'rgba(207,168,90,0.22)', rule: 'rgba(207,168,90,0.30)', box: 'rgba(207,168,90,0.55)',
+            qrbg: '#F1E9D4', qrfg: '#14110D', red: '#B3362E', redtxt: '#FBEFE6', strong: '#F1E9D4', note: '#8B8473', brand: '#D6493F', ph1: '#34484C', ph2: '#1D2A2E' },
     lit:  { bg: ['#F4ECF1', '#E9DDE7'], fg: '#2E2240', accent: '#5E3F6A', tagfg: '#F6EDF3', sub: '#6E5A7B', muted: '#6E5A7B', body: '#3A2E4A',
             frame1: 'rgba(94,63,106,0.40)', frame2: 'rgba(94,63,106,0.25)', rule: 'rgba(94,63,106,0.30)', box: 'rgba(94,63,106,0.40)',
             qrbg: '#FFFFFF', qrfg: '#1E1630', red: '#B3362E', redtxt: '#FBEFE6', strong: '#2E2240', note: '#8A7798', brand: '#B3362E', ph1: '#D9CBD6', ph2: '#C5B2C2' }
@@ -217,6 +220,24 @@
     } };
   }
   function blockSpace(h) { return { h: h, paint: function () {} }; }
+  /* 横幅插画（7:3）：神灵、异兽的配图；AI 插画要标注 */
+  function blockBanner(M, th, img, aiLabel) {
+    var h = Math.round(CW * 3 / 7), tagH = aiLabel ? 40 : 0;
+    return { h: h + tagH, paint: function (c, x, y) {
+      c.save(); c.beginPath(); c.rect(x, y, CW, h); c.clip();
+      var iw = img.naturalWidth || img.width, ih = img.naturalHeight || img.height;
+      var sc = Math.max(CW / iw, h / ih), dw = iw * sc, dh = ih * sc;
+      c.drawImage(img, x + (CW - dw) / 2, y + (h - dh) / 2, dw, dh);
+      c.restore();
+      c.strokeStyle = th.box; c.lineWidth = 2; c.strokeRect(x + 1, y + 1, CW - 2, h - 2);
+      if (aiLabel) {
+        var ty = y + h + 10;
+        setFont(c, 20, 400); var aw = spacedWidth(c, aiLabel, 1) + 18;
+        c.strokeStyle = th.note; c.lineWidth = 1.2; rr(c, x, ty, aw, 28, 4); c.stroke();
+        c.fillStyle = th.note; c.textBaseline = 'middle'; drawSpaced(c, aiLabel, x + 9, ty + 15, 1);
+      }
+    } };
+  }
   /* 大事记：左边年份（金色），右边一句话 */
   function blockEvents(M, th, items) {
     var size = 30, lh = Math.round(size * 1.7), colW = 132, gap = 14;
@@ -407,13 +428,22 @@
       var cand = null;
       sections.forEach(function (s) {
         if (!s.items.length) return;
-        var can = s.items.length > s.keepMin || s.drop || (s.kind === 'paras' && s.items[0].length > 60);
+        var can = s.items.length > s.keepMin || s.drop || (s.kind === 'paras' && s.items[0].length > 60) || (s.kind === 'rows' && s.items.some(function (r) { return r[1].length > 40; }));
         if (can && (!cand || s.prio > cand.prio)) cand = s;
       });
-      if (!cand) break;
+      if (!cand) {
+        /* 实在放不下：把重要程度最低的一整段拿掉（版头、基本信息不动） */
+        sections.forEach(function (s) { if (s.items.length && s.kind !== 'rows' && s.prio >= 3 && (!cand || s.prio > cand.prio)) cand = s; });
+        if (!cand) break;
+        trimmed = true; cand.items = []; res = build(); continue;
+      }
       trimmed = true;
       if (cand.items.length > cand.keepMin) cand.items.pop();
       else if (cand.drop) cand.items = [];
+      else if (cand.kind === 'rows') {
+        var li = 0; cand.items.forEach(function (r, i) { if (r[1].length > cand.items[li][1].length) li = i; });
+        cand.items[li] = [cand.items[li][0], cutBySentence(cand.items[li][1], Math.floor(cand.items[li][1].length * 0.6)).replace(/[，、；\s]+$/, '')];
+      }
       else cand.items[0] = cutBySentence(cand.items[0], Math.floor(cand.items[0].length * 0.7));
       res = build();
     }
@@ -487,6 +517,52 @@
         if (rr_.length) other.push({ id: 'rows', label: '相关', kind: 'rows', items: rr_.map(function (s) { return s.items[0]; }), prio: 5, keepMin: 1 });
         return other;
       }
+    },
+
+    /* 神灵 / 异兽：五个页面（上古神话、神灵、道教、佛教、山海经）共用一种版式 */
+    deity: function (o) {
+      var c = o.c, page = o.page, ex = o.extra || null;
+      function t(v) { return clean(Array.isArray(v) ? v.join('、') : v); }
+      var PAGE = { shenhua: '上古神话', shenling: '民间神灵', daojiao: '道教', fojiao: '佛教', shanhai: '山海经' }[page] || '神灵';
+      var kicker = '', alias = '', sub = '', line = clean(c.line), rows = [], secs = [], source = '';
+      var name = c.full || c.name;
+      if (page === 'shenhua') {
+        kicker = c.group; rows = [['身份', t(c.role)]];
+        secs = [['故事', c.story, 2], ['典故', c.allusion, 3], ['辨析', c.note, 6]]; source = c.source;
+      } else if (page === 'daojiao' || page === 'fojiao') {
+        kicker = c.tier || c.cat; sub = t(c.identity); alias = (c.alias && c.alias.length) ? '又称：' + c.alias.join('、') : '';
+        rows = [['职司', t(c.roles)], ['关系', t(c.relation)]];
+        secs = [['简介', c.body, 2], ['故事', c.story, 3], ['辨析', c.note, 6]]; source = c.source;
+      } else if (page === 'shenling') {
+        kicker = c.cat; alias = (c.alias && c.alias.length) ? '又称：' + c.alias.join('、') : '';
+        rows = [['职司', t(c.roles)], ['场景', t(c.scene)]];
+        secs = [['简介', c.body, 2], ['习俗', c.custom, 3], ['辨析', c.note, 6]]; source = c.source;
+      } else if (page === 'shanhai') {
+        kicker = t(c.places); rows = [['外形', t(c.look)]];
+        secs = [['特点', c.feature, 2], ['含义', c.meaning, 2], ['原文', c.text, 4], ['后世', c.later, 5], ['辨析', c.note, 6]]; source = c.source;
+      }
+      if (ex && ex.extra) secs.splice(Math.min(secs.length, 2), 0, [ex.label || '补充', ex.extra, 3]);
+      var sections = [];
+      var rr_ = rows.filter(function (r) { return clean(r[1]); }).map(function (r) { return [r[0], clean(r[1])]; });
+      if (rr_.length) sections.push({ id: 'rows', label: '', kind: 'rows', items: rr_, prio: 1, keepMin: rr_.length, drop: false });
+      secs.forEach(function (x, i) { var tx = clean(x[1]); if (tx) sections.push({ id: 's' + i, label: x[0], kind: 'paras', items: [tx], prio: x[2], keepMin: 1, drop: x[2] >= 5, size: 31 }); });
+      var pic = o.portrait && o.img ? o.img : null;
+      return {
+        theme: 'shen', kind: 'deity', title: name, file: '知否知否-' + c.name,
+        sections: sections,
+        top: function (M, th) {
+          var len = Array.from(name).length, size = len <= 4 ? 140 : len <= 6 ? 116 : len <= 8 ? 96 : 76;
+          var arr = [blockHead(M, th, { tag: '神灵', sub: PAGE + (kicker ? ' · ' + clean(kicker) : '') }), blockSpace(pic ? 34 : 46)];
+          if (pic) { arr.push(blockBanner(M, th, pic, o.portrait.ai ? (o.portrait.aiLabel || 'AI 生成插画') : '')); arr.push(blockSpace(22)); }
+          arr.push(blockTitle(M, th, name, size, CW));
+          if (sub) { arr.push(blockSpace(10)); arr.push(blockPara(M, th, sub, 30, { color: th.sub, lh: 1.5 })); }
+          if (alias) { arr.push(blockSpace(6)); arr.push(blockPara(M, th, alias, 27, { color: th.muted, lh: 1.5 })); }
+          if (line) { arr.push(blockSpace(16)); arr.push(blockPara(M, th, line, 34, { color: th.strong, lh: 1.6 })); }
+          return arr;
+        },
+        footer: clean(source) ? { label: '出处', text: cutBySentence(clean(source), 100) } : null,
+        img: pic
+      };
     },
 
     /* 战役、政变与起义：一句话 + 时间地点双方结果 + 起因 + 结果与影响；不放“经过”，经过请扫码 */
@@ -718,6 +794,12 @@
     return mjPromise;
   }
 
+  var shPromise = null;
+  function ensureShen() {
+    if (window.ZHIFOU_SHARE_SHEN) return Promise.resolve(window.ZHIFOU_SHARE_SHEN);
+    if (!shPromise) shPromise = withTimeout(loadScript('data/sharecard-shenling.js').then(function () { return window.ZHIFOU_SHARE_SHEN || null; }), 6000).catch(function () { return null; });
+    return shPromise;
+  }
   var dwPromise = null;
   function ensureDiwang() {
     if (window.ZHIFOU_SHARE_DIWANG) return Promise.resolve(window.ZHIFOU_SHARE_DIWANG);
@@ -733,13 +815,17 @@
     if (ui.url) { try { URL.revokeObjectURL(ui.url); } catch (e) { /* 忽略 */ } ui.url = null; }
     ui.overlay.classList.add('is-open'); ui.overlay.setAttribute('aria-hidden', 'false'); document.body.classList.add('sc-noscroll');
     var fail = function (e) { if (my !== ui.token) return; ui.msg.hidden = false; ui.msg.textContent = '卡片生成失败，请稍后再试。'; try { console.warn('[sharecard]', e); } catch (x) { /* 忽略 */ } };
-    var pre = [ensureQR(), job.needMingju ? ensureMingju() : job.needDiwang ? ensureDiwang() : Promise.resolve(null), job.o.portrait ? withTimeout(loadImage(job.o.portrait.src), 8000) : Promise.resolve(null)];
+    var pre = [ensureQR(), job.needMingju ? ensureMingju() : job.needDiwang ? ensureDiwang() : job.needShen ? ensureShen() : Promise.resolve(null), job.o.portrait ? withTimeout(loadImage(job.o.portrait.src), 8000) : Promise.resolve(null)];
     Promise.all(pre).then(function (r) {
       if (my !== ui.token) return;
       var extra = r[1], img = r[2];
       if (job.type === 'poem') {
         var key = '唐诗|' + job.o.ctx.poet.name + '|' + job.o.work.title;
         job.o.mingju = extra && extra.mingju && extra.mingju[key] ? extra.mingju[key] : null;
+      }
+      if (job.type === 'deity') {
+        var exk = { shenhua: '上古神话人物', daojiao: '道教神灵', fojiao: '佛教人物', shanhai: '山海经异兽' }[job.o.page];
+        job.o.extra = exk && extra && extra.extra ? (extra.extra[exk + '|' + job.o.c.name] || null) : null;
       }
       if (job.type === 'emperorLite') {
         if (!extra) throw new Error('no diwang data');
@@ -813,6 +899,19 @@
           open({ type: 'poem', needMingju: true, url: pageUrl({ id: o.ctx.poet.name + '｜' + o.work.title }), o: { work: o.work, ctx: o.ctx, pageName: '唐诗' } });
         });
         o.card.appendChild(row); o.card.classList.add('sc-has-share');
+      } catch (e) { try { console.warn('[sharecard]', e); } catch (x) { /* 忽略 */ } }
+    },
+    /* 神灵 / 异兽详情窗：每次打开或翻到另一条都调用一次。o = { dialog, page('shenhua'|'shenling'|'daojiao'|'fojiao'|'shanhai'), c } */
+    hookGod: function (o) {
+      try {
+        var old = o.dialog.querySelector('.sc-corner'); if (old && old.parentNode) old.parentNode.removeChild(old);
+        if (!o.c || !o.c.name) return;
+        var img = window.ZIMG && window.ZIMG.get ? window.ZIMG.get(o.page, o.c.name) : null;
+        var row = mkRow(function () {
+          open({ type: 'deity', needShen: true, url: pageUrl({ id: o.c.name }),
+                 o: { page: o.page, c: o.c, portrait: img ? { src: String(img.src).replace('w_720', 'w_960'), caption: '', ai: img.ai, aiLabel: img.aiLabel } : null } });
+        });
+        o.dialog.appendChild(row);
       } catch (e) { try { console.warn('[sharecard]', e); } catch (x) { /* 忽略 */ } }
     },
     /* 战役 / 政变与起义弹窗：每次打开或翻到下一条都调用一次。o = { card, kind('战役'|'政变与起义'), group, b } */

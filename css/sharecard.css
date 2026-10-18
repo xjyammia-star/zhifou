@@ -9,6 +9,9 @@
 }
 .sc-corner:hover, .sc-corner:focus-visible { opacity: 1; background: rgba(128, 128, 128, 0.16); }
 .sc-corner svg { flex: none; }
+/* 神灵 / 异兽详情窗（深蓝底金字）：放在关闭“×”的左边 */
+.sl-dialog .sc-corner { top: 17px; right: 64px; height: 30px; color: var(--gold-soft, #e8dcc0); background: rgba(15, 20, 32, 0.85); border-color: var(--gold-dim, #7a6a3f); opacity: 1; }
+.sl-dialog .sc-corner:hover, .sl-dialog .sc-corner:focus-visible { border-color: var(--gold, #c9a961); background: rgba(15, 20, 32, 0.95); }
 /* 帝王名单里每一行的小号“分享”按钮（行内，放在年份下面） */
 .sc-inline {
   display: inline-flex; align-items: center; gap: 4px; margin-top: 6px; padding: 3px 10px;

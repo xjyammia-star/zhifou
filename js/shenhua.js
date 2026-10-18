@@ -351,6 +351,8 @@
 
     dialogBody.appendChild(inner);
     dialog.setAttribute('aria-labelledby', 'sl-title');
+    /* 分享卡片按钮（由 js/sharecard.js 提供；没加载或出错都不影响本页） */
+    try { if (window.ShareCard && window.ShareCard.hookGod) window.ShareCard.hookGod({ dialog: dialog, page: 'shenhua', c: p }); } catch (e) { /* 忽略 */ }
   }
 
   function setUrl(name) {
