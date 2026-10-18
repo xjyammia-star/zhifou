@@ -9,6 +9,15 @@
 }
 .sc-corner:hover, .sc-corner:focus-visible { opacity: 1; background: rgba(128, 128, 128, 0.16); }
 .sc-corner svg { flex: none; }
+/* 帝王名单里每一行的小号“分享”按钮（行内，放在年份下面） */
+.sc-inline {
+  display: inline-flex; align-items: center; gap: 4px; margin-top: 6px; padding: 3px 10px;
+  font: inherit; font-size: 12.5px; line-height: 1.3; letter-spacing: 0.06em; white-space: nowrap;
+  color: #e2c27d; background: transparent; border: 1px solid rgba(226, 194, 125, 0.5); border-radius: 999px; cursor: pointer; opacity: 0.8;
+}
+.sc-inline:hover, .sc-inline:focus-visible { opacity: 1; background: rgba(226, 194, 125, 0.12); }
+.sc-inline svg { flex: none; width: 13px; height: 13px; }
+.ss-emp-id .sc-inline { align-self: flex-start; }
 /* 历史人物弹窗（深青底金字） */
 .ss-modal-card .sc-corner { top: 14px; right: 56px; height: 28px; color: #e2c27d; }
 .ss-modal-card.sc-has-share .ss-modal-title, .ss-modal-card.sc-has-share .ss-modal-tag { margin-right: 118px; }

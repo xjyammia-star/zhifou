@@ -416,12 +416,15 @@
         if (e.nh) bodyRows.push(el('div', { 'class': 'ss-emp-row' }, [el('span', { 'class': 'ss-emp-k', text: '年号' }), el('span', { 'class': 'ss-emp-v', text: e.nh })]));
         if (e.mh) bodyRows.push(el('div', { 'class': 'ss-emp-row' }, [el('span', { 'class': 'ss-emp-k', text: '庙号／谥号' }), el('span', { 'class': 'ss-emp-v', text: e.mh })]));
         if (e.line) bodyRows.push(el('div', { 'class': 'ss-emp-row ss-emp-line' }, [el('span', { 'class': 'ss-emp-k', text: '一句话' }), el('span', { 'class': 'ss-emp-v' }, rich(e.line))]));
+        var idBox = el('div', { 'class': 'ss-emp-id' }, [
+          el('div', { 'class': 'ss-emp-name' }, nameCell),
+          el('div', { 'class': 'ss-emp-real', text: e.real }),
+          el('div', { 'class': 'ss-emp-reign', text: e.reign })
+        ]);
+        /* 分享卡片按钮（由 js/sharecard.js 提供；没加载或出错都不影响本页）。有详细介绍的帝王，按钮在弹窗里 */
+        try { if (!keyNames[e.name] && window.ShareCard && window.ShareCard.hookEmperorRow) window.ShareCard.hookEmperorRow({ box: idBox, D: D, e: e, dynName: dynName[D.key] || D.name }); } catch (err) { /* 忽略 */ }
         return el('article', { 'class': 'ss-emp' }, [
-          el('div', { 'class': 'ss-emp-id' }, [
-            el('div', { 'class': 'ss-emp-name' }, nameCell),
-            el('div', { 'class': 'ss-emp-real', text: e.real }),
-            el('div', { 'class': 'ss-emp-reign', text: e.reign })
-          ]),
+          idBox,
           el('div', { 'class': 'ss-emp-body' }, bodyRows)
         ]);
       });
@@ -593,6 +596,7 @@
     if (id) {
       var hit = findCard(D, id);
       if (hit) { t.show(hit.kind === '帝王' ? 'emp' : 'people', true); openEntity(D.key, id, false); }
+      else if (D.emperors.some(function (e) { return e.name === id; })) t.show('emp', true);   /* 名单里没有详细介绍的帝王：只切到“帝王”标签 */
     }
   }
 })();

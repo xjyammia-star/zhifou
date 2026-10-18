@@ -51,7 +51,8 @@
     return String(s == null ? '' : s)
       .replace(/〔[^〕]*待核[^〕]*〕/g, '')
       .replace(/[（(][^）)]*待核[^）)]*[）)]/g, '')
-      .replace(/\s+/g, ' ').trim();
+      .replace(/\s+/g, ' ').trim()
+      .split(/(?<=[。！？；])/).filter(function (x) { return x.indexOf('待核') < 0; }).join('');   /* 仍含“待核”的整句也不上卡 */
   }
   /* 按句号等切成句子（保留标点） */
   function sentences(s) {
@@ -111,6 +112,10 @@
           var carry = '';
           var last = cur.slice(-1);
           if (NO_END.indexOf(last) >= 0) { carry = last; cur = cur.slice(0, -1); }
+          else if (/[0-9–—]/.test(ch) && /[0-9–—]/.test(last)) {                       /* 年份、数字不在中间断开：整串带到下一行 */
+            var k = cur.length; while (k > 0 && /[0-9–—前约]/.test(cur.charAt(k - 1))) k--;
+            if (k > 0) { carry = cur.slice(k); cur = cur.slice(0, k); }
+          }
           lines.push(cur);
           cur = carry + ch; w = 0; Array.from(cur).forEach(function (x) { w += cw(ctx, x); });
           return;
@@ -212,6 +217,49 @@
     } };
   }
   function blockSpace(h) { return { h: h, paint: function () {} }; }
+  /* 大事记：左边年份（金色），右边一句话 */
+  function blockEvents(M, th, items) {
+    var size = 30, lh = Math.round(size * 1.7), colW = 132, gap = 14;
+    setFont(M, size, 400);
+    var rows = items.map(function (it) { return { y: it[0], lines: wrap(M, it[1], CW - colW) }; });
+    var h = 0; rows.forEach(function (r, i) { h += r.lines.length * lh + (i ? gap : 0); });
+    return { h: h, paint: function (c, x, y) {
+      var cy = y;
+      rows.forEach(function (r) {
+        setFont(c, 28, 600); c.fillStyle = th.accent; c.textBaseline = 'alphabetic';
+        c.fillText(r.y, x, cy + lh - Math.round((lh - size) / 2) - Math.round(size * 0.12));
+        setFont(c, size, 400); c.fillStyle = th.body;
+        r.lines.forEach(function (l, j) { c.fillText(l, x + colW, cy + (j + 1) * lh - Math.round((lh - size) / 2) - Math.round(size * 0.12)); });
+        cy += r.lines.length * lh + gap;
+      });
+    } };
+  }
+  /* 一览表：每位一行（单行版：名字 + 关系）或两行（名字 + 关系/结局） */
+  function blockRoll(M, th, rows, mode) {
+    var two = mode === 'two-line', nameW = two ? 250 : 190, textW = CW - nameW;
+    var s1 = two ? 28 : 27, s2 = 25, l1 = two ? 38 : 36, l2 = 34, padV = two ? 11 : 6, minH = two ? 64 : 44;
+    var prepared = rows.map(function (r) {
+      setFont(M, s1, 400);
+      var a = wrap(M, [r.rel || '', two ? '' : (r.note || r.tag || '')].filter(Boolean).join('　'), textW);
+      setFont(M, s2, 400);
+      var b = two && r.note ? wrap(M, r.note, textW) : [];
+      return { name: r.name, a: a, b: b, h: Math.max(minH, a.length * l1 + b.length * l2) + padV * 2 };
+    });
+    var h = 0; prepared.forEach(function (r) { h += r.h; });
+    return { h: h, paint: function (c, x, y) {
+      var cy = y;
+      prepared.forEach(function (r, i) {
+        if (i) { c.fillStyle = th.rule; c.globalAlpha = 0.55; c.fillRect(x, cy, CW, 1); c.globalAlpha = 1; }
+        setFont(c, 33, 400, KAI); c.fillStyle = th.accent; c.textBaseline = 'alphabetic';
+        drawSpaced(c, r.name, x, cy + padV + 33, 1.2);
+        setFont(c, s1, 400); c.fillStyle = th.body;
+        r.a.forEach(function (l, j) { c.fillText(l, x + nameW, cy + padV + (j + 1) * l1 - 9); });
+        setFont(c, s2, 400); c.fillStyle = th.muted;
+        r.b.forEach(function (l, j) { c.fillText(l, x + nameW, cy + padV + r.a.length * l1 + (j + 1) * l2 - 9); });
+        cy += r.h;
+      });
+    } };
+  }
 
   /* 人物页头：左边人物像（没有就不画），右边名字 + 身份 + 基本信息 */
   function blockPersonTop(M, th, o, img) {
@@ -329,7 +377,7 @@
 
   /* ---------- 总排版：先量高度，放不下就按重要程度从后往前删 ---------- */
   function layout(spec, th, M) {
-    var sections = spec.sections.map(function (s) { return { id: s.id, label: s.label, kind: s.kind, items: s.items.slice(), prio: s.prio, keepMin: s.keepMin || 1, drop: s.drop !== false, size: s.size }; });
+    var sections = spec.sections.map(function (s) { return { id: s.id, label: s.label, kind: s.kind, items: s.items.slice(), prio: s.prio, keepMin: s.keepMin || 1, drop: s.drop !== false, size: s.size, rollLayout: s.rollLayout }; });
     var trimmed = false;
     function build() {
       var blocks = [];
@@ -341,6 +389,8 @@
         else blocks.push(blockSpace(28));
         if (s.kind === 'steps') blocks.push(blockSteps(M, th, s.items));
         else if (s.kind === 'rows') blocks.push(blockLabelRows(M, th, s.items));
+        else if (s.kind === 'events') blocks.push(blockEvents(M, th, s.items));
+        else if (s.kind === 'roll') blocks.push(blockRoll(M, th, s.items, s.rollLayout));
         else if (s.kind === 'poem') blocks.push(blockPoem(M, th, s.items, s.size || 40, !!s.label));
         else s.items.forEach(function (t, i) { if (i) blocks.push(blockSpace(10)); blocks.push(blockPara(M, th, t, s.size || 30)); });
       });
@@ -437,6 +487,90 @@
         if (rr_.length) other.push({ id: 'rows', label: '相关', kind: 'rows', items: rr_.map(function (s) { return s.items[0]; }), prio: 5, keepMin: 1 });
         return other;
       }
+    },
+
+    /* 重点帝王（弹窗里有详细介绍的那些）：用站内已有的内容 */
+    emperor: function (o) {
+      var c = o.hit.card, fields = {}, row = o.row || {};
+      c.f.forEach(function (f) { fields[f.k] = f; });
+      function val(k) { var f = fields[k]; if (!f) return ''; if (f.items) return f.items.map(function (it) { return clean(it.ev ? (it.ev.y + it.ev.t) : it.t); }).join('；'); return clean(f.v); }
+      function noDot(t) { return String(t || '').replace(/[。；，\s]+$/, ''); }
+      var years = val('生卒'), reign = noDot(row.reign || val('在位')), real = noDot(row.real || val('姓名'));
+      var mh = noDot(cutBySentence(clean(row.mh || ''), 30));
+      var sections = [];
+      var intro = val('简介');
+      if (intro) sections.push({ id: 'intro', label: '简介', kind: 'paras', items: [intro], prio: 2, keepMin: 1, drop: false });
+      var df = fields['主要功绩'] || fields['主要事迹'], deeds = [];
+      if (df) deeds = (df.items ? df.items.map(function (it) { return clean(it.t); }) : sentences(clean(df.v))).filter(Boolean).slice(0, 4);
+      if (deeds.length) sections.push({ id: 'deeds', label: '主要功绩', kind: 'steps', items: deeds, prio: 4, keepMin: 2, drop: false });
+      var ef = fields['重大事件'], evs = [];
+      if (ef && ef.items) evs = ef.items.filter(function (it) { return it.ev; }).map(function (it) { return [clean(it.ev.y), clean(it.ev.t)]; }).slice(0, 5);
+      if (evs.length) sections.push({ id: 'events', label: '重大事件', kind: 'events', items: evs, prio: 5, keepMin: 2, drop: true });
+      var judge = val('争议与评价');
+      var pic = o.portrait && o.img ? o.img : null;
+      var facts = [];
+      if (reign) facts.push(['在位', reign]);
+      if (row.nh) facts.push(['年号', noDot(cutBySentence(clean(row.nh), 44))]);
+      if (mh) facts.push(['庙号', mh]);
+      if (years) facts.push(['生卒', noDot(cutBySentence(years.split('；')[0], 24))]);
+      return {
+        theme: 'hist', kind: 'emperor', title: c.name, file: '知否知否-' + c.name,
+        sections: sections,
+        top: function (M, th) {
+          var arr = [blockHead(M, th, { tag: '历史', sub: o.dynName + ' · 帝王', right: shortYears(reign) }), blockSpace(48)];
+          arr.push(blockPersonTop(M, th, {
+            name: c.name, subtitle: real, facts: facts,
+            portraitCaption: pic ? clean(o.portrait.caption) : '', portraitAi: pic && o.portrait.ai ? (o.portrait.aiLabel || 'AI 生成插画') : ''
+          }, pic));
+          return arr;
+        },
+        footer: judge ? { label: '争议与评价', text: cutBySentence(judge, 110) } : null,
+        img: pic
+      };
+    },
+
+    /* 名单里的普通帝王：用卡片专用的补充内容（data/sharecard-diwang.js） */
+    emperorLite: function (o) {
+      var e = o.row, p = o.parts || [], sections = [];
+      function add(id, label, t, prio) { t = clean(t); if (t) sections.push({ id: id, label: label, kind: 'paras', items: [t], prio: prio, keepMin: 1, drop: false, size: 32 }); }
+      add('line', '概述', e.line, 2);
+      add('who', '身世', p[0], 3);
+      add('deeds', '事迹', p[1], 4);
+      add('end', '结局', p[2], 3);
+      var facts = [];
+      if (e.reign) facts.push(['在位', clean(e.reign)]);
+      if (e.nh) facts.push(['年号', cutBySentence(clean(e.nh), 44).replace(/[。；，\s]+$/, '')]);
+      if (e.mh) facts.push(['庙号', cutBySentence(clean(e.mh), 40).replace(/[。；，\s]+$/, '')]);
+      return {
+        theme: 'hist', kind: 'emperor', title: e.name, file: '知否知否-' + e.name,
+        sections: sections,
+        top: function (M, th) {
+          var arr = [blockHead(M, th, { tag: '历史', sub: o.dynName + ' · 帝王', right: shortYears(e.reign) }), blockSpace(48)];
+          arr.push(blockPersonTop(M, th, { name: e.name, subtitle: clean(e.real || ''), facts: facts }, null));
+          return arr;
+        },
+        footer: null
+      };
+    },
+
+    /* 一览卡：把内容太少、不够单独成卡的帝王合在一张表里 */
+    roll: function (o) {
+      var c = o.card;
+      var read = clean(c.read || '').replace(/扫码[^。]*。?$/, '');
+      var rows = c.rows.map(function (r) { return { name: r.name, rel: clean(r.rel), note: clean(r.note || r.tag || '') }; });
+      var sections = [{ id: 'roll', label: '', kind: 'roll', items: rows, prio: 1, keepMin: rows.length, drop: false, rollLayout: c.layout }];
+      if (read) sections.push({ id: 'read', label: '', kind: 'paras', items: [read], prio: 9, keepMin: 1, drop: true, size: 28 });
+      return {
+        theme: 'hist', kind: 'roll', title: c.title, file: '知否知否-' + c.title,
+        sections: sections,
+        top: function (M, th) {
+          var len = Array.from(c.title).length, size = len <= 4 ? 130 : len <= 6 ? 110 : len <= 9 ? 90 : 72;
+          var arr = [blockHead(M, th, { tag: '历史', sub: c.sub, right: c.range }), blockSpace(46), blockTitle(M, th, c.title, size, CW), blockSpace(16)];
+          arr.push(blockPara(M, th, clean(c.intro), 30, { color: th.sub, lh: 1.6 }));
+          return arr;
+        },
+        footer: null
+      };
     },
 
     poem: function (o) {
@@ -536,7 +670,7 @@
   }
   function ensureFonts(textSample) {
     if (!document.fonts || !document.fonts.load) return Promise.resolve();
-    var t = textSample.slice(0, 600);
+    var t = Array.from(new Set(Array.from(textSample + '历史帝王一览世系概述身世事迹结局重大事件争议与评价简介主要功绩在位年号庙号谥号生卒'))).join('').slice(0, 1600);
     return withTimeout(Promise.all([
       document.fonts.load('400 30px "Noto Serif SC"', t), document.fonts.load('600 30px "Noto Serif SC"', t),
       document.fonts.load('400 48px "Ma Shan Zheng"', t + '知否知否扫码看详情后世评价主要事迹')
@@ -553,6 +687,13 @@
     return mjPromise;
   }
 
+  var dwPromise = null;
+  function ensureDiwang() {
+    if (window.ZHIFOU_SHARE_DIWANG) return Promise.resolve(window.ZHIFOU_SHARE_DIWANG);
+    if (!dwPromise) dwPromise = withTimeout(loadScript('data/sharecard-diwang.js').then(function () { return window.ZHIFOU_SHARE_DIWANG || null; }), 8000);
+    return dwPromise;
+  }
+
   function open(job) {
     /* job: { type, o, url, needMingju } */
     if (!ui) buildUI();
@@ -561,13 +702,20 @@
     if (ui.url) { try { URL.revokeObjectURL(ui.url); } catch (e) { /* 忽略 */ } ui.url = null; }
     ui.overlay.classList.add('is-open'); ui.overlay.setAttribute('aria-hidden', 'false'); document.body.classList.add('sc-noscroll');
     var fail = function (e) { if (my !== ui.token) return; ui.msg.hidden = false; ui.msg.textContent = '卡片生成失败，请稍后再试。'; try { console.warn('[sharecard]', e); } catch (x) { /* 忽略 */ } };
-    var pre = [ensureQR(), job.needMingju ? ensureMingju() : Promise.resolve(null), job.o.portrait ? withTimeout(loadImage(job.o.portrait.src), 8000) : Promise.resolve(null)];
+    var pre = [ensureQR(), job.needMingju ? ensureMingju() : job.needDiwang ? ensureDiwang() : Promise.resolve(null), job.o.portrait ? withTimeout(loadImage(job.o.portrait.src), 8000) : Promise.resolve(null)];
     Promise.all(pre).then(function (r) {
       if (my !== ui.token) return;
       var extra = r[1], img = r[2];
       if (job.type === 'poem') {
         var key = '唐诗|' + job.o.ctx.poet.name + '|' + job.o.work.title;
         job.o.mingju = extra && extra.mingju && extra.mingju[key] ? extra.mingju[key] : null;
+      }
+      if (job.type === 'emperorLite') {
+        if (!extra) throw new Error('no diwang data');
+        var kk = job.o.key, parts = extra.cards && extra.cards[kk], cid = extra.index && extra.index[kk];
+        if (parts) job.o.parts = parts;
+        else if (cid) { job.type = 'roll'; job.o.card = extra.rolls.filter(function (x) { return x.id === cid; })[0]; }
+        else throw new Error('no data for ' + kk);
       }
       job.o.img = img;
       var spec = TYPES[job.type](job.o);
@@ -593,9 +741,9 @@
   }
 
   /* ---------- 按钮 ---------- */
-  function mkRow(onClick) {
+  function mkRow(onClick, cls) {
     /* 小号“分享”按钮：放在弹窗右上角、关闭“×”的左边，不占正文位置 */
-    var b = el('button', 'sc-corner');
+    var b = el('button', cls || 'sc-corner');
     b.type = 'button';
     b.setAttribute('aria-label', '分享卡片：把这一条做成图片，分享给朋友');
     b.title = '分享卡片';
@@ -615,9 +763,11 @@
     hookPerson: function (o) {
       try {
         var old = o.card.querySelector('.sc-corner'); if (old && old.parentNode) old.parentNode.removeChild(old); o.card.classList.remove('sc-has-share');
-        if (!o.hit || o.hit.kind !== '人物' || o.hit.card.g === '待核') return;
+        if (!o.hit || (o.hit.kind !== '人物' && o.hit.kind !== '帝王') || o.hit.card.g === '待核') return;
+        var isEmp = o.hit.kind === '帝王';
+        if (isEmp) { o.row = null; (o.D.emperors || []).forEach(function (e) { if (e.name === o.hit.card.name) o.row = e; }); }
         var row = mkRow(function () {
-          open({ type: 'person', needMingju: false, url: pageUrl({ d: o.D.key, id: o.hit.card.name }), o: o });
+          open({ type: isEmp ? 'emperor' : 'person', needMingju: false, url: pageUrl({ d: o.D.key, id: o.hit.card.name }), o: o });
         });
         o.card.appendChild(row); o.card.classList.add('sc-has-share');
       } catch (e) { try { console.warn('[sharecard]', e); } catch (x) { /* 忽略 */ } }
@@ -632,6 +782,16 @@
           open({ type: 'poem', needMingju: true, url: pageUrl({ id: o.ctx.poet.name + '｜' + o.work.title }), o: { work: o.work, ctx: o.ctx, pageName: '唐诗' } });
         });
         o.card.appendChild(row); o.card.classList.add('sc-has-share');
+      } catch (e) { try { console.warn('[sharecard]', e); } catch (x) { /* 忽略 */ } }
+    },
+    /* 帝王名单里的一行（没有详细介绍的那些）：o = { box(按钮放进它里面), D, e(这一行的数据), dynName } */
+    hookEmperorRow: function (o) {
+      try {
+        if (!o.box || !o.e) return;
+        var b = mkRow(function () {
+          open({ type: 'emperorLite', needDiwang: true, url: pageUrl({ d: o.D.key, id: o.e.name }), o: { row: o.e, dynName: o.dynName, key: o.D.key + '|' + o.e.name } });
+        }, 'sc-inline');
+        o.box.appendChild(b);
       } catch (e) { try { console.warn('[sharecard]', e); } catch (x) { /* 忽略 */ } }
     },
     _render: render, _types: TYPES, _open: open
