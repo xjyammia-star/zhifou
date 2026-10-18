@@ -1,0 +1,46 @@
+/* 知否知否 · 分享卡片的按钮和预览窗口样式（配合 js/sharecard.js）
+   颜色尽量用继承色和半透明，放进不同板块的主题里都能看。 */
+.sc-row { margin: 10px 0 14px; display: flex; justify-content: center; }
+.sc-btn {
+  font: inherit; font-size: 14px; line-height: 1; letter-spacing: 0.12em;
+  padding: 9px 20px; border-radius: 999px; cursor: pointer;
+  color: inherit; background: transparent; border: 1.5px solid currentColor; opacity: 0.85;
+}
+.sc-btn:hover, .sc-btn:focus-visible { opacity: 1; background: rgba(128, 128, 128, 0.12); }
+
+.sc-noscroll { overflow: hidden; }
+.sc-overlay {
+  position: fixed; inset: 0; z-index: 10000; display: none;
+  align-items: center; justify-content: center; padding: 14px;
+  background: rgba(10, 8, 14, 0.72);
+}
+.sc-overlay.is-open { display: flex; }
+.sc-box {
+  position: relative; width: min(100%, 520px); max-height: 100%;
+  display: flex; flex-direction: column; gap: 10px;
+  background: #f7f3ee; color: #2b2430; border-radius: 12px; padding: 14px 14px 12px;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.45);
+}
+.sc-close {
+  position: absolute; right: 8px; top: 6px; z-index: 2; width: 34px; height: 34px;
+  border: 0; border-radius: 50%; font-size: 24px; line-height: 1; cursor: pointer;
+  color: #fff; background: rgba(40, 30, 50, 0.55);
+}
+.sc-stage {
+  overflow: auto; -webkit-overflow-scrolling: touch; min-height: 120px; max-height: calc(100vh - 170px);
+  border-radius: 6px; background: #e9e4de; text-align: center;
+}
+.sc-msg { padding: 56px 16px; font-size: 15px; color: #5a5160; }
+.sc-img { display: block; width: 100%; height: auto; -webkit-touch-callout: default; user-select: auto; }
+.sc-hint { margin: 0; min-height: 1.2em; font-size: 13px; line-height: 1.6; color: #5a5160; text-align: center; }
+.sc-bar { display: flex; gap: 10px; justify-content: center; }
+.sc-act {
+  flex: 1 1 0; max-width: 220px; font: inherit; font-size: 15px; padding: 10px 12px; cursor: pointer;
+  border-radius: 8px; border: 1.5px solid #5e3f6a; color: #5e3f6a; background: transparent;
+}
+.sc-act-main { color: #fff; background: #5e3f6a; }
+.sc-act[hidden], .sc-bar[hidden], .sc-img[hidden], .sc-msg[hidden] { display: none; }
+@media (max-width: 480px) {
+  .sc-overlay { padding: 8px; }
+  .sc-stage { max-height: calc(100vh - 150px); }
+}

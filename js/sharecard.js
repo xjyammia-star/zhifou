@@ -1,0 +1,638 @@
+/* 知否知否 · 分享卡片（把一条内容画成一张可保存、可发给朋友的长图）
+   ----------------------------------------------------------------------
+   做什么：页面里有“分享卡片”按钮；点一下，浏览器当场把这一条内容画成一张长图
+          （宽 1080，高 1350～2160 自动伸缩），右下角带二维码，扫码回到这一条内容的页面。
+          可以：保存图片 / 调出手机的分享面板 / 微信里长按图片保存或发送。
+   不联网生成：整张图都在用户自己的浏览器里画，不上传、不占服务器；二维码库只有点分享时才加载。
+   规则：① 内容必须完整放进卡里，放不下就按“重要程度”从后往前删，并提示“更多内容请扫码”；
+        ② 在放得下的前提下尽量完整；③ 不放“待核”字样；④ AI 插画、人物像必须带说明文字。
+   现在支持：历史人物（lishi-chaodai.html）、唐诗（tangshi.html）。以后加新类型：
+        在下面 TYPES 里加一种“拼卡片的方法”，再在对应页面的弹窗里调用 ShareCard.hook…… 即可。
+   任何一步出错都只会提示“生成失败”，不会影响页面原有内容。 */
+(function () {
+  'use strict';
+  if (window.ShareCard) return;
+
+  var W = 1080, PAD_X = 92, PAD_TOP = 88, PAD_BOT = 70, MIN_H = 1350, MAX_H = 2160;
+  var CW = W - PAD_X * 2;                  /* 正文宽度 896 */
+  var QR_W = 180, FOOT_GAP = 40;
+  var FOOT_LEFT_W = CW - QR_W - FOOT_GAP;  /* 页脚左边可用宽度 676 */
+  var SERIF = '"Noto Serif SC","Source Han Serif SC","Songti SC","STSong","SimSun",serif';
+  var KAI = '"Ma Shan Zheng","STKaiti","KaiTi","Kaiti SC",serif';
+  var NUMS = '一二三四五六七八九十';
+
+  /* ---------- 配色 ---------- */
+  var THEMES = {
+    hist: { bg: ['#141C1F', '#0F1518'], fg: '#E8E2D2', accent: '#D9B877', tagfg: '#11171A', sub: '#B9B2A0', muted: '#9AA5A3', body: '#DDD6C4',
+            frame1: 'rgba(217,184,119,0.45)', frame2: 'rgba(217,184,119,0.22)', rule: 'rgba(217,184,119,0.30)', box: 'rgba(217,184,119,0.55)',
+            qrbg: '#F1E9D4', qrfg: '#11171A', red: '#B3362E', redtxt: '#FBEFE6', strong: '#F1E9D4', note: '#8B9694', brand: '#D6493F', ph1: '#34484C', ph2: '#1D2A2E' },
+    lit:  { bg: ['#F4ECF1', '#E9DDE7'], fg: '#2E2240', accent: '#5E3F6A', tagfg: '#F6EDF3', sub: '#6E5A7B', muted: '#6E5A7B', body: '#3A2E4A',
+            frame1: 'rgba(94,63,106,0.40)', frame2: 'rgba(94,63,106,0.25)', rule: 'rgba(94,63,106,0.30)', box: 'rgba(94,63,106,0.40)',
+            qrbg: '#FFFFFF', qrfg: '#1E1630', red: '#B3362E', redtxt: '#FBEFE6', strong: '#2E2240', note: '#8A7798', brand: '#B3362E', ph1: '#D9CBD6', ph2: '#C5B2C2' }
+  };
+
+  /* ---------- 小工具 ---------- */
+  function loadScript(src) {
+    return new Promise(function (res, rej) {
+      var s = document.createElement('script');
+      s.src = src; s.onload = function () { res(); }; s.onerror = function () { rej(new Error('load ' + src)); };
+      document.head.appendChild(s);
+    });
+  }
+  function withTimeout(p, ms) {
+    return new Promise(function (res) {
+      var done = false;
+      var t = setTimeout(function () { if (!done) { done = true; res(null); } }, ms);
+      Promise.resolve(p).then(function (v) { if (!done) { done = true; clearTimeout(t); res(v); } }, function () { if (!done) { done = true; clearTimeout(t); res(null); } });
+    });
+  }
+  /* 去掉“待核”标记：〔…待核…〕、（待核）等；卡片上不放这种字样 */
+  function clean(s) {
+    return String(s == null ? '' : s)
+      .replace(/〔[^〕]*待核[^〕]*〕/g, '')
+      .replace(/[（(][^）)]*待核[^）)]*[）)]/g, '')
+      .replace(/\s+/g, ' ').trim();
+  }
+  /* 按句号等切成句子（保留标点） */
+  function sentences(s) {
+    var out = [], cur = '';
+    Array.from(String(s || '')).forEach(function (ch) {
+      cur += ch;
+      if ('。！？；'.indexOf(ch) >= 0) { out.push(cur); cur = ''; }
+    });
+    if (cur.trim()) out.push(cur);
+    return out;
+  }
+  /* 最多保留 n 个字：只在句末截断，不把一句话切断；一句都放不下才硬截并加省略号 */
+  function cutBySentence(s, n) {
+    s = String(s || '');
+    if (s.length <= n) return s;
+    var acc = '', ss = sentences(s);
+    for (var i = 0; i < ss.length; i++) {
+      if ((acc + ss[i]).length > n) break;
+      acc += ss[i];
+    }
+    if (acc) return acc;
+    return s.slice(0, Math.max(1, n - 1)).replace(/[，、；：\s]+$/, '') + '…';
+  }
+  function shortYears(v) {
+    v = clean(v);
+    var m = v.match(/(前?约?\d{1,4}(?:或\d{1,4})?\s*[–—\-－~至]\s*前?约?\d{1,4})/);
+    if (m) return m[1].replace(/\s/g, '').replace(/[-－~至]/, '—');
+    var m2 = v.match(/\d{3,4}/);
+    return m2 ? v.split(/[；;，,。]/)[0].slice(0, 14) : '';
+  }
+
+  /* ---------- 文字排版（中文标点不出现在行首，括号不留在行尾） ---------- */
+  var NO_START = '，。、；：！？）》」』”’〕】…—,.;:!?)';
+  var NO_END = '（《「『“‘〔【(';
+  var wcache = {};
+  function cw(ctx, ch) {
+    var k = ctx.font + '|' + ch;
+    var v = wcache[k];
+    if (v === undefined) { v = ctx.measureText(ch).width; wcache[k] = v; }
+    return v;
+  }
+  function wrap(ctx, text, maxW) {
+    var lines = [], paras = String(text == null ? '' : text).split('\n');
+    paras.forEach(function (para) {
+      var cur = '', w = 0;
+      Array.from(para).forEach(function (ch) {
+        var c = cw(ctx, ch);
+        if (w + c > maxW && cur) {
+          if (NO_START.indexOf(ch) >= 0) {
+            if (w + c <= maxW + 34) { cur += ch; w += c; return; }                 /* 标点悬挂：多挤一个标点，不另起一行 */
+            var arr = Array.from(cur);                                              /* 挤不下：把上一个字一起带到下一行，不让标点单独占一行 */
+            if (arr.length > 1) {
+              var tail = arr.pop(); lines.push(arr.join(''));
+              cur = tail + ch; w = cw(ctx, tail) + c; return;
+            }
+          }
+          var carry = '';
+          var last = cur.slice(-1);
+          if (NO_END.indexOf(last) >= 0) { carry = last; cur = cur.slice(0, -1); }
+          lines.push(cur);
+          cur = carry + ch; w = 0; Array.from(cur).forEach(function (x) { w += cw(ctx, x); });
+          return;
+        }
+        cur += ch; w += c;
+      });
+      lines.push(cur);
+    });
+    return lines;
+  }
+  function setFont(ctx, size, weight, family) { ctx.font = (weight || 400) + ' ' + size + 'px ' + (family || SERIF); }
+  /* 带字距的文字（Safari 旧版不支持 letterSpacing，所以自己逐字画） */
+  function spacedWidth(ctx, text, sp) { var w = 0; Array.from(text).forEach(function (ch) { w += cw(ctx, ch) + sp; }); return Math.max(0, w - sp); }
+  function drawSpaced(ctx, text, x, y, sp) { var cx = x; Array.from(text).forEach(function (ch) { ctx.fillText(ch, cx, y); cx += cw(ctx, ch) + sp; }); }
+
+  function rr(ctx, x, y, w, h, r) {
+    ctx.beginPath();
+    ctx.moveTo(x + r, y); ctx.lineTo(x + w - r, y); ctx.quadraticCurveTo(x + w, y, x + w, y + r);
+    ctx.lineTo(x + w, y + h - r); ctx.quadraticCurveTo(x + w, y + h, x + w - r, y + h);
+    ctx.lineTo(x + r, y + h); ctx.quadraticCurveTo(x, y + h, x, y + h - r);
+    ctx.lineTo(x, y + r); ctx.quadraticCurveTo(x, y, x + r, y); ctx.closePath();
+  }
+
+  /* ---------- 块：每一块有高度 h，和画自己的方法 paint(ctx, x, y) ---------- */
+  function blockHead(M, th, o) {
+    return { h: 50, paint: function (c, x, y) {
+      setFont(c, 26, 600); var tw = spacedWidth(c, o.tag, 3.6);
+      c.fillStyle = th.accent; rr(c, x, y, tw + 48, 50, 4); c.fill();
+      c.fillStyle = th.tagfg; c.textBaseline = 'middle'; drawSpaced(c, o.tag, x + 24, y + 26, 3.6);
+      setFont(c, 26, 400); c.fillStyle = th.sub; drawSpaced(c, o.sub || '', x + tw + 48 + 16, y + 26, 3.6);
+      if (o.right) { setFont(c, 24, 400); c.fillStyle = th.muted; var rw = spacedWidth(c, o.right, 3.8); drawSpaced(c, o.right, x + CW - rw, y + 26, 3.8); }
+    } };
+  }
+  function blockTitle(M, th, text, size, w, align) {
+    setFont(M, size, 400, KAI);
+    var lines = wrap(M, text, w || CW), lh = Math.round(size * 1.08);
+    return { h: lines.length * lh, paint: function (c, x, y) {
+      setFont(c, size, 400, KAI); c.fillStyle = th.accent; c.textBaseline = 'alphabetic';
+      lines.forEach(function (l, i) {
+        var tx = x;
+        if (align === 'center') { tx = x + ((w || CW) - spacedWidth(c, l, size * 0.04)) / 2; }
+        drawSpaced(c, l, tx, y + (i + 1) * lh - Math.round(size * 0.2), size * 0.04);
+      });
+    } };
+  }
+  function blockSec(M, th, label) {
+    return { h: 66, paint: function (c, x, y) {
+      setFont(c, 48, 400, KAI); c.fillStyle = th.accent; c.textBaseline = 'alphabetic';
+      var tw = spacedWidth(c, label, 4.8); drawSpaced(c, label, x, y + 50, 4.8);
+      c.fillStyle = th.rule; c.fillRect(x + tw + 20, y + 33, CW - tw - 20, 1.5);
+    } };
+  }
+  function blockPara(M, th, text, size, opt) {
+    opt = opt || {};
+    setFont(M, size, opt.weight || 400);
+    var lines = wrap(M, text, opt.w || CW), lh = Math.round(size * (opt.lh || 1.75));
+    return { h: lines.length * lh, lines: lines.length, paint: function (c, x, y) {
+      setFont(c, size, opt.weight || 400); c.fillStyle = opt.color || th.body; c.textBaseline = 'alphabetic';
+      lines.forEach(function (l, i) {
+        var tx = x;
+        if (opt.align === 'center') tx = x + ((opt.w || CW) - spacedWidth(c, l, 0)) / 2;
+        c.fillText(l, tx, y + (i + 1) * lh - Math.round((lh - size) / 2) - Math.round(size * 0.12));
+      });
+    } };
+  }
+  function blockSteps(M, th, items) {
+    var tw = CW - 74, size = 30, lh = Math.round(size * 1.75), gap = 20;
+    setFont(M, size, 400);
+    var rows = items.map(function (t) { return wrap(M, t, tw); });
+    var h = 0; rows.forEach(function (r, i) { h += Math.max(50, r.length * lh) + (i ? gap : 0); });
+    return { h: h, paint: function (c, x, y) {
+      var cy = y;
+      rows.forEach(function (r, i) {
+        c.fillStyle = th.red; c.beginPath(); c.arc(x + 25, cy + 25 + 6, 25, 0, Math.PI * 2); c.fill();
+        setFont(c, 28, 600); c.fillStyle = th.redtxt; c.textAlign = 'center'; c.textBaseline = 'middle';
+        c.fillText(NUMS.charAt(i) || String(i + 1), x + 25, cy + 25 + 7); c.textAlign = 'left';
+        setFont(c, size, 400); c.fillStyle = th.body; c.textBaseline = 'alphabetic';
+        r.forEach(function (l, j) { c.fillText(l, x + 74, cy + (j + 1) * lh - Math.round((lh - size) / 2) - Math.round(size * 0.12)); });
+        cy += Math.max(50, r.length * lh) + gap;
+      });
+    } };
+  }
+  /* 一行“标签 + 文字”（红框小标签） */
+  function blockLabelRows(M, th, rows) {
+    var size = 30, lh = Math.round(size * 1.8), tw = CW - 102, gap = 14;
+    setFont(M, size, 400);
+    var prepared = rows.map(function (r) { return { label: r[0], lines: wrap(M, r[1], tw) }; });
+    var h = 0; prepared.forEach(function (r, i) { h += Math.max(60, r.lines.length * lh) + (i ? gap : 0); });
+    return { h: h, paint: function (c, x, y) {
+      var cy = y;
+      prepared.forEach(function (r) {
+        setFont(c, 26, 400); c.strokeStyle = th.red; c.lineWidth = 2; rr(c, x + 1, cy + 6, 76, 52, 6); c.stroke();
+        c.fillStyle = th === THEMES.lit ? th.red : '#D9695F'; c.textBaseline = 'middle'; c.textAlign = 'center';
+        c.fillText(r.label.slice(0, 3), x + 39, cy + 33); c.textAlign = 'left';
+        setFont(c, size, 400); c.fillStyle = th.body; c.textBaseline = 'alphabetic';
+        r.lines.forEach(function (l, j) { c.fillText(l, x + 102, cy + (j + 1) * lh - Math.round((lh - size) / 2) - Math.round(size * 0.12)); });
+        cy += Math.max(60, r.lines.length * lh) + 14;
+      });
+    } };
+  }
+  function blockSpace(h) { return { h: h, paint: function () {} }; }
+
+  /* 人物页头：左边人物像（没有就不画），右边名字 + 身份 + 基本信息 */
+  function blockPersonTop(M, th, o, img) {
+    var hasPic = !!img, colX = hasPic ? 380 + 52 : 0, colW = CW - colX;
+    var name = o.name, size = 160;
+    var Lname = Array.from(name).length;
+    size = Math.max(72, Math.min(160, Math.floor(colW / (Lname * 1.08))));
+    setFont(M, size, 400, KAI);
+    var tl = wrap(M, name, colW), tlh = Math.round(size * 1.08), titleH = tl.length * tlh;
+    var sub = o.subtitle ? wrap(M, o.subtitle, colW) : [];
+    setFont(M, 30, 600);
+    var subLines = o.subtitle ? wrap(M, o.subtitle, colW) : [];
+    var y2 = titleH + 18 + (subLines.length ? subLines.length * 46 + 14 : 0);
+    var facts = (o.facts || []);
+    setFont(M, 27, 400);
+    var factRows = facts.map(function (f) { return { k: f[0], lines: wrap(M, f[1], colW - 90) }; });
+    var factsH = 0; factRows.forEach(function (r) { factsH += r.lines.length * 42 + 10; });
+    var rightH = y2 + (factsH ? 26 + factsH : 0);
+    /* 左边：像 + 说明 */
+    var picH = 0, capLines = [];
+    if (hasPic) {
+      setFont(M, 20, 400);
+      capLines = wrap(M, o.portraitCaption || '', 380);
+      picH = 506 + 12 + capLines.length * 32 + (o.portraitAi ? 34 : 0);
+    }
+    var h = Math.max(picH, rightH);
+    return { h: h, paint: function (c, x, y) {
+      if (hasPic) {
+        c.strokeStyle = th.box; c.lineWidth = 2; c.strokeRect(x + 1, y + 1, 378, 504);
+        c.save(); c.beginPath(); c.rect(x + 10, y + 10, 360, 486); c.clip();
+        var iw = img.naturalWidth || img.width, ih = img.naturalHeight || img.height;
+        var sc = Math.max(360 / iw, 486 / ih), dw = iw * sc, dh = ih * sc;
+        c.drawImage(img, x + 10 + (360 - dw) / 2, y + 10 + (486 - dh) / 2, dw, dh);
+        c.restore();
+        setFont(c, 20, 400); c.fillStyle = th.note; c.textBaseline = 'alphabetic';
+        capLines.forEach(function (l, i) { c.fillText(l, x, y + 506 + 12 + (i + 1) * 32 - 8); });
+        if (o.portraitAi) {
+          var ty = y + 506 + 12 + capLines.length * 32 + 4;
+          setFont(c, 20, 400); var aw = spacedWidth(c, o.portraitAi, 1) + 18;
+          c.strokeStyle = th.note; c.lineWidth = 1.2; rr(c, x, ty, aw, 28, 4); c.stroke();
+          c.fillStyle = th.note; c.textBaseline = 'middle'; drawSpaced(c, o.portraitAi, x + 9, ty + 15, 1);
+        }
+      }
+      var rx = x + colX, cy = y;
+      setFont(c, size, 400, KAI); c.fillStyle = th.accent; c.textBaseline = 'alphabetic';
+      tl.forEach(function (l, i) { drawSpaced(c, l, rx, cy + (i + 1) * tlh - Math.round(size * 0.2), size * 0.04); });
+      cy += titleH + 18;
+      if (subLines.length) {
+        setFont(c, 30, 600); c.fillStyle = th.strong;
+        subLines.forEach(function (l, i) { c.fillText(l, rx, cy + (i + 1) * 46 - 12); });
+        cy += subLines.length * 46 + 14;
+      }
+      if (factRows.length) {
+        cy += 26 - 14 + 14;
+        c.fillStyle = th.rule; c.fillRect(rx, cy - 14, colW, 1.5);
+        factRows.forEach(function (r) {
+          setFont(c, 27, 400); c.fillStyle = th.muted; c.fillText(r.k, rx, cy + 28);
+          c.fillStyle = th.fg;
+          r.lines.forEach(function (l, i) { c.fillText(l, rx + 90, cy + 28 + i * 42); });
+          cy += r.lines.length * 42 + 10;
+        });
+      }
+    } };
+  }
+
+  /* 诗：一行一行居中；上下各一条细线 */
+  function blockPoem(M, th, lines, size, noTop) {
+    setFont(M, size, 400);
+    var lh = Math.round(size * 1.95), maxW = CW - 60, prepared = [];
+    lines.forEach(function (ln) { wrap(M, ln, maxW).forEach(function (l) { prepared.push(l); }); });
+    var h = prepared.length * lh + 56;
+    return { h: h, lines: prepared.length, paint: function (c, x, y) {
+      c.fillStyle = th.rule; if (!noTop) c.fillRect(x + 30, y, CW - 60, 1.5); c.fillRect(x + 30, y + h - 1.5, CW - 60, 1.5);
+      setFont(c, size, 400); c.fillStyle = th.fg; c.textBaseline = 'alphabetic';
+      prepared.forEach(function (l, i) {
+        var lw = spacedWidth(c, l, 2);
+        drawSpaced(c, l, x + (CW - lw) / 2, y + 28 + (i + 1) * lh - Math.round(lh * 0.28), 2);
+      });
+    } };
+  }
+
+  /* ---------- 页脚：分隔线 + 左边内容（紧贴分隔线下）+ 右边二维码 ---------- */
+  function buildFooter(M, th, f) {
+    var leftH = 0, label = f && f.label, lines = [];
+    if (f && f.text) {
+      setFont(M, 30, 400);
+      lines = wrap(M, f.text, FOOT_LEFT_W);
+      leftH = 60 + 12 + lines.length * 52;
+    }
+    var qrH = 180 + 6 + 46 + 6 + 24;
+    var h = Math.max(leftH, qrH);
+    return { h: 26 + h, lines: lines, paint: function (c, x, y, qr) {
+      c.fillStyle = th.rule; c.fillRect(x, y, CW, 2);
+      var top = y + 26;
+      if (f && f.text) {
+        setFont(c, 46, 400, KAI); c.fillStyle = th.accent; c.textBaseline = 'alphabetic';
+        var lw = spacedWidth(c, label, 4.6); drawSpaced(c, label, x, top + 46, 4.6);
+        c.fillStyle = th.rule; c.fillRect(x + lw + 20, top + 30, FOOT_LEFT_W - lw - 20, 1.5);
+        setFont(c, 30, 400); c.fillStyle = th.body;
+        lines.forEach(function (l, i) { c.fillText(l, x, top + 60 + 12 + (i + 1) * 52 - 16); });
+      }
+      var qx = x + CW - QR_W;
+      c.fillStyle = th.qrbg; rr(c, qx, top, QR_W, QR_W, 10); c.fill();
+      if (qr) {
+        var n = qr.getModuleCount(), inner = QR_W - 24, s = Math.max(2, Math.floor(inner / n)), off = (QR_W - s * n) / 2;
+        c.fillStyle = th.qrfg;
+        for (var r = 0; r < n; r++) for (var q = 0; q < n; q++) if (qr.isDark(r, q)) c.fillRect(qx + off + q * s, top + off + r * s, s, s);
+      }
+      setFont(c, 42, 400, KAI); c.fillStyle = th.brand; c.textAlign = 'center'; c.textBaseline = 'alphabetic';
+      c.fillText('知否知否', qx + QR_W / 2, top + QR_W + 6 + 40);
+      setFont(c, 20, 400); c.fillStyle = th.muted;
+      c.fillText('扫码看详情', qx + QR_W / 2, top + QR_W + 6 + 46 + 6 + 18); c.textAlign = 'left';
+    } };
+  }
+
+  /* ---------- 总排版：先量高度，放不下就按重要程度从后往前删 ---------- */
+  function layout(spec, th, M) {
+    var sections = spec.sections.map(function (s) { return { id: s.id, label: s.label, kind: s.kind, items: s.items.slice(), prio: s.prio, keepMin: s.keepMin || 1, drop: s.drop !== false, size: s.size }; });
+    var trimmed = false;
+    function build() {
+      var blocks = [];
+      var top = spec.top(M, th);                         /* 页头、标题等固定块 */
+      top.forEach(function (b) { blocks.push(b); });
+      sections.forEach(function (s) {
+        if (!s.items.length) return;
+        if (s.label) { blocks.push(blockSpace(36)); blocks.push(blockSec(M, th, s.label)); blocks.push(blockSpace(14)); }
+        else blocks.push(blockSpace(28));
+        if (s.kind === 'steps') blocks.push(blockSteps(M, th, s.items));
+        else if (s.kind === 'rows') blocks.push(blockLabelRows(M, th, s.items));
+        else if (s.kind === 'poem') blocks.push(blockPoem(M, th, s.items, s.size || 40, !!s.label));
+        else s.items.forEach(function (t, i) { if (i) blocks.push(blockSpace(10)); blocks.push(blockPara(M, th, t, s.size || 30)); });
+      });
+      if (trimmed) { blocks.push(blockSpace(22)); blocks.push(blockPara(M, th, '更多内容请扫码，在网站上查看。', 24, { color: th.note, lh: 1.5 })); }
+      var h = 0; blocks.forEach(function (b) { h += b.h; });
+      return { blocks: blocks, h: h };
+    }
+    var foot = buildFooter(M, th, spec.footer);
+    var GAP = 34, res = build();
+    function total() { return PAD_TOP + res.h + GAP + foot.h + PAD_BOT; }
+    var guard = 0;
+    while (total() > MAX_H && guard++ < 80) {
+      /* 找可以删的：重要程度数字最大的栏目优先 */
+      var cand = null;
+      sections.forEach(function (s) {
+        if (!s.items.length) return;
+        var can = s.items.length > s.keepMin || s.drop || (s.kind === 'paras' && s.items[0].length > 60);
+        if (can && (!cand || s.prio > cand.prio)) cand = s;
+      });
+      if (!cand) break;
+      trimmed = true;
+      if (cand.items.length > cand.keepMin) cand.items.pop();
+      else if (cand.drop) cand.items = [];
+      else cand.items[0] = cutBySentence(cand.items[0], Math.floor(cand.items[0].length * 0.7));
+      res = build();
+    }
+    var H = Math.max(MIN_H, Math.min(MAX_H, Math.ceil(total() / 10) * 10));
+    return { H: H, blocks: res.blocks, bodyH: res.h, foot: foot, gap: GAP, overflow: total() > MAX_H, trimmed: trimmed };
+  }
+
+  /* ---------- 画整张卡 ---------- */
+  function render(spec, qr, img) {
+    var th = THEMES[spec.theme] || THEMES.hist;
+    var M = document.createElement('canvas').getContext('2d');
+    M.textBaseline = 'alphabetic';
+    var specNow = spec; specNow.img = img || null;
+    var L = layout(specNow, th, M);
+    var cv = document.createElement('canvas'); cv.width = W; cv.height = L.H;
+    var c = cv.getContext('2d');
+    var g = c.createLinearGradient(0, 0, 0, L.H); g.addColorStop(0, th.bg[0]); g.addColorStop(1, th.bg[1]);
+    c.fillStyle = g; c.fillRect(0, 0, W, L.H);
+    c.strokeStyle = th.frame1; c.lineWidth = 2; c.strokeRect(29, 29, W - 58, L.H - 58);
+    c.strokeStyle = th.frame2; c.lineWidth = 1; c.strokeRect(42.5, 42.5, W - 85, L.H - 85);
+    var y = PAD_TOP;
+    L.blocks.forEach(function (b) { b.paint(c, PAD_X, y); y += b.h; });
+    var fy = L.H - PAD_BOT - L.foot.h;
+    L.foot.paint(c, PAD_X, fy, qr);
+    return { canvas: cv, layout: L };
+  }
+
+  /* ---------- 各类内容的拼法 ---------- */
+  var TYPES = {
+    person: function (o) {
+      var c = o.hit.card, fields = {};
+      c.f.forEach(function (f) { fields[f.k] = f; });
+      function val(k) { var f = fields[k]; if (!f) return ''; if (f.items) return f.items.map(function (it) { return clean(it.ev ? (it.ev.y + it.ev.t) : it.t); }).join('；'); return clean(f.v); }
+      var years = val('生卒'), identity = val('身份');
+      var nameFull = c.name, nameBig = nameFull.replace(/[（(].*$/, '');
+      var steps = sentences(val('事迹')).map(function (s) { return s.trim().replace(/[；，、]$/, '。'); }).filter(Boolean);
+      /* 句子太多就两两合并，最多 5 条 */
+      while (steps.length > 5) {
+        var merged = [];
+        for (var i = 0; i < steps.length; i += 2) merged.push(steps[i] + (steps[i + 1] || ''));
+        steps = merged;
+      }
+      var rows = [];
+      if (val('与帝王的关系')) rows.push(['关系', val('与帝王的关系')]);
+      if (val('与本朝大事的关联')) rows.push(['大事', val('与本朝大事的关联')]);
+      var judge = val('历史评价');
+      var sections = [];
+      if (steps.length) sections.push({ id: 'deeds', label: '主要事迹', kind: 'steps', items: steps, prio: 3, keepMin: 2, drop: false });
+      var pic = o.portrait && o.img ? o.img : null;
+      /* 有人物像时，右边还有空位：把“帝王”“大事”两行放到右边；没像就放到下面单独成栏 */
+      if (!pic) rows.forEach(function (r, i) { sections.push({ id: 'row' + i, label: '相关', kind: 'rows', items: [r], prio: 5 + i, keepMin: 1 }); });
+      return {
+        theme: 'hist', kind: 'person', title: nameBig,
+        file: '知否知否-' + nameBig,
+        sections: mergeRows(sections),
+        top: function (M, th) {
+          var arr = [blockHead(M, th, { tag: '历史', sub: o.dynName + ' · ' + o.hit.kind, right: shortYears(years) }), blockSpace(48)];
+          arr.push(blockPersonTop(M, th, {
+            name: nameBig, subtitle: (nameBig !== nameFull ? nameFull + (identity ? '：' + cutBySentence(identity, 30) : '') : cutBySentence(identity, 40)).replace(/[。；，]+$/, ''),
+            facts: (years ? [['生卒', cutBySentence(years.split('；')[0], 24).replace(/[。；，]+$/, '')]] : []).concat(pic ? rows.map(function (r) { return [r[0], cutBySentence(r[1], 60)]; }) : []),
+            portraitCaption: pic ? clean(o.portrait.caption) : '', portraitAi: pic && o.portrait.ai ? (o.portrait.aiLabel || 'AI 生成插画') : ''
+          }, pic));
+          return arr;
+        },
+        footer: judge ? { label: '后世评价', text: cutBySentence(judge, 120) } : (val('与本朝大事的关联') ? { label: '与大事的关联', text: cutBySentence(val('与本朝大事的关联'), 120) } : null),
+        img: pic
+      };
+      function mergeRows(secs) {
+        /* “相关”两行合并成一个栏目，方便整体删 */
+        var rr_ = secs.filter(function (s) { return s.kind === 'rows'; }), other = secs.filter(function (s) { return s.kind !== 'rows'; });
+        if (rr_.length) other.push({ id: 'rows', label: '相关', kind: 'rows', items: rr_.map(function (s) { return s.items[0]; }), prio: 5, keepMin: 1 });
+        return other;
+      }
+    },
+
+    poem: function (o) {
+      var w = o.work, poet = o.ctx.poet, orig = (w.original || []).map(clean).filter(Boolean);
+      var chars = orig.join('').length, long = chars > 150;
+      var mj = long ? (o.mingju || null) : null;
+      var lines = orig, intro = clean(w.note);
+      var note = intro, sections = [];
+      if (long) {
+        if (mj && mj.length) {
+          sections.push({ id: 'mj', label: '名句', kind: 'poem', items: mj, prio: 2, keepMin: 2, drop: false, size: 38 });
+        } else {
+          sections.push({ id: 'mj', label: '节选', kind: 'poem', items: orig.slice(0, 6), prio: 2, keepMin: 2, drop: false, size: 38 });
+        }
+        if (note) sections.push({ id: 'note', label: '诗意', kind: 'paras', items: [cutBySentence(note, 150)], prio: 4, keepMin: 1, drop: false });
+        sections.push({ id: 'more', label: '', kind: 'paras', items: ['全诗约 ' + chars + ' 字，读全文和逐句讲解，请扫码到网站上看。'], prio: 9, keepMin: 1, drop: true, size: 26 });
+      } else {
+        var size = orig.length >= 11 ? 30 : orig.length >= 9 ? 34 : 40;
+        sections.push({ id: 'poem', label: '', kind: 'poem', items: orig, prio: 1, keepMin: orig.length, drop: false, size: size });
+        if (note) sections.push({ id: 'note', label: '讲解', kind: 'paras', items: [note], prio: 4, keepMin: 1, drop: false });
+        if (w.trans) sections.push({ id: 'trans', label: '白话', kind: 'paras', items: [clean(w.trans)], prio: 6, keepMin: 1, drop: true });
+      }
+      var life = clean(poet.life || '');
+      return {
+        theme: 'lit', kind: 'poem', title: w.title, file: '知否知否-' + w.title,
+        sections: sections,
+        top: function (M, th) {
+          var arr = [blockHead(M, th, { tag: '文学', sub: o.pageName + (o.ctx.era ? ' · ' + o.ctx.era : '') }), blockSpace(54)];
+          var len = Array.from(w.title).length, size = len <= 4 ? 150 : len <= 6 ? 120 : len <= 9 ? 96 : 76;
+          arr.push(blockTitle(M, th, w.title, size, CW));
+          setFont(M, 30, 400);
+          var sub = poet.name + (w.form ? '　' + w.form : '');
+          arr.push(blockSpace(16));
+          arr.push(blockPara(M, th, sub, 31, { color: th.sub, lh: 1.5 }));
+          return arr;
+        },
+        footer: life ? { label: '诗人小传', text: cutBySentence(life, 110) } : null
+      };
+    }
+  };
+
+  /* ---------- 生成并显示 ---------- */
+  var ui = null;
+  function el(tag, cls, text) { var n = document.createElement(tag); if (cls) n.className = cls; if (text) n.textContent = text; return n; }
+
+  function buildUI() {
+    var overlay = el('div', 'sc-overlay'); overlay.setAttribute('aria-hidden', 'true');
+    var box = el('div', 'sc-box'); box.setAttribute('role', 'dialog'); box.setAttribute('aria-modal', 'true'); box.setAttribute('aria-label', '分享卡片');
+    var close = el('button', 'sc-close', '×'); close.type = 'button'; close.setAttribute('aria-label', '关闭');
+    var stage = el('div', 'sc-stage');
+    var msg = el('div', 'sc-msg', '正在生成卡片…');
+    var img = el('img', 'sc-img'); img.alt = '分享卡片'; img.hidden = true;
+    stage.appendChild(msg); stage.appendChild(img);
+    var hint = el('p', 'sc-hint', '');
+    var bar = el('div', 'sc-bar');
+    var saveBtn = el('button', 'sc-act', '保存图片'); saveBtn.type = 'button';
+    var shareBtn = el('button', 'sc-act sc-act-main', '发送给朋友'); shareBtn.type = 'button';
+    bar.appendChild(saveBtn); bar.appendChild(shareBtn);
+    box.appendChild(close); box.appendChild(stage); box.appendChild(hint); box.appendChild(bar);
+    overlay.appendChild(box); document.body.appendChild(overlay);
+    function hide() {
+      overlay.classList.remove('is-open'); overlay.setAttribute('aria-hidden', 'true');
+      document.body.classList.remove('sc-noscroll');
+      if (ui.url) { try { URL.revokeObjectURL(ui.url); } catch (e) { /* 忽略 */ } ui.url = null; }
+      ui.token++;
+    }
+    close.addEventListener('click', hide);
+    overlay.addEventListener('click', function (e) { if (e.target === overlay) hide(); });
+    document.addEventListener('keydown', function (e) { if (e.key === 'Escape' && overlay.classList.contains('is-open')) hide(); });
+    ui = { overlay: overlay, msg: msg, img: img, hint: hint, saveBtn: saveBtn, shareBtn: shareBtn, bar: bar, url: null, token: 0, blob: null, file: '', hide: hide };
+    saveBtn.addEventListener('click', function () {
+      if (!ui.blob) return;
+      var a = document.createElement('a'); a.href = ui.url; a.download = ui.file + '.png';
+      document.body.appendChild(a); a.click(); document.body.removeChild(a);
+    });
+    shareBtn.addEventListener('click', function () {
+      if (!ui.blob) return;
+      try {
+        var f = new File([ui.blob], ui.file + '.png', { type: 'image/png' });
+        if (navigator.canShare && navigator.canShare({ files: [f] })) { navigator.share({ files: [f], title: '知否知否' }).catch(function () { /* 用户取消 */ }); return; }
+      } catch (e) { /* 走下面的提示 */ }
+      ui.hint.textContent = '这个浏览器不能直接发送，请点“保存图片”，再从相册发给朋友。';
+    });
+    return ui;
+  }
+  function isWeChat() { return /MicroMessenger/i.test(navigator.userAgent || ''); }
+  function canShareFiles() {
+    try { var f = new File([new Blob(['x'])], 'a.png', { type: 'image/png' }); return !!(navigator.canShare && navigator.canShare({ files: [f] })); } catch (e) { return false; }
+  }
+
+  function loadImage(src) {
+    return new Promise(function (res) {
+      var im = new Image(); im.crossOrigin = 'anonymous';
+      im.onload = function () { res(im); }; im.onerror = function () { res(null); };
+      im.src = src;
+    });
+  }
+  function ensureFonts(textSample) {
+    if (!document.fonts || !document.fonts.load) return Promise.resolve();
+    var t = textSample.slice(0, 600);
+    return withTimeout(Promise.all([
+      document.fonts.load('400 30px "Noto Serif SC"', t), document.fonts.load('600 30px "Noto Serif SC"', t),
+      document.fonts.load('400 48px "Ma Shan Zheng"', t + '知否知否扫码看详情后世评价主要事迹')
+    ]), 5000);
+  }
+  function ensureQR() {
+    if (window.qrcode) return Promise.resolve();
+    return loadScript('js/qrcode.min.js');
+  }
+  var mjPromise = null;
+  function ensureMingju() {
+    if (window.ZHIFOU_SHARE_EXTRA) return Promise.resolve(window.ZHIFOU_SHARE_EXTRA);
+    if (!mjPromise) mjPromise = withTimeout(loadScript('data/sharecard-extra.js').then(function () { return window.ZHIFOU_SHARE_EXTRA || null; }), 6000);
+    return mjPromise;
+  }
+
+  function open(job) {
+    /* job: { type, o, url, needMingju } */
+    if (!ui) buildUI();
+    var my = ++ui.token;
+    ui.msg.hidden = false; ui.msg.textContent = '正在生成卡片…'; ui.img.hidden = true; ui.hint.textContent = ''; ui.bar.hidden = true; ui.blob = null;
+    if (ui.url) { try { URL.revokeObjectURL(ui.url); } catch (e) { /* 忽略 */ } ui.url = null; }
+    ui.overlay.classList.add('is-open'); ui.overlay.setAttribute('aria-hidden', 'false'); document.body.classList.add('sc-noscroll');
+    var fail = function (e) { if (my !== ui.token) return; ui.msg.hidden = false; ui.msg.textContent = '卡片生成失败，请稍后再试。'; try { console.warn('[sharecard]', e); } catch (x) { /* 忽略 */ } };
+    var pre = [ensureQR(), job.needMingju ? ensureMingju() : Promise.resolve(null), job.o.portrait ? withTimeout(loadImage(job.o.portrait.src), 8000) : Promise.resolve(null)];
+    Promise.all(pre).then(function (r) {
+      if (my !== ui.token) return;
+      var extra = r[1], img = r[2];
+      if (job.type === 'poem') {
+        var key = '唐诗|' + job.o.ctx.poet.name + '|' + job.o.work.title;
+        job.o.mingju = extra && extra.mingju && extra.mingju[key] ? extra.mingju[key] : null;
+      }
+      job.o.img = img;
+      var spec = TYPES[job.type](job.o);
+      var sample = spec.title + JSON.stringify(spec.sections.map(function (s) { return s.items; })) + (spec.footer ? spec.footer.text : '');
+      return ensureFonts(sample).then(function () {
+        if (my !== ui.token) return;
+        var qr = window.qrcode(0, 'M'); qr.addData(job.url); qr.make();
+        var out = render(spec, qr, img);
+        return new Promise(function (res) { out.canvas.toBlob(function (b) { res({ blob: b, spec: spec, out: out }); }, 'image/png'); });
+      });
+    }).then(function (r) {
+      if (!r || my !== ui.token) return;
+      if (!r.blob) throw new Error('toBlob failed');
+      ui.blob = r.blob; ui.file = r.spec.file; ui.url = URL.createObjectURL(r.blob);
+      ui.img.src = ui.url; ui.img.hidden = false; ui.msg.hidden = true; ui.bar.hidden = false;
+      var wx = isWeChat(), can = canShareFiles();
+      ui.shareBtn.hidden = !can || wx;
+      ui.hint.textContent = wx ? '在微信里：长按上面的图片，可以保存到手机或发送给朋友、分享到朋友圈。' : (can ? '' : '点“保存图片”，再从相册发给朋友。');
+      ui.saveBtn.hidden = wx;
+      ui.overlay.querySelector('.sc-stage').scrollTop = 0;
+      ui.last = { w: r.out.canvas.width, h: r.out.canvas.height, trimmed: r.out.layout.trimmed, overflow: r.out.layout.overflow };
+    }).catch(fail);
+  }
+
+  /* ---------- 按钮 ---------- */
+  function mkRow(onClick) {
+    var row = el('div', 'sc-row');
+    var b = el('button', 'sc-btn', '分享卡片'); b.type = 'button';
+    b.setAttribute('aria-label', '把这一条做成图片卡片，分享给朋友');
+    b.addEventListener('click', onClick);
+    row.appendChild(b);
+    return row;
+  }
+  function pageUrl(q) {
+    var u = new URL(location.href); u.hash = '';
+    u.search = '';
+    Object.keys(q).forEach(function (k) { u.searchParams.set(k, q[k]); });
+    return u.toString();
+  }
+
+  var api = {
+    /* 历史人物弹窗：每次换人都会调用一次。o = { card(弹窗元素), anchor(按钮插在它前面), D, hit, dynName, portrait } */
+    hookPerson: function (o) {
+      try {
+        var old = o.card.querySelector('.sc-row'); if (old && old.parentNode) old.parentNode.removeChild(old);
+        if (!o.hit || o.hit.kind !== '人物' || o.hit.card.g === '待核') return;
+        var row = mkRow(function () {
+          open({ type: 'person', needMingju: false, url: pageUrl({ d: o.D.key, id: o.hit.card.name }), o: o });
+        });
+        o.anchor.parentNode.insertBefore(row, o.anchor);
+      } catch (e) { try { console.warn('[sharecard]', e); } catch (x) { /* 忽略 */ } }
+    },
+    /* 诗词作品弹窗：每次打开一首诗调用一次。o = { card, after(按钮插在它后面), work, ctx:{poet, era} } */
+    hookPoem: function (o) {
+      try {
+        var old = o.card.querySelector('.sc-row'); if (old && old.parentNode) old.parentNode.removeChild(old);
+        var page = document.body.getAttribute('data-page');
+        if (page !== 'tangshi' || !o.ctx || !o.ctx.poet) return;
+        var row = mkRow(function () {
+          open({ type: 'poem', needMingju: true, url: pageUrl({ id: o.ctx.poet.name + '｜' + o.work.title }), o: { work: o.work, ctx: o.ctx, pageName: '唐诗' } });
+        });
+        o.after.parentNode.insertBefore(row, o.after.nextSibling);
+      } catch (e) { try { console.warn('[sharecard]', e); } catch (x) { /* 忽略 */ } }
+    },
+    _render: render, _types: TYPES, _open: open
+  };
+  window.ShareCard = api;
+})();

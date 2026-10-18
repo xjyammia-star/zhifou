@@ -144,6 +144,15 @@
       fillSrc(srcEl, work.source);
       /* 有注解/出处的作品（元曲）内容更多，弹窗放宽一点；唐诗不受影响 */
       card.classList.toggle('tp-modal-wide', !!((work.gloss && work.gloss.length) || (work.source && work.source.length) || work.trans));
+      /* 分享卡片按钮（由 js/sharecard.js 提供，目前只在唐诗页显示；没加载或出错都不影响本页）。
+         按作品对象在花名册里反查它属于哪位诗人、哪个时代。 */
+      try {
+        if (window.ShareCard) {
+          var ctx = null;
+          registry.forEach(function (r) { r.works.forEach(function (w) { if (w.work === work) ctx = { poet: r.poet, era: r.eraLabel }; }); });
+          window.ShareCard.hookPoem({ card: card, after: formEl, work: work, ctx: ctx });
+        }
+      } catch (e) { /* 忽略 */ }
       card.scrollTop = 0;
       overlay.classList.add('is-open');
       overlay.setAttribute('aria-hidden', 'false');

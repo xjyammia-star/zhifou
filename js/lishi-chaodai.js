@@ -332,6 +332,8 @@
     if (oldRow && oldRow.parentNode) oldRow.parentNode.removeChild(oldRow);
     modal.body.appendChild(Z.kv(pairs, { quote: [] }));
     modal.back.hidden = !stack.length;
+    /* 分享卡片按钮（由 js/sharecard.js 提供；没加载或出错都不影响本页） */
+    try { if (window.ShareCard) window.ShareCard.hookPerson({ card: modal.card, anchor: modal.body, D: D, hit: hit, dynName: dynName[D.key] || D.name, portrait: pi || null }); } catch (e) { /* 忽略 */ }
     modal.card.scrollTop = 0;
   }
 
