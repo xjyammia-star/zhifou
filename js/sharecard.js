@@ -353,7 +353,16 @@
   function blockPoem(M, th, lines, size, noTop) {
     setFont(M, size, 400);
     var lh = Math.round(size * 1.95), maxW = CW - 60, prepared = [];
-    lines.forEach(function (ln) { wrap(M, ln, maxW).forEach(function (l) { prepared.push(l); }); });
+    lines.forEach(function (ln) {
+      var ws = wrap(M, ln, maxW);
+      /* 折成几行时，最后一行只剩一两个字很难看：改成各行长度接近的“均衡折行” */
+      if (ws.length > 1 && ws.length <= 3 && Array.from(ws[ws.length - 1]).length <= 3) {
+        var tw = spacedWidth(M, ln, 2), nn = ws.length, w2 = Math.min(maxW, tw / nn + size * 1.2);
+        var ws2 = wrap(M, ln, w2);
+        if (ws2.length === ws.length) ws = ws2;
+      }
+      ws.forEach(function (l) { prepared.push(l); });
+    });
     var h = prepared.length * lh + 56;
     return { h: h, lines: prepared.length, paint: function (c, x, y) {
       c.fillStyle = th.rule; if (!noTop) c.fillRect(x + 30, y, CW - 60, 1.5); c.fillRect(x + 30, y + h - 1.5, CW - 60, 1.5);
@@ -760,6 +769,12 @@
       var chars = orig.join('').length, long = chars > 150;
       var mj = long ? (o.mingju || null) : null;
       var lines = orig, intro = clean(w.note);
+      /* 讲解只取前面的“创作背景/大意”几段，去掉“艺术特点与历史地位”等长评；每段按整句截短 */
+      var pieces = String(w.note || '').split(/\n+/).filter(function (t) { return t && !/^(艺术特点|作品意义|历史地位|阅读边界|版本)/.test(t); })
+        .map(function (t) { return clean(t).replace(/^(创作背景|创作时间|大意|作品大意)[：:]/, function (m) { return /^创作时间/.test(m) ? '创作时间：' : ''; }); }).filter(Boolean);
+      var noteArr = [], budget = 170;
+      pieces.slice(0, 3).forEach(function (t) { if (budget < 30) return; var c = cutBySentence(t, budget); noteArr.push(c); budget -= c.length; });
+      var noteLabel = o.pageName === '元曲' ? '说明' : '诗意';
       var note = intro, sections = [];
       if (long) {
         if (mj && mj.length) {
@@ -767,12 +782,12 @@
         } else {
           sections.push({ id: 'mj', label: '节选', kind: 'poem', items: orig.slice(0, 6), prio: 2, keepMin: 2, drop: false, size: 38 });
         }
-        if (note) sections.push({ id: 'note', label: '诗意', kind: 'paras', items: [cutBySentence(note, 150)], prio: 4, keepMin: 1, drop: false });
-        sections.push({ id: 'more', label: '', kind: 'paras', items: ['全诗约 ' + chars + ' 字，读全文和逐句讲解，请扫码到网站上看。'], prio: 9, keepMin: 1, drop: true, size: 26 });
+        if (note) sections.push({ id: 'note', label: noteLabel, kind: 'paras', items: noteArr.length ? noteArr : [cutBySentence(note, 150)], prio: 4, keepMin: 1, drop: false });
+        sections.push({ id: 'more', label: '', kind: 'paras', items: [(o.pageName === '元曲' || o.pageName === '楚辞' || o.pageName === '诗经' ? '全文约 ' : '全诗约 ') + chars + ' 字，读全文和逐句讲解，请扫码到网站上看。'], prio: 9, keepMin: 1, drop: true, size: 26 });
       } else {
         var size = orig.length >= 11 ? 30 : orig.length >= 9 ? 34 : 40;
         sections.push({ id: 'poem', label: '', kind: 'poem', items: orig, prio: 1, keepMin: orig.length, drop: false, size: size });
-        if (note) sections.push({ id: 'note', label: '讲解', kind: 'paras', items: [note], prio: 4, keepMin: 1, drop: false });
+        if (note) sections.push({ id: 'note', label: '讲解', kind: 'paras', items: noteArr.length ? noteArr : [note], prio: 4, keepMin: 1, drop: false });
         if (w.trans) sections.push({ id: 'trans', label: '白话', kind: 'paras', items: [clean(w.trans)], prio: 6, keepMin: 1, drop: true });
       }
       var life = clean(poet.life || '');
@@ -789,7 +804,7 @@
           arr.push(blockPara(M, th, sub, 31, { color: th.sub, lh: 1.5 }));
           return arr;
         },
-        footer: life ? { label: '诗人小传', text: cutBySentence(life, 110) } : null
+        footer: life ? { label: (o.pageName === '诗经' || o.pageName === '楚辞' ? '这一组' : o.pageName === '汉魏诗' ? '简介' : '诗人小传'), text: cutBySentence(life, 110) } : null
       };
     }
   };
@@ -895,7 +910,7 @@
       if (my !== ui.token) return;
       var extra = r[1], img = r[2];
       if (job.type === 'poem') {
-        var key = '唐诗|' + job.o.ctx.poet.name + '|' + job.o.work.title;
+        var key = job.o.pageName + '|' + job.o.ctx.poet.name + '|' + job.o.work.title;
         job.o.mingju = extra && extra.mingju && extra.mingju[key] ? extra.mingju[key] : null;
       }
       if (job.type === 'deity') {
@@ -957,6 +972,8 @@
     return u.toString();
   }
 
+  var POEM_PAGES = { tangshi: '唐诗', songci: '宋词', shijingpian: '诗经', chuci: '楚辞', qingci: '清词', hanweishi: '汉魏诗', yuanqu: '元曲' };
+
   var api = {
     /* 历史人物弹窗：每次换人都会调用一次。o = { card(弹窗元素), anchor(按钮插在它前面), D, hit, dynName, portrait } */
     hookPerson: function (o) {
@@ -976,9 +993,10 @@
       try {
         var old = o.card.querySelector('.sc-corner'); if (old && old.parentNode) old.parentNode.removeChild(old); o.card.classList.remove('sc-has-share');
         var page = document.body.getAttribute('data-page');
-        if (page !== 'tangshi' || !o.ctx || !o.ctx.poet) return;
+        var pageName = POEM_PAGES[page];
+        if (!pageName || !o.ctx || !o.ctx.poet) return;
         var row = mkRow(function () {
-          open({ type: 'poem', needMingju: true, url: pageUrl({ id: o.ctx.poet.name + '｜' + o.work.title }), o: { work: o.work, ctx: o.ctx, pageName: '唐诗' } });
+          open({ type: 'poem', needMingju: true, url: pageUrl({ id: o.ctx.poet.name + '｜' + o.work.title }), o: { work: o.work, ctx: o.ctx, pageName: pageName } });
         });
         o.card.appendChild(row); o.card.classList.add('sc-has-share');
       } catch (e) { try { console.warn('[sharecard]', e); } catch (x) { /* 忽略 */ } }
