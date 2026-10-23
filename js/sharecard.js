@@ -261,6 +261,25 @@
       });
     } };
   }
+  /* 历代定都：左边政权名，右边年份（金色，靠右） */
+  function blockDyn(M, th, items) {
+    var size = 30, lh = Math.round(size * 1.6), yw = 300, gap = 8;
+    setFont(M, size, 600);
+    var rows = items.map(function (it) { return { n: wrap(M, it[0], CW - yw - 20), y: wrap(M, it[1], yw) }; });
+    var h = 0; rows.forEach(function (r, i) { h += Math.max(r.n.length, r.y.length) * lh + (i ? gap : 0); });
+    return { h: h, paint: function (c, x, y) {
+      var cy = y;
+      rows.forEach(function (r) {
+        var n = Math.max(r.n.length, r.y.length), base = function (j) { return cy + (j + 1) * lh - Math.round((lh - size) / 2) - Math.round(size * 0.12); };
+        setFont(c, size, 600); c.fillStyle = th.strong; c.textBaseline = 'alphabetic'; c.textAlign = 'left';
+        r.n.forEach(function (l, j) { c.fillText(l, x, base(j)); });
+        setFont(c, 28, 600); c.fillStyle = th.accent; c.textAlign = 'right';
+        r.y.forEach(function (l, j) { c.fillText(l, x + CW, base(j)); });
+        c.textAlign = 'left';
+        cy += n * lh + gap;
+      });
+    } };
+  }
   /* 一览表：每位一行（单行版：名字 + 关系）或两行（名字 + 关系/结局） */
   function blockRoll(M, th, rows, mode) {
     var two = mode === 'two-line', nameW = two ? 250 : 190, textW = CW - nameW;
@@ -427,6 +446,7 @@
         if (s.kind === 'steps') blocks.push(blockSteps(M, th, s.items));
         else if (s.kind === 'rows') blocks.push(blockLabelRows(M, th, s.items));
         else if (s.kind === 'events') blocks.push(blockEvents(M, th, s.items));
+        else if (s.kind === 'dyn') blocks.push(blockDyn(M, th, s.items));
         else if (s.kind === 'roll') blocks.push(blockRoll(M, th, s.items, s.rollLayout));
         else if (s.kind === 'poem') blocks.push(blockPoem(M, th, s.items, s.size || 40, !!s.label));
         else s.items.forEach(function (t, i) { if (i) blocks.push(blockSpace(10)); blocks.push(blockPara(M, th, t, s.size || 30)); });
@@ -883,8 +903,14 @@
       var c = o.c, sections = [];
       function fv(k) { for (var i = 0; i < c.f.length; i++) if (c.f[i].k === k) return c.f[i].v || ''; return ''; }
       function short(s, n) { s = clean(s); return s.length > n ? s.slice(0, n - 1) + '…' : s; }
-      var rows = [['今地', short(c.place, 22)], ['政权', short(c.who, 40)], ['时间', short(c.span, 28)]].filter(function (r) { return r[1]; });
+      var sc = c.sc || { dyn: [], ln: [], ev: [] };
+      var nreg = sc.dyn.length;
+      var rows = [['今地', short(c.place, 22)]];
+      if (nreg) rows.push(['定都', nreg + '个时期或政权']);
       if (rows.length) sections.push({ id: 'rows', label: '', kind: 'rows', items: rows, prio: 1, keepMin: rows.length, drop: false });
+      if (nreg) sections.push({ id: 'dyn', label: '历代定都', kind: 'dyn', items: sc.dyn.map(function (d) { return [d[0], d[1]]; }), prio: 2, keepMin: Math.min(nreg, 5), drop: false });
+      if (sc.ln.length) sections.push({ id: 'ln', label: '', kind: 'rows', items: sc.ln.map(function (d) { return [d[0], d[1]]; }), prio: 3, keepMin: sc.ln.length, drop: false });
+      if (sc.ev.length) sections.push({ id: 'ev', label: '重要大事', kind: 'events', items: sc.ev.map(function (d) { return [d[0], d[1]]; }), prio: 3, keepMin: Math.min(sc.ev.length, 3), drop: false });
       function eras(v) {   /* 一座城市有几个时期时，文字用【时期】分段 */
         return String(v || '').split(/(?=【[^】]{1,20}】)/).filter(function (x) { return x.trim(); }).map(function (p) {
           var m = /^【([^】]+)】([\s\S]*)$/.exec(p.trim());
@@ -901,9 +927,9 @@
         }).filter(Boolean);
         if (items.length) sections.push({ id: id, label: label, kind: 'paras', items: items, prio: prio, keepMin: 1, drop: drop, size: 31 });
       }
-      addEras('xz', '城市形制', fv('城市形制'), 120, 2, false, true);
-      addEras('qs', '迁都与兴衰', fv('迁都与兴衰'), 130, 3, true, false);
-      addEras('jz', '遗址与今日', fv('遗址与今日'), 100, 4, true, false);
+      addEras('xz', '城市形制', fv('城市形制'), 120, 6, true, true);
+      addEras('qs', '迁都与兴衰', fv('迁都与兴衰'), 130, 5, true, false);
+      addEras('jz', '遗址与今日', fv('遗址与今日'), 100, 7, true, false);
       var title = c.show || c.name, line = clean(c.line);
       return {
         theme: 'hist', kind: 'city', title: title, file: '知否知否-都城-' + c.name, sections: sections,
@@ -914,7 +940,7 @@
           if (line) { arr.push(blockSpace(18)); arr.push(blockPara(M, th, cutBySentence(line, 90), 34, { color: th.strong, lh: 1.6 })); }
           return arr;
         },
-        footer: null, img: null
+        footer: sc.ln.length ? { label: '说明', text: '年数按所列起止年份粗算，期间可能有中断；城市名为古今通称。' } : null, img: null
       };
     },
 
