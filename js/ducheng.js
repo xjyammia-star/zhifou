@@ -210,6 +210,7 @@
       b2.addEventListener('click', function () { openCity(next.name); });
       modal.nav.appendChild(b2);
     }
+    try { if (window.ShareCard && window.ShareCard.hookCity) window.ShareCard.hookCity({ card: modal.card, c: c, groupName: groupShort(c.group) }); } catch (e) { /* 忽略 */ }
     modal.card.scrollTop = 0;
   }
 

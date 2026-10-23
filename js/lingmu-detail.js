@@ -165,6 +165,7 @@
     kids.push(el('p', { 'class': 'lm-back' }, [el('a', { href: 'lingmu.html#list', text: '← 回到陵墓与墓葬名单' })]));
 
     mount(kids);
+    try { if (window.ShareCard && window.ShareCard.hookTomb) window.ShareCard.hookTomb({ head: kids[0], d: d, grpName: grp && grp.name }); } catch (e) { /* 忽略 */ }
     document.title = d.title + ' · 陵墓与墓葬 · 知否知否';
   }
 

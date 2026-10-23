@@ -878,6 +878,65 @@
       };
     },
 
+    /* 都城：一座城市一张卡 */
+    city: function (o) {
+      var c = o.c, sections = [];
+      function fv(k) { for (var i = 0; i < c.f.length; i++) if (c.f[i].k === k) return c.f[i].v || ''; return ''; }
+      function short(s, n) { s = clean(s); return s.length > n ? s.slice(0, n - 1) + '…' : s; }
+      var rows = [['今地', short(c.place, 22)], ['政权', short(c.who, 40)], ['时间', short(c.span, 28)]].filter(function (r) { return r[1]; });
+      if (rows.length) sections.push({ id: 'rows', label: '', kind: 'rows', items: rows, prio: 1, keepMin: rows.length, drop: false });
+      var xz = fv('城市形制'), m = /考古所见——([\s\S]*)$/.exec(xz); xz = clean(m ? m[1] : xz.replace(/^(文献记载|考古所见)——/, ''));
+      if (xz) sections.push({ id: 'xz', label: '城市形制', kind: 'paras', items: [cutBySentence(xz, 120).replace(/[；，、\s]+$/, '。')], prio: 2, keepMin: 1, drop: false, size: 31 });
+      var qs = clean(fv('迁都与兴衰')); if (qs) sections.push({ id: 'qs', label: '迁都与兴衰', kind: 'paras', items: [cutBySentence(qs, 130).replace(/[；，、\s]+$/, '。')], prio: 3, keepMin: 1, drop: true, size: 31 });
+      var jz = clean(fv('遗址与今日')); if (jz) sections.push({ id: 'jz', label: '遗址与今日', kind: 'paras', items: [cutBySentence(jz, 100).replace(/[；，、\s]+$/, '。')], prio: 4, keepMin: 1, drop: true, size: 31 });
+      var title = c.show || c.name, line = clean(c.line);
+      return {
+        theme: 'hist', kind: 'city', title: title, file: '知否知否-都城-' + c.name, sections: sections,
+        top: function (M, th) {
+          var len = Array.from(title).length, size = len <= 3 ? 150 : len <= 5 ? 126 : len <= 8 ? 100 : 80;
+          var arr = [blockHead(M, th, { tag: '都城', sub: o.groupName || '' }), blockSpace(46)];
+          arr.push(blockTitle(M, th, title, size, CW));
+          if (line) { arr.push(blockSpace(18)); arr.push(blockPara(M, th, cutBySentence(line, 90), 34, { color: th.strong, lh: 1.6 })); }
+          return arr;
+        },
+        footer: null, img: null
+      };
+    },
+
+    /* 陵墓：一座墓（或墓地）一张卡 */
+    tomb: function (o) {
+      var d = o.d, sections = [];
+      function lm(t) { return clean(String(t == null ? '' : t).replace(/\[\[[^\]|]+\|([^\]]+)\]\]/g, '$1').replace(/\*\*/g, '')); }
+      function short(s, n) { s = lm(s); return s.length > n ? s.slice(0, n - 1) + '…' : s; }
+      function info(re) { for (var i = 0; i < (d.info || []).length; i++) if (re.test(d.info[i][0])) return d.info[i][1]; return ''; }
+      function sec(re) { for (var i = 0; i < (d.secs || []).length; i++) if (re.test(d.secs[i].h)) return d.secs[i]; return null; }
+      function text(s) { return s ? lm((s.els || []).filter(function (e) { return e.k === 'p'; }).map(function (e) { return e.x; }).join('')) : ''; }
+      var rows = [['年代', short(cutBySentence(lm(info(/^所属时代/)), 40).replace(/[；，、。\s]+$/, ''), 32)], ['地点', short(info(/^所在地/), 26)], ['类型', short(cutBySentence(lm(info(/^类型/)), 40).replace(/[；，、。\s]+$/, ''), 36)]].filter(function (r) { return r[1]; });
+      if (rows.length) sections.push({ id: 'rows', label: '', kind: 'rows', items: rows, prio: 1, keepMin: Math.min(2, rows.length), drop: false });
+      var bg = text(sec(/^墓主与历史背景/)); if (bg) sections.push({ id: 'bg', label: '墓主与背景', kind: 'paras', items: [cutBySentence(bg, 150).replace(/[；，、\s]+$/, '。')], prio: 2, keepMin: 1, drop: false, size: 31 });
+      var zs = text(sec(/^陵墓与葬制/)); if (zs) sections.push({ id: 'zs', label: '陵墓与葬制', kind: 'paras', items: [cutBySentence(zs, 130).replace(/[；，、\s]+$/, '。')], prio: 3, keepMin: 1, drop: true, size: 31 });
+      var cw = sec(/^主要出土文物/);
+      if (cw) {
+        var names = (cw.els || []).filter(function (e) { return e.k === 'n' && e.l; }).map(function (e) { return lm(e.l); }).slice(0, 6);
+        if (names.length) sections.push({ id: 'cw', label: '代表文物', kind: 'paras', items: [names.join('、') + '。'], prio: 4, keepMin: 1, drop: true, size: 31 });
+      }
+      var jz = text(sec(/^历史价值/)); if (jz) sections.push({ id: 'jz', label: '历史价值', kind: 'paras', items: [cutBySentence(jz, 110).replace(/[；，、\s]+$/, '。')], prio: 5, keepMin: 1, drop: true, size: 31 });
+      var my = sec(/^常见误区/), mye = my && (my.els || []).filter(function (e) { return e.k === 'b' && e.l; })[0];
+      var myt = mye ? cutBySentence(lm(mye.l.replace(/^(误区|传闻)[：:]\s*/, '') + '——' + String(mye.x).replace(/^事实[：:]\s*/, '')), 110) : '';
+      var title = d.title, line = lm(d.line);
+      return {
+        theme: 'hist', kind: 'tomb', title: title, file: '知否知否-陵墓-' + title, sections: sections,
+        top: function (M, th) {
+          var len = Array.from(title).length, size = len <= 4 ? 140 : len <= 6 ? 116 : len <= 9 ? 94 : 76;
+          var arr = [blockHead(M, th, { tag: '陵墓', sub: (o.grpName ? o.grpName + ' · ' : '') + (d.dyn || '') }), blockSpace(46)];
+          arr.push(blockTitle(M, th, title, size, CW));
+          if (line) { arr.push(blockSpace(18)); arr.push(blockPara(M, th, cutBySentence(line, 100), 34, { color: th.strong, lh: 1.6 })); }
+          return arr;
+        },
+        footer: myt ? { label: '常见误区', text: myt } : null, img: null
+      };
+    },
+
     /* 名著：一部书一张卡 */
     novel: function (o) {
       var sec = o.sec, B = sec.blocks || [], sections = [];
@@ -1252,6 +1311,24 @@
         if (!o.head || !o.d) return;
         var wrap = el('div', 'sc-line-wrap');
         wrap.appendChild(mkRow(function () { open({ type: 'book', url: pageUrl({ id: o.d.id }), o: { d: o.d, catName: o.catName } }); }, 'sc-line'));
+        if (o.head.parentNode) o.head.parentNode.insertBefore(wrap, o.head.nextSibling);
+      } catch (e) { try { console.warn('[sharecard]', e); } catch (x) { /* 忽略 */ } }
+    },
+    /* 都城：城市弹窗，每次换一座城都调用一次。o = { card(弹窗卡片), c(这座城的数据), groupName } */
+    hookCity: function (o) {
+      try {
+        var old = o.card.querySelector('.sc-corner'); if (old && old.parentNode) old.parentNode.removeChild(old); o.card.classList.remove('sc-has-share');
+        if (!o.c) return;
+        var row = mkRow(function () { open({ type: 'city', url: pageUrl({ id: o.c.name }), o: { c: o.c, groupName: o.groupName } }); });
+        o.card.appendChild(row); o.card.classList.add('sc-has-share');
+      } catch (e) { try { console.warn('[sharecard]', e); } catch (x) { /* 忽略 */ } }
+    },
+    /* 陵墓详页：页头下面。o = { head(页头元素), d(这座墓的数据), grpName } */
+    hookTomb: function (o) {
+      try {
+        if (!o.head || !o.d) return;
+        var wrap = el('div', 'sc-line-wrap');
+        wrap.appendChild(mkRow(function () { open({ type: 'tomb', url: pageUrl({ id: o.d.id }), o: { d: o.d, grpName: o.grpName } }); }, 'sc-line'));
         if (o.head.parentNode) o.head.parentNode.insertBefore(wrap, o.head.nextSibling);
       } catch (e) { try { console.warn('[sharecard]', e); } catch (x) { /* 忽略 */ } }
     },
