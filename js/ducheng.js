@@ -1,7 +1,7 @@
 /* 知否知否 · 历史 · 都城页
    数据：data/ducheng.js（由 工具脚本/生成都城数据.py 从 文案库/历史/都城.md 自动生成）；
          data/lishi-names.js 是“人名 → 在哪个朝代、哪张卡片”的对照表，用来把文中提到的人物连到朝代页。
-   页面分五个标签：城市（含位置示意图和 40 张城市小卡）、总表、概况、制度、待核。
+   页面分五个标签：城市（含位置示意图和每座城市的小卡）、总表、概况、制度、待核。
    点一座城，弹出一个居中的窗口显示介绍（样式和朝代页的人物窗口相同）。
    排版工具：js/zycommon.js */
 (function () {
@@ -150,6 +150,23 @@
       });
       return el('span', {}, ks);
     }
+    if (typeof f.v === 'string' && /【[^】]{1,20}】/.test(f.v)) {   /* 一座城市里有几个时期（如洛阳、西安、荆州）：按【时期】分段 */
+      var eraParts = f.v.split(/(?=【[^】]{1,20}】)/).filter(function (x) { return x.trim(); });
+      var eraOut = [];
+      eraParts.forEach(function (sg) {
+        var mm = /^【([^】]+)】([\s\S]*)$/.exec(sg.trim());
+        var inner = (mm ? mm[2] : sg).trim();
+        if (mm) eraOut.push(el('p', { 'class': 'dc-era' }, [el('b', { text: mm[1] })]));
+        inner.split(/(?=考古所见——)/).forEach(function (s3) {
+          s3 = s3.trim();
+          if (!s3) return;
+          var m3 = /^(文献记载|考古所见)——([\s\S]*)$/.exec(s3);
+          eraOut.push(m3 ? el('p', { 'class': 'dc-seg' }, [el('b', { text: m3[1] })].concat(rich(m3[2].trim(), ctx))) : el('p', { 'class': 'dc-seg' }, rich(s3, ctx)));
+        });
+      });
+      eraOut.push(srcLine(f.s));
+      return el('div', {}, eraOut);
+    }
     if (f.k === '城市形制' && /(文献记载|考古所见)——/.test(f.v)) {
       var segs = f.v.split(/(?=考古所见——)/);
       var ps = segs.map(function (sg) {
@@ -254,7 +271,7 @@
     var TAIWAN = [[121.5,25.2],[122.0,25.0],[121.0,22.9],[120.1,23.0],[120.4,24.7]];
     var HUANGHE = [[96.0,34.5],[100.5,34.3],[103.8,36.1],[105.0,37.5],[106.8,38.5],[107.5,40.8],[109.5,40.6],[111.0,40.3],[111.5,38.5],[110.5,36.5],[110.3,35.0],[112.0,34.8],[114.5,34.9],[116.5,35.5],[117.5,37.0],[118.9,37.7]];
     var CHANGJIANG = [[91.0,33.5],[97.0,33.0],[99.0,30.0],[101.5,27.5],[104.6,28.8],[106.5,29.6],[108.5,30.8],[111.0,30.7],[112.2,30.3],[113.5,30.0],[114.3,30.6],[116.0,29.8],[117.5,30.5],[118.8,32.0],[120.5,31.9],[121.9,31.4]];
-    var svg = sv('svg', { viewBox: '-6 -6 ' + (W + 12) + ' ' + (H + 12), 'class': 'dc-map-svg', role: 'group', 'aria-label': '40座都城的大致位置示意图' });
+    var svg = sv('svg', { viewBox: '-6 -6 ' + (W + 12) + ' ' + (H + 12), 'class': 'dc-map-svg', role: 'group', 'aria-label': D.cities.length + '座都城的大致位置示意图' });
     svg.appendChild(sv('path', { d: path(CHINA, true), 'class': 'dc-land' }));
     svg.appendChild(sv('path', { d: path(HAINAN, true), 'class': 'dc-land' }));
     svg.appendChild(sv('path', { d: path(TAIWAN, true), 'class': 'dc-land' }));

@@ -36,6 +36,9 @@
 
 /* 城市卡弹窗里的几样 */
 .dc-seg { margin: 0 0 6px; }
+.dc-era { margin: 12px 0 4px; }
+.dc-era:first-child { margin-top: 0; }
+.dc-era b { display: inline-block; padding: 1px 8px; border: 1px solid var(--zy-line); border-radius: 2px; font-weight: 400; font-size: 12px; letter-spacing: 0.12em; color: var(--zy-gold); }
 .dc-seg b { margin-right: 0.6em; font-weight: 400; font-size: 12px; letter-spacing: 0.12em; color: var(--zy-gold); }
 .dc-periods li { margin-bottom: 6px; }
 .dc-role { color: var(--zy-ink-2); }

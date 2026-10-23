@@ -885,10 +885,25 @@
       function short(s, n) { s = clean(s); return s.length > n ? s.slice(0, n - 1) + '…' : s; }
       var rows = [['今地', short(c.place, 22)], ['政权', short(c.who, 40)], ['时间', short(c.span, 28)]].filter(function (r) { return r[1]; });
       if (rows.length) sections.push({ id: 'rows', label: '', kind: 'rows', items: rows, prio: 1, keepMin: rows.length, drop: false });
-      var xz = fv('城市形制'), m = /考古所见——([\s\S]*)$/.exec(xz); xz = clean(m ? m[1] : xz.replace(/^(文献记载|考古所见)——/, ''));
-      if (xz) sections.push({ id: 'xz', label: '城市形制', kind: 'paras', items: [cutBySentence(xz, 120).replace(/[；，、\s]+$/, '。')], prio: 2, keepMin: 1, drop: false, size: 31 });
-      var qs = clean(fv('迁都与兴衰')); if (qs) sections.push({ id: 'qs', label: '迁都与兴衰', kind: 'paras', items: [cutBySentence(qs, 130).replace(/[；，、\s]+$/, '。')], prio: 3, keepMin: 1, drop: true, size: 31 });
-      var jz = clean(fv('遗址与今日')); if (jz) sections.push({ id: 'jz', label: '遗址与今日', kind: 'paras', items: [cutBySentence(jz, 100).replace(/[；，、\s]+$/, '。')], prio: 4, keepMin: 1, drop: true, size: 31 });
+      function eras(v) {   /* 一座城市有几个时期时，文字用【时期】分段 */
+        return String(v || '').split(/(?=【[^】]{1,20}】)/).filter(function (x) { return x.trim(); }).map(function (p) {
+          var m = /^【([^】]+)】([\s\S]*)$/.exec(p.trim());
+          return m ? { l: m[1].split('·')[0], t: m[2] } : { l: '', t: p };
+        });
+      }
+      function addEras(id, label, v, total, prio, drop, xz) {
+        var es = eras(v), items = es.map(function (e) {
+          var t = e.t;
+          if (xz) { var mm = /考古所见——([\s\S]*)$/.exec(t); t = mm ? mm[1] : t.replace(/^文献记载——/, ''); }
+          t = clean(t); if (!t) return '';
+          var n = es.length > 1 ? Math.floor(total / es.length) : total;
+          return (es.length > 1 && e.l ? e.l + '：' : '') + cutBySentence(t, n).replace(/[；，、\s]+$/, '。');
+        }).filter(Boolean);
+        if (items.length) sections.push({ id: id, label: label, kind: 'paras', items: items, prio: prio, keepMin: 1, drop: drop, size: 31 });
+      }
+      addEras('xz', '城市形制', fv('城市形制'), 120, 2, false, true);
+      addEras('qs', '迁都与兴衰', fv('迁都与兴衰'), 130, 3, true, false);
+      addEras('jz', '遗址与今日', fv('遗址与今日'), 100, 4, true, false);
       var title = c.show || c.name, line = clean(c.line);
       return {
         theme: 'hist', kind: 'city', title: title, file: '知否知否-都城-' + c.name, sections: sections,
