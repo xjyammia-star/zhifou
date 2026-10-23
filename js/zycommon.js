@@ -174,6 +174,8 @@
     ]));
     if (body.length) d.appendChild(el('div', { 'class': 'zy-card-body' }, body));
     if (d.classList.contains('is-static')) d.addEventListener('click', function (e) { if (e && e.target && e.target.closest && e.target.closest('summary') && !e.target.closest('a')) e.preventDefault(); });
+    /* 分享卡片：字语六页的条目卡，展开后底部有“分享”按钮（没加载分享卡片脚本的页面不受影响） */
+    try { if (window.ShareCard && window.ShareCard.hookZyCard) window.ShareCard.hookZyCard(d, o); } catch (e) { /* 忽略 */ }
     return d;
   }
   /* 拆字：“字｜说明。；字｜说明。” → 一个个字的小块 */

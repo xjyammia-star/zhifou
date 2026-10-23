@@ -76,3 +76,16 @@
   .sc-overlay { padding: 8px; }
   .sc-stage { max-height: calc(100vh - 150px); }
 }
+/* 二十八宿详情面板：按钮放在面板右上角 */
+.xx-panel { position: relative; }
+.xx-panel .sc-corner { top: 10px; right: 10px; height: 28px; z-index: 3; }
+.xx-panel .xx-panel-kicker { padding-right: 96px; }
+/* 典籍书页、名著、字语卡片里的“分享”按钮：一行，靠右，颜色跟着页面走 */
+.sc-line-wrap { display: flex; justify-content: flex-end; margin: 6px 0 4px; }
+.sc-line {
+  display: inline-flex; align-items: center; gap: 4px; font: inherit; font-size: 13px; line-height: 1.3; letter-spacing: 0.08em; white-space: nowrap;
+  padding: 4px 12px; color: inherit; background: transparent; border: 1px solid currentColor; border-radius: 999px; cursor: pointer; opacity: 0.72;
+}
+.sc-line:hover, .sc-line:focus-visible { opacity: 1; background: rgba(128, 128, 128, 0.14); }
+.sc-line svg { flex: none; width: 13px; height: 13px; }
+.zy-card-body .sc-line-wrap { margin-top: 10px; }

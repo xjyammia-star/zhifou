@@ -174,6 +174,13 @@
       body.appendChild(el('p', { 'class': 'xx-panel-text', text: D.center.text }));
     }
     if (foot) panel.appendChild(foot);
+    try {
+      if (window.ShareCard && window.ShareCard.hookXiu) {
+        var sx = state.kind === 'xiu' ? xiuByName[state.name] : null;
+        window.ShareCard.hookXiu({ panel: panel, kind: state.kind, name: state.name, D: D, x: sx,
+          b: sx ? beastByName[sx.beast] : (state.kind === 'beast' ? beastByName[state.name] : null) });
+      }
+    } catch (e) { /* 分享卡片出问题不影响页面 */ }
     watchOverflow(body);
   }
 
@@ -281,6 +288,15 @@
     root.textContent = '';
     root.appendChild(page);
     select('beast', seasonBeast.name, false);
+    /* 分享卡片上的二维码带 ?id=角（某一宿）/ ?id=青龙（某一象）/ ?id=中宫：打开页面就直接选中它 */
+    try {
+      var want = new URLSearchParams(location.search).get('id');
+      if (want) {
+        if (xiuByName[want]) select('xiu', want, true);
+        else if (beastByName[want]) select('beast', want, true);
+        else if (want === '中宫') select('center', '', true);
+      }
+    } catch (e) { /* 忽略 */ }
   }
 
   render();

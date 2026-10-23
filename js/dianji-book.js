@@ -201,6 +201,9 @@
 
     Z.mount(root, kids);
     document.title = d.title.replace(/[《》]/g, '') + ' · 典籍 · 知否知否';
+    try {
+      if (window.ShareCard && window.ShareCard.hookBook) window.ShareCard.hookBook({ head: root.querySelector('.zy-head'), d: d, catName: cat.name });
+    } catch (e) { /* 分享卡片出问题不影响页面 */ }
   }
 
   /* 加载这本书的数据文件 */

@@ -250,6 +250,13 @@
 
     document.title = (D.hook || '') + ' · 知否知否';
 
+    /* 名著页：每部书的标题下面加一个“分享”按钮（由 mingqing.js 通过 shareNovel 选项打开） */
+    if (opts.shareNovel && window.ShareCard && window.ShareCard.hookNovel) {
+      D.sections.forEach(function (sec) {
+        try { window.ShareCard.hookNovel({ node: document.getElementById('wr-' + sec.key), sec: sec }); } catch (e) { /* 忽略 */ }
+      });
+    }
+
     /* 从首页抽卡等地方带着 #wr-书名 过来时，直接滚到那一本（页面内容是脚本生成的，浏览器自己不会跳） */
     (function () {
       var m = /^#wr-([\w-]+)$/.exec(location.hash || '');

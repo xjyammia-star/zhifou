@@ -34,7 +34,10 @@
             qrbg: '#F1E9D4', qrfg: '#14110D', red: '#B3362E', redtxt: '#FBEFE6', strong: '#F1E9D4', note: '#8B8473', brand: '#D6493F', ph1: '#34484C', ph2: '#1D2A2E' },
     lit:  { light: true, bg: ['#F4ECF1', '#E9DDE7'], fg: '#2E2240', accent: '#5E3F6A', tagfg: '#F6EDF3', sub: '#6E5A7B', muted: '#6E5A7B', body: '#3A2E4A',
             frame1: 'rgba(94,63,106,0.40)', frame2: 'rgba(94,63,106,0.25)', rule: 'rgba(94,63,106,0.30)', box: 'rgba(94,63,106,0.40)',
-            qrbg: '#FFFFFF', qrfg: '#1E1630', red: '#B3362E', redtxt: '#FBEFE6', strong: '#2E2240', note: '#8A7798', brand: '#B3362E', ph1: '#D9CBD6', ph2: '#C5B2C2' }
+            qrbg: '#FFFFFF', qrfg: '#1E1630', red: '#B3362E', redtxt: '#FBEFE6', strong: '#2E2240', note: '#8A7798', brand: '#B3362E', ph1: '#D9CBD6', ph2: '#C5B2C2' },
+    dj:   { light: true, bg: ['#EEF0E2', '#DFE3CE'], fg: '#27302A', accent: '#3F5B45', tagfg: '#F1F3E6', sub: '#5E6B5C', muted: '#6B7867', body: '#2F382F',
+            frame1: 'rgba(63,91,69,0.40)', frame2: 'rgba(63,91,69,0.22)', rule: 'rgba(63,91,69,0.30)', box: 'rgba(63,91,69,0.45)',
+            qrbg: '#FBFBF4', qrfg: '#27302A', red: '#B23A2E', redtxt: '#F6EDE0', strong: '#1B241D', note: '#7C8878', brand: '#B23A2E', ph1: '#CDD3BD', ph2: '#BCC4A9' }
   };
 
   /* ---------- 小工具 ---------- */
@@ -806,6 +809,158 @@
         },
         footer: life ? { label: (o.pageName === '诗经' || o.pageName === '楚辞' ? '这一组' : o.pageName === '汉魏诗' ? '简介' : '诗人小传'), text: cutBySentence(life, 110) } : null
       };
+    },
+
+    /* 二十八宿：一宿 / 一象 / 中宫（三垣） */
+    xiu: function (o) {
+      var D = o.D, pic = o.portrait && o.img ? o.img : null, sections = [], title, sub, line;
+      var mis = (D.misreads || [])[0];
+      var footer = mis ? { label: '常见误读', text: cutBySentence(clean(mis.title + '：' + mis.text), 110) } : null;
+      function addRows(rows) { rows = rows.filter(function (r) { return r[1]; }); if (rows.length) sections.push({ id: 'rows', label: '', kind: 'rows', items: rows, prio: 1, keepMin: rows.length, drop: false }); }
+      function addPara(id, label, text, prio, drop) { text = clean(text); if (text) sections.push({ id: id, label: label, kind: 'paras', items: [text], prio: prio, keepMin: 1, drop: drop !== false, size: 31 }); }
+      if (o.kind === 'xiu') {
+        var x = o.x, b = o.b;
+        title = x.name + '宿'; sub = b.dir + '方' + b.name + ' · 第' + (b.xiu.indexOf(x.name) + 1) + '宿'; line = clean(x.note);
+        addRows([['意象', clean(x.image)], ['天区', clean(x.sky)]]);
+        addPara('ext', '延伸', x.ext, 3, true);
+        addPara('beast', '所属四象', b.focus, 4, true);
+      } else if (o.kind === 'beast') {
+        var q = o.b, fs = sentences(clean(q.focus));
+        title = q.name; sub = q.dir + '方 · ' + q.season + ' · ' + q.color + '色'; line = fs[0] || '';
+        addRows([['七宿', q.xiu.join('、')]]);
+        addPara('rest', '', fs.slice(1).join(''), 2, false);
+        addPara('ans', '二十八宿是什么', D.answer, 3, true);
+      } else {
+        var cs = sentences(clean(D.center.text));
+        title = D.center.title; sub = '圆圈中间的北天'; line = cs[0] || '';
+        addPara('rest', '', cs.slice(1).join(''), 2, false);
+        addPara('ans', '二十八宿是什么', D.answer, 3, true);
+      }
+      return {
+        theme: 'shen', kind: 'xiu', title: title, file: '知否知否-' + title, sections: sections,
+        top: function (M, th) {
+          var len = Array.from(title).length, size = len <= 4 ? 140 : len <= 6 ? 116 : 96;
+          var arr = [blockHead(M, th, { tag: '神灵', sub: '二十八宿 · ' + sub }), blockSpace(pic ? 34 : 46)];
+          if (pic) { arr.push(blockBanner(M, th, pic, o.portrait.ai ? (o.portrait.aiLabel || 'AI 生成插画') : '')); arr.push(blockSpace(22)); }
+          arr.push(blockTitle(M, th, title, size, CW));
+          if (line) { arr.push(blockSpace(18)); arr.push(blockPara(M, th, line, 34, { color: th.strong, lh: 1.6 })); }
+          return arr;
+        },
+        footer: footer, img: pic
+      };
+    },
+
+    /* 典籍：一本书一张卡 */
+    book: function (o) {
+      var d = o.d, sections = [];
+      var rows = (d.info || []).filter(function (r) { return r[0] && !/^(书名与别名|分类|作者)$/.test(r[0]); }).slice(0, 3)
+        .map(function (r) { return [{ '成书年代': '年代', '体裁与性质': '体裁', '卷篇规模': '规模' }[r[0]] || r[0].slice(0, 3), cutBySentence(clean(r[1]), 40).replace(/[；，、\s]+$/, '')]; }).filter(function (r) { return r[1]; });
+      if (rows.length) sections.push({ id: 'rows', label: '', kind: 'rows', items: rows, prio: 1, keepMin: Math.min(2, rows.length), drop: false });
+      var sm = clean((d.summary || [])[0]); if (sm) sections.push({ id: 'sum', label: '内容概要', kind: 'paras', items: [cutBySentence(sm, 130).replace(/[；，、\s]+$/, '。')], prio: 2, keepMin: 1, drop: false, size: 31 });
+      var wy = clean((d.why || [])[0]); if (wy) sections.push({ id: 'why', label: '为什么重要', kind: 'paras', items: [cutBySentence(wy, 150)], prio: 3, keepMin: 1, drop: true, size: 31 });
+      var qs = (d.quotes || []).map(function (t) { return cutBySentence(clean(t), 58); }).filter(Boolean).slice(0, 4);
+      if (qs.length) sections.push({ id: 'quotes', label: '名句与典故', kind: 'steps', items: qs, prio: 4, keepMin: 2, drop: true });
+      var sel = (d.selections || [])[0];
+      if (sel && sel.o) sections.push({ id: 'sel', label: '代表性选段', kind: 'paras', items: [cutBySentence(clean(sel.o), 80) + '——' + clean(sel.t)], prio: 5, keepMin: 1, drop: true, size: 31 });
+      var my = clean((d.myths || [])[0]);
+      var title = d.title, line = clean(d.line);
+      return {
+        theme: 'dj', kind: 'book', title: title, file: '知否知否-' + title.replace(/[《》]/g, ''), sections: sections,
+        top: function (M, th) {
+          var len = Array.from(title).length, size = len <= 4 ? 140 : len <= 6 ? 116 : len <= 8 ? 96 : 76;
+          var arr = [blockHead(M, th, { tag: '典籍', sub: o.catName + (d.dyn ? ' · ' + d.dyn : '') }), blockSpace(46)];
+          arr.push(blockTitle(M, th, title, size, CW));
+          if (d.auth) { arr.push(blockSpace(10)); arr.push(blockPara(M, th, clean(d.auth), 30, { color: th.sub, lh: 1.5 })); }
+          if (line) { arr.push(blockSpace(18)); arr.push(blockPara(M, th, cutBySentence(line, 120), 34, { color: th.strong, lh: 1.6 })); }
+          return arr;
+        },
+        footer: my ? { label: '常见误区', text: cutBySentence(my, 110) } : null, img: null
+      };
+    },
+
+    /* 名著：一部书一张卡 */
+    novel: function (o) {
+      var sec = o.sec, B = sec.blocks || [], sections = [];
+      function blk(re, type) { for (var i = 0; i < B.length; i++) if (B[i].type === type && re.test(B[i].heading || '')) return B[i]; return null; }
+      var line = clean(String((B[0] && B[0].text) || '').replace(/^一句话[：:]\s*/, ''));
+      var intro = clean((B[1] && B[1].type === 'para') ? B[1].text : '');
+      var m = /^(《[^》]+》)[：:](.*)$/.exec(sec.title), big = m ? m[1] : sec.title, tail = m ? m[2] : '';
+      if (intro) sections.push({ id: 'intro', label: '内容概述', kind: 'paras', items: [cutBySentence(intro, 160)], prio: 2, keepMin: 1, drop: false, size: 31 });
+      var bg = blk(/成书背景/, 'facts');
+      if (bg) {
+        var rr = bg.items.slice(0, 3).map(function (it) { return clean(it.term) + '：' + cutBySentence(clean(it.note), 100); }).filter(Boolean);
+        if (rr.length) sections.push({ id: 'bg', label: '成书背景', kind: 'steps', items: rr, prio: 3, keepMin: 2, drop: true });
+      }
+      var th_ = blk(/主题/, 'works');
+      if (th_) {
+        var tt = th_.items.slice(0, 4).map(function (it) { return clean(it.name) + '：' + cutBySentence(clean(it.note), 44); });
+        if (tt.length) sections.push({ id: 'theme', label: '主题', kind: 'steps', items: tt, prio: 4, keepMin: 2, drop: true });
+      }
+      var al = blk(/成语|名句|说法/, 'allusions');
+      if (al) {
+        var aa = al.items.slice(0, 5).map(function (it) { var t = clean(it.term), n = clean(it.note); return t === n || !n ? cutBySentence(t, 56) : t + '：' + cutBySentence(n, 40); }).filter(Boolean);
+        if (aa.length) sections.push({ id: 'al', label: '常用说法', kind: 'steps', items: aa, prio: 5, keepMin: 2, drop: true });
+      }
+      var rm = blk(/阅读提醒|误区/, 'allusions'), foot = null;
+      if (rm && rm.items[0]) { var t0 = clean(rm.items[0].term), n0 = clean(rm.items[0].note); foot = { label: '阅读提醒', text: cutBySentence(/^误区$/.test(t0) || !n0 ? (n0 || t0) : t0 + '：' + n0, 120) }; }
+      return {
+        theme: 'lit', kind: 'novel', title: big, file: '知否知否-' + big.replace(/[《》]/g, ''), sections: sections,
+        top: function (M, th) {
+          var len = Array.from(big).length, size = len <= 4 ? 140 : len <= 6 ? 116 : len <= 8 ? 96 : 76;
+          var arr = [blockHead(M, th, { tag: '名著', sub: '古典小说 · ' + sec.label }), blockSpace(46)];
+          arr.push(blockTitle(M, th, big, size, CW));
+          if (tail) { arr.push(blockSpace(10)); arr.push(blockPara(M, th, tail, 30, { color: th.sub, lh: 1.5 })); }
+          if (line) { arr.push(blockSpace(18)); arr.push(blockPara(M, th, line, 34, { color: th.strong, lh: 1.6 })); }
+          return arr;
+        },
+        footer: foot, img: null
+      };
+    },
+
+    /* 字语（汉字、词语、称谓、万物、颜色、数字六页）：一张条目卡一张图 */
+    zy: function (o) {
+      var it = o.item, F = {}, order = [];
+      (it.f || []).forEach(function (p) {
+        var v = Array.isArray(p[1]) ? p[1].join('；') : String(p[1] == null ? '' : p[1]);
+        v = clean(v); if (!v) return;
+        if (F[p[0]]) F[p[0]] += '；' + v; else { F[p[0]] = v; order.push(p[0]); }
+      });
+      var strongKey = null;
+      ['一句话解释', '一句话', '好记版', '意思', '合起来', '说明', '原来是'].forEach(function (k) { if (!strongKey && F[k]) strongKey = k; });
+      var line = strongKey ? F[strongKey] : '';
+      var used = { '把握程度': 1, '分组': 1 }; if (strongKey) used[strongKey] = 1;
+      var sections = [], foot = null;
+      var pairA = strongKey !== '原来是' && F['原来是'] && F['现在是'] ? [['原来是', cutBySentence(F['原来是'], 70)], ['现在是', cutBySentence(F['现在是'], 70)]] : null;
+      if (pairA) { sections.push({ id: 'pair', label: '', kind: 'rows', items: pairA, prio: 1, keepMin: 2, drop: false }); used['原来是'] = used['现在是'] = 1; }
+      else if (strongKey === '原来是' && F['现在是']) { sections.push({ id: 'pair', label: '', kind: 'rows', items: [['现在是', cutBySentence(F['现在是'], 90)]], prio: 1, keepMin: 1, drop: false }); used['现在是'] = 1; }
+      var color = [];
+      ['近似色', '色感'].forEach(function (k) { if (F[k]) { color.push([k, cutBySentence(F[k], 60)]); used[k] = 1; } });
+      if (color.length) sections.push({ id: 'color', label: '', kind: 'rows', items: color, prio: 1, keepMin: color.length, drop: false });
+      if (F['拆字']) {
+        var cr = F['拆字'].split(/[。；]/).map(function (x) { var i = x.indexOf('｜'); return i > 0 ? [x.slice(0, i), x.slice(i + 1)] : null; }).filter(Boolean).slice(0, 4);
+        if (cr.length) sections.push({ id: 'chars', label: '拆开看', kind: 'rows', items: cr, prio: 1, keepMin: cr.length, drop: false });
+        used['拆字'] = 1;
+      }
+      if (F['提醒']) { foot = { label: '提醒', text: cutBySentence(F['提醒'], 110) }; used['提醒'] = 1; }
+      var PR = { '常见误解': 3, '为什么这样设定': 2, '数字对应': 2, '更准确': 2, '本义': 2, '常见用法': 3, '例子': 3, '出处': 5, '原文': 4 };
+      order.forEach(function (k) {
+        if (used[k]) return;
+        var pr = PR[k] || 4;
+        sections.push({ id: 'k' + k, label: k, kind: 'paras', items: [cutBySentence(k === '出处' ? F[k].split('◆')[0] : F[k], 150)], prio: pr, keepMin: 1, drop: pr >= 4, size: 31 });
+      });
+      var title = it.name;
+      return {
+        theme: 'sea', kind: 'zy', title: title, file: '知否知否-' + title.replace(/[《》\/\\:*?"<>|]/g, ''), sections: sections,
+        top: function (M, th) {
+          var len = Array.from(title).length, size = len <= 4 ? 140 : len <= 6 ? 116 : len <= 8 ? 96 : 76;
+          var subTxt = o.page + (o.sec ? ' · ' + o.sec : ''); if (Array.from(subTxt).length > 15) subTxt = Array.from(subTxt).slice(0, 15).join('');
+          var arr = [blockHead(M, th, { tag: '字语', sub: subTxt }), blockSpace(46)];
+          arr.push(blockTitle(M, th, title, size, CW));
+          if (line) { arr.push(blockSpace(18)); arr.push(blockPara(M, th, cutBySentence(line, 120), 36, { color: th.strong, lh: 1.6, weight: 600 })); }
+          return arr;
+        },
+        footer: foot, img: null
+      };
     }
   };
 
@@ -943,7 +1098,7 @@
       ui.hint.textContent = wx ? '在微信里：长按上面的图片，可以保存到手机或发送给朋友、分享到朋友圈。' : (can ? '' : '点“保存图片”，再从相册发给朋友。');
       ui.saveBtn.hidden = wx;
       ui.overlay.querySelector('.sc-stage').scrollTop = 0;
-      ui.last = { w: r.out.canvas.width, h: r.out.canvas.height, trimmed: r.out.layout.trimmed, overflow: r.out.layout.overflow };
+      ui.last = { w: r.out.canvas.width, h: r.out.canvas.height, trimmed: r.out.layout.trimmed, overflow: r.out.layout.overflow, text: r.spec.title + JSON.stringify(r.spec.sections) + (r.spec.footer ? r.spec.footer.text : '') };
     }).catch(fail);
   }
 
@@ -973,6 +1128,32 @@
   }
 
   var POEM_PAGES = { tangshi: '唐诗', songci: '宋词', shijingpian: '诗经', chuci: '楚辞', qingci: '清词', hanweishi: '汉魏诗', yuanqu: '元曲' };
+
+  /* 字语六页：页面标记 → 数据变量、页面名 */
+  var ZY_PAGES = {
+    hanzi: { v: 'ZHIFOU_ZY_HANZI', n: '汉字' }, ciyu: { v: 'ZHIFOU_ZY_CIYU', n: '词语' }, chengwei: { v: 'ZHIFOU_ZY_CHENGWEI', n: '称谓' },
+    wanwu: { v: 'ZHIFOU_ZY_WANWU', n: '万物' }, yanse: { v: 'ZHIFOU_ZY_YANSE', n: '颜色' }, shuzi: { v: 'ZHIFOU_ZY_SHUZI', n: '数字' }
+  };
+  var ZY_STRONG = ['一句话解释', '一句话', '好记版', '意思', '合起来', '说明', '原来是'];
+  /* 在数据里找到这张卡对应的条目；同名有几条时，用卡片上的小标题对一对。条目没有“一句话”这类主句、或整条待核的不做卡 */
+  function findZyItem(D, o) {
+    var cands = [];
+    D.sections.forEach(function (sec) {
+      (sec.items || []).forEach(function (it) { if (it.name === o.name && it.f && it.f.length) cands.push({ sec: sec.title, item: it }); });
+    });
+    function fm(it) { var m = {}; it.f.forEach(function (p) { if (m[p[0]] == null) m[p[0]] = Array.isArray(p[1]) ? p[1].join('；') : String(p[1]); }); return m; }
+    var pick = null;
+    if (cands.length > 1 && o.sub) {
+      var key = String(o.sub).replace(/…$/, '');
+      cands.forEach(function (c) { if (pick) return; var m = fm(c.item); Object.keys(m).forEach(function (k) { if (!pick && key && m[k].indexOf(key) === 0) pick = c; }); });
+    }
+    pick = pick || cands[0];
+    if (!pick) return null;
+    var m = fm(pick.item), ok = ZY_STRONG.some(function (k) { return m[k] && clean(m[k]); });
+    if (!ok) return null;
+    if (String(m['把握程度'] || '').trim() === '待核') return null;
+    return pick;
+  }
 
   var api = {
     /* 历史人物弹窗：每次换人都会调用一次。o = { card(弹窗元素), anchor(按钮插在它前面), D, hit, dynName, portrait } */
@@ -1051,7 +1232,53 @@
         o.box.appendChild(b);
       } catch (e) { try { console.warn('[sharecard]', e); } catch (x) { /* 忽略 */ } }
     },
-    _render: render, _types: TYPES, _open: open
+    /* 二十八宿：星图下面的详情面板，每次换选中的宿 / 象 / 中宫都调用一次。o = { panel, kind('xiu'|'beast'|'center'), name, D, x, b } */
+    hookXiu: function (o) {
+      try {
+        var old = o.panel.querySelector('.sc-corner'); if (old && old.parentNode) old.parentNode.removeChild(old);
+        var imgKey = o.kind === 'xiu' ? o.x.beast : (o.kind === 'beast' ? o.name : '中宫');
+        var img = window.ZIMG && window.ZIMG.get ? window.ZIMG.get('xingxiu', imgKey) : null;
+        var id = o.kind === 'center' ? '中宫' : o.name;
+        var row = mkRow(function () {
+          open({ type: 'xiu', url: pageUrl({ id: id }),
+                 o: { kind: o.kind, D: o.D, x: o.x, b: o.b, portrait: img ? { src: String(img.src).replace('w_720', 'w_960'), caption: '', ai: img.ai, aiLabel: img.aiLabel } : null } });
+        });
+        o.panel.appendChild(row);
+      } catch (e) { try { console.warn('[sharecard]', e); } catch (x) { /* 忽略 */ } }
+    },
+    /* 典籍书页：o = { head(页头元素，按钮放在它后面), d(这本书的数据), catName } */
+    hookBook: function (o) {
+      try {
+        if (!o.head || !o.d) return;
+        var wrap = el('div', 'sc-line-wrap');
+        wrap.appendChild(mkRow(function () { open({ type: 'book', url: pageUrl({ id: o.d.id }), o: { d: o.d, catName: o.catName } }); }, 'sc-line'));
+        if (o.head.parentNode) o.head.parentNode.insertBefore(wrap, o.head.nextSibling);
+      } catch (e) { try { console.warn('[sharecard]', e); } catch (x) { /* 忽略 */ } }
+    },
+    /* 名著：每一部书的标题下面。o = { node(这部书的 article), sec(这部书的数据) } */
+    hookNovel: function (o) {
+      try {
+        if (!o.node || !o.sec) return;
+        var h = o.node.querySelector('.wr-title'); if (!h) return;
+        var wrap = el('div', 'sc-line-wrap');
+        wrap.appendChild(mkRow(function () { open({ type: 'novel', url: pageUrl({}) + '#wr-' + o.sec.key, o: { sec: o.sec } }); }, 'sc-line'));
+        h.parentNode.insertBefore(wrap, h.nextSibling);
+      } catch (e) { try { console.warn('[sharecard]', e); } catch (x) { /* 忽略 */ } }
+    },
+    /* 字语六页（汉字、词语、称谓、万物、颜色、数字）的条目卡：d = 卡片元素，o = { name, sub, tag, id, body } */
+    hookZyCard: function (d, o) {
+      try {
+        var page = document.body.getAttribute('data-page'), P = ZY_PAGES[page];
+        if (!P || !d || !o || o.tag === '待核') return;
+        var body = d.querySelector('.zy-card-body'); if (!body) return;
+        var D = window[P.v]; if (!D || !D.sections) return;
+        var hit = findZyItem(D, o); if (!hit) return;
+        var wrap = el('div', 'sc-line-wrap');
+        wrap.appendChild(mkRow(function () { open({ type: 'zy', url: pageUrl({ id: o.id || o.name }), o: { page: P.n, sec: hit.sec, item: hit.item } }); }, 'sc-line'));
+        body.appendChild(wrap);
+      } catch (e) { try { console.warn('[sharecard]', e); } catch (x) { /* 忽略 */ } }
+    },
+    _render: render, _types: TYPES, _open: open, _last: function () { return ui && ui.last; }, _findZy: function (page, o) { var P = ZY_PAGES[page], D = P && window[P.v]; return D ? findZyItem(D, o) : null; }
   };
   window.ShareCard = api;
 })();
