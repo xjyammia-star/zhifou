@@ -2107,6 +2107,11 @@ window.ZHIFOU_IMAGES = {
     'lishiren/刘伶': { id: 'zhifou/lishiren/liuling', v: 1793206364, dw: 900, dh: 1200, crop: 1, caption: '据史书所记刘伶的事迹想象绘制，并非真实画像', source: '', ai: true },
     'lishiren/谢道韫': { id: 'zhifou/lishiren/xiedaoyun', v: 1793206365, dw: 900, dh: 1200, crop: 1, caption: '据史书所记谢道韫的事迹想象绘制，并非真实画像', source: '', ai: true },
     'lishiren/慕容垂': { id: 'zhifou/lishiren/murongchui', v: 1793206366, dw: 900, dh: 1200, crop: 1, caption: '据史书所记慕容垂的事迹想象绘制，并非真实画像', source: '', ai: true },
-    'lishiren/石虎': { id: 'zhifou/lishiren/shihu', v: 1793206367, dw: 900, dh: 1200, crop: 1, caption: '据史书所记石虎的事迹想象绘制，并非真实画像', source: '', ai: true }
+    'lishiren/石虎': { id: 'zhifou/lishiren/shihu', v: 1793206367, dw: 900, dh: 1200, crop: 1, caption: '据史书所记石虎的事迹想象绘制，并非真实画像', source: '', ai: true },
+    'wenyang/guan_zhijiao': { id: 'zhifou/wenyang/guan_zhijiao', v: 1793208918, dw: 900, dh: 900, crop: 1, caption: '冠帽 · 直脚幞头（示意图）', source: '', ai: true },
+    'wenyang/guan_fangjin': { id: 'zhifou/wenyang/guan_fangjin', v: 1793208919, dw: 900, dh: 900, crop: 1, caption: '冠帽 · 方巾（示意图）', source: '', ai: true },
+    'wenyang/guan_nuanmao': { id: 'zhifou/wenyang/guan_nuanmao', v: 1793208920, dw: 900, dh: 900, crop: 1, caption: '冠帽 · 清代暖帽（示意图）', source: '', ai: true },
+    'lishiren/王安': { id: 'zhifou/lishiren/wangan', v: 1793209031, dw: 900, dh: 1200, crop: 1, caption: '据史书所记王安的事迹想象绘制，并非真实画像', source: '', ai: true },
+    'lishiren/刘六': { id: 'zhifou/lishiren/liuliu', v: 1793209034, dw: 900, dh: 1200, crop: 1, caption: '据史书所记刘六的事迹想象绘制，并非真实画像', source: '', ai: true }
   }
 };
