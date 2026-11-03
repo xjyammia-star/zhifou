@@ -1,0 +1,22 @@
+# 知否知否 · 中国传统文化百科
+
+> 知否知否（https://culture.ischoolthai.cn）是一个免费的中文传统文化百科网站，口号是“每天读一页中国传统文化”。内容按栏目整理，条目大多注明古籍出处，并区分“通说”“存疑”等可信度。网站不需要注册，所有内容免费阅读。
+
+## 主要栏目
+- [典籍](https://culture.ischoolthai.cn/dianji.html)：先秦到明清的古籍书架，每本书有简介、成书与作者、版本、名篇选读、名句、常见误解和资料来源（如《论语》：https://culture.ischoolthai.cn/dianji-book.html?id=lunyu）。
+- [历史](https://culture.ischoolthai.cn/lishi.html)：从夏商周到清末，各朝代帝王名单、年号、大事记、重要人物和制度；另有[战役](https://culture.ischoolthai.cn/zhanyi.html)、[政变](https://culture.ischoolthai.cn/zhengbian.html)、[都城](https://culture.ischoolthai.cn/ducheng.html)。
+- 文学：[唐诗](https://culture.ischoolthai.cn/tangshi.html)、[宋词](https://culture.ischoolthai.cn/songci.html)、[元曲](https://culture.ischoolthai.cn/yuanqu.html)、[诗经](https://culture.ischoolthai.cn/shijingpian.html)、[楚辞](https://culture.ischoolthai.cn/chuci.html)、[汉乐府与魏晋诗](https://culture.ischoolthai.cn/hanweishi.html)、[名著](https://culture.ischoolthai.cn/mingqing.html)，每首作品有原文和白话讲解。
+- 神话与信仰：[神话](https://culture.ischoolthai.cn/shenhua.html)、[山海经](https://culture.ischoolthai.cn/shanhai.html)、[民间神灵](https://culture.ischoolthai.cn/shenling.html)、[道教](https://culture.ischoolthai.cn/daojiao.html)、[佛教](https://culture.ischoolthai.cn/fojiao.html)。
+- 时间与历法：[干支](https://culture.ischoolthai.cn/ganzhi.html)、[二十四节气](https://culture.ischoolthai.cn/jieqi.html)、[传统节日](https://culture.ischoolthai.cn/jieri.html)、[十二时辰](https://culture.ischoolthai.cn/shichen.html)、[生肖](https://culture.ischoolthai.cn/shengxiao.html)。
+- 建筑：[宫殿](https://culture.ischoolthai.cn/gongdian.html)、[园林](https://culture.ischoolthai.cn/yuanlin.html)、[民居](https://culture.ischoolthai.cn/minju.html)、[陵墓](https://culture.ischoolthai.cn/lingmu.html)。
+- 字语：[汉字](https://culture.ischoolthai.cn/hanzi.html)、[称谓与名字](https://culture.ischoolthai.cn/chengwei.html)、[传统颜色](https://culture.ischoolthai.cn/yanse.html)、[天地万物的名字](https://culture.ischoolthai.cn/wanwu.html)。
+- 礼俗与思想：[礼仪](https://culture.ischoolthai.cn/liyi.html)、[科举](https://culture.ischoolthai.cn/keju.html)、[诸子与思想](https://culture.ischoolthai.cn/sixiang.html)、[阴阳五行与八卦](https://culture.ischoolthai.cn/yinyang.html)。
+- 艺术与器物：[书画篆刻](https://culture.ischoolthai.cn/shuhua.html)、[音乐与戏曲](https://culture.ischoolthai.cn/yinyue.html)、[民间工艺](https://culture.ischoolthai.cn/gongyi.html)、[青铜](https://culture.ischoolthai.cn/qingtong.html)、[陶瓷](https://culture.ischoolthai.cn/taoci.html)、[服饰](https://culture.ischoolthai.cn/fushi.html)、[四大发明](https://culture.ischoolthai.cn/faming.html)。
+
+## 网址规则
+- 条目页使用 `?id=名称`，诗词类为 `?id=作者｜标题`，历史人物为 `lishi-chaodai.html?d=朝代代号&id=人名`。
+- 完整网址列表见 [sitemap.xml](https://culture.ischoolthai.cn/sitemap.xml)。
+
+## 引用说明
+- 引用时请注明“知否知否（culture.ischoolthai.cn）”并附条目网址。
+- 联系：xjyammia@gmail.com

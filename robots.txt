@@ -4,3 +4,4 @@ User-agent: *
 Allow: /
 
 Sitemap: https://culture.ischoolthai.cn/sitemap.xml
+# LLMs: https://culture.ischoolthai.cn/llms.txt

@@ -1,0 +1,15 @@
+{
+  "$schema": "https://openapi.vercel.sh/vercel.json",
+  "functions": {
+    "api/render.js": { "includeFiles": "{data/**,*.html}", "maxDuration": 10 }
+  },
+  "routes": [
+    {
+      "src": "^/(?<p>(?:[a-z0-9-]+\\.html)?)$",
+      "has": [{ "type": "header", "key": "user-agent", "value": "(?i).*(googlebot|google-inspectiontool|storebot-google|bingbot|bingpreview|baiduspider|yandex|duckduckbot|duckassistbot|applebot|gptbot|oai-searchbot|chatgpt-user|claudebot|claude-searchbot|claude-user|anthropic-ai|perplexitybot|perplexity-user|ccbot|petalbot|sogou|360spider|haosouspider|bytespider|yisouspider|slurp|facebookexternalhit|twitterbot|linkedinbot|amazonbot|meta-externalagent|mistralai-user|cohere-ai).*" }],
+      "dest": "/api/render?path=/$p"
+    },
+    { "handle": "filesystem" },
+    { "src": "/(.*)", "status": 404, "dest": "/404.html" }
+  ]
+}
