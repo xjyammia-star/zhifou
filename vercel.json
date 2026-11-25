@@ -1,7 +1,7 @@
 {
   "$schema": "https://openapi.vercel.sh/vercel.json",
   "functions": {
-    "api/render.js": { "includeFiles": "{data/**,*.html}", "maxDuration": 10 }
+    "api/render.js": { "includeFiles": "{data/**,*.html,sitemap.xml,js/nav.js}", "maxDuration": 10 }
   },
   "routes": [
     {

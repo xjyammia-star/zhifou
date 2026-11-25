@@ -105,6 +105,113 @@ function findEntry(globals, id) {
   return null;
 }
 
+/* ---------- 站点地图 = 权威网址表 ----------
+   sitemap.xml 里列的都是真实存在的页面。用它来：
+   1) 给栏目页生成"目录"（每个条目一条真实链接）；
+   2) 给条目页生成"同栏目的其他条目"（相邻 16 条）；
+   3) 给朝代页生成"人物"目录。
+   读不到 sitemap.xml 时（返回空）会退回原来的做法，不会影响页面输出。 */
+function loadSitemap() {
+  if (cache.sm) return cache.sm;
+  const sm = { byPath: {} };
+  try {
+    for (const m of read('sitemap.xml').matchAll(/<loc>([^<]+)<\/loc>/g)) {
+      const loc = m[1].replace(/&amp;/g, '&');
+      if (loc.indexOf(SITE) !== 0) continue;
+      const rest = loc.slice(SITE.length) || '/';
+      const qi = rest.indexOf('?');
+      const p = ((qi < 0 ? rest : rest.slice(0, qi)).replace(/^\/+/, '')) || 'index.html';
+      const params = new URLSearchParams(qi < 0 ? '' : rest.slice(qi + 1));
+      (sm.byPath[p] = sm.byPath[p] || []).push({ rest, id: params.get('id'), d: params.get('d') });
+    }
+  } catch (e) { /* 没有 sitemap.xml 就算了 */ }
+  cache.sm = sm;
+  return sm;
+}
+/* 这两类页面的子页面写在别的文件名下 */
+const CHILD_PAGE = { 'lishi.html': 'lishi-chaodai.html', 'lingmu.html': 'lingmu-detail.html' };
+const DJ_DYN = { 'dianji-xianqin.html': '先秦', 'dianji-qinhan.html': '秦汉', 'dianji-weijin.html': '魏晋南北朝', 'dianji-suitang.html': '隋唐五代', 'dianji-songyuan.html': '宋辽金元', 'dianji-mingqing.html': '明清' };
+function dynNames() {
+  if (cache.dyn) return cache.dyn;
+  const o = {};
+  try { (globalsOf(['data/lishi-index.js']).ZHIFOU_LISHI_INDEX.dynasties || []).forEach(x => { o[x.key] = x.name; }); } catch (e) { /* 取不到名字就显示代号 */ }
+  return (cache.dyn = o);
+}
+function djTitles() {
+  if (cache.djt) return cache.djt;
+  const o = {};
+  try { ((globalsOf(['data/dianji-index.js']).ZF_DJ_INDEX || {}).cats || []).forEach(c => (c.books || []).forEach(b => { o[b.id] = b.title; })); } catch (e) { /* 取不到书名就显示 id */ }
+  return (cache.djt = o);
+}
+function labelFor(page, e) {
+  try {
+    if (page === 'dianji-book.html') { const t = djTitles()[e.id]; if (t) return t; }
+    else if (page === 'lingmu-detail.html') { const g = globalsOf(['data/lm/' + e.id + '.js']); const x = g.ZF_LM && g.ZF_LM[e.id]; if (x && x.title) return x.title; }
+    else if (e.d && !e.id) { const n = dynNames()[e.d]; if (n) return n; }
+  } catch (err) { /* 退回用网址里的名字 */ }
+  return String(e.id || e.d || '').replace('｜', ' · ');
+}
+function linkItem(e, text) { return '<li><a href="' + esc(e.rest) + '">' + esc(text) + '</a></li>'; }
+
+/* 栏目页的"目录"：典籍用书架数据（按类别分组），其余用 sitemap 里属于该栏目的条目 */
+function directoryHtml(page, q) {
+  if (page === 'dianji.html' || page === 'dianji-book.html' || DJ_DYN[page]) {
+    try {
+      const I = globalsOf(['data/dianji-index.js']).ZF_DJ_INDEX; if (!I) return '';
+      const dyn = DJ_DYN[page]; let h = '';
+      (I.cats || []).forEach(c => {
+        const bs = (c.books || []).filter(b => !dyn || b.dyn === dyn); if (!bs.length) return;
+        h += '<h3>' + esc(c.name) + '</h3><ul>' + bs.map(b => '<li><a href="/dianji-book.html?id=' + encodeURIComponent(b.id) + '">' + esc(b.title) + '</a>' + (b.auth ? '（' + esc(b.auth) + '）' : '') + '</li>').join('') + '</ul>';
+      });
+      return h ? '<h2>目录</h2>' + h : '';
+    } catch (e) { return ''; }
+  }
+  const cp = CHILD_PAGE[page] || page;
+  const list = loadSitemap().byPath[cp] || [];
+  let items = list.filter(e => e.id && !e.d);
+  if (!items.length) items = list.filter(e => e.d && !e.id);
+  if (!items.length) return '';
+  return '<h2>目录</h2><ul>' + items.slice(0, 600).map(e => linkItem(e, labelFor(cp, e))).join('') + '</ul>';
+}
+
+/* 条目页底部：朝代页列出人物；其他条目列出相邻的 16 条 */
+function relatedHtml(page, q) {
+  try {
+    const id = q.get('id'), d = q.get('d');
+    const list = loadSitemap().byPath[page] || [];
+    if (d && !id) {
+      const kids = list.filter(e => e.d === d && e.id);
+      return kids.length ? '<h2>人物</h2><ul>' + kids.slice(0, 600).map(e => linkItem(e, labelFor(page, e))).join('') + '</ul>' : '';
+    }
+    if (id) {
+      const group = list.filter(e => e.id && (e.d || null) === (d || null));
+      const i = group.findIndex(e => e.id === id);
+      if (i < 0) return '';
+      const near = group.slice(Math.max(0, i - 8), i).concat(group.slice(i + 1, i + 9));
+      return near.length ? '<h2>同栏目的其他条目</h2><ul>' + near.map(e => linkItem(e, labelFor(page, e))).join('') + '</ul>' : '';
+    }
+  } catch (e) { /* 出错就不显示相关链接 */ }
+  return '';
+}
+
+/* 全站栏目导航：直接读 js/nav.js 里的栏目表，每个预渲染页面都带一份，保证爬虫从任何一页都能走到所有栏目 */
+function siteNav() {
+  if (cache.nav !== undefined) return cache.nav;
+  let h = '';
+  try {
+    const js = read('js/nav.js');
+    const secRe = /key:\s*'([^']+)',\s*label:\s*'([^']+)',\s*home:\s*'([^']+)',\s*items:\s*\[([\s\S]*?)\]\s*\}/g;
+    let m;
+    while ((m = secRe.exec(js))) {
+      const items = [...m[4].matchAll(/label:\s*'([^']+)',\s*href:\s*'([^']+)'/g)];
+      if (!items.length) continue;
+      h += '<h3>' + esc(m[2]) + '</h3><ul>' + items.map(i => '<li><a href="/' + esc(i[2]) + '">' + esc(i[1]) + '</a></li>').join('') + '</ul>';
+    }
+  } catch (e) { /* 读不到就不显示 */ }
+  cache.nav = h ? '<nav aria-label="全部栏目"><h2>全部栏目</h2>' + h + '</nav>' : '';
+  return cache.nav;
+}
+
 /* ---------- 把一个条目变成正文 HTML ---------- */
 const LABELS = { life: '小传', original: '原文', note: '讲解', body: '介绍', line: '概要', summary: '内容概要', why: '为什么重要', versions: '版本', dispute: '作者与争议', selections: '名篇选读', quotes: '名句', links: '关联', myths: '常见误解', reading: '延伸阅读', sources: '资料来源', doubts: '存疑', custom: '习俗', scene: '场景', roles: '职能', alias: '别称', answer: '答案', intro: '导读', tip: '小贴士', notes: '出处说明', events: '大事年表', people: '人物', overview: '概览', info: '基本信息', secs: '详细介绍', keyEmperors: '主要帝王' };
 function bodyHtml(o, depth) {
@@ -189,6 +296,7 @@ function render(pathname, search) {
     title = hit.name + (ctx && !hit.name.includes(ctx) ? '（' + ctx + '）' : '') + ' · ' + section + ' · ' + siteName;
     desc = clip(hit.name + '：' + ((Array.isArray(hit.obj.f) && (hit.obj.f.find(x => x && x.k === '简介') || {}).v) || hit.obj.note || hit.obj.line || hit.obj.body || firstText(hit.obj, 30) || info.desc), 150);
     body = '<h1>' + esc(hit.name) + '</h1>' + (hit.parent ? '<p>' + esc(nameOf(hit.parent)) + (hit.parent.life ? '：' + esc(hit.parent.life) : '') + '</p>' : '') + bodyHtml(hit.obj);
+    body += relatedHtml(page, q);
     hit.crumbs.forEach(c => crumbs.push([c[0], SITE + c[1]]));
     crumbs.push([hit.name, canonical]);
   } else {
@@ -197,8 +305,8 @@ function render(pathname, search) {
     title = info.title; desc = info.desc;
     const main = Object.values(g).find(v => v && (v.hook || v.intro || v.answer)) || {};
     body = '<h1>' + esc(section) + '</h1>' + ['hook', 'answer', 'intro', 'tip'].map(k => main[k] ? '<p>' + esc(main[k]) + '</p>' : '').join('');
-    const names = []; findAll(main, o => o !== main && !!nameOf(o)).forEach(h => { const n = nameOf(h.obj); if (n && n.length < 30 && !names.includes(n)) names.push(n); });
-    if (names.length) body += '<h2>目录</h2><ul>' + names.slice(0, 400).map(n => '<li><a href="/' + page + '?id=' + encodeURIComponent(n) + '">' + esc(n) + '</a></li>').join('') + '</ul>';
+    const dirHtml = directoryHtml(page, q); const names = []; if (!dirHtml) findAll(main, o => o !== main && !!nameOf(o)).forEach(h => { const n = nameOf(h.obj); if (n && n.length < 30 && !names.includes(n)) names.push(n); });
+    if (dirHtml) body += dirHtml; else if (names.length) body += '<h2>目录</h2><ul>' + names.slice(0, 400).map(n => '<li><a href="/' + page + '?id=' + encodeURIComponent(n) + '">' + esc(n) + '</a></li>').join('') + '</ul>';
     if (page !== 'index.html') crumbs.push([section, canonical]);
   }
   const ld = [
@@ -216,7 +324,7 @@ function render(pathname, search) {
     '<link rel="icon" href="/favicon.svg" type="image/svg+xml">' +
     ld.map(x => '<script type="application/ld+json">' + JSON.stringify(x).replace(/</g, '\\u003c') + '</script>').join('') +
     '</head><body><nav>' + crumbs.map(c => '<a href="' + esc(c[1]) + '">' + esc(c[0]) + '</a>').join(' › ') + '</nav><main>' + body +
-    '</main><footer><p>知否知否 · 中国传统文化百科 · <a href="/">首页</a> · <a href="/dianji.html">典籍</a> · <a href="/lishi.html">历史</a> · <a href="/wen.html">文学</a></p></footer></body></html>';
+    '</main>' + siteNav() + '<footer><p>知否知否 · 中国传统文化百科 · <a href="/">首页</a> · <a href="/dianji.html">典籍</a> · <a href="/lishi.html">历史</a> · <a href="/wen.html">文学</a></p></footer></body></html>';
   return { status: 200, html };
 }
 
